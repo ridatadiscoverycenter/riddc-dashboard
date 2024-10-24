@@ -20,175 +20,178 @@ export default function WeatherHistory({ data, height = 300, width = 600 }: Weat
       background: 'white',
       signals: [
         {
-          name: "hover",
+          name: 'hover',
           value: null,
           on: [
-            {events: "@points_voronoi:mouseover", update: "datum"},
-            {events: "@points_voronoi:mouseout", update: "null"}
-          ]
-        }
+            { events: '@points_voronoi:mouseover', update: 'datum' },
+            { events: '@points_voronoi:mouseout', update: 'null' },
+          ],
+        },
       ],
       data: [
         {
-          name: "weather",
+          name: 'weather',
           values: data,
-          transform: [{
-            type: "formula",
-            as: "precipitation",
-            expr: "isNaN(datum.precipitation) ? 0 : datum.precipitation"
-          }],
-        },
-        {
-          name: "highlightedPoint",
-          source: "weather",
           transform: [
             {
-              type: "filter",
-              expr: "hover && hover.datum.date === datum.date"
-            }
-          ]
-        }
+              type: 'formula',
+              as: 'precipitation',
+              expr: 'isNaN(datum.precipitation) ? 0 : datum.precipitation',
+            },
+          ],
+        },
+        {
+          name: 'highlightedPoint',
+          source: 'weather',
+          transform: [
+            {
+              type: 'filter',
+              expr: 'hover && hover.datum.date === datum.date',
+            },
+          ],
+        },
       ],
       scales: [
         {
-          name: "xscale",
-          type: "time",
-          domain: { fields: [{ data: "weather", field: "date" }]},
-          range: "width",
-          round: true
+          name: 'xscale',
+          type: 'time',
+          domain: { fields: [{ data: 'weather', field: 'date' }] },
+          range: 'width',
+          round: true,
         },
         {
-          name: "tempScale",
-          type: "linear",
-          domain: {data: "weather", fields: ["minTemp", "maxTemp"]},
+          name: 'tempScale',
+          type: 'linear',
+          domain: { data: 'weather', fields: ['minTemp', 'maxTemp'] },
           nice: true,
           zero: false,
-          range: "height"
+          range: 'height',
         },
         {
-          name: "precipitationScale",
-          type: "linear",
-          domain: {data: "weather", field: "precipitation"},
+          name: 'precipitationScale',
+          type: 'linear',
+          domain: { data: 'weather', field: 'precipitation' },
           nice: true,
           zero: false,
-          range: "height"
+          range: 'height',
         },
         {
-          name: "colorScale",
-          type: "ordinal",
-          domain: ["Range", "Average"],
-          range: ["pink", "black"]
+          name: 'colorScale',
+          type: 'ordinal',
+          domain: ['Range', 'Average'],
+          range: ['pink', 'black'],
         },
       ],
       legends: [
         {
-          "stroke": "colorScale",
-          "orient": "bottom",
-          "direction": "horizontal",
-          "title": "Temperature",
-          "symbolType": "stroke"
+          stroke: 'colorScale',
+          orient: 'bottom',
+          direction: 'horizontal',
+          title: 'Temperature',
+          symbolType: 'stroke',
         },
       ],
-          axes: [
-            {orient: "bottom", scale: "xscale", title: "Time"},
-            {
-              orient: "left",
-              scale: "tempScale",
-              title: "Temperature (°C)",
-              grid: false
+      axes: [
+        { orient: 'bottom', scale: 'xscale', title: 'Time' },
+        {
+          orient: 'left',
+          scale: 'tempScale',
+          title: 'Temperature (°C)',
+          grid: false,
+        },
+        {
+          orient: 'right',
+          scale: 'precipitationScale',
+          title: 'Precipitation (in/day)',
+          grid: false,
+        },
+      ],
+      marks: [
+        {
+          type: 'area',
+          from: { data: 'weather' },
+          encode: {
+            enter: {
+              x: { scale: 'xscale', field: 'date' },
+              y: { scale: 'tempScale', field: 'minTemp' },
+              y2: { scale: 'tempScale', field: 'maxTemp' },
+              fill: { scale: 'colorScale', value: 'Range' },
             },
+            update: {
+              interpolate: { value: 'basis' },
+              fillOpacity: { value: 0.7 },
+            },
+          },
+        },
+        {
+          type: 'line',
+          name: 'avgTempLine',
+          from: { data: 'weather' },
+          encode: {
+            enter: {
+              x: { scale: 'xscale', field: 'date' },
+              y: { scale: 'tempScale', field: 'avgTemp' },
+              stroke: { scale: 'colorScale', value: 'Average' },
+              strokeWidth: { value: 1 },
+            },
+          },
+        },
+        {
+          name: 'points_voronoi',
+          type: 'path',
+          from: { data: 'avgTempLine' },
+          encode: {
+            update: {
+              fill: { value: 'transparent' },
+              tooltip: {
+                signal:
+                  "{ 'Min. Temp': datum.datum.minTemp + ' °C', 'Avg. Temp': datum.datum.avgTemp + ' °C', 'Max. Temp': datum.datum.maxTemp + ' °C', 'Precipitation': datum.datum.precipitation + ' (in/day)', 'Date': utcFormat(datum.datum.date, '%Y-%m-%d'), }",
+              },
+            },
+          },
+          transform: [
             {
-              orient: "right",
-              scale: "precipitationScale",
-              title: "Precipitation (in/day)",
-              grid: false
+              type: 'voronoi',
+              x: 'datum.x',
+              y: 'datum.y',
+              size: [{ signal: 'width' }, { signal: 'height' }],
             },
           ],
-      marks: [
-            {
-              type: "area",
-              from: { data: "weather"},
-              encode: {
-                enter: {
-                  x: {scale: "xscale", field: "date"},
-                  y: {scale: "tempScale", field: "minTemp"},
-                  y2: {scale: "tempScale", field: "maxTemp"},
-                  fill: {"scale": "colorScale", "value": "Range"},
-                },
-                update: {
-                  interpolate: { value: "basis" },
-                  fillOpacity: { value: 0.7 }
-                },
-              }
+        },
+        {
+          from: { data: 'highlightedPoint' },
+          type: 'symbol',
+          interactive: false,
+          encode: {
+            update: {
+              x: { scale: 'xscale', field: 'date' },
+              y: { scale: 'tempScale', field: 'avgTemp' },
+              stroke: { value: 'green' },
+              strokeWidth: { value: 4 },
+              fill: { value: 'white' },
+              size: { value: 150 },
+              strokeOpacity: { value: 0.3 },
             },
-            {
-              type: "line",
-              name: "avgTempLine",
-              from: { data: "weather" },
-              encode: {
-                enter: {
-                  x: { scale: "xscale", field: "date" },
-                  y: { scale: "tempScale", field: "avgTemp" },
-                  stroke: { scale: "colorScale", value: "Average" },
-                  strokeWidth: { value: 1 },
-                }
-              }
+          },
+        },
+        {
+          type: 'rect',
+          from: { data: 'weather' },
+          encode: {
+            enter: {
+              x: { scale: 'xscale', field: 'date' },
+              y: { scale: 'precipitationScale', value: 0 },
+              y2: { scale: 'precipitationScale', field: 'precipitation' },
+              fill: { value: 'skyblue' },
+              // "fill": {"scale": "rainScale", "value": "total"},
+              width: { value: 1 },
+              opacity: { value: 0.7 },
             },
-            {
-              name: "points_voronoi",
-              type: "path",
-              from: { data: "avgTempLine" },
-              encode: {
-                update: {
-                  fill: { value: "transparent" },
-                  tooltip: { signal: "{ 'Min. Temp': datum.datum.minTemp + ' °C', 'Avg. Temp': datum.datum.avgTemp + ' °C', 'Max. Temp': datum.datum.maxTemp + ' °C', 'Precipitation': datum.datum.precipitation + ' (in/day)', 'Date': utcFormat(datum.datum.date, '%Y-%m-%d'), }" }
-                }
-              },
-              transform: [
-                {
-                  type: "voronoi",
-                  x: "datum.x",
-                  y: "datum.y",
-                  size: [{signal: "width"}, {signal: "height"}]
-                }
-              ]
-            },
-            {
-              from: { data: "highlightedPoint" },
-              type: "symbol",
-              interactive: false,
-              encode: {
-                update: {
-                  x: { scale: "xscale", field: "date" },
-                  y: { scale: "tempScale", field: "avgTemp" },
-                  stroke: { value: "green" },
-                  strokeWidth: { value: 4 },
-                  fill: { value: "white" },
-                  size: { value: 150 },
-                  strokeOpacity: { value: 0.3 }
-                }
-              }
-            },
-            {
-              "type": "rect",
-              "from": {"data": "weather"},
-              "encode": {
-                "enter": {
-                  "x": {"scale": "xscale", "field": "date"},
-                  "y": {"scale": "precipitationScale", "value": 0},
-                  "y2": {"scale": "precipitationScale", "field": "precipitation"},
-                  fill: { value: "skyblue" },
-                  // "fill": {"scale": "rainScale", "value": "total"},
-                  "width": {"value": 1},
-                  "opacity": {"value": 0.7}
-                }
-              }
-            }
-          ]
+          },
+        },
+      ],
     }),
     [data, width, height]
   );
-  return (
-    <Vega spec={weatherHistorySpec} />
-  );
+  return <Vega spec={weatherHistorySpec} />;
 }

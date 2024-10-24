@@ -3,7 +3,7 @@ import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
 import type { RiBuoySummaryData, RiBuoyViewerVariable } from '@/utils/erddap/api/buoy';
-import { RI_BUOY_VIEWER_VARIABLES } from '@/utils/erddap/api/buoy'; 
+import { RI_BUOY_VIEWER_VARIABLES } from '@/utils/erddap/api/buoy';
 
 type RiBuoySummaryProps = {
   data: RiBuoySummaryData[];
@@ -108,11 +108,21 @@ export default function RiBuoySummary({ data, height = 300, width = 400 }: RiBuo
   );
   return (
     <div>
-      <select value={variable} onChange={(e) => setVariable(e.target.value as RiBuoyViewerVariable)}>
+      <select
+        value={variable}
+        onChange={(e) => setVariable(e.target.value as RiBuoyViewerVariable)}
+      >
         <option disabled>~~Select a variable~~</option>
         {RI_BUOY_VIEWER_VARIABLES.map((key) => (
           <option key={key} value={key}>
-            {key.replace(/([a-z])([A-Z])/g, '$1 $2').split(" ").map((word, index, total) => `${index === total.length - 1 && total.length > 1 ? "(" : ""}${word[0].toLocaleUpperCase()}${word.slice(1)}${index === total.length - 1 && total.length > 1 ? ")" : ""}`).join(" ")}
+            {key
+              .replace(/([a-z])([A-Z])/g, '$1 $2')
+              .split(' ')
+              .map(
+                (word, index, total) =>
+                  `${index === total.length - 1 && total.length > 1 ? '(' : ''}${word[0].toLocaleUpperCase()}${word.slice(1)}${index === total.length - 1 && total.length > 1 ? ')' : ''}`
+              )
+              .join(' ')}
           </option>
         ))}
       </select>

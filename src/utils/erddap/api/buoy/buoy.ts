@@ -82,12 +82,18 @@ export async function fetchBuoyTimeRange(configName: BuoyConfigName) {
 }
 
 function formatDateForQueryParams(d: Date) {
-  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate() + 1}`
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate() + 1}`;
 }
 
-export async function fetchBuoyData(configName: BuoyConfigName, ids: string[], vars: string[], startDate: Date, endDate: Date) {
+export async function fetchBuoyData(
+  configName: BuoyConfigName,
+  ids: string[],
+  vars: string[],
+  startDate: Date,
+  endDate: Date
+) {
   const config = getConfig(configName);
-  const url = `${config.route}/query?ids=${ids.join(",")}&variables=${vars.join(",")}&start=${formatDateForQueryParams(startDate)}&end=${formatDateForQueryParams(endDate)}`
+  const url = `${config.route}/query?ids=${ids.join(',')}&variables=${vars.join(',')}&start=${formatDateForQueryParams(startDate)}&end=${formatDateForQueryParams(endDate)}`;
   return await erddapAPIGet<unknown>(url);
   /*
   // Note (AM): Get a better sense of where this data comes from.

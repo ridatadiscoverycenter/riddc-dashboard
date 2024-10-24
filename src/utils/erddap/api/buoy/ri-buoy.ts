@@ -8,71 +8,71 @@ import {
 } from './buoy';
 
 export const RI_BUOY_ERDDAP_VARIABLES = [
-  "O2PercentSurface",
-  "O2PercentBottom",
-  "DepthBottom",
-  "depth",
-  "pHBottom",
+  'O2PercentSurface',
+  'O2PercentBottom',
+  'DepthBottom',
+  'depth',
+  'pHBottom',
   'pHSurface',
-  "SpCondSurface",
-  "SpCondBottom",
-  "WaterTempBottom",
-  "WaterTempSurface",
-  "O2Surface",
-  "O2Bottom",
+  'SpCondSurface',
+  'SpCondBottom',
+  'WaterTempBottom',
+  'WaterTempSurface',
+  'O2Surface',
+  'O2Bottom',
   'SalinityBottom',
-  "SalinitySurface",
-  "DensitySurface",
-  "DensityBottom",
-  "TurbidityBottom",
-  "ChlorophyllSurface",
-  "FSpercentSurface",
+  'SalinitySurface',
+  'DensitySurface',
+  'DensityBottom',
+  'TurbidityBottom',
+  'ChlorophyllSurface',
+  'FSpercentSurface',
 ] as const;
 export const RI_BUOY_VIEWER_VARIABLES = [
-  "oxygenPercentSurface",
-  "oxygenPercentBottom",
-  "depthBottom",
-  "depthSurface",
-  "pHBottom",
-  "pHSurface",
-  "specificConductanceSurface",
-  "specificConductanceBottom",
-  "temperatureBottom",
-  "temperatureSurface",
-  "oxygenSurface",
-  "oxygenBottom",
-  "salinityBottom",
-  "salinitySurface",
-  "densitySurface",
-  "densityBottom",
-  "turbidity",
-  "chlorophyll",
-  "totalFluorescence",
+  'oxygenPercentSurface',
+  'oxygenPercentBottom',
+  'depthBottom',
+  'depthSurface',
+  'pHBottom',
+  'pHSurface',
+  'specificConductanceSurface',
+  'specificConductanceBottom',
+  'temperatureBottom',
+  'temperatureSurface',
+  'oxygenSurface',
+  'oxygenBottom',
+  'salinityBottom',
+  'salinitySurface',
+  'densitySurface',
+  'densityBottom',
+  'turbidity',
+  'chlorophyll',
+  'totalFluorescence',
 ] as const;
 
 export type RiBuoyViewerVariable = (typeof RI_BUOY_VIEWER_VARIABLES)[number];
 export type RiBuoyErddapVariable = (typeof RI_BUOY_ERDDAP_VARIABLES)[number];
 
-const VARIABLE_PAIRS: { viewer: RiBuoyViewerVariable, erddap: RiBuoyErddapVariable }[] = [
-  { viewer: "oxygenPercentSurface", erddap: "O2PercentSurface", },
-  { viewer: "oxygenPercentBottom", erddap: "O2PercentBottom", },
-  { viewer: "depthBottom", erddap: "DepthBottom", },
-  { viewer: "depthSurface", erddap: "depth", },
-  { viewer: "pHBottom", erddap: "pHBottom", },
-  { viewer: "pHSurface", erddap: 'pHSurface', },
-  { viewer: "specificConductanceSurface", erddap: "SpCondSurface", },
-  { viewer: "specificConductanceBottom", erddap: "SpCondBottom", },
-  { viewer: "temperatureBottom", erddap: "WaterTempBottom", },
-  { viewer: "temperatureSurface", erddap: "WaterTempSurface", },
-  { viewer: "oxygenSurface", erddap: "O2Surface", },
-  { viewer: "oxygenBottom", erddap: "O2Bottom", },
-  { viewer: "salinityBottom", erddap: 'SalinityBottom', },
-  { viewer: "salinitySurface", erddap: "SalinitySurface", },
-  { viewer: "densitySurface", erddap: "DensitySurface", },
-  { viewer: "densityBottom", erddap: "DensityBottom", },
-  { viewer: "turbidity", erddap: "TurbidityBottom", },
-  { viewer: "chlorophyll", erddap: "ChlorophyllSurface", },
-  { viewer: "totalFluorescence", erddap: "FSpercentSurface", },
+const VARIABLE_PAIRS: { viewer: RiBuoyViewerVariable; erddap: RiBuoyErddapVariable }[] = [
+  { viewer: 'oxygenPercentSurface', erddap: 'O2PercentSurface' },
+  { viewer: 'oxygenPercentBottom', erddap: 'O2PercentBottom' },
+  { viewer: 'depthBottom', erddap: 'DepthBottom' },
+  { viewer: 'depthSurface', erddap: 'depth' },
+  { viewer: 'pHBottom', erddap: 'pHBottom' },
+  { viewer: 'pHSurface', erddap: 'pHSurface' },
+  { viewer: 'specificConductanceSurface', erddap: 'SpCondSurface' },
+  { viewer: 'specificConductanceBottom', erddap: 'SpCondBottom' },
+  { viewer: 'temperatureBottom', erddap: 'WaterTempBottom' },
+  { viewer: 'temperatureSurface', erddap: 'WaterTempSurface' },
+  { viewer: 'oxygenSurface', erddap: 'O2Surface' },
+  { viewer: 'oxygenBottom', erddap: 'O2Bottom' },
+  { viewer: 'salinityBottom', erddap: 'SalinityBottom' },
+  { viewer: 'salinitySurface', erddap: 'SalinitySurface' },
+  { viewer: 'densitySurface', erddap: 'DensitySurface' },
+  { viewer: 'densityBottom', erddap: 'DensityBottom' },
+  { viewer: 'turbidity', erddap: 'TurbidityBottom' },
+  { viewer: 'chlorophyll', erddap: 'ChlorophyllSurface' },
+  { viewer: 'totalFluorescence', erddap: 'FSpercentSurface' },
 ] as const;
 
 function erddapToViewer(v: RiBuoyErddapVariable) {
@@ -105,21 +105,22 @@ type FetchedRiBuoyData = {
 };
 
 const ZodFetchedRiBuoyData = z.object({
-  data: z.array(z.object({
-    variable: z.enum(RI_BUOY_ERDDAP_VARIABLES),
-    value: z.union([z.number(), z.null()]),
-    station_name: z.string(),
-    time: z.string().datetime(),
-    units: z.string(),
-  })),
+  data: z.array(
+    z.object({
+      variable: z.enum(RI_BUOY_ERDDAP_VARIABLES),
+      value: z.union([z.number(), z.null()]),
+      station_name: z.string(),
+      time: z.string().datetime(),
+      units: z.string(),
+    })
+  ),
 });
 
 function validateFetchedRiBuoyData(buoyData: unknown): buoyData is { data: FetchedRiBuoyData[] } {
   try {
     ZodFetchedRiBuoyData.parse(buoyData);
     return true;
-  }
-  catch (ex) {
+  } catch (ex) {
     return false;
   }
 }
@@ -136,7 +137,12 @@ function formatRiBuoyData(buoyData: FetchedRiBuoyData) {
 
 export type RiBuoyData = ReturnType<typeof formatRiBuoyData>;
 
-export async function fetchRiBuoyData(ids: string[], vars: string[], startDate: Date, endDate: Date) {
+export async function fetchRiBuoyData(
+  ids: string[],
+  vars: string[],
+  startDate: Date,
+  endDate: Date
+) {
   const fetchedRiBuoyData = await fetchBuoyData('ri-buoy', ids, vars, startDate, endDate);
   if (validateFetchedRiBuoyData(fetchedRiBuoyData)) {
     return fetchedRiBuoyData.data.map(formatRiBuoyData);
@@ -144,7 +150,6 @@ export async function fetchRiBuoyData(ids: string[], vars: string[], startDate: 
     throw new Error('Invalid data received when fetching RI Buoy Summary Data.');
   }
 }
-
 
 /**
  * Buoy Summary Data
@@ -379,5 +384,3 @@ export async function fetchRiBuoyTimeRange() {
     throw new Error('Invalid data received when fetching RI Buoy Time Range');
   }
 }
-
-
