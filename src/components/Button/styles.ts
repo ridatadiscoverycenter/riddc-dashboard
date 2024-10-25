@@ -152,3 +152,5 @@ export const styles = {
     ],
   },
 };
+
+export type Color = keyof typeof styles.colors
