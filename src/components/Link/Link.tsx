@@ -1,6 +1,6 @@
 import * as Headless from '@headlessui/react';
 import React, { forwardRef } from 'react';
-import NextLink, { type LinkProps } from "next/link";
+import NextLink, { type LinkProps } from 'next/link';
 
 function LinkComponent(
   props: LinkProps & React.ComponentPropsWithoutRef<'a'>,
