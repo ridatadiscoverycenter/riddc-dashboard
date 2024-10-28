@@ -1,4 +1,4 @@
-import FishLite from '@/components/visualizations/example';
+import "@/styles/tailwind.css";
 
 export default function Home() {
   return (
@@ -18,14 +18,6 @@ export default function Home() {
       <p>Text</p>
       <h2>Glossary</h2>
       <p>Text</p>
-      <FishLite
-        data={[
-          { a: '1', b: 1 },
-          { a: '2', b: 1 },
-          { a: '3', b: 1 },
-          { a: '4', b: 1 },
-        ]}
-      />
     </main>
   );
 }

@@ -1,4 +1,4 @@
 export * from './Button';
 export * from './Link';
-export * from './Navbar';
+export * from './Nav';
 export * from './visualizations';
