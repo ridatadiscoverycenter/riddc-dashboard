@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import '@/styles/tailwind.css';
-import { Nav } from '@/components';
+import { Footer, Nav } from '@/components';
 
 export const metadata: Metadata = {
   title: 'Narragansett Bay Data Explorer',
@@ -10,9 +10,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>
+      <body /* className="bg-no-repeat bg-gradient-to-b from-cyan-950 to-white" */>
         <Nav />
-        {children}
+        <main className="relative bg-white dark:bg-black text-black dark:text-white">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
