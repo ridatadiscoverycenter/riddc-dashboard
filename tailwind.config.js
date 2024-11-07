@@ -4,12 +4,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "c-background": {
-          light: "#f0fffb",
-          dark: "#000F0F", 
-          DEFAULT: "#f0fffb", 
-        }
-      }
+        'c-background': {
+          light: '#f0fffb',
+          dark: '#000F0F',
+          DEFAULT: '#f0fffb',
+        },
+      },
     },
   },
   plugins: [],

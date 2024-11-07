@@ -1,23 +1,25 @@
-import { Card } from "@/components/Card";
-import Link from "next/link";
+import { Card } from '@/components/Card';
+import Link from 'next/link';
 
 const DATA_BETTER = [
   {
-    title: "ERDDAP",
-    description: "The database that stores raw data for RIDDC.",
-    href: "https://pricaimcit.services.brown.edu/erddap/index.html",
+    title: 'ERDDAP',
+    description: 'The database that stores raw data for RIDDC.',
+    href: 'https://pricaimcit.services.brown.edu/erddap/index.html',
   },
   {
-    title: "Narragansett Bay Volume Viewer",
-    description: "An accessible and interactive environment to explore and showcase volumetric Narragansett Bay data.",
-    href: "https://bay-viewer.riddc.brown.edu/",
+    title: 'Narragansett Bay Volume Viewer',
+    description:
+      'An accessible and interactive environment to explore and showcase volumetric Narragansett Bay data.',
+    href: 'https://bay-viewer.riddc.brown.edu/',
   },
   {
-    title: "RIDDC Data Articles",
-    description: "Articles and jupyter notebooks with stories, exploratory data analyses, and code examples using data stored in ERDDAP.",
-    href: "https://riddc-jupyter-book.web.app/notebooks/fox-kemper/first_example_aquarius.html",
+    title: 'RIDDC Data Articles',
+    description:
+      'Articles and jupyter notebooks with stories, exploratory data analyses, and code examples using data stored in ERDDAP.',
+    href: 'https://riddc-jupyter-book.web.app/notebooks/fox-kemper/first_example_aquarius.html',
   },
-]
+];
 
 export default function Home() {
   return (
@@ -27,7 +29,7 @@ export default function Home() {
       </button>
       <h2 className="text-lg">Additional RIDDC Data and Visualizations</h2>
       <ul className="margin-auto max-w-[1000px] grid sm:grid-cols-1 md:grid-cols-3 gap-4 p-4">
-        {DATA_BETTER.map(({ title, description, href, }) => (
+        {DATA_BETTER.map(({ title, description, href }) => (
           <li key={title}>
             <Link href={href} className="flex-1">
               <Card>

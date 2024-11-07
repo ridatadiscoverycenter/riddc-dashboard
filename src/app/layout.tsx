@@ -23,8 +23,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   );
 }
 
-function Beam({ via, top, right }: { via: string, top: string, right: string }) {
+function Beam({ via, top, right }: { via: string; top: string; right: string }) {
   return (
-    <div aria-hidden className={`w-[512px] h-[280vh] -z-10 bg-gradient-to-r from-transparent ${via} to-transparent blur-2xl opacity-20 absolute ${top} ${right} rotate-45`} />
-  )
+    <div
+      aria-hidden
+      className={`w-[512px] h-[280vh] -z-10 bg-gradient-to-r from-transparent ${via} to-transparent blur-2xl opacity-20 absolute ${top} ${right} rotate-45`}
+    />
+  );
 }

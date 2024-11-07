@@ -21,7 +21,7 @@ export default function RiBuoySummary({ data, height = 300, width = 400 }: RiBuo
       description: 'Buoy Data Summary Chart',
       width,
       height,
-      background: "white",// colorMode === "light" ? 'white' : "black",
+      background: 'white', // colorMode === "light" ? 'white' : "black",
       data: [
         {
           name: 'rawData',
