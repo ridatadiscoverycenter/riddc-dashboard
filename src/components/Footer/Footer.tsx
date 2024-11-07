@@ -7,7 +7,7 @@ const QUICK_LINKS_COLOR = 'hover:text-cyan-200 transition-all duration-300 ease-
 export function Footer() {
   return (
     <footer className="flex flex-col items-center overflow-clip gap-4 bg-cyan-100 dark:bg-inherit dark:border-t dark:border-white text-slate-800 dark:text-slate-200 pt-4 text-xs">
-      <div className="flex items-center justify-around flex-wrap gap-4 px-4 py-1 m-2 dark:bg-cyan-100 rounded-md">
+      <div className="flex items-center justify-around flex-wrap gap-4 px-4 py-1 m-2 dark:bg-white rounded-md">
         <RicaimLogo size={LOGO_SIZE} />
         <UriLogo size={LOGO_SIZE - 2} />
         <ThreeCrsLogo size={LOGO_SIZE} />

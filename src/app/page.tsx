@@ -24,7 +24,7 @@ const DATA_BETTER = [
 export default function Home() {
   return (
     <div className="flex flex-col items-center content-center gap-4 mx-2">
-      <button className="my-12 border-4 rounded-lg border-teal-300 dark:border-teal-100 shadow-none hover:shadow-lg hover:dark:shadow-slate-500 dark:shadow-white text-2xl py-12 px-6 max-w-[34rem] transition-all duration-500">
+      <button className="my-12 border-4 rounded-lg border-cyan-800 dark:border-teal-100 shadow-sm hodver:shadow-zinc-200 hover:shadow-lg hover:dark:shadow-slate-500 dark:shadow-white text-2xl py-12 px-6 max-w-[34rem] transition-all duration-500">
         Explore our collection of present and historical data from the Narragansett Bay
       </button>
       <h2 className="text-lg">Additional RIDDC Data and Visualizations</h2>
