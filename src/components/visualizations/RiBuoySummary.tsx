@@ -4,6 +4,7 @@ import { Vega, VisualizationSpec } from 'react-vega';
 
 import type { RiBuoySummaryData, RiBuoyViewerVariable } from '@/utils/erddap/api/buoy';
 import { RI_BUOY_VIEWER_VARIABLES } from '@/utils/erddap/api/buoy';
+//import { useColorMode } from '@/hooks/useColorMode';
 
 type RiBuoySummaryProps = {
   data: RiBuoySummaryData[];
@@ -12,6 +13,7 @@ type RiBuoySummaryProps = {
 };
 
 export default function RiBuoySummary({ data, height = 300, width = 400 }: RiBuoySummaryProps) {
+  //const colorMode = useColorMode();
   const [variable, setVariable] = React.useState<RiBuoyViewerVariable>('chlorophyll');
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
@@ -19,7 +21,7 @@ export default function RiBuoySummary({ data, height = 300, width = 400 }: RiBuo
       description: 'Buoy Data Summary Chart',
       width,
       height,
-      background: 'white',
+      background: "white",// colorMode === "light" ? 'white' : "black",
       data: [
         {
           name: 'rawData',

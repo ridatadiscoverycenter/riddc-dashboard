@@ -4,7 +4,7 @@ const LINK_HOVER_STYLES = 'text-white hover:text-cyan-200 transition-all duratio
 
 export function Nav() {
   return (
-    <nav className="sticky top-0 z-50 flex flex-row w-full p-2 gap-4 items-center text-xl bg-cyan-800 dark:bg-black dark:border-b-slate-400 dark:border-b">
+    <nav className="sticky top-0 z-50 flex flex-row w-full p-2 gap-4 items-center text-xl bg-cyan-800 dark:bg-inherit dark:border-b-slate-400 dark:border-b">
       <Link href="/" className="flex flex-row items-center gap-4">
         <RiddcLogo size={3} />
         <h1 className={`sm:flex hidden font-bold ${LINK_HOVER_STYLES}`}>
