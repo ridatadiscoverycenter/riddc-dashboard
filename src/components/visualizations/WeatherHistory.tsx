@@ -10,7 +10,7 @@ type WeatherHistoryProps = {
   width?: number;
 };
 
-export default function WeatherHistory({ data, height = 300, width = 600 }: WeatherHistoryProps) {
+export function WeatherHistory({ data, height = 300, width = 600 }: WeatherHistoryProps) {
   const weatherHistorySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',

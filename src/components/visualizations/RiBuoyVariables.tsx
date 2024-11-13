@@ -34,7 +34,7 @@ const BASE_COLORS = [
   '#6a7d54',
 ];
 
-export default function RiBuoyVariables({
+export function RiBuoyVariables({
   data,
   colors = BASE_COLORS,
   height = 300,

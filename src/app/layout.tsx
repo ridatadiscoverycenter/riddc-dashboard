@@ -12,7 +12,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body className="min-h-[100vh] flex flex-col bg-c-background-light dark:bg-c-background-dark text-black dark:text-white">
         <Nav />
-        <main className="flex-1 relative overflow-clip">
+        <main className="flex-1 relative overflow-clip flex flex-col items-center content-center gap-4 mx-2">
           <Beam via="via-teal-400 dark:via-teal-600" top="-top-[500px]" right="right-[800px]" />
           <Beam via="via-amber-400 dark:via-amber-600" top="-top-[600px]" right="right-[1000px]" />
           {children}

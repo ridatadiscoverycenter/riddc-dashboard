@@ -1,4 +1,5 @@
 export * from './BrownLogo';
+export * from './CloseIcon';
 export * from './GithubLogo';
 export * from './NsfLogo';
 export * from './RicaimLogo';
