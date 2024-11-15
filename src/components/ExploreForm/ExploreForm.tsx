@@ -3,8 +3,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { RiBuoyCoordinate, RiBuoyVariables } from '@/utils/erddap/api/buoy';
-import { Multiselect } from '../Multiselect';
-import { Label } from '../Label';
+import { Multiselect, Label, Input, Form } from '@/components';
 
 type ExploreFormProps = {
   buoys: RiBuoyCoordinate[];
@@ -28,7 +27,7 @@ export function ExploreForm({ buoys, variables }: ExploreFormProps) {
   );
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-2">
+    <Form onSubmit={onSubmit} className="flex flex-col gap-2">
       <Multiselect
         label="Buoys"
         options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
@@ -41,27 +40,25 @@ export function ExploreForm({ buoys, variables }: ExploreFormProps) {
       />
       <div className="w-full flex sm:flex-row flex-col gap-2 [&>label]:flex-1">
         <Label label="Start">
-          <input
+          <Input
             value={startDate.toISOString().split('T')[0]}
             onChange={(e) => setStartDate(new Date(e.target.value))}
             type="date"
-            className="p-2 rounded-md bg-slate-100 dark:bg-slate-800 shadow-sm dark:border-slate-600 dark:border-1"
           />
         </Label>
         <Label label="End">
-          <input
+          <Input
             value={endDate.toISOString().split('T')[0]}
             onChange={(e) => setEndDate(new Date(e.target.value))}
             type="date"
-            className="p-2 rounded-md bg-slate-100 dark:bg-slate-800 shadow-sm dark:border-slate-600 dark:border-1"
           />
         </Label>
       </div>
-      <input
+      <Input
         type="submit"
         value="Explore!"
-        className=" bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 p-2 rounded-md drop-shadow-md hover:drop-shadow-lg focus:drop-shadow-lg transition duration-500"
+        className=" bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 drop-shadow-md hover:drop-shadow-lg focus:drop-shadow-lg transition duration-500"
       />
-    </form>
+    </Form>
   );
 }

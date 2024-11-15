@@ -4,12 +4,15 @@ import { Vega, VisualizationSpec } from 'react-vega';
 import { RiBuoyCoordinate } from '@/utils/erddap/api/buoy';
 
 import { RiGeoJson, RiGeoJsonOutlines } from '@/static/ri.geojson';
+import { useColorMode } from '@/hooks/useColorMode';
 
 type RiBuoyMapProps = {
   locations: RiBuoyCoordinate[];
+  lockColors?: boolean;
 };
 
-export function RiBuoyMap({ locations }: RiBuoyMapProps) {
+export function RiBuoyMap({ locations, lockColors = false }: RiBuoyMapProps) {
+  const colorMode = useColorMode();
   const buoyMapSpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -70,22 +73,29 @@ export function RiBuoyMap({ locations }: RiBuoyMapProps) {
             .sort((s1, s2) => s1.localeCompare(s2)),
         },
       ],
+      /*
+      Question: Does this *need* a legend? this visualization doesn't *do* a lot, and 
+      the buoy names are visible on hover...
       legends: [
         {
           title: 'Buoys',
-          orient: 'bottom',
+          orient: 'right',
           type: 'symbol',
           symbolType: 'circle',
           fill: 'color',
           columns: 2,
         },
       ],
+      */
       marks: [
         {
           type: 'shape',
           from: { data: 'outlines' },
           encode: {
-            enter: { strokeWidth: { value: 1 }, stroke: { value: '#d3d3d3' } },
+            enter: {
+              strokeWidth: { value: 2 },
+              stroke: { value: colorMode === 'light' ? 'lightgrey' : 'darkgrey' },
+            },
           },
           transform: [{ type: 'geoshape', projection: 'projection' }],
         },
@@ -94,9 +104,9 @@ export function RiBuoyMap({ locations }: RiBuoyMapProps) {
           from: { data: 'ri' },
           encode: {
             enter: {
-              strokeWidth: { value: 1 },
-              stroke: { value: '#d3d3d3' },
-              fill: { value: 'whitesmoke' },
+              strokeWidth: { value: 2 },
+              stroke: { value: colorMode === 'light' ? 'lightgrey' : 'darkgrey' },
+              fill: { value: colorMode === 'light' ? 'white' : 'black' },
             },
           },
           transform: [{ type: 'geoshape', projection: 'projection' }],
@@ -119,7 +129,7 @@ export function RiBuoyMap({ locations }: RiBuoyMapProps) {
         },
       ],
     }),
-    [locations]
+    [locations, colorMode]
   );
   return <Vega actions={false} spec={buoyMapSpec} />;
 }

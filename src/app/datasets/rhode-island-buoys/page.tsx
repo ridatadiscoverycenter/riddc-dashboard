@@ -1,4 +1,4 @@
-import { Card, ExploreForm, ExternalLink, Link } from '@/components';
+import { Card, DownloadBuoyData, ExploreForm, ExternalLink, Link } from '@/components';
 import { RiBuoyMap, RiBuoySummary } from '@/components/visualizations';
 import {
   fetchRiBuoyCoordinates,
@@ -15,39 +15,52 @@ export default async function RhodeIslandBuoys() {
   const buoyVars = await fetchRiBuoyVariables();
   return (
     <>
-      <div className="m-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Card className="sm:col-span-2 col-span-1 2xl:col-span-1 bg-white text-black border-none  flex flex-col align-middle items-center">
+      <div
+        /*className="p-4 grid grid-cols-1 gap-4 max-w-[1500px]"*/ className="p-4 flex flex-col gap-4 max-w-[1500px]"
+      >
+        <Card className="bg-white text-black border-none  flex flex-col align-middle items-center">
           <RiBuoySummary data={buoyData} />
         </Card>
-        <Card className="hidden 2xl:flex bg-white text-black border-none flex-col align-middle items-center">
-          <RiBuoyMap locations={buoyCoords} />
-        </Card>
-        <Card>
-          <h2 className="text-xl">Explore!</h2>
-          <p className="text-sm">
-            Generate a line plot to compare data points from buoys in the dataset! Select some
-            buoys, up to four variables, and a time range to start exploring.
-          </p>
-          <ExploreForm buoys={buoyCoords} variables={buoyVars} />
-        </Card>
-        <Card>
-          <h2 className="text-lg">Not sure what to explore?</h2>
-          <p className="text-sm">Here&apos;s some pre-selected example scenarios to choose from.</p>
-          <ul className="flex-1 flex flex-col justify-around gap-2">
-            <li className="w-full flex">
-              <Link href="#" className={EXPLORE_STYLES}>
-                Changes in Water Temperature at N. Prudence and Conimicut Pt. from 2010 - 2011
-              </Link>
-            </li>
-            <li className="w-full flex">
-              <Link href="#" className={EXPLORE_STYLES}>
-                Changes in Depth at Greenwich Bay and GSO Dock from 2008 - 2009
-              </Link>
-            </li>
-          </ul>
-        </Card>
-        <div className="sm:col-span-2 col-span-1 my-2 text-center">
-          The historical data available on this site has been compilef from the{' '}
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 gap-4" /*className="flex md:flex-row flex-col gap-4 items-stretch justify-stretch"*/
+        >
+          <Card>
+            <h2 className="text-xl font-header font-bold">Explore!</h2>
+            <p className="text-sm">
+              Generate a line plot to compare data points from buoys in the dataset! Select some
+              buoys, up to four variables, and a time range to start exploring.
+            </p>
+            <ExploreForm buoys={buoyCoords} variables={buoyVars} />
+          </Card>
+          <Card>
+            <h2 className="text-lg">Not sure what to explore?</h2>
+            <p className="text-sm">
+              Here&apos;s some pre-selected example scenarios to choose from.
+            </p>
+            <ul className="flex-1 flex flex-col justify-around gap-2">
+              <li className="w-full flex">
+                <Link href="#" className={EXPLORE_STYLES}>
+                  Changes in Water Temperature at N. Prudence and Conimicut Pt. from 2010 - 2011
+                </Link>
+              </li>
+              <li className="w-full flex">
+                <Link href="#" className={EXPLORE_STYLES}>
+                  Changes in Depth at Greenwich Bay and GSO Dock from 2008 - 2009
+                </Link>
+              </li>
+            </ul>
+          </Card>
+          <Card className="hidden sm:flex flex-col justify-center items-center border-white dark:border-gray-500 bg-white dark:bg-black">
+            <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
+            <RiBuoyMap locations={buoyCoords} />
+          </Card>
+          <Card>
+            <h2>This historical data also is made available to download!</h2>
+            <DownloadBuoyData buoys={buoyCoords} variables={buoyVars} />
+          </Card>
+        </div>
+        <div className="my-2 text-center">
+          The historical data available on this site has been compiled from the{' '}
           <ExternalLink href="http://www.dem.ri.gov/programs/emergencyresponse/bart/stations.php">
             Narragansett Bay Fixed-Site Monitoring Network
           </ExternalLink>

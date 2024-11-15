@@ -23,7 +23,7 @@ export function Footer() {
       </p>
       <p className="">© {new Date().getFullYear()} RI Data Discovery Center</p>
       <div className="flex flex-col gap-2 items-center">
-        <h2 className="font-bold">Quick Links:</h2>
+        <h2 className="font-bold font-header">Quick Links:</h2>
         <ul className="flex flex-row flex-wrap items-baseline gap-4 underline">
           <li>
             <Link className={QUICK_LINKS_COLOR} href="/">

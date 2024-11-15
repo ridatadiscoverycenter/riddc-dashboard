@@ -5,7 +5,7 @@ import { Vega, VisualizationSpec } from 'react-vega';
 import type { RiBuoySummaryData, RiBuoyViewerVariable } from '@/utils/erddap/api/buoy';
 import { RI_BUOY_VIEWER_VARIABLES } from '@/utils/erddap/api/buoy';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
-import { Label } from '../Label';
+import { Select } from '@/components';
 
 type RiBuoySummaryProps = {
   data: RiBuoySummaryData[];
@@ -117,27 +117,23 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
   return (
     <>
       <form className="self-stretch">
-        <Label label="Data:" forceLight>
-          <select
-            value={variable}
-            className="p-2 rounded-md"
-            onChange={(e) => setVariable(e.target.value as RiBuoyViewerVariable)}
-          >
-            <option disabled>~~Select a variable~~</option>
-            {RI_BUOY_VIEWER_VARIABLES.map((key) => (
-              <option key={key} value={key}>
-                {key
-                  .replace(/([a-z])([A-Z])/g, '$1 $2')
-                  .split(' ')
-                  .map(
-                    (word, index, total) =>
-                      `${index === total.length - 1 && total.length > 1 ? '(' : ''}${word[0].toLocaleUpperCase()}${word.slice(1)}${index === total.length - 1 && total.length > 1 ? ')' : ''}`
-                  )
-                  .join(' ')}
-              </option>
-            ))}
-          </select>
-        </Label>
+        <Select
+          forceLight
+          label="Data:"
+          value={variable}
+          onChange={(e) => setVariable(e.target.value as RiBuoyViewerVariable)}
+          options={RI_BUOY_VIEWER_VARIABLES.map((key) => ({
+            label: key
+              .replace(/([a-z])([A-Z])/g, '$1 $2')
+              .split(' ')
+              .map(
+                (word, index, total) =>
+                  `${index === total.length - 1 && total.length > 1 ? '(' : ''}${word[0].toLocaleUpperCase()}${word.slice(1)}${index === total.length - 1 && total.length > 1 ? ')' : ''}`
+              )
+              .join(' '),
+            value: key,
+          }))}
+        />
       </form>
       <Vega
         className="flex  flex-col items-center justify-center"

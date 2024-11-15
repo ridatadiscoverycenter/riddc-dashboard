@@ -37,7 +37,7 @@ const BASE_COLORS = [
 export function RiBuoyVariables({
   data,
   colors = BASE_COLORS,
-  height = 300,
+  height = 200,
   width = 600,
 }: RiBuoyVariablesProps) {
   //console.log({ RiBuoyVariables: "component", data });

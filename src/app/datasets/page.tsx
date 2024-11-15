@@ -54,7 +54,7 @@ export default function Datasets() {
         {DATASETS.map(({ name, href, description }) => (
           <li key={href}>
             <Card>
-              <h3 className="text-lg font-bold">
+              <h3 className="text-lg font-bold font-header">
                 <Link href={href}>{name}</Link>
               </h3>
               <p className="text-sm">{description()}</p>

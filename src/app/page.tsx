@@ -1,3 +1,4 @@
+
 import { Card, Link } from '@/components';
 
 const DATA_BETTER = [
@@ -19,7 +20,7 @@ const DATA_BETTER = [
     href: 'https://riddc-jupyter-book.web.app/notebooks/fox-kemper/first_example_aquarius.html',
   },
 ];
-
+  
 export default function Home() {
   //<div className="flex flex-col items-center content-center gap-4 mx-2">
   return (
@@ -35,7 +36,7 @@ export default function Home() {
         {DATA_BETTER.map(({ title, description, href }) => (
           <li key={title}>
             <Card>
-              <h3 className="text-lg font-bold">
+              <h3 className="text-lg font-bold font-header">
                 <Link href={href}>{title}</Link>
               </h3>
               <p className="text-sm">{description}</p>

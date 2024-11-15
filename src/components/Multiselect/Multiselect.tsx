@@ -1,7 +1,6 @@
 'use client';
 import React, { SetStateAction } from 'react';
-import { Label } from '../Label';
-import { CloseIcon } from '../Logo';
+import { CloseIcon, Select } from '@/components';
 
 type MultiselectProps = {
   label: string;
@@ -37,9 +36,7 @@ export function Multiselect({ label, options, onChange }: MultiselectProps) {
     },
     [setSelected]
   );
-  return (
-    <>
-      <Label label={label}>
+  /*<Label label={label}>
         <select
           onChange={addNew}
           value={undefined}
@@ -52,7 +49,10 @@ export function Multiselect({ label, options, onChange }: MultiselectProps) {
             </option>
           ))}
         </select>
-      </Label>
+      </Label>*/
+  return (
+    <>
+      <Select options={options} label={label} value={undefined} onChange={addNew} />
       {selected.length > 0 && (
         <ul className="flex flex-col items-stretch px-2 gap-1">
           {selected.map(({ label: selLabel, value }) => (
