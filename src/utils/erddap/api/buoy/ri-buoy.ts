@@ -347,7 +347,6 @@ export type RiBuoyVariables = ReturnType<typeof formatRiBuoyVariables>;
 
 export async function fetchRiBuoyVariables() {
   const fetchedVariables = await fetchBuoyVariables('ri-buoy');
-  console.log(fetchedVariables);
   if (validateFetchedRiBuoyVariables(fetchedVariables)) {
     return fetchedVariables.map(formatRiBuoyVariables);
   } else {
