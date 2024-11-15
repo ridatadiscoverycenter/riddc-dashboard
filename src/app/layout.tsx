@@ -11,7 +11,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${FONTS} min-h-[100vh] flex flex-col bg-c-background-light dark:bg-c-background-dark text-black dark:text-white font-main`}>
+      <body
+        className={`${FONTS} min-h-[100vh] flex flex-col bg-c-background-light dark:bg-c-background-dark text-black dark:text-white font-main`}
+      >
         <Nav />
         <main className="flex-1 relative overflow-clip flex flex-col items-center content-center gap-4 mx-2">
           <Beam via="via-teal-400 dark:via-teal-600" top="-top-[500px]" right="right-[800px]" />

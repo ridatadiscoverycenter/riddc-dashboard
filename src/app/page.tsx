@@ -1,4 +1,3 @@
-
 import { Card, Link } from '@/components';
 
 const DATA_BETTER = [
@@ -20,7 +19,7 @@ const DATA_BETTER = [
     href: 'https://riddc-jupyter-book.web.app/notebooks/fox-kemper/first_example_aquarius.html',
   },
 ];
-  
+
 export default function Home() {
   //<div className="flex flex-col items-center content-center gap-4 mx-2">
   return (
