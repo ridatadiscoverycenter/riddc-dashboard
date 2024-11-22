@@ -139,11 +139,17 @@ export type RiBuoyData = ReturnType<typeof formatRiBuoyData>;
 
 export async function fetchRiBuoyData(
   ids: string[],
-  vars: string[],
+  vars: RiBuoyViewerVariable[],
   startDate: Date,
   endDate: Date
 ) {
-  const fetchedRiBuoyData = await fetchBuoyData('ri-buoy', ids, vars, startDate, endDate);
+  const fetchedRiBuoyData = await fetchBuoyData(
+    'ri-buoy',
+    ids,
+    vars.map(viewerToErddap),
+    startDate,
+    endDate
+  );
   if (validateFetchedRiBuoyData(fetchedRiBuoyData)) {
     return fetchedRiBuoyData.data.map(formatRiBuoyData);
   } else {

@@ -10,7 +10,6 @@ export function Label({
   forceLight = false,
   children,
 }: React.PropsWithChildren<{ label: string; forceLight?: boolean }>) {
-  console.log({ label, forceLight });
   return (
     <label className="flex flex-col gap-1">
       <span className={`${BASE_STYLES} ${forceLight ? LIGHT_STYLES : COLOR_STYLES}`}>{label}</span>

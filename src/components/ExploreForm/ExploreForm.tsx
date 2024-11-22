@@ -2,43 +2,65 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { RiBuoyCoordinate, RiBuoyVariables } from '@/utils/erddap/api/buoy';
+import { RI_BUOY_VIEWER_VARIABLES, RiBuoyCoordinate } from '@/utils/erddap/api/buoy';
 import { Multiselect, Label, Input, Form } from '@/components';
+
+type InitialFormData = {
+  buoys: string[];
+  vars: string[];
+  start: Date;
+  end: Date;
+};
 
 type ExploreFormProps = {
   buoys: RiBuoyCoordinate[];
-  variables: RiBuoyVariables[];
+  //variables: RiBuoyViewerVariable[];
+  init?: InitialFormData;
 };
 
-export function ExploreForm({ buoys, variables }: ExploreFormProps) {
+const DEFAULT_INITIAL_DATA: InitialFormData = {
+  buoys: [],
+  vars: [],
+  start: new Date(),
+  end: new Date(),
+};
+
+export function ExploreForm({ buoys, init = DEFAULT_INITIAL_DATA }: ExploreFormProps) {
   const router = useRouter();
-  const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>([]);
-  const [selectedVars, setSelectedVars] = React.useState<string[]>([]);
-  const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(new Date());
+  const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(init.buoys);
+  const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
+  const [startDate, setStartDate] = React.useState(init.start);
+  const [endDate, setEndDate] = React.useState(init.end);
 
   const onSubmit = React.useCallback(
     (event: React.FormEvent) => {
       event.preventDefault();
-
-      router.push('/');
+      const buoys = selectedBuoys.length === 0 ? '' : `buoys=${selectedBuoys.join(',')}`;
+      const vars = selectedVars.length === 0 ? '' : `vars=${selectedVars.join(',')}`;
+      const start = `start=${startDate.toISOString().split('T')[0]}`;
+      const end = `end=${endDate.toISOString().split('T')[0]}`;
+      router.push(
+        `/datasets/rhode-island-buoys/test?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+      );
     },
-    [router]
+    [router, selectedBuoys, selectedVars, startDate, endDate]
   );
 
   return (
-    <Form onSubmit={onSubmit} className="flex flex-col gap-2">
+    <Form onSubmit={onSubmit} className="flex flex-col gap-2 justify-center">
       <Multiselect
         label="Buoys"
         options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
         onChange={setSelectedBuoys}
+        init={init.buoys}
       />
       <Multiselect
         label="Variables (up to four)"
-        options={variables.map(({ name }) => name)}
+        options={[...RI_BUOY_VIEWER_VARIABLES]}
         onChange={setSelectedVars}
+        init={init.vars}
       />
-      <div className="w-full flex sm:flex-row flex-col gap-2 [&>label]:flex-1">
+      <div className="w-full flex lg:flex-row flex-col gap-2 [&>label]:flex-1">
         <Label label="Start">
           <Input
             value={startDate.toISOString().split('T')[0]}

@@ -5,6 +5,7 @@ import { RiBuoyCoordinate } from '@/utils/erddap/api/buoy';
 
 import { RiGeoJson, RiGeoJsonOutlines } from '@/static/ri.geojson';
 import { useColorMode } from '@/hooks/useColorMode';
+import { Loading } from '@/components';
 
 type RiBuoyMapProps = {
   locations: RiBuoyCoordinate[];
@@ -73,20 +74,6 @@ export function RiBuoyMap({ locations, lockColors = false }: RiBuoyMapProps) {
             .sort((s1, s2) => s1.localeCompare(s2)),
         },
       ],
-      /*
-      Question: Does this *need* a legend? this visualization doesn't *do* a lot, and 
-      the buoy names are visible on hover...
-      legends: [
-        {
-          title: 'Buoys',
-          orient: 'right',
-          type: 'symbol',
-          symbolType: 'circle',
-          fill: 'color',
-          columns: 2,
-        },
-      ],
-      */
       marks: [
         {
           type: 'shape',
@@ -94,7 +81,7 @@ export function RiBuoyMap({ locations, lockColors = false }: RiBuoyMapProps) {
           encode: {
             enter: {
               strokeWidth: { value: 2 },
-              stroke: { value: colorMode === 'light' ? 'lightgrey' : 'darkgrey' },
+              stroke: { value: colorMode === 'light' ? 'grey' : 'darkgrey' },
             },
           },
           transform: [{ type: 'geoshape', projection: 'projection' }],
@@ -105,8 +92,8 @@ export function RiBuoyMap({ locations, lockColors = false }: RiBuoyMapProps) {
           encode: {
             enter: {
               strokeWidth: { value: 2 },
-              stroke: { value: colorMode === 'light' ? 'lightgrey' : 'darkgrey' },
-              fill: { value: colorMode === 'light' ? 'white' : 'black' },
+              stroke: { value: colorMode === 'light' ? 'grey' : 'darkgrey' },
+              //fill: { value: colorMode === 'light' ? 'white' : 'black' },
             },
           },
           transform: [{ type: 'geoshape', projection: 'projection' }],
@@ -131,5 +118,11 @@ export function RiBuoyMap({ locations, lockColors = false }: RiBuoyMapProps) {
     }),
     [locations, colorMode]
   );
+  if (colorMode === undefined)
+    return (
+      <div className="w-[300px] h-[300px] flex justify-center items-center">
+        <Loading />
+      </div>
+    );
   return <Vega actions={false} spec={buoyMapSpec} />;
 }

@@ -3,8 +3,8 @@ import React, { DetailedHTMLProps, SelectHTMLAttributes } from 'react';
 import { Label } from '@/components';
 
 const BASE_STYLES = 'p-2 rounded-md shadow-sm ';
-const LIGHT_STYLES = 'bg-slate-200';
-const DARK_STYLES = 'dark:bg-slate-800 dark:border-slate-600 dark:border-1';
+const LIGHT_STYLES = 'bg-slate-200 text-black';
+const DARK_STYLES = 'dark:bg-slate-800 dark:border-slate-600 dark:text-white';
 const COLOR_STYLES = `${LIGHT_STYLES} ${DARK_STYLES}`;
 
 type SelectProps = DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> & {

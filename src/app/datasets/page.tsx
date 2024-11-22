@@ -53,7 +53,7 @@ export default function Datasets() {
       <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4">
         {DATASETS.map(({ name, href, description }) => (
           <li key={href}>
-            <Card>
+            <Card className="bg-clear-300 hover:bg-clear-800 dark:bg-clear-100 hover:dark:bg-clear-300">
               <h3 className="text-lg font-bold font-header">
                 <Link href={href}>{name}</Link>
               </h3>

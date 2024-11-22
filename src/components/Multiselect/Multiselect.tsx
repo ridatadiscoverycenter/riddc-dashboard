@@ -2,21 +2,38 @@
 import React, { SetStateAction } from 'react';
 import { CloseIcon, Select } from '@/components';
 
+type KeyValueArray = { label: string; value: string }[];
+type StringOrKeyValueArray = string[] | KeyValueArray;
+
 type MultiselectProps = {
   label: string;
-  options: string[] | { label: string; value: string }[];
+  options: StringOrKeyValueArray;
   onChange: React.Dispatch<SetStateAction<string[]>>;
+  init?: string[];
 };
 
-export function Multiselect({ label, options, onChange }: MultiselectProps) {
-  const formatted = React.useMemo(() => {
-    if (options.length === 0) return [];
-    // Casting because typescript doesn't like type checking like this.
-    if (typeof options[0] === 'string')
-      return (options as string[]).map((opt) => ({ label: opt, value: opt }));
-    return options as Exclude<typeof options, string[]>;
-  }, [options]);
-  const [selected, setSelected] = React.useState<typeof formatted>([]);
+function formatOptionsArray(arr: StringOrKeyValueArray) {
+  if (arr.length === 0) return [];
+  // Casting because typescript doesn't like type checking like this.
+  if (typeof arr[0] === 'string')
+    return (arr as string[]).map((opt) => ({ label: opt, value: opt }));
+  return arr as KeyValueArray;
+}
+
+function formatInitialSelected(formattedOpts: KeyValueArray, init: string[]) {
+  //console.log({ init });
+  //console.log({ foundVaules });
+  //return foundVaules;
+  return init
+    .map((initialValue) => formattedOpts.find(({ value }) => value === initialValue))
+    .filter((value) => value !== undefined);
+}
+
+export function Multiselect({ label, options, onChange, init = [] }: MultiselectProps) {
+  const formatted = formatOptionsArray(options); //React.useMemo(() => formatOptionsArray(options), [options]);
+  const [selected, setSelected] = React.useState<KeyValueArray>(
+    formatInitialSelected(formatted, init)
+  );
   React.useEffect(() => {
     onChange(selected.map(({ value }) => value));
   }, [onChange, selected]);
@@ -36,20 +53,6 @@ export function Multiselect({ label, options, onChange }: MultiselectProps) {
     },
     [setSelected]
   );
-  /*<Label label={label}>
-        <select
-          onChange={addNew}
-          value={undefined}
-          className="p-2 rounded-md bg-slate-100 dark:bg-slate-800 shadow-sm dark:border-slate-600 dark:border-1"
-        >
-          <option disabled>~~Select One~~</option>
-          {formatted.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      </Label>*/
   return (
     <>
       <Select options={options} label={label} value={undefined} onChange={addNew} />

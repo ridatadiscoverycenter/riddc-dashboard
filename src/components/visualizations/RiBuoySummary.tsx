@@ -5,18 +5,17 @@ import { Vega, VisualizationSpec } from 'react-vega';
 import type { RiBuoySummaryData, RiBuoyViewerVariable } from '@/utils/erddap/api/buoy';
 import { RI_BUOY_VIEWER_VARIABLES } from '@/utils/erddap/api/buoy';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
-import { Select } from '@/components';
+import { Loading, Select } from '@/components';
 
 type RiBuoySummaryProps = {
   data: RiBuoySummaryData[];
 };
 
-function getGraphicWidth(size: Size) {
-  if (size === 'xs') return 60;
-  if (size === 'sm') return 120;
-  if (size === 'md') return 340;
-  if (size === 'lg') return 440;
-  return 700;
+function getGraphicWidth(size: Size | undefined) {
+  if (size === 'sm' || size === 'xs') return 200;
+  if (size === 'md') return 300;
+  if (size === 'lg') return 350;
+  return 400;
 }
 
 export function RiBuoySummary({ data }: RiBuoySummaryProps) {
@@ -26,6 +25,7 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       description: 'Buoy Data Summary Chart',
+      background: 'transparent',
       width: getGraphicWidth(size),
       height: 300,
       data: [
@@ -80,15 +80,26 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
           domain: false,
           title: 'Month/Year',
           labelOverlap: 'parity',
+          titleFont: 'serif',
+          labelFont: 'serif',
         },
-        { orient: 'left', scale: 'y', domain: false, title: 'Buoy' },
+        {
+          orient: 'left',
+          scale: 'y',
+          domain: false,
+          title: 'Buoy',
+          titleFont: 'serif',
+          labelFont: 'serif',
+        },
       ],
       legends: [
         {
-          title: ['Number of', 'Observations'],
+          title: 'Observations',
           fill: 'color',
           type: 'gradient',
           gradientLength: { signal: 'height' },
+          titleFont: 'serif',
+          labelFont: 'serif',
         },
       ],
       marks: [
@@ -135,12 +146,17 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
           }))}
         />
       </form>
-      <Vega
-        className="flex  flex-col items-center justify-center"
-        actions={false}
-        spec={buoySummarySpec}
-        data={{ table: data }}
-      />
+      {size === undefined ? (
+        <div className="w-[300px] h-[300px] flex justify-center items-center">
+          <Loading />
+        </div>
+      ) : (
+        <Vega
+          className="flex flex-col items-center justify-center"
+          actions={false}
+          spec={buoySummarySpec}
+        />
+      )}
     </>
   );
 }

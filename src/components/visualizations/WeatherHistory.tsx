@@ -2,22 +2,33 @@
 import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
+import { Loading } from '@/components';
+import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import type { WeatherData } from '@/utils/weather';
 
 type WeatherHistoryProps = {
   data: WeatherData[];
   height?: number;
-  width?: number;
 };
 
-export function WeatherHistory({ data, height = 150, width = 600 }: WeatherHistoryProps) {
+function getGraphicWidth(size: Size | undefined) {
+  if (size === 'xs') return 200;
+  if (size === 'sm') return 300;
+  if (size === 'md') return 500;
+  if (size === 'lg') return 400;
+  return 550;
+}
+
+export function WeatherHistory({ data, height = 150 }: WeatherHistoryProps) {
+  const size = useScreenSize();
   const weatherHistorySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       description: 'Weather History Chart',
-      width,
+      width: getGraphicWidth(size),
+      //autosize: "fit-x",
       height,
-      background: 'white',
+      background: 'transparent',
       signals: [
         {
           name: 'hover',
@@ -89,21 +100,33 @@ export function WeatherHistory({ data, height = 150, width = 600 }: WeatherHisto
           direction: 'horizontal',
           title: 'Temperature',
           symbolType: 'stroke',
+          titleFont: 'serif',
+          labelFont: 'serif',
         },
       ],
       axes: [
-        { orient: 'bottom', scale: 'xscale', title: 'Time' },
+        {
+          orient: 'bottom',
+          scale: 'xscale',
+          title: 'Time',
+          titleFont: 'serif',
+          labelFont: 'serif',
+        },
         {
           orient: 'left',
           scale: 'tempScale',
           title: 'Temperature (°C)',
           grid: false,
+          titleFont: 'serif',
+          labelFont: 'serif',
         },
         {
           orient: 'right',
           scale: 'precipitationScale',
           title: 'Precipitation (in/day)',
           grid: false,
+          titleFont: 'serif',
+          labelFont: 'serif',
         },
       ],
       marks: [
@@ -191,7 +214,14 @@ export function WeatherHistory({ data, height = 150, width = 600 }: WeatherHisto
         },
       ],
     }),
-    [data, width, height]
+    [data, size, height]
   );
-  return <Vega spec={weatherHistorySpec} />;
+  if (size === undefined) {
+    return (
+      <div className="h-[300px] flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
+  return <Vega spec={weatherHistorySpec} actions={false} />;
 }

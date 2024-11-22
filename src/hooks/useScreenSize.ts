@@ -14,7 +14,7 @@ const SIZES = {
 export type Size = keyof typeof SIZES;
 
 function getScreenSize(w: ReturnType<typeof useWindow>) {
-  if (w === undefined) return "sm";
+  if (w === undefined) return undefined;
   const { innerWidth } = w;
   if (innerWidth < SIZES.xs) return 'xs';
   if (innerWidth < SIZES.sm) return 'sm';
@@ -26,7 +26,10 @@ function getScreenSize(w: ReturnType<typeof useWindow>) {
 
 export function useScreenSize() {
   const w = useWindow();
-  const [size, setSize] = React.useState<Size>(getScreenSize(w));
+  React.useEffect(() => {
+    console.log({ w });
+  }, [w]);
+  const [size, setSize] = React.useState<Size | undefined>(getScreenSize(w));
 
   const handleResizeEvent = React.useCallback(() => {
     const newSize = getScreenSize(w);
@@ -34,8 +37,11 @@ export function useScreenSize() {
   }, [w, size, setSize]);
 
   React.useEffect(() => {
-    window.addEventListener('resize', handleResizeEvent);
-    return () => window.removeEventListener('resize', handleResizeEvent);
-  }, [handleResizeEvent]);
+    if (w !== undefined) {
+      setSize(getScreenSize(w));
+      w.addEventListener('resize', handleResizeEvent);
+      return () => window.removeEventListener('resize', handleResizeEvent);
+    }
+  }, [handleResizeEvent, w]);
   return size;
 }

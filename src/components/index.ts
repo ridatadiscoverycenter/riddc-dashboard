@@ -8,6 +8,7 @@ export * from './Image';
 export * from './Input';
 export * from './Label';
 export * from './Link';
+export * from './Loading';
 export * from './Logo';
 export * from './Multiselect';
 export * from './Nav';
