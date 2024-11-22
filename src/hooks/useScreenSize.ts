@@ -26,9 +26,6 @@ function getScreenSize(w: ReturnType<typeof useWindow>) {
 
 export function useScreenSize() {
   const w = useWindow();
-  React.useEffect(() => {
-    console.log({ w });
-  }, [w]);
   const [size, setSize] = React.useState<Size | undefined>(getScreenSize(w));
 
   const handleResizeEvent = React.useCallback(() => {
