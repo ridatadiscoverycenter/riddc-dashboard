@@ -25,7 +25,7 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
   const weatherData = await fetchWeatherData(params.start, params.end);
   return (
     <>
-      <p>
+      <p className="text-black">
         This plot compares {makeCommaSepList(params.vars)} between{' '}
         {params.start.toLocaleDateString()} and {params.end.toLocaleDateString()} at{' '}
         {makeCommaSepList(
@@ -50,7 +50,7 @@ function ErrorPanel({ err }: { err: string }) {
   return (
     <>
       {err === ERROR_CODES.NO_SEARCH_PARAMS ? (
-        <p>
+        <p className="text-black">
           Generate a line plot to compare data points from buoys in the dataset! Select some buoys,
           up to four variables, and a time range to start exploring.
         </p>

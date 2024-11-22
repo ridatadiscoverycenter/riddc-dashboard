@@ -40,7 +40,7 @@ export function ExploreForm({ buoys, init = DEFAULT_INITIAL_DATA }: ExploreFormP
       const start = `start=${startDate.toISOString().split('T')[0]}`;
       const end = `end=${endDate.toISOString().split('T')[0]}`;
       router.push(
-        `/datasets/rhode-island-buoys/test?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+        `/datasets/rhode-island-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
       );
     },
     [router, selectedBuoys, selectedVars, startDate, endDate]
