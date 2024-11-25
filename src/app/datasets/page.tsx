@@ -17,32 +17,32 @@ const DATASETS = [
   {
     name: 'Massachusetts Buoys',
     href: '/datasets/massachusetts-buoys',
-    description: () => <>???</>,
+    description: () => <>Coming Soon!</>,
   },
   {
     name: 'Real Time Data',
     href: '/datasets/real-time',
-    description: () => <>???</>,
+    description: () => <>Coming Soon!</>,
   },
   {
     name: 'Ocean State Ocean Model',
     href: '/datasets/osom',
-    description: () => <>???</>,
+    description: () => <>Coming Soon!</>,
   },
   {
     name: 'Plankton Time Series',
     href: '/datasets/plankton',
-    description: () => <>???</>,
+    description: () => <>Coming Soon!</>,
   },
   {
     name: 'Domoic Acid',
     href: '/datasets/domoic-acid',
-    description: () => <>???</>,
+    description: () => <>Coming Soon!</>,
   },
   {
     name: 'Fish Trawl Survey',
     href: '/datasets/fish-trawl',
-    description: () => <>???</>,
+    description: () => <>Coming Soon!</>,
   },
 ];
 
