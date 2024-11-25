@@ -1,7 +1,8 @@
 import { ExternalLink, Link } from '@/components';
 import { HomeLink } from './HomeLink';
 
-const LINK_COLORS = 'text-white dark:text-white hover:text-teal-400 dark:hover:text-teal-300 no-underline';
+const LINK_COLORS =
+  'text-white dark:text-white hover:text-teal-400 dark:hover:text-teal-300 no-underline';
 
 export function Nav() {
   return (

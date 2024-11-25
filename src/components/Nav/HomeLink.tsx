@@ -1,25 +1,25 @@
-"use client";
-import { usePathname } from "next/navigation";
-import { Link, RiddcLogo } from "@/components";
+'use client';
+import { usePathname } from 'next/navigation';
+import { Link, RiddcLogo } from '@/components';
 
 type HomeLinkProps = {
   className?: string;
 };
 
-export function HomeLink({ className = "" }: HomeLinkProps) {
+export function HomeLink({ className = '' }: HomeLinkProps) {
   const pathname = usePathname();
-  if (pathname !== "/") {
+  if (pathname !== '/') {
     return (
       <Link href="/" className={className}>
         <LinkContents />
       </Link>
-    )
+    );
   }
   return (
     <div className={className}>
       <LinkContents />
     </div>
-  )
+  );
 }
 
 function LinkContents() {
