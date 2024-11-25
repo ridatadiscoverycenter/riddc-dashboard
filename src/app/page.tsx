@@ -33,7 +33,6 @@ export default function Home() {
       <ul className="margin-auto max-w-[1000px] grid sm:grid-cols-1 md:grid-cols-3 gap-4 p-4">
         {DATA_BETTER.map(({ title, description, href }) => (
           <li key={title}>
-            
             <Card className="bg-clear-300 hover:bg-clear-800 dark:bg-clear-100 hover:dark:bg-clear-300">
               <h3 className="text-lg font-bold font-header">
                 <Link href={href}>{title}</Link>
