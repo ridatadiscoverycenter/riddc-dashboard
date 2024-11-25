@@ -58,7 +58,6 @@ function ErrorPanel({ err }: { err: string }) {
       {err === ERROR_CODES.NO_SEARCH_PARAMS ? (
         <p className="text-black">
           Generate a line plot using the dropdown menus to compare data points from buoys in the dataset! Select some buoys, up to four variables, and a time range to start exploring. Or, choose one of the examples below.
-          up to four variables, and a time range to start exploring.
         </p>
       ) : (
         <div className="w-full rounded-md under p-4 bg-rose-400 dark:bg-rose-600">{err}</div>
