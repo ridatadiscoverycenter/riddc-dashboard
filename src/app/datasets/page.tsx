@@ -16,32 +16,32 @@ const DATASETS = [
   },
   {
     name: 'Massachusetts Buoys',
-    href: '#',
+    href: '/datasets/massachusetts-buoys',
     description: () => <>???</>,
   },
   {
     name: 'Real Time Data',
-    href: '#',
+    href: '/datasets/real-time',
     description: () => <>???</>,
   },
   {
     name: 'Ocean State Ocean Model',
-    href: '#',
+    href: '/datasets/osom',
     description: () => <>???</>,
   },
   {
     name: 'Plankton Time Series',
-    href: '#',
+    href: '/datasets/plankton',
     description: () => <>???</>,
   },
   {
     name: 'Domoic Acid',
-    href: '#',
+    href: '/datasets/domoic-acid',
     description: () => <>???</>,
   },
   {
     name: 'Fish Trawl Survey',
-    href: '#',
+    href: '/datasets/fish-trawl',
     description: () => <>???</>,
   },
 ];
@@ -64,5 +64,4 @@ export default function Datasets() {
       </ul>
     </>
   );
-  //<Link href="/datasets/rhode-island-buoys">Rhode Island Buoy Data</Link>
 }

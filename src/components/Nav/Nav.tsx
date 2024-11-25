@@ -1,17 +1,12 @@
-import { ExternalLink, Link, RiddcLogo } from '@/components';
+import { ExternalLink, Link } from '@/components';
+import { HomeLink } from './HomeLink';
 
-const LINK_COLORS = 'text-white dark:text-white hover:text-teal-400 dark:hover:text-teal-300';
+const LINK_COLORS = 'text-white dark:text-white hover:text-teal-400 dark:hover:text-teal-300 no-underline';
 
 export function Nav() {
   return (
     <nav className="font-header sticky top-0 z-50 flex flex-row w-full p-2 gap-4 items-center text-xl bg-cyan-800 dark:bg-inherit dark:border-b-slate-400 dark:border-b">
-      <Link href="/" className={LINK_COLORS}>
-        <h1 className="flex flex-row items-center gap-4 font-bold">
-          <RiddcLogo size={3} />
-          <span className="sm:flex hidden">Rhode Island Data Discovery Center</span>
-          <span className="sm:hidden">RIDDC</span>
-        </h1>
-      </Link>
+      <HomeLink className={LINK_COLORS} />
       <div className="flex-1" aria-hidden />
       <h2 className="hidden sm:flex">
         <Link href="/about" className={LINK_COLORS}>
