@@ -37,10 +37,11 @@ const BASE_COLORS = [
 
 function getGraphicWidth(size: Size | undefined) {
   if (size === 'xs') return 200;
-  if (size === 'sm') return 300;
+  if (size === 'sm') return 275;
   if (size === 'md') return 500;
-  if (size === 'lg') return 400;
-  return 550;
+  if (size === 'lg') return 425;
+  if (size === 'xl') return 600;
+  return 750;
 }
 
 export function RiBuoyVariables({
@@ -158,12 +159,18 @@ export function RiBuoyVariables({
       ],
       axes: [
         {
+          scale: 'xscale',
           labelFont: 'serif',
+          titleFont: 'serif',
+          orient: 'bottom',
+        },
+        {
+          labelFont: 'serif',
+          titleFont: 'serif',
           orient: 'left',
           scale: 'yscale',
           title: 'Variables',
           grid: false,
-          titleFont: 'serif',
         },
       ],
       marks: [

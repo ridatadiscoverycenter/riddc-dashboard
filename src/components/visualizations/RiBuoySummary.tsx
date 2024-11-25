@@ -12,14 +12,16 @@ type RiBuoySummaryProps = {
 };
 
 function getGraphicWidth(size: Size | undefined) {
-  if (size === 'sm' || size === 'xs') return 200;
-  if (size === 'md') return 300;
-  if (size === 'lg') return 350;
-  return 400;
+  if (size === 'sm' || size === 'xs') return 175;
+  if (size === 'md') return 350;
+  if (size === 'lg') return 250;
+  if (size === 'xl') return 400;
+  return 550;
 }
 
 export function RiBuoySummary({ data }: RiBuoySummaryProps) {
   const size = useScreenSize();
+  console.log({ size });
   const [variable, setVariable] = React.useState<RiBuoyViewerVariable>('chlorophyll');
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
