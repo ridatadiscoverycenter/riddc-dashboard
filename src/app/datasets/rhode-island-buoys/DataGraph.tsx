@@ -21,30 +21,36 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
   if (typeof params === 'string') {
     return <ErrorPanel err={params} />;
   }
-  const riBuoyData = await fetchRiBuoyData(params.buoys, params.vars, params.start, params.end);
-  const weatherData = await fetchWeatherData(params.start, params.end);
-  return (
-    <>
-      <p className="text-black">
-        This plot compares {makeCommaSepList(params.vars)} between{' '}
-        {params.start.toLocaleDateString()} and {params.end.toLocaleDateString()} at{' '}
-        {makeCommaSepList(
-          params.buoys.map(
-            (bid) => buoys.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
-          )
-        )}
-        . You can hover over the lines to see more specific data. The weather data below is sourced
-        from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
-      </p>
-      <RiBuoyVariables data={riBuoyData} height={200} />
-      <WeatherHistory data={weatherData} height={100} />
-      <Button>Download Data</Button>
-    </>
-  );
+  try {
+    const riBuoyData = await fetchRiBuoyData(params.buoys, params.vars, params.start, params.end);
+    const weatherData = await fetchWeatherData(params.start, params.end);
+    if (riBuoyData.length === 0) return <ErrorPanel err="No data is available given the selected parameters." />
+    return (
+      <>
+        <p className="text-black">
+          This plot compares {makeCommaSepList(params.vars)} between{' '}
+          {params.start.toLocaleDateString()} and {params.end.toLocaleDateString()} at{' '}
+          {makeCommaSepList(
+            params.buoys.map(
+              (bid) => buoys.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
+            )
+          )}
+          . You can hover over the lines to see more specific data. The weather data below is sourced
+          from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
+        </p>
+        <RiBuoyVariables data={riBuoyData} height={200} />
+        <WeatherHistory data={weatherData} height={100} />
+        <Button>Download Data</Button>
+      </>
+    );
+  }
+  catch (ex) {
+    return <ErrorPanel err={(ex as {message: string}).message} />;
+  }
 }
 
 const EXPLORE_STYLES =
-  'bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 p-2 rounded-md drop-shadow-md hover:drop-shadow-lg focus:drop-shadow-lg';
+  'no-underline w-full bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 p-2 rounded-md drop-shadow-md hover:drop-shadow-lg focus:drop-shadow-lg';
 
 function ErrorPanel({ err }: { err: string }) {
   return (
@@ -55,8 +61,9 @@ function ErrorPanel({ err }: { err: string }) {
           up to four variables, and a time range to start exploring.
         </p>
       ) : (
-        <div className="rounded-md p-4 bg-rose-400 dark:bg-rose-600">{err}</div>
+        <div className="w-full rounded-md under p-4 bg-rose-400 dark:bg-rose-600">{err}</div>
       )}
+      <p className='text-black'>Want some examples?</p>
       <Link
         href="/datasets/rhode-island-buoys?buoys=bid2,bid3&vars=temperatureBottom,temperatureSurface&start=2010-01-22&end=2011-01-22"
         className={EXPLORE_STYLES}
