@@ -21,12 +21,11 @@ const DATA_BETTER = [
 ];
 
 export default function Home() {
-  //<div className="flex flex-col items-center content-center gap-4 mx-2">
   return (
     <>
       <Link
         href="/datasets"
-        className="font-header my-12 border-4 rounded-lg border-clear-300 dark:border-clear-600 bg-clear-800 dark:bg-clear-300 shadow-sm hodver:shadow-zinc-200 hover:shadow-lg hover:dark:shadow-slate-500 dark:shadow-white text-2xl py-12 px-6 max-w-[34rem] transition-all duration-500"
+        className="text-2xl py-12 px-6 max-w-[34rem] no-underline font-header my-12 rounded-lg transition-all duration-500 bg-clear-700 hover:bg-clear-900 dark:bg-clear-300 hover:dark:bg-clear-400 shadow-none hover:shadow-lg hover:dark:shadow-slate-500 dark:shadow-white"
       >
         Explore our collection of present and historical data from the Narragansett Bay
       </Link>
@@ -34,7 +33,8 @@ export default function Home() {
       <ul className="margin-auto max-w-[1000px] grid sm:grid-cols-1 md:grid-cols-3 gap-4 p-4">
         {DATA_BETTER.map(({ title, description, href }) => (
           <li key={title}>
-            <Card className="bg-clear-500 border-none dark:bg-clear-200">
+            
+            <Card className="bg-clear-300 hover:bg-clear-800 dark:bg-clear-100 hover:dark:bg-clear-300">
               <h3 className="text-lg font-bold font-header">
                 <Link href={href}>{title}</Link>
               </h3>
