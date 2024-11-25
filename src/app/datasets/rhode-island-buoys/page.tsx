@@ -27,31 +27,43 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
       <Card className="col-span-3 flex items-center justify-center">
         <h2 className="font-header font-bold text-lg">About this dataset</h2>
         <p>
-          This dataset spans from 2003 to 2019 and was collected by the{' '}
-          <ExternalLink href="https://dem.ri.gov/environmental-protection-bureau/water-resources/research-monitoring/narraganset-bay-assessment-fixed-site-monitoring">
-            Narragansett Bay Fixed Station Monitoring Network (NBFSMN)
-          </ExternalLink>{' '}
-          with{' '}
-          <ExternalLink href="https://dem.ri.gov/environmental-protection-bureau/water-resources">
-            RIDEM-OWR
-          </ExternalLink>{' '}
-          as the lead agency. Agencies involved in collection and maintenance of the data are:
-          RIDEM-OWR,{' '}
-          <ExternalLink href="https://web.uri.edu/gso/research/marine-ecosystems-research-laboratory/">
-            URI/GSO MERL
-          </ExternalLink>
-          , <ExternalLink href="https://www.narrabay.com/">NBC</ExternalLink>,{' '}
-          <ExternalLink href="http://nbnerr.org/">NBNERR</ExternalLink>, and{' '}
-          <ExternalLink href="https://www.mass.gov/orgs/massachusetts-department-of-environmental-protection">
-            MassDEP
-          </ExternalLink>
-          . The heatmap below summarizes the number of observations collected for each month for
-          different variables. Use this heatmap to help you decide what data you want to visualize
-          or download. When you have an idea, go ahead and select the buoys, variables and dates to
-          explore. Or download the data in the most appropriate format for your analyses! To begin,
-          select a variable to see what data is available.
+          This dataset spans from 2003 to 2019 and was collected by the <LINKS.NBFSMN /> with{' '}
+          <LINKS.RIDEM_OWR /> as the lead agency. Agencies involved in collection and maintenance of
+          the data are:
+          <LINKS.RIDEM_OWR />, <LINKS.URI_GSO_MERL />
+          , <LINKS.NBC />, <LINKS.NBNERR />, and <LINKS.MASS_DEP />. The heatmap below summarizes
+          the number of observations collected for each month for different variables. Use this
+          heatmap to help you decide what data you want to visualize or download. When you have an
+          idea, go ahead and select the buoys, variables and dates to explore. Or download the data
+          in the most appropriate format for your analyses! To begin, select a variable to see what
+          data is available.
         </p>
       </Card>
     </div>
   );
 }
+
+const LINKS = {
+  NBFSMN: () => (
+    <ExternalLink href="https://dem.ri.gov/environmental-protection-bureau/water-resources/research-monitoring/narraganset-bay-assessment-fixed-site-monitoring">
+      Narragansett Bay Fixed Station Monitoring Network (NBFSMN)
+    </ExternalLink>
+  ),
+  RIDEM_OWR: () => (
+    <ExternalLink href="https://dem.ri.gov/environmental-protection-bureau/water-resources">
+      RIDEM-OWR
+    </ExternalLink>
+  ),
+  URI_GSO_MERL: () => (
+    <ExternalLink href="https://web.uri.edu/gso/research/marine-ecosystems-research-laboratory">
+      URI/GSO MERL
+    </ExternalLink>
+  ),
+  NBC: () => <ExternalLink href="https://www.narrabay.com/">NBC</ExternalLink>,
+  NBNERR: () => <ExternalLink href="http://nbnerr.org/">NBNERR</ExternalLink>,
+  MASS_DEP: () => (
+    <ExternalLink href="https://www.mass.gov/orgs/massachusetts-department-of-environmental-protection">
+      MassDEP
+    </ExternalLink>
+  ),
+};
