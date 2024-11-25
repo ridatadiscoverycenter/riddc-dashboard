@@ -1,8 +1,7 @@
-import { Waves, Link } from '@/components';
+import { Waves, Link, ExternalLink } from '@/components';
 import { BrownLogo, GithubLogo, NsfLogo, RicaimLogo, ThreeCrsLogo, UriLogo } from '../Logo';
 
 const LOGO_SIZE = 5;
-const QUICK_LINKS_COLOR = 'hover:text-cyan-200 transition-all duration-300 ease-in';
 
 export function Footer() {
   return (
@@ -26,40 +25,27 @@ export function Footer() {
         <h2 className="font-bold font-header">Quick Links:</h2>
         <ul className="flex flex-row flex-wrap items-baseline gap-4 underline">
           <li>
-            <Link className={QUICK_LINKS_COLOR} href="/">
-              Home
-            </Link>
+            <Link href="/">Home</Link>
           </li>
           <li>
-            <Link className={QUICK_LINKS_COLOR} href="/about">
-              About
-            </Link>
+            <Link href="/about">About</Link>
           </li>
           <li>
-            <Link className={QUICK_LINKS_COLOR} href="/glossary">
-              Glossary
-            </Link>
+            <Link href="/glossary">Glossary</Link>
           </li>
           <li>
-            <a
-              className={QUICK_LINKS_COLOR}
-              href="https://pricaimcit.services.brown.edu/erddap/index.html"
-            >
+            <ExternalLink href="https://pricaimcit.services.brown.edu/erddap/index.html">
               ERDDAP
-            </a>
+            </ExternalLink>
           </li>
           <li>
-            <Link className={QUICK_LINKS_COLOR} href="/datasets">
-              Datasets
-            </Link>
+            <Link href="/datasets">Datasets</Link>
           </li>
-          <li>
-            <a
-              className={`${QUICK_LINKS_COLOR} flex flex-row items-center gap-1`}
-              href="https://github.com/brown-ccv/buoy-dashboard"
-            >
-              Code on GitHub <GithubLogo size={1} />
-            </a>
+          <li className="flex flex-row items-center gap-1">
+            <ExternalLink href="https://github.com/brown-ccv/buoy-dashboard">
+              Code on GitHub
+            </ExternalLink>
+            <GithubLogo size={1} />
           </li>
         </ul>
       </div>
