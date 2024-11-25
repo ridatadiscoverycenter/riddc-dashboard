@@ -24,7 +24,8 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
   try {
     const riBuoyData = await fetchRiBuoyData(params.buoys, params.vars, params.start, params.end);
     const weatherData = await fetchWeatherData(params.start, params.end);
-    if (riBuoyData.length === 0) return <ErrorPanel err="No data is available given the selected parameters." />
+    if (riBuoyData.length === 0)
+      return <ErrorPanel err="No data is available given the selected parameters." />;
     return (
       <>
         <p className="text-black">
@@ -35,17 +36,16 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
               (bid) => buoys.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
             )
           )}
-          . You can hover over the lines to see more specific data. The weather data below is sourced
-          from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
+          . You can hover over the lines to see more specific data. The weather data below is
+          sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
         </p>
         <RiBuoyVariables data={riBuoyData} height={200} />
         <WeatherHistory data={weatherData} height={100} />
         <Button>Download Data</Button>
       </>
     );
-  }
-  catch (ex) {
-    return <ErrorPanel err={(ex as {message: string}).message} />;
+  } catch (ex) {
+    return <ErrorPanel err={(ex as { message: string }).message} />;
   }
 }
 
@@ -63,7 +63,7 @@ function ErrorPanel({ err }: { err: string }) {
       ) : (
         <div className="w-full rounded-md under p-4 bg-rose-400 dark:bg-rose-600">{err}</div>
       )}
-      <p className='text-black'>Want some examples?</p>
+      <p className="text-black">Want some examples?</p>
       <Link
         href="/datasets/rhode-island-buoys?buoys=bid2,bid3&vars=temperatureBottom,temperatureSurface&start=2010-01-22&end=2011-01-22"
         className={EXPLORE_STYLES}
