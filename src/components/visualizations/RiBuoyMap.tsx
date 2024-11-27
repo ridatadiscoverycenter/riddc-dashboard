@@ -14,7 +14,6 @@ type RiBuoyMapProps = {
 };
 
 function getGraphicWidth(size: Size | undefined) {
-  
   if (size === 'xs') return 120;
   if (size === 'sm') return 150;
   if (size === 'md') return 250;

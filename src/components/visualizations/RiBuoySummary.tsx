@@ -79,7 +79,7 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
           orient: 'bottom',
           scale: 'x',
           labelAngle: -45,
-          labelAlign: "right",
+          labelAlign: 'right',
           domain: false,
           title: 'Month/Year',
           labelOverlap: 'parity',

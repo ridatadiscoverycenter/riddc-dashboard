@@ -164,7 +164,7 @@ export function RiBuoyVariables({
           titleFont: 'serif',
           orient: 'top',
           labelAngle: -45,
-          labelAlign: "left",
+          labelAlign: 'left',
         },
         {
           labelFont: 'serif',

@@ -39,7 +39,7 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
           . You can hover over the lines to see more specific data. The weather data below is
           sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
         </p>
-        <div className='flex-1 flex flex-col justify-start items-start'>
+        <div className="flex-1 flex flex-col justify-start items-start">
           <RiBuoyVariables data={riBuoyData} height={200} />
           <WeatherHistory data={weatherData} height={100} />
         </div>
