@@ -17,14 +17,14 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
         <DataGraph params={parsed} buoys={buoyCoords} />
       </Card>
       <ExploreForm buoys={buoyCoords} init={typeof parsed === 'string' ? props : parsed} />
-      <div className="flex flex-col items-center justify-around col-span-1">
+      <div className="flex flex-col items-center justify-around col-span-1 bg-clear-200">
         <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
         <RiBuoyMap locations={buoyCoords} />
       </div>
       <Card className="bg-clear-900 col-span-2 items-center">
         <RiBuoySummary data={buoyData} />
       </Card>
-      <Card className="col-span-3 flex items-center justify-center">
+      <div className="col-span-3 flex flex-col items-center justify-center">
         <h2 className="font-header font-bold text-lg">About this dataset</h2>
         <p>
           This dataset spans from 2003 to 2019 and was collected by the <LINKS.NBFSMN /> with{' '}
@@ -38,7 +38,7 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
           in the most appropriate format for your analyses! To begin, select a variable to see what
           data is available.
         </p>
-      </Card>
+      </div>
     </div>
   );
 }

@@ -21,7 +21,6 @@ function getGraphicWidth(size: Size | undefined) {
 
 export function RiBuoySummary({ data }: RiBuoySummaryProps) {
   const size = useScreenSize();
-  console.log({ size });
   const [variable, setVariable] = React.useState<RiBuoyViewerVariable>('chlorophyll');
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
@@ -79,6 +78,8 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
         {
           orient: 'bottom',
           scale: 'x',
+          labelAngle: -45,
+          labelAlign: "right",
           domain: false,
           title: 'Month/Year',
           labelOverlap: 'parity',
@@ -89,8 +90,8 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
           orient: 'left',
           scale: 'y',
           domain: false,
-          title: 'Buoy',
-          titleFont: 'serif',
+          //title: 'Buoy',
+          //titleFont: 'serif',
           labelFont: 'serif',
         },
       ],

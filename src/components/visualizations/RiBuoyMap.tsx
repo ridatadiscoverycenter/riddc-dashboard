@@ -6,20 +6,32 @@ import { RiBuoyCoordinate } from '@/utils/erddap/api/buoy';
 import { RiGeoJson, RiGeoJsonOutlines } from '@/static/ri.geojson';
 import { useColorMode } from '@/hooks/useColorMode';
 import { Loading } from '@/components';
+import { Size, useScreenSize } from '@/hooks/useScreenSize';
 
 type RiBuoyMapProps = {
   locations: RiBuoyCoordinate[];
   lockColors?: boolean;
 };
 
+function getGraphicWidth(size: Size | undefined) {
+  
+  if (size === 'xs') return 120;
+  if (size === 'sm') return 150;
+  if (size === 'md') return 250;
+  if (size === 'lg') return 300;
+  if (size === 'xl') return 350;
+  return 400;
+}
+
 export function RiBuoyMap({ locations, lockColors = false }: RiBuoyMapProps) {
+  const size = useScreenSize();
   const colorMode = useColorMode();
   const buoyMapSpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       background: 'transparent',
       height: 300,
-      width: 300,
+      width: getGraphicWidth(size),
       data: [
         {
           name: 'outlines',
@@ -116,7 +128,7 @@ export function RiBuoyMap({ locations, lockColors = false }: RiBuoyMapProps) {
         },
       ],
     }),
-    [locations, colorMode]
+    [locations, size, colorMode]
   );
   if (colorMode === undefined)
     return (

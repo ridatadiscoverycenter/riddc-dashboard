@@ -110,6 +110,8 @@ export function WeatherHistory({ data, height = 150 }: WeatherHistoryProps) {
           orient: 'bottom',
           scale: 'xscale',
           title: 'Time',
+          labelAngle: -45,
+          labelAlign: "right",
           titleFont: 'serif',
           labelFont: 'serif',
         },
