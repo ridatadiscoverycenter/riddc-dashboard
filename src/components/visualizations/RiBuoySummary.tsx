@@ -4,20 +4,12 @@ import { Vega, VisualizationSpec } from 'react-vega';
 
 import type { RiBuoySummaryData, RiBuoyViewerVariable } from '@/utils/erddap/api/buoy';
 import { RI_BUOY_VIEWER_VARIABLES } from '@/utils/erddap/api/buoy';
-import { Size, useScreenSize } from '@/hooks/useScreenSize';
+import { useScreenSize } from '@/hooks/useScreenSize';
 import { Loading, Select } from '@/components';
 
 type RiBuoySummaryProps = {
   data: RiBuoySummaryData[];
 };
-
-function getGraphicWidth(size: Size | undefined) {
-  if (size === 'sm' || size === 'xs') return 175;
-  if (size === 'md') return 350;
-  if (size === 'lg') return 250;
-  if (size === 'xl') return 400;
-  return 550;
-}
 
 export function RiBuoySummary({ data }: RiBuoySummaryProps) {
   const size = useScreenSize();
@@ -27,8 +19,19 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       description: 'Buoy Data Summary Chart',
       background: 'transparent',
-      width: getGraphicWidth(size),
+      width: { signal: 'containerWidth' },
       height: 300,
+      autosize: {
+        type: 'fit-x',
+        resize: true,
+        contains: 'padding',
+      },
+      signals: [
+        {
+          name: 'containerWidth',
+          update: 'containerSize()[0]',
+        },
+      ],
       data: [
         {
           name: 'rawData',
@@ -126,6 +129,7 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
         },
       ],
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [data, variable, size]
   );
   return (
@@ -155,7 +159,7 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
         </div>
       ) : (
         <Vega
-          className="flex flex-col items-center justify-center"
+          className="flex flex-col items-center justify-center w-full"
           actions={false}
           spec={buoySummarySpec}
         />

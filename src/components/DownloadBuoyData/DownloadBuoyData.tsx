@@ -22,7 +22,9 @@ const DATA_FORMATS = [
 ];
 
 export function DownloadBuoyData({ buoys, variables }: DownloadDataProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedVariables, setSelectedVariables] = React.useState<string[]>([]);
   return (
     <Form>

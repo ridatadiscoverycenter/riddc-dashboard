@@ -22,6 +22,7 @@ function getGraphicWidth(size: Size | undefined) {
   return 400;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function RiBuoyMap({ locations, lockColors = false }: RiBuoyMapProps) {
   const size = useScreenSize();
   const colorMode = useColorMode();

@@ -59,6 +59,7 @@ export function RiBuoyVariables({
     [data]
   );
   const colorsUsed = React.useMemo(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     () => colors.sort((_, __) => Math.random() * 2 - 1).slice(0, stations.length),
     [colors, stations]
   );
