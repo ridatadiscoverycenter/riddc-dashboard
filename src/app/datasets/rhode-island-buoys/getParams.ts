@@ -13,7 +13,7 @@ export const ERROR_CODES = {
   INVALID_END_DATE_TYPE:
     'Received multiple end dates. Delete one from the URL to view the vizualiation.',
   BAD_END_DATE: "The given end date couldn't be parsed. Select a different end date.",
-  BAD_DATE_ORDER: "The end date needs to be after the start date. Select a valid pair of dates.",
+  BAD_DATE_ORDER: 'The end date needs to be after the start date. Select a valid pair of dates.',
   NO_BUOYS: 'No buoys selected for this visualization. Select a buoy, and click "explore"!',
   BAD_BUOYS:
     'Multiple different buoy parameters were given. Delete one from the URL to view the vizualization.',

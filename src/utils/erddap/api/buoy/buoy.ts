@@ -82,7 +82,7 @@ export async function fetchBuoyTimeRange(configName: BuoyConfigName) {
 }
 
 function formatDateForQueryParams(d: Date) {
-  return d.toISOString().split("T")[0];
+  return d.toISOString().split('T')[0];
 }
 
 export async function fetchBuoyData(
