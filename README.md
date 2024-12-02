@@ -7,7 +7,7 @@ This is the Next JS re-write of the Buoy Viewer (originally written in Vue). Sty
 Install the dependencies through `npm` and start the development server.
 
 ```bash
-npm run install
+npm install
 npm run dev
 ```
 
