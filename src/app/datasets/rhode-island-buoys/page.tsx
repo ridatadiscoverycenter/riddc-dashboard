@@ -4,10 +4,9 @@ import { fetchRiSummaryData, fetchRiBuoyCoordinates } from '@/utils/erddap/api/b
 import { getParams } from './getParams';
 import { DataGraph } from './DataGraph';
 
-const props = { vars: [], buoys: [], start: new Date(), end: new Date() };
-
 export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
   const parsed = getParams(searchParams);
+  console.log({ parsed });
   const buoyData = await fetchRiSummaryData();
   const buoyCoords = await fetchRiBuoyCoordinates();
 
@@ -16,7 +15,7 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
       <Card className="bg-clear-900 md:col-span-2 col-span-3 flex flex-col items-center justify-around gap-3">
         <DataGraph params={parsed} buoys={buoyCoords} />
       </Card>
-      <ExploreForm buoys={buoyCoords} init={typeof parsed === 'string' ? props : parsed} />
+      <ExploreForm buoys={buoyCoords} init={typeof parsed === 'string' ? undefined : parsed} />
       <div className="flex flex-col items-center justify-around col-span-1">
         <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
         <RiBuoyMap locations={buoyCoords} />

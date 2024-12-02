@@ -1,14 +1,13 @@
 import * as Headless from '@headlessui/react';
 import React from 'react';
-import NextLink, { type LinkProps } from 'next/link';
+import NextLink, { type LinkProps as NextLinkProps } from 'next/link';
 
 const BASE_STYTLES = 'underline transition duration-500';
 const LINK_STYLES = `${BASE_STYTLES} hover:text-teal-500 dark:hover:text-teal-300`;
 
-function LinkComponent(
-  props: LinkProps & React.ComponentPropsWithoutRef<'a'>,
-  ref: React.ForwardedRef<HTMLAnchorElement>
-) {
+export type LinkProps = NextLinkProps & React.ComponentPropsWithoutRef<'a'>;
+
+function LinkComponent(props: LinkProps, ref: React.ForwardedRef<HTMLAnchorElement>) {
   return (
     <Headless.DataInteractive>
       <NextLink
@@ -20,10 +19,7 @@ function LinkComponent(
   );
 }
 
-function ExternalLinkComponent(
-  props: LinkProps & React.ComponentPropsWithoutRef<'a'>,
-  ref: React.ForwardedRef<HTMLAnchorElement>
-) {
+function ExternalLinkComponent(props: LinkProps, ref: React.ForwardedRef<HTMLAnchorElement>) {
   return (
     <Headless.DataInteractive>
       <a
