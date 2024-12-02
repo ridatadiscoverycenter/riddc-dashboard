@@ -2,12 +2,13 @@
 import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
+import { Loading } from '@/components';
 import type { RiBuoyData } from '@/utils/erddap/api/buoy';
+import { Size, useScreenSize } from '@/hooks/useScreenSize';
 
 type RiBuoyVariablesProps = {
   data: RiBuoyData[];
   height?: number;
-  width?: number;
   colors?: string[];
 };
 
@@ -34,13 +35,21 @@ const BASE_COLORS = [
   '#6a7d54',
 ];
 
-export default function RiBuoyVariables({
+function getGraphicWidth(size: Size | undefined) {
+  if (size === 'xs') return 200;
+  if (size === 'sm') return 275;
+  if (size === 'md') return 500;
+  if (size === 'lg') return 425;
+  if (size === 'xl') return 600;
+  return 750;
+}
+
+export function RiBuoyVariables({
   data,
   colors = BASE_COLORS,
-  height = 300,
-  width = 600,
+  height = 200,
 }: RiBuoyVariablesProps) {
-  //console.log({ RiBuoyVariables: "component", data });
+  const size = useScreenSize();
   const stations = React.useMemo(
     () => Array.from(new Set(data.map((value) => value.stationName))),
     [data]
@@ -57,9 +66,9 @@ export default function RiBuoyVariables({
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       description: 'Weather History Chart',
-      width,
+      width: getGraphicWidth(size),
       height,
-      background: 'white',
+      background: 'transparent',
       signals: [
         {
           name: 'hover',
@@ -136,17 +145,30 @@ export default function RiBuoyVariables({
           direction: 'horizontal',
           title: 'Buoys',
           symbolType: 'stroke',
+          titleFont: 'serif',
+          labelFont: 'serif',
         },
         {
           title: 'Variables',
           strokeDash: 'variableScale',
           orient: 'top',
           symbolType: 'stroke',
+          titleFont: 'serif',
+          labelFont: 'serif',
         },
       ],
       axes: [
-        { orient: 'bottom', scale: 'xscale', title: 'Time' },
         {
+          scale: 'xscale',
+          labelFont: 'serif',
+          titleFont: 'serif',
+          orient: 'top',
+          labelAngle: -45,
+          labelAlign: 'left',
+        },
+        {
+          labelFont: 'serif',
+          titleFont: 'serif',
           orient: 'left',
           scale: 'yscale',
           title: 'Variables',
@@ -185,106 +207,16 @@ export default function RiBuoyVariables({
             },
           ],
         },
-        /*,
-        {
-            type: "line",
-            name: "dataLine",
-            from: { data: "data" },
-            encode: {
-              enter: {
-                x: { scale: "xscale", field: "time" },
-                y: { scale: "yscale", field: "value" },
-                stroke: { scale: "colorScale", field: "stationName" },
-                strokeWidth: { value: 1 },
-                
-              }
-            }
-        },*/
       ],
-      //config: {
-      //    mark: { invalid: "break-paths-filter-domains", },
-      //}
     }),
-    [data, stations, colorsUsed, variables, width, height]
+    [data, stations, colorsUsed, variables, size, height]
   );
-  return <Vega spec={buoyVariablesSpec} />;
+  if (size === undefined) {
+    return (
+      <div className="h-[300px] flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
+  return <Vega spec={buoyVariablesSpec} actions={false} />;
 }
-
-/*const buoyVariablesSpec = React.useMemo<VisualizationSpec>(
-    () => ({
-    $schema: 'https://vega.github.io/schema/vega/v5.json',
-    description: 'Weather History Chart',
-    width,
-    height,
-    background: 'white',
-    signals: [],
-    data: [{
-      name: "data",
-      data,
-    }],
-    scales: [
-      {
-          "name": "timeScale",
-          "type": "time",
-          "domain": {
-            "fields": [
-              { "data": "data", "field": "time" }
-            ]
-          },
-          "range": "width",
-          "padding": 0.05,
-          "round": true
-      },
-      {
-          "name": "valueScale",
-          "type": "linear",
-          "domain": {"fields": [{"data": "data", "field": "value"}]},
-          "nice": true,
-          "zero": false,
-          "range": [500, 0]
-      },
-      {
-          "name": "colorScale",
-          "type": "ordinal",
-          "range": colorsUsed,
-          "domain": stations,
-      },
-    ],
-    legends: [
-      {
-        "stroke": "colorScale",
-        "orient": "bottom",
-        "direction": "horizontal",
-        "title": "Buoys",
-        "symbolType": "stroke"
-      },
-    ],
-    axes: [
-      {"orient": "bottom", "scale": "timeScale"},
-      {"orient": "left", "scale": "valueScale", "title": "Variables"}
-    ],
-    marks: [
-      {
-          "type": "line",
-          "name": "lines",
-          "from": {"data": "data"},
-          "encode": {
-            "enter": {
-              "x": {"scale": "timeScale", "field": "time"},
-              "y": {"scale": "valueScale", "field": "value"},
-              "stroke": {"scale": "color", "field": "stationName"},
-              "strokeWidth": {"scale": "lineWidth", "field": "dataset"},
-              "strokeDash": {
-                "scale": "lineDash",
-                "field": "unittedVariable"
-              },
-              //"interactive": false,
-              "strokeOpacity": {"value": 0.9},
-              "defined": {"signal": "datum.value !== null"}
-            }
-          }
-        }
-    ],
-  }),
-  [data, stations, width, height]
-);*/

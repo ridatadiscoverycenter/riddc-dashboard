@@ -4,22 +4,31 @@ import { Vega, VisualizationSpec } from 'react-vega';
 
 import type { RiBuoySummaryData, RiBuoyViewerVariable } from '@/utils/erddap/api/buoy';
 import { RI_BUOY_VIEWER_VARIABLES } from '@/utils/erddap/api/buoy';
+import { Size, useScreenSize } from '@/hooks/useScreenSize';
+import { Loading, Select } from '@/components';
 
 type RiBuoySummaryProps = {
   data: RiBuoySummaryData[];
-  height?: number;
-  width?: number;
 };
 
-export default function RiBuoySummary({ data, height = 300, width = 400 }: RiBuoySummaryProps) {
+function getGraphicWidth(size: Size | undefined) {
+  if (size === 'sm' || size === 'xs') return 175;
+  if (size === 'md') return 350;
+  if (size === 'lg') return 250;
+  if (size === 'xl') return 400;
+  return 550;
+}
+
+export function RiBuoySummary({ data }: RiBuoySummaryProps) {
+  const size = useScreenSize();
   const [variable, setVariable] = React.useState<RiBuoyViewerVariable>('chlorophyll');
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       description: 'Buoy Data Summary Chart',
-      width,
-      height,
-      background: 'white',
+      background: 'transparent',
+      width: getGraphicWidth(size),
+      height: 300,
       data: [
         {
           name: 'rawData',
@@ -69,18 +78,31 @@ export default function RiBuoySummary({ data, height = 300, width = 400 }: RiBuo
         {
           orient: 'bottom',
           scale: 'x',
+          labelAngle: -45,
+          labelAlign: 'right',
           domain: false,
           title: 'Month/Year',
           labelOverlap: 'parity',
+          titleFont: 'serif',
+          labelFont: 'serif',
         },
-        { orient: 'left', scale: 'y', domain: false, title: 'Buoy' },
+        {
+          orient: 'left',
+          scale: 'y',
+          domain: false,
+          //title: 'Buoy',
+          //titleFont: 'serif',
+          labelFont: 'serif',
+        },
       ],
       legends: [
         {
-          title: ['Number of', 'Observations'],
+          title: 'Observations',
           fill: 'color',
           type: 'gradient',
           gradientLength: { signal: 'height' },
+          titleFont: 'serif',
+          labelFont: 'serif',
         },
       ],
       marks: [
@@ -104,29 +126,40 @@ export default function RiBuoySummary({ data, height = 300, width = 400 }: RiBuo
         },
       ],
     }),
-    [data, variable, width, height]
+    [data, variable, size]
   );
   return (
-    <div>
-      <select
-        value={variable}
-        onChange={(e) => setVariable(e.target.value as RiBuoyViewerVariable)}
-      >
-        <option disabled>~~Select a variable~~</option>
-        {RI_BUOY_VIEWER_VARIABLES.map((key) => (
-          <option key={key} value={key}>
-            {key
+    <>
+      <form className="self-stretch">
+        <Select
+          forceLight
+          label="Data:"
+          value={variable}
+          onChange={(e) => setVariable(e.target.value as RiBuoyViewerVariable)}
+          options={RI_BUOY_VIEWER_VARIABLES.map((key) => ({
+            label: key
               .replace(/([a-z])([A-Z])/g, '$1 $2')
               .split(' ')
               .map(
                 (word, index, total) =>
                   `${index === total.length - 1 && total.length > 1 ? '(' : ''}${word[0].toLocaleUpperCase()}${word.slice(1)}${index === total.length - 1 && total.length > 1 ? ')' : ''}`
               )
-              .join(' ')}
-          </option>
-        ))}
-      </select>
-      <Vega spec={buoySummarySpec} data={{ table: data }} />
-    </div>
+              .join(' '),
+            value: key,
+          }))}
+        />
+      </form>
+      {size === undefined ? (
+        <div className="w-[300px] h-[300px] flex justify-center items-center">
+          <Loading />
+        </div>
+      ) : (
+        <Vega
+          className="flex flex-col items-center justify-center"
+          actions={false}
+          spec={buoySummarySpec}
+        />
+      )}
+    </>
   );
 }
