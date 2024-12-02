@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# RIDDC Buoy Dashboard
 
-## Getting Started
+This is the Next JS re-write of the Buoy Viewer (originally written in Vue). Styling is provided through Tailwind CSS.
 
-First, run the development server:
+## Development
+
+Install the dependencies through `npm` and start the development server.
 
 ```bash
+npm run install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+After making changes to the code, format your code with Prettier using the following script.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+npm run format
+```
 
-## Learn More
+When you commit changes, `husky` will automatically format your code as well.
 
-To learn more about Next.js, take a look at the following resources:
+## Deployments
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This application is deployed through Firebase App Hosting, and a new version is rolled out whenever a new commit is pushed to `main`. After a Pull Request is merged, a new deployment should be visibile after Firebase finished the build process.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Tests
 
-## Deploy on Vercel
+This application includes some tests written with [Playwright](link) to validate the fetching of data from the `buoy-api` and ERDDAP Database. To run these tests, run the following script:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run test
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Visualization
+
+Visualizations in this application are created with [Vega](https://vega.github.io/) and displayed using the [React Vega](https://www.npmjs.com/package/react-vega) library. All the visualizations are located in `src/components/visualizations`.
