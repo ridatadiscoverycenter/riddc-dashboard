@@ -17,7 +17,7 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
         <DataGraph params={parsed} buoys={buoyCoords} />
       </Card>
       <ExploreForm buoys={buoyCoords} init={typeof parsed === 'string' ? props : parsed} />
-      <div className="flex flex-col items-center justify-around col-span-1 bg-clear-200">
+      <div className="flex flex-col items-center justify-around col-span-1">
         <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
         <RiBuoyMap locations={buoyCoords} />
       </div>

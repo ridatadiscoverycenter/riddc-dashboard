@@ -42,6 +42,7 @@ export function ExploreForm({ buoys, init = DEFAULT_INITIAL_DATA }: ExploreFormP
       router.push(
         `/datasets/rhode-island-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
       );
+      router.refresh();
     },
     [router, selectedBuoys, selectedVars, startDate, endDate]
   );

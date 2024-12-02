@@ -13,6 +13,7 @@ export const ERROR_CODES = {
   INVALID_END_DATE_TYPE:
     'Received multiple end dates. Delete one from the URL to view the vizualiation.',
   BAD_END_DATE: "The given end date couldn't be parsed. Select a different end date.",
+  BAD_DATE_ORDER: "The end date needs to be after the start date. Select a valid pair of dates.",
   NO_BUOYS: 'No buoys selected for this visualization. Select a buoy, and click "explore"!',
   BAD_BUOYS:
     'Multiple different buoy parameters were given. Delete one from the URL to view the vizualization.',
@@ -42,6 +43,9 @@ export function getParams(searchParams: PageProps['searchParams']) {
       endDate === undefined
     )
       throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
+    const start = parseDate(startDate, 'start');
+    const end = parseDate(endDate, 'end');
+    if (start.valueOf() >= end.valueOf()) throw new Error(ERROR_CODES.BAD_DATE_ORDER);
     return {
       buoys: parseBuoyIds(buoys),
       vars: parseVariables(variables),
