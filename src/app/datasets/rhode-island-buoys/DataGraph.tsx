@@ -9,6 +9,7 @@ import { fetchRiBuoyData, RiBuoyCoordinate } from '@/utils/erddap/api/buoy';
 import { fetchWeatherData } from '@/utils/weather';
 
 import { getParams, ERROR_CODES } from './getParams';
+import { ButtonModal } from '@/components/Modal';
 
 type DataGraphProps = {
   params: ReturnType<typeof getParams>;
@@ -49,7 +50,9 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
           <RiBuoyVariables data={riBuoyData} height={200} />
           <WeatherHistory data={weatherData} height={100} />
         </div>
-        <Button>Download Data</Button>
+        <ButtonModal label="Download Data" title="Select a Download Format:">
+          <p>Example modal</p>
+        </ButtonModal>
       </>
     );
   } catch (ex) {
