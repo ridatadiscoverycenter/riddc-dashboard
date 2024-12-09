@@ -6,8 +6,27 @@ If, while you're creating visualizations, you notice that something here is miss
 
 **Table of Contents**
 
-- [The Base Componet](#the-base-component)
+- [Fetching Data](#fetching-data)
+- [The Base Component](#the-base-component)
 - [Copying a Vega Spec](#copying-a-vega-spec)
+
+## Fetching Data
+
+Before you can start on your visualization, you're going to need the data to make the visualization, All of this interface work is hanlded in `@/utils/erddap`. 
+
+- If you're fetching data from the `buoy-api`, handle your fetches in `@/utils/erddap/api`.
+- If you're fetching data from ERDDAP directly, hanlde your fethces in `@/utils/erddap/db`.
+
+When fetching data, you're probably going to have to shape the data into something a little more ergonomic. Follow these rules of thumb:
+
+1. In most circumstances, the data should be a flat array of JS objects.
+1. The keys of these JS objects should all follow a standard JS style camel-case.
+1. Validate data coming from either ERDDAP or the `buoy-api` with `zod`, and gracefully handle any errors that come up in this process.
+1. Define the types of these objects on a Typescript level, and export these for use throughout the application. You should be able to use `zod` to define these TS types. 
+
+Examples for how to approach all of this can be found in `@/utils/erddap`.
+
+When fetching data, keep all fetching functions in `@/app` when possible. This keeps the `@/components` folder focused on specific reusable UI components (both server and client).
 
 ## The Base Component
 
