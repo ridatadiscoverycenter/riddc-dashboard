@@ -73,7 +73,7 @@ But there's a lot going on here.
 
 ## Copying a Vega Spec
 
-If you're copying a spec from the [Buoy Viewer](https://github.com/ridatadiscoverycenter/buoy-viewer), you'll have better luck copying the spec from the [Vega Explorer](https://vega.github.io/editor/) than from the codebase itself. The Vega Explorer is a playground that lets you alter a spec for a Vega visualization outside the context of a website. This can be really helpful in isolating a bug, or figuring out how Vega wants you to handle a specific kind of visualization. For our purposes here, it's also easier / more consistent to copy-paste from the Vega explorer than it is from the Vue component in the Buou Viewer.
+If you're copying a spec from the [Buoy Viewer](https://github.com/ridatadiscoverycenter/buoy-viewer), you'll have better luck copying the spec from the [Vega Explorer](https://vega.github.io/editor/) than from the codebase itself. The Vega Explorer is a playground that lets you alter a spec for a Vega visualization outside the context of a website. This can be really helpful in isolating a bug, or figuring out how Vega wants you to handle a specific kind of visualization. For our purposes here, it's also easier / more consistent to copy-paste from the Vega explorer than it is from the Vue component in the Buoy Viewer.
 
 To open an existing visualization in the Vega Explorer, start up a local instance of the Buoy Viewer on your machine. Find the visualization you're trying to copy in the codebase, and find the call to the `useVega` composable (you might have to sort through a few parent / child components to so), and change the `includeActions` field to `true`.
 
