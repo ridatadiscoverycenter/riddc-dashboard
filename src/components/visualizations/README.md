@@ -63,7 +63,7 @@ export function Visualization({ data }: VisualizationProps) {
 }
 ```
 
-But there's a log going on here. 
+But there's a lot going on here. 
 
 1. `"use client";`: This directive is added to the top of visualizations because the React Vega library is dynamically inserting an element in a beyond React layer, and as such cannot be rendered on the server side. If you omit this, you'll probably get a complilation error.
 1. Prop Types: You're going to be passing data of some sort to this compoent. Type the `data` prop as whatever data type this is. This should probably be imported from `@/types` or `@/utils` depending on the kind of data this is. Reffer to the existing visualizations for reference. 
