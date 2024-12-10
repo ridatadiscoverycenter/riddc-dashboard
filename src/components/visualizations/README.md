@@ -12,7 +12,7 @@ If, while you're creating visualizations, you notice that something here is miss
 
 ## Fetching Data
 
-Before you can start on your visualization, you're going to need the data to make the visualization, All of this interface work is hanlded in `@/utils/erddap`. 
+Before you can start on your visualization, you're going to need the data to make the visualization, All of this interface work is handled in `@/utils/erddap`. 
 
 - If you're fetching data from the `buoy-api`, handle your fetches in `@/utils/erddap/api`.
 - If you're fetching data from ERDDAP directly, hanlde your fethces in `@/utils/erddap/db`.
