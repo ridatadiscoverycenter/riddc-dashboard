@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import React from 'react'
-import { Dialog, DialogBackdrop, DialogPanel /*DialogTitle*/ } from '@headlessui/react'
+import React from 'react';
+import { Dialog, DialogBackdrop, DialogPanel /*DialogTitle*/ } from '@headlessui/react';
 //import { CheckIcon } from '@heroicons/react/24/outline'
 
 type ModalProps = {
@@ -28,5 +28,5 @@ export function Modal({ open, setOpen, children }: React.PropsWithChildren<Modal
         </div>
       </div>
     </Dialog>
-  )
+  );
 }
