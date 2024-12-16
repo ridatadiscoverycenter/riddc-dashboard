@@ -2,8 +2,8 @@
 import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
-import type { RiBuoySummaryData, RiBuoyViewerVariable } from '@/utils/erddap/api/buoy';
-import { RI_BUOY_VIEWER_VARIABLES } from '@/utils/erddap/api/buoy';
+import type { RiBuoySummaryData, RiBuoyViewerVariable } from '@/utils/data/api/buoy';
+import { RI_BUOY_VIEWER_VARIABLES } from '@/utils/data/api/buoy';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading, Select } from '@/components';
 

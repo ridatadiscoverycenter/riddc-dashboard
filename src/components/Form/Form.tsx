@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BASE_STYLES = 'flex flex-col gap-2';
+const BASE_STYLES = 'flex flex-col gap-3';
 
 export function Form({
   className,

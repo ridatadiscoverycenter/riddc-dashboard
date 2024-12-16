@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { RI_BUOY_VIEWER_VARIABLES, RiBuoyCoordinate } from '@/utils/erddap/api/buoy';
+import { RI_BUOY_VIEWER_VARIABLES, RiBuoyCoordinate } from '@/utils/data/api/buoy';
 import { Multiselect, Label, Input, Form } from '@/components';
 
 type InitialFormData = {
@@ -80,7 +80,7 @@ export function ExploreForm({ buoys, init = DEFAULT_INITIAL_DATA }: ExploreFormP
       <Input
         type="submit"
         value="Explore!"
-        className=" bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 drop-shadow-md hover:drop-shadow-lg focus:drop-shadow-lg transition duration-500"
+        className="bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 drop-shadow-md hover:drop-shadow-lg focus:drop-shadow-lg transition duration-500"
       />
     </Form>
   );
