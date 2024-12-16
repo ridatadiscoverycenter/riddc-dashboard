@@ -1,4 +1,4 @@
-import { fetchWeatherData } from '@/utils/weather';
+import { fetchWeatherData } from '@/utils/data/weather';
 
 fetchWeatherData(new Date('09/01/2019'), new Date('09/06/2019'))
   .then(console.log)
