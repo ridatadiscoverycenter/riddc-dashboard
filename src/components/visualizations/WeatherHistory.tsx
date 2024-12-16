@@ -4,7 +4,7 @@ import { Vega, VisualizationSpec } from 'react-vega';
 
 import { Loading } from '@/components';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
-import type { WeatherData } from '@/utils/weather';
+import type { WeatherData } from '@/utils/data/weather';
 
 type WeatherHistoryProps = {
   data: WeatherData[];

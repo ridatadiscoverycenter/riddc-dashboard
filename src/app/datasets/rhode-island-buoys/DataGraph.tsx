@@ -5,8 +5,8 @@ import {
   RiBuoyVariables,
   WeatherHistory,
 } from '@/components';
-import { fetchRiBuoyData, RiBuoyCoordinate } from '@/utils/erddap/api/buoy';
-import { fetchWeatherData } from '@/utils/weather';
+import { fetchRiBuoyData, RiBuoyCoordinate } from '@/utils/data/api/buoy';
+import { fetchWeatherData } from '@/utils/data';
 
 import { getParams, ERROR_CODES } from './getParams';
 

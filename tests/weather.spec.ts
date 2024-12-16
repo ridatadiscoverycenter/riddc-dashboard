@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-import { fetchWeatherData } from '@/utils/weather';
+import { fetchWeatherData } from '@/utils/data/weather';
 
 test('fetchWeatherData', async () => {
   // Valid under normal conditions

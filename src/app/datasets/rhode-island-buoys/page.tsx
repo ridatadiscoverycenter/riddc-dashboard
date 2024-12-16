@@ -1,12 +1,12 @@
 import { Card, ExploreForm, ExternalLink, RiBuoyMap, RiBuoySummary } from '@/components';
 import { PageProps } from '@/types';
-import { fetchRiSummaryData, fetchRiBuoyCoordinates } from '@/utils/erddap/api/buoy';
+import { fetchRiSummaryData, fetchRiBuoyCoordinates } from '@/utils/data/api/buoy';
 import { getParams } from './getParams';
 import { DataGraph } from './DataGraph';
 
 export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
   const parsed = getParams(searchParams);
-  console.log({ parsed });
+  //console.log({ parsed });
   const buoyData = await fetchRiSummaryData();
   const buoyCoords = await fetchRiBuoyCoordinates();
 
