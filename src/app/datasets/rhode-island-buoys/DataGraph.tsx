@@ -1,5 +1,6 @@
 import {
   Button,
+  DownloadBuoyData,
   ExternalLink,
   HardRefreshLink,
   RiBuoyVariables,
@@ -49,7 +50,7 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
           <RiBuoyVariables data={riBuoyData} height={200} />
           <WeatherHistory data={weatherData} height={100} />
         </div>
-        <Button>Download Data</Button>
+        <DownloadBuoyData />
       </>
     );
   } catch (ex) {
