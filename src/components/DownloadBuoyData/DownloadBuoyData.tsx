@@ -1,50 +1,23 @@
 'use client';
 import React from 'react';
-import { RiBuoyCoordinate, RiBuoyVariables } from '@/utils/erddap/api/buoy';
-import { Multiselect, Input, Select, Form } from '@/components';
 
-type DownloadDataProps = {
-  buoys: RiBuoyCoordinate[];
-  variables: RiBuoyVariables[];
-};
+import { Button, DownloadBuoyDataForm, Modal } from '@/components';
 
-const DATA_FORMATS = [
-  'htmlTable',
-  'csv',
-  'nc',
-  'geoJson',
-  'mat',
-  'xhtml',
-  'graph',
-  'tsv',
-  'html',
-  'dataTable',
-];
-
-export function DownloadBuoyData({ buoys, variables }: DownloadDataProps) {
-  const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>([]);
-  const [selectedVariables, setSelectedVariables] = React.useState<string[]>([]);
+export function DownloadBuoyData() {
+  const [open, setOpen] = React.useState(false);
   return (
-    <Form>
-      <Select label="Data Format" options={DATA_FORMATS} />
-      <Multiselect
-        label="Buoys"
-        options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
-        onChange={setSelectedBuoys}
-      />
-      <Multiselect
-        label="Variables"
-        options={variables.map(({ name }) => name)}
-        onChange={setSelectedVariables}
-      />
-      <Input
-        type="submit"
-        value="Download"
-        onSubmit={(ev) => {
-          ev.preventDefault();
-          // Do things with data;
-        }}
-      />
-    </Form>
+    <>
+      <Button
+        onClick={() => setOpen(true)}
+        //color="sky"
+        //className="bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 drop-shadow-md hover:drop-shadow-lg focus:drop-shadow-lg transition duration-500"
+      >
+        Download Data
+      </Button>
+      <Modal open={open} setOpen={setOpen}>
+        <h3>How would you like to download this data?</h3>
+        <DownloadBuoyDataForm />
+      </Modal>
+    </>
   );
 }
