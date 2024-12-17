@@ -1,1 +1,1 @@
-export * from "./MapBase";
+export * from './MapBase';
