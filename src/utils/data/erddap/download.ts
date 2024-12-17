@@ -1,6 +1,11 @@
-import { CONFIG, VARIABLE_CONVERTER, type RiBuoyCoordinate, type RiBuoyViewerVariable } from "@/utils/data/api/buoy";
+import {
+  CONFIG,
+  VARIABLE_CONVERTER,
+  type RiBuoyCoordinate,
+  type RiBuoyViewerVariable,
+} from '@/utils/data/api/buoy';
 // https://pricaimcit.services.brown.edu/erddap/tabledap/combined_e784_bee5_492e.htmlTable?time%2Cstation_name%2CO2PercentSurface%2CO2PercentBottom%2Cdepth%2CSalinityBottom%2CpHBottom%2CDepthBottom%2CTurbidityBottom%2CChlorophyllSurface%2CpHSurface%2CSpCondSurface%2CSpCondBottom%2CFSpercentSurface%2CWaterTempBottom%2CO2Surface%2CO2Bottom%2CWaterTempSurface%2CSalinitySurface%2CDensitySurface%2CDensityBottom%2Clatitude%2Clongitude&time%3E=2019-11-24T00%3A00%3A00Z&time%3C=2019-12-31T23%3A45%3A52Z
-const BASE_URL = "https://pricaimcit.services.brown.edu/erddap/tabledap";
+const BASE_URL = 'https://pricaimcit.services.brown.edu/erddap/tabledap';
 
 export const DATA_FORMATS = [
   'htmlTable',
@@ -15,28 +20,37 @@ export const DATA_FORMATS = [
   'dataTable',
 ] as const;
 
-export type DF = typeof DATA_FORMATS[number];
+export type DF = (typeof DATA_FORMATS)[number];
 
 export function createDownloadUrl(datasetId: string, fileFormat: DF, params = '') {
   return `${BASE_URL}/${datasetId}.${fileFormat}${params && `?${params}`}`;
 }
 
-type StartAndOrEndDate = { start: Date; end: Date; } | { start: Date; end?: Date; } | { start?: Date; end: Date } | { start?: Date; end?: Date };
+type StartAndOrEndDate =
+  | { start: Date; end: Date }
+  | { start: Date; end?: Date }
+  | { start?: Date; end: Date }
+  | { start?: Date; end?: Date };
 
-export function createRiBuoyDownloadUrl(fileFormat: DF, variables: RiBuoyViewerVariable[], buoys: string[], time: StartAndOrEndDate | undefined = undefined) {
+export function createRiBuoyDownloadUrl(
+  fileFormat: DF,
+  variables: RiBuoyViewerVariable[],
+  buoys: string[],
+  time: StartAndOrEndDate | undefined = undefined
+) {
   const vars = [
     ...variables.map(VARIABLE_CONVERTER.viewerToErddap),
-    "time",
-    "latitude",
-    "longitude",
-    "station_name",
-  ].join(",");
-  const stations = buoys.join("|");
-  const start = time && time.start ? `&time>=${time.start.toISOString().split("T")[0]}` : "";
-  const end = time && time.end ? `&time<=${time.end.toISOString().split("T")[0]}` : "";
+    'time',
+    'latitude',
+    'longitude',
+    'station_name',
+  ].join(',');
+  const stations = buoys.join('|');
+  const start = time && time.start ? `&time>=${time.start.toISOString().split('T')[0]}` : '';
+  const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
   return createDownloadUrl(
-    CONFIG["ri-buoy"].datasetId,
+    CONFIG['ri-buoy'].datasetId,
     fileFormat,
-    `${vars}&station_name=~"(${stations})"${start}${end}`,
+    `${vars}&station_name=~"(${stations})"${start}${end}`
   );
 }

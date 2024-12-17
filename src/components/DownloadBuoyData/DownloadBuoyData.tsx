@@ -11,7 +11,12 @@ type DownloadDataProps = {
   end?: Date;
 };
 
-export function DownloadBuoyData({ variables, buoys, start = undefined, end = undefined }: DownloadDataProps) {
+export function DownloadBuoyData({
+  variables,
+  buoys,
+  start = undefined,
+  end = undefined,
+}: DownloadDataProps) {
   const [open, setOpen] = React.useState(false);
   return (
     <>

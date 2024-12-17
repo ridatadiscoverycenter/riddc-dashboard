@@ -11,14 +11,19 @@ type DownloadDataProps = {
   end?: Date;
 };
 
-
-
-export function DownloadBuoyDataForm({ variables, buoys, start = undefined, end = undefined }: DownloadDataProps) {
+export function DownloadBuoyDataForm({
+  variables,
+  buoys,
+  start = undefined,
+  end = undefined,
+}: DownloadDataProps) {
   //const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>([]);
   //const [selectedVariables, setSelectedVariables] = React.useState<string[]>([]);
   const [format, setFormat] = React.useState([...DATA_FORMATS][0]);
   const doSubmit = React.useCallback(() => {
-    window.open(createRiBuoyDownloadUrl(format, variables, buoys, { start, end }), "_blank")?.focus();
+    window
+      .open(createRiBuoyDownloadUrl(format, variables, buoys, { start, end }), '_blank')
+      ?.focus();
   }, [buoys, variables, start, end, format]);
   return (
     <Form
