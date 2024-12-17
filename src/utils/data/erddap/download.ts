@@ -1,8 +1,4 @@
-import {
-  CONFIG,
-  VARIABLE_CONVERTER,
-  type RiBuoyViewerVariable,
-} from '@/utils/data/api/buoy';
+import { CONFIG, VARIABLE_CONVERTER, type RiBuoyViewerVariable } from '@/utils/data/api/buoy';
 
 const BASE_URL = 'https://pricaimcit.services.brown.edu/erddap/tabledap';
 
