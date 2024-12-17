@@ -6,7 +6,7 @@ import { Link } from '@/components';
 import { styles, type Color } from './styles';
 import { TouchTarget } from './TouchTarget';
 
-type ButtonProps = (
+export type ButtonProps = (
   | { color?: Color; outline?: never; plain?: never }
   | { color?: never; outline: true; plain?: never }
   | { color?: never; outline?: never; plain: true }

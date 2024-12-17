@@ -1,5 +1,5 @@
 import { PageProps } from '@/types';
-import { RI_BUOY_VIEWER_VARIABLES, RiBuoyViewerVariable } from '@/utils/erddap/api/buoy';
+import { RI_BUOY_VIEWER_VARIABLES, RiBuoyViewerVariable } from '@/utils/data/api/buoy';
 
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
 

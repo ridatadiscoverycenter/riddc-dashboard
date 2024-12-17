@@ -1,50 +1,35 @@
 'use client';
 import React from 'react';
-import { RiBuoyCoordinate, RiBuoyVariables } from '@/utils/erddap/api/buoy';
-import { Multiselect, Input, Select, Form } from '@/components';
+
+import { Button, DownloadBuoyDataForm, ExternalLink, Modal } from '@/components';
+import { RiBuoyViewerVariable } from '@/utils/data/api/buoy';
+import { ERDDAP_DATASET_LINK_RI_BUOY } from '@/utils/data/erddap';
 
 type DownloadDataProps = {
-  buoys: RiBuoyCoordinate[];
-  variables: RiBuoyVariables[];
+  variables: RiBuoyViewerVariable[];
+  buoys: string[];
+  start?: Date;
+  end?: Date;
 };
 
-const DATA_FORMATS = [
-  'htmlTable',
-  'csv',
-  'nc',
-  'geoJson',
-  'mat',
-  'xhtml',
-  'graph',
-  'tsv',
-  'html',
-  'dataTable',
-];
-
-export function DownloadBuoyData({ buoys, variables }: DownloadDataProps) {
-  const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>([]);
-  const [selectedVariables, setSelectedVariables] = React.useState<string[]>([]);
+export function DownloadBuoyData({
+  variables,
+  buoys,
+  start = undefined,
+  end = undefined,
+}: DownloadDataProps) {
+  const [open, setOpen] = React.useState(false);
   return (
-    <Form>
-      <Select label="Data Format" options={DATA_FORMATS} />
-      <Multiselect
-        label="Buoys"
-        options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
-        onChange={setSelectedBuoys}
-      />
-      <Multiselect
-        label="Variables"
-        options={variables.map(({ name }) => name)}
-        onChange={setSelectedVariables}
-      />
-      <Input
-        type="submit"
-        value="Download"
-        onSubmit={(ev) => {
-          ev.preventDefault();
-          // Do things with data;
-        }}
-      />
-    </Form>
+    <>
+      <Button onClick={() => setOpen(true)}>Download Data</Button>
+      <Modal open={open} setOpen={setOpen}>
+        <h3>How would you like to download this data?</h3>
+        <DownloadBuoyDataForm variables={variables} buoys={buoys} start={start} end={end} />
+        <h4>
+          Or, download the data directly from{' '}
+          <ExternalLink href={ERDDAP_DATASET_LINK_RI_BUOY}>ERDDAP</ExternalLink>.
+        </h4>
+      </Modal>
+    </>
   );
 }
