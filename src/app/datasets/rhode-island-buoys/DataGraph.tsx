@@ -50,7 +50,7 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
           <RiBuoyVariables data={riBuoyData} height={200} />
           <WeatherHistory data={weatherData} height={100} />
         </div>
-        <DownloadBuoyData />
+        <DownloadBuoyData variables={params.vars} buoys={params.buoys} start={params.start} end={params.end} />
       </>
     );
   } catch (ex) {

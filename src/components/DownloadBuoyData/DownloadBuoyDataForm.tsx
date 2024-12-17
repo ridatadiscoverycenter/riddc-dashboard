@@ -1,42 +1,36 @@
 'use client';
 import React from 'react';
-//import { RiBuoyCoordinate, RiBuoyVariables } from '@/utils/data/api/buoy';
+import { RiBuoyCoordinate, RiBuoyViewerVariable } from '@/utils/data/api/buoy';
 import { /*Multiselect,*/ Input, Select, Form } from '@/components';
-/*
-type DownloadDataProps = {
-  buoys: RiBuoyCoordinate[];
-  variables: RiBuoyVariables[];
-};
-*/
-const DATA_FORMATS = [
-  'htmlTable',
-  'csv',
-  'nc',
-  'geoJson',
-  'mat',
-  'xhtml',
-  'graph',
-  'tsv',
-  'html',
-  'dataTable',
-];
+import { createRiBuoyDownloadUrl, DATA_FORMATS, DF } from '@/utils/data/erddap';
 
-export function DownloadBuoyDataForm() {
+type DownloadDataProps = {
+  variables: RiBuoyViewerVariable[];
+  buoys: RiBuoyCoordinate[];
+  start?: Date;
+  end?: Date;
+};
+
+
+
+export function DownloadBuoyDataForm({ variables, buoys, start = undefined, end = undefined }: DownloadDataProps) {
   //const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>([]);
   //const [selectedVariables, setSelectedVariables] = React.useState<string[]>([]);
-  const [format, setFormat] = React.useState(DATA_FORMATS[0]);
+  const [format, setFormat] = React.useState([...DATA_FORMATS][0]);
+  const doSubmit = React.useCallback(() => {
+    window.open(createRiBuoyDownloadUrl(format, variables, buoys, { start, end }), "_blank")?.focus();
+  }, [buoys, variables, start, end, format]);
   return (
     <Form
       onSubmit={(ev) => {
         ev.preventDefault();
-        // Do things with data;
-        console.log({ format });
+        doSubmit();
       }}
     >
       <Select
         label="Data Format"
-        options={DATA_FORMATS}
-        onChange={(e) => setFormat(e.target.value)}
+        options={[...DATA_FORMATS]}
+        onChange={(e) => setFormat(e.target.value as DF)}
       />
       {/* 
       <Multiselect
