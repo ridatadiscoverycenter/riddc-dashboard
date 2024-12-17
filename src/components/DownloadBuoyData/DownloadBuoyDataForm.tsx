@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
-import { RiBuoyCoordinate, RiBuoyViewerVariable } from '@/utils/data/api/buoy';
-import { /*Multiselect,*/ Input, Select, Form } from '@/components';
+import { RiBuoyViewerVariable } from '@/utils/data/api/buoy';
+import { Input, Select, Form } from '@/components';
 import { createRiBuoyDownloadUrl, DATA_FORMATS, DF } from '@/utils/data/erddap';
 
 type DownloadDataProps = {
   variables: RiBuoyViewerVariable[];
-  buoys: RiBuoyCoordinate[];
+  buoys: string[];
   start?: Date;
   end?: Date;
 };
@@ -17,8 +17,6 @@ export function DownloadBuoyDataForm({
   start = undefined,
   end = undefined,
 }: DownloadDataProps) {
-  //const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>([]);
-  //const [selectedVariables, setSelectedVariables] = React.useState<string[]>([]);
   const [format, setFormat] = React.useState([...DATA_FORMATS][0]);
   const doSubmit = React.useCallback(() => {
     window
@@ -37,18 +35,6 @@ export function DownloadBuoyDataForm({
         options={[...DATA_FORMATS]}
         onChange={(e) => setFormat(e.target.value as DF)}
       />
-      {/* 
-      <Multiselect
-        label="Buoys"
-        options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
-        onChange={setSelectedBuoys}
-      />
-      <Multiselect
-        label="Variables"
-        options={variables.map(({ name }) => name)}
-        onChange={setSelectedVariables}
-      />
-        */}
       <Input
         type="submit"
         value="Download"

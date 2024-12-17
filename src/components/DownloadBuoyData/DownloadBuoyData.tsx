@@ -22,8 +22,6 @@ export function DownloadBuoyData({
     <>
       <Button
         onClick={() => setOpen(true)}
-        //color="sky"
-        //className="bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 drop-shadow-md hover:drop-shadow-lg focus:drop-shadow-lg transition duration-500"
       >
         Download Data
       </Button>

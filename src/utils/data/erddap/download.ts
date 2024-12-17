@@ -1,10 +1,9 @@
 import {
   CONFIG,
   VARIABLE_CONVERTER,
-  type RiBuoyCoordinate,
   type RiBuoyViewerVariable,
 } from '@/utils/data/api/buoy';
-// https://pricaimcit.services.brown.edu/erddap/tabledap/combined_e784_bee5_492e.htmlTable?time%2Cstation_name%2CO2PercentSurface%2CO2PercentBottom%2Cdepth%2CSalinityBottom%2CpHBottom%2CDepthBottom%2CTurbidityBottom%2CChlorophyllSurface%2CpHSurface%2CSpCondSurface%2CSpCondBottom%2CFSpercentSurface%2CWaterTempBottom%2CO2Surface%2CO2Bottom%2CWaterTempSurface%2CSalinitySurface%2CDensitySurface%2CDensityBottom%2Clatitude%2Clongitude&time%3E=2019-11-24T00%3A00%3A00Z&time%3C=2019-12-31T23%3A45%3A52Z
+
 const BASE_URL = 'https://pricaimcit.services.brown.edu/erddap/tabledap';
 
 export const DATA_FORMATS = [
