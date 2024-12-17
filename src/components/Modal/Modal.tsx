@@ -23,9 +23,7 @@ export function Modal({ open, setOpen, children }: React.PropsWithChildren<Modal
             transition
             className="relative transform overflow-hidden rounded-lg bg-clear-700 dark:bg-clear-200 px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-sm sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
           >
-            <section className="flex flex-col gap-2">
-              {children}
-            </section>
+            <section className="flex flex-col gap-2">{children}</section>
           </DialogPanel>
         </div>
       </div>

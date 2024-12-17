@@ -25,7 +25,10 @@ export function DownloadBuoyData({
       <Modal open={open} setOpen={setOpen}>
         <h3>How would you like to download this data?</h3>
         <DownloadBuoyDataForm variables={variables} buoys={buoys} start={start} end={end} />
-        <h4>Or, explore the data directly on <ExternalLink href={ERDDAP_DATASET_LINK_RI_BUOY}>ERDDAP</ExternalLink>.</h4>
+        <h4>
+          Or, explore the data directly on{' '}
+          <ExternalLink href={ERDDAP_DATASET_LINK_RI_BUOY}>ERDDAP</ExternalLink>.
+        </h4>
       </Modal>
     </>
   );
