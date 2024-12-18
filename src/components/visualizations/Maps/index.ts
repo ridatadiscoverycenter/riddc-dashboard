@@ -1,2 +1,2 @@
 export * from './MapBase';
-export * from "./RiBuoyLocations";
+export * from './RiBuoyLocations';

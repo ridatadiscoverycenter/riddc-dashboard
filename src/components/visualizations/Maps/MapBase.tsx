@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React from 'react';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -9,5 +9,5 @@ export function MapBase() {
   React.useEffect(() => {
     // Do "on load" map actions
   }, [loaded]);
-  return <div className="h-64 w-64" ref={containerRef} />
+  return <div className="h-64 w-64" ref={containerRef} />;
 }

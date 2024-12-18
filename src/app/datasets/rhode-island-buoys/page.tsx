@@ -1,4 +1,11 @@
-import { Card, ExploreForm, ExternalLink, RiBuoyLocations, RiBuoyMap, RiBuoySummary } from '@/components';
+import {
+  Card,
+  ExploreForm,
+  ExternalLink,
+  RiBuoyLocations,
+  RiBuoyMap,
+  RiBuoySummary,
+} from '@/components';
 import { PageProps } from '@/types';
 import { fetchRiSummaryData, fetchRiBuoyCoordinates } from '@/utils/data/api/buoy';
 import { getParams } from './getParams';
