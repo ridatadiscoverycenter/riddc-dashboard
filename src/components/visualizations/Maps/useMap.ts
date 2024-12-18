@@ -1,6 +1,7 @@
 import React from 'react';
 import maplibregl from 'maplibre-gl';
 
+// Note (AM): This needs to be scoped in MapTiler or hidden with a Secret Manager.
 const API_KEY = 'VStCFFYMJAABHpPVId3w';
 
 export function useMap() {
