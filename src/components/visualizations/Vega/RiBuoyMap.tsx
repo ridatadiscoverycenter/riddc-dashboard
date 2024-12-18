@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
-import { RiBuoyCoordinate } from '@/utils/erddap/api/buoy';
+import { RiBuoyCoordinate } from '@/utils/data/api/buoy';
 
 import { RiGeoJson, RiGeoJsonOutlines } from '@/static/ri.geojson';
 import { useColorMode } from '@/hooks/useColorMode';
