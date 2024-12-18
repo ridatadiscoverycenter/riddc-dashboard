@@ -1,4 +1,4 @@
-# RIDDC Buoy Visualizations -- Vega
+# RIDDC Visualizations -- Vega
 
 When copying over a visualization from the original Buoy Viewer site, there's a whole bunch of steps you're going to need to go through to get the visualization working in this new Next JS / React context. This document should help walk you through the steps involved to make sure you haven't missed anything.
 
