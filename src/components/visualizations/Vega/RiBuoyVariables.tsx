@@ -3,7 +3,7 @@ import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
 import { Loading } from '@/components';
-import type { RiBuoyData } from '@/utils/erddap/api/buoy';
+import type { RiBuoyData } from '@/utils/data/api/buoy';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 
 type RiBuoyVariablesProps = {
