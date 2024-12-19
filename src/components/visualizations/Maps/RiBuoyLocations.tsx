@@ -15,7 +15,6 @@ export function RiBuoyLocations({ locations }: RiBuoyLocationsProps) {
   React.useEffect(() => {
     if (loaded) {
       locations.forEach(({ stationName, /*buoyId,*/ longitude, latitude }) => {
-        console.log({ longitude, latitude });
         const popup = new maplibregl.Popup().setHTML(`<p class="text-black">${stationName}</p>`);
         new maplibregl.Marker().setLngLat([longitude, latitude]).setPopup(popup).addTo(map.current);
       });
