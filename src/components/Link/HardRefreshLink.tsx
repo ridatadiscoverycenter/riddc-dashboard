@@ -19,7 +19,6 @@ export function HardRefreshLink({ href, children, ...props }: LinkProps) {
       onClick={(e) => {
         e.preventDefault();
         router.push(href);
-        location.reload();
       }}
     >
       {children}
