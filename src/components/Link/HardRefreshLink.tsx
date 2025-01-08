@@ -8,10 +8,10 @@ import { Link, LinkProps } from './Link';
  * where you're navigating from one page to that same page with different query parameters, not
  * all the required data is invalidated. In this instance, the page needs to trigger a hard refresh
  * to force Next JS to invalidate all Server Component props and re-render the page.
- * 
+ *
  * This was a bug that was found because, when navigating to an example RI Buoy Page, the data would
  * appear on the graphs, but the form elements would not auto-fill based on the query params.
-*/
+ */
 export function HardRefreshLink({ href, children, ...props }: LinkProps) {
   return (
     <Link
