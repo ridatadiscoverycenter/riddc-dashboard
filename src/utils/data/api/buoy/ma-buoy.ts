@@ -10,6 +10,7 @@ import {
 export const MA_BUOY_ERDDAP_VARIABLES = [
   'ChlorophyllBottom',
   'ChlorophyllQualifiersSurface',
+  'ChlorophyllSurface',
   'depth',
   'DepthQualifiersBottom',
   'DepthQualifiersSurface',
@@ -45,9 +46,9 @@ export const MA_BUOY_ERDDAP_VARIABLES = [
   'WaterTempSurface',
 ] as const;
 export const MA_BUOY_VIEWER_VARIABLES = [
-  'O2PercentSurface',
   'ChlorophyllBottom',
   'ChlorophyllQualifiersSurface',
+  'ChlorophyllSurface',
   'depth',
   'DepthQualifiersBottom',
   'DepthQualifiersSurface',
@@ -87,12 +88,12 @@ export type MaBuoyViewerVariable = (typeof MA_BUOY_VIEWER_VARIABLES)[number];
 export type MaBuoyErddapVariable = (typeof MA_BUOY_ERDDAP_VARIABLES)[number];
 
 const VARIABLE_PAIRS: { viewer: MaBuoyViewerVariable; erddap: MaBuoyErddapVariable }[] = [
-  { viewer: 'O2PercentSurface', erddap: 'O2PercentSurface' },
   { viewer: 'depth', erddap: 'depth' },
   { viewer: 'DepthSurface', erddap: 'DepthSurface' },
   { viewer: 'pHBottom', erddap: 'pHBottom' },
   { viewer: 'ChlorophyllBottom', erddap: 'ChlorophyllBottom' },
   { viewer: 'ChlorophyllQualifiersSurface', erddap: 'ChlorophyllQualifiersSurface' },
+  { viewer: 'ChlorophyllSurface', erddap: 'ChlorophyllSurface' },
   { viewer: 'DepthQualifiersBottom', erddap: 'DepthQualifiersBottom' },
   { viewer: 'DepthQualifiersSurface', erddap: 'DepthQualifiersSurface' },
   { viewer: 'NitrateNQualifiersSurface', erddap: 'NitrateNQualifiersSurface' },
@@ -218,6 +219,7 @@ export type FetchedMaSummaryData = {
   pHBottom: number;
   ChlorophyllBottom: number;
   ChlorophyllQualifiersSurface: number;
+  ChlorophyllSurface: number;
   DepthQualifiersBottom: number;
   DepthQualifiersSurface: number;
   NitrateNQualifiersSurface: number;
@@ -259,6 +261,7 @@ const ZodFetchedMaSummaryData = z.object({
   pHBottom: z.number(),
   ChlorophyllBottom: z.number(),
   ChlorophyllQualifiersSurface: z.number(),
+  ChlorophyllSurface: z.number(),
   DepthQualifiersBottom: z.number(),
   DepthQualifiersSurface: z.number(),
   NitrateNQualifiersSurface: z.number(),
@@ -312,6 +315,7 @@ function formatMaSummaryData(fetchedData: FetchedMaSummaryData) {
     pHBottom: fetchedData.pHBottom,
     ChlorophyllBottom: fetchedData.ChlorophyllBottom,
     ChlorophyllQualifiersSurface: fetchedData.ChlorophyllQualifiersSurface,
+    ChlorophyllSurface: fetchedData.ChlorophyllSurface,
     DepthQualifiersBottom: fetchedData.DepthQualifiersBottom,
     DepthQualifiersSurface: fetchedData.DepthQualifiersSurface,
     NitrateNQualifiersSurface: fetchedData.NitrateNQualifiersSurface,
@@ -352,7 +356,7 @@ export async function fetchMaSummaryData(bustCache = false) {
   if (validateFetchedMaBuoySummary(fetchedMaSummaryData)) {
     return fetchedMaSummaryData.map(formatMaSummaryData);
   } else {
-    throw new Error('Invalid data received when fetching MA Buoy Summary Data.');
+    throw new Error('Invalid data received when fetching MA Buoy Summary Data.(359)');
   }
 }
 
