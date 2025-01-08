@@ -1,4 +1,4 @@
-import { Card, ExploreForm, ExternalLink, RiBuoyMap, RiBuoySummary } from '@/components';
+import { Card, ExploreForm, ExternalLink, RiBuoyLocations, RiBuoySummary } from '@/components';
 import { PageProps } from '@/types';
 import { fetchRiSummaryData, fetchRiBuoyCoordinates } from '@/utils/data/api/buoy';
 import { getParams } from './getParams';
@@ -6,7 +6,6 @@ import { DataGraph } from './DataGraph';
 
 export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
   const parsed = getParams(searchParams);
-  //console.log({ parsed });
   const buoyData = await fetchRiSummaryData();
   const buoyCoords = await fetchRiBuoyCoordinates();
 
@@ -18,7 +17,7 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
       <ExploreForm buoys={buoyCoords} init={typeof parsed === 'string' ? undefined : parsed} />
       <div className="flex flex-col items-center justify-around col-span-1">
         <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
-        <RiBuoyMap locations={buoyCoords} />
+        <RiBuoyLocations locations={buoyCoords} />
       </div>
       <Card className="bg-clear-900 col-span-2 items-center">
         <RiBuoySummary data={buoyData} />

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
-import { RiBuoyCoordinate } from '@/utils/erddap/api/buoy';
+import { RiBuoyCoordinate } from '@/utils/data/api/buoy';
 
 import { RiGeoJson, RiGeoJsonOutlines } from '@/static/ri.geojson';
 import { useColorMode } from '@/hooks/useColorMode';
@@ -10,7 +10,6 @@ import { Size, useScreenSize } from '@/hooks/useScreenSize';
 
 type RiBuoyMapProps = {
   locations: RiBuoyCoordinate[];
-  lockColors?: boolean;
 };
 
 function getGraphicWidth(size: Size | undefined) {
@@ -22,7 +21,7 @@ function getGraphicWidth(size: Size | undefined) {
   return 400;
 }
 
-export function RiBuoyMap({ locations, lockColors = false }: RiBuoyMapProps) {
+export function RiBuoyMap({ locations }: RiBuoyMapProps) {
   const size = useScreenSize();
   const colorMode = useColorMode();
   const buoyMapSpec = React.useMemo<VisualizationSpec>(
