@@ -55,6 +55,7 @@ export function MaBuoySummary({ data }: MaBuoySummaryProps) {
             fields: [{ data: 'data', field: 'date' }],
           },
           range: 'width',
+          padding: 0.02,
           nice: 'month',
         },
         {
