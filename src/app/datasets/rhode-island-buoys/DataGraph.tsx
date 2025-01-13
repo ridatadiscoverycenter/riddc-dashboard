@@ -7,21 +7,14 @@ import {
 } from '@/components';
 import { fetchRiBuoyData, RiBuoyCoordinate } from '@/utils/data/api/buoy';
 import { fetchWeatherData } from '@/utils/data';
+import { makeCommaSepList } from '@/utils/fns';
 
-import { getParams, ERROR_CODES } from './getParams';
+import { getParams, ERROR_CODES } from '@/utils/fns';
 
 type DataGraphProps = {
   params: ReturnType<typeof getParams>;
   buoys: RiBuoyCoordinate[];
 };
-
-function makeCommaSepList(list: string[]) {
-  return list.reduce(
-    (prev, next, index) =>
-      `${prev}${index === 0 ? '' : `${index === list.length - 1 ? '' : ','} `}${index === list.length - 1 ? 'and ' : ''}${next}`,
-    ''
-  );
-}
 
 export async function DataGraph({ params, buoys }: DataGraphProps) {
   if (typeof params === 'string') {

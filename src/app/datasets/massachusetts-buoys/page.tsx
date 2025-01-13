@@ -1,11 +1,15 @@
 import { Card, ExploreForm, ExternalLink, RiBuoyMap, MaBuoySummary } from '@/components';
 import { PageProps } from '@/types';
-import { fetchMaSummaryData, fetchMaBuoyCoordinates } from '@/utils/data/api/buoy';
-import { getParams } from './getParams';
+import {
+  fetchMaSummaryData,
+  fetchMaBuoyCoordinates,
+  MA_BUOY_VIEWER_VARIABLES,
+} from '@/utils/data/api/buoy';
+import { getParams } from '@/utils/fns/getParams';
 import { DataGraph } from './DataGraph';
 
 export default async function MassachusettsBuoyData({ searchParams }: PageProps) {
-  const parsed = getParams(searchParams);
+  const parsed = getParams(searchParams, MA_BUOY_VIEWER_VARIABLES);
   const buoyData = await fetchMaSummaryData();
   const buoyCoords = await fetchMaBuoyCoordinates();
 

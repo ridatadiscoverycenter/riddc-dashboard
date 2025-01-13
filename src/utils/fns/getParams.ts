@@ -1,5 +1,6 @@
 import { PageProps } from '@/types';
-import { RI_BUOY_VIEWER_VARIABLES, RiBuoyViewerVariable } from '@/utils/data/api/buoy';
+// import { RI_BUOY_VIEWER_VARIABLES, RiBuoyViewerVariable, MA_BUOY_VIEWER_VARIABLES, MaBuoyViewerVariable } from '@/utils/data/api/buoy';
+import { MaBuoyViewerVariable, RiBuoyViewerVariable } from '../data/api/buoy';
 
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
 
@@ -25,7 +26,7 @@ export const ERROR_CODES = {
     'An invalid variable was selected for the visualization. Select a different variable to view the vizualization.',
 };
 
-export function getParams(searchParams: PageProps['searchParams']) {
+export function getParams(searchParams: PageProps['searchParams'], BUOY_VIEWER_VARIABLES) {
   try {
     if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
 
@@ -48,7 +49,7 @@ export function getParams(searchParams: PageProps['searchParams']) {
     if (start.valueOf() >= end.valueOf()) throw new Error(ERROR_CODES.BAD_DATE_ORDER);
     return {
       buoys: parseBuoyIds(buoys),
-      vars: parseVariables(variables),
+      vars: parseVariables(variables, BUOY_VIEWER_VARIABLES),
       start: parseDate(startDate, 'start'),
       end: parseDate(endDate, 'end'),
     };
@@ -63,12 +64,17 @@ function parseBuoyIds(buoysParam: Param) {
   return buoysParam.split(',');
 }
 
-function parseVariables(variablesParam: Param) {
+function parseVariables(
+  variablesParam: Param,
+  BUOY_VIEWER_VARIABLES: RiBuoyViewerVariable | MaBuoyViewerVariable
+) {
   if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
   if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
   const variables = variablesParam.split(',');
-  if (variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable)))
-    return variables as RiBuoyViewerVariable[];
+  if (
+    variables.every((vari) => BUOY_VIEWER_VARIABLES.includes(vari as typeof BUOY_VIEWER_VARIABLES))
+  )
+    return variables as (typeof BUOY_VIEWER_VARIABLES)[];
   throw new Error(ERROR_CODES.INVALID_VARS);
 }
 
