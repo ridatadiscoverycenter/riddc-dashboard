@@ -9,7 +9,7 @@ import { getParams } from '@/utils/fns/getParams';
 import { DataGraph } from './DataGraph';
 
 export default async function MassachusettsBuoyData({ searchParams }: PageProps) {
-  const parsed = getParams(searchParams, MA_BUOY_VIEWER_VARIABLES);
+  const parsed = getParams(searchParams, 'ma');
   const buoyData = await fetchMaSummaryData();
   const buoyCoords = await fetchMaBuoyCoordinates();
 
