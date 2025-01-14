@@ -1,10 +1,6 @@
-import { Card, ExploreForm, ExternalLink, RiBuoyMap, MaBuoySummary } from '@/components';
+import { Card, ExploreForm, ExternalLink, RiBuoyLocations, MaBuoySummary } from '@/components';
 import { PageProps } from '@/types';
-import {
-  fetchMaSummaryData,
-  fetchMaBuoyCoordinates,
-  MA_BUOY_VIEWER_VARIABLES,
-} from '@/utils/data/api/buoy';
+import { fetchMaSummaryData, fetchMaBuoyCoordinates } from '@/utils/data/api/buoy';
 import { getParams } from '@/utils/fns/getParams';
 import { DataGraph } from './DataGraph';
 
@@ -25,7 +21,7 @@ export default async function MassachusettsBuoyData({ searchParams }: PageProps)
       />
       <div className="flex flex-col items-center justify-around col-span-1">
         <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
-        <RiBuoyMap locations={buoyCoords} />
+        <RiBuoyLocations locations={buoyCoords} />
       </div>
       <Card className="bg-clear-900 col-span-2 items-center">
         <MaBuoySummary data={buoyData} />
