@@ -2,17 +2,15 @@ import {
   DownloadBuoyData,
   ExternalLink,
   HardRefreshLink,
-  RiBuoyVariables,
+  BuoyVariables,
   WeatherHistory,
 } from '@/components';
 import { fetchMaBuoyData, MaBuoyCoordinate } from '@/utils/data/api/buoy';
 import { fetchWeatherData } from '@/utils/data';
-import { makeCommaSepList } from '@/utils/fns';
-
-import { getParams, ERROR_CODES } from '@/utils/fns'; // TO_REVIEW should this be in like @/utils/params
+import { makeCommaSepList, getParams, ERROR_CODES } from '@/utils/fns';
 
 type DataGraphProps = {
-  params: ReturnType<typeof getParams>;
+  params: ReturnType<typeof getParams<'ma'>>;
   buoys: MaBuoyCoordinate[];
 };
 
@@ -21,9 +19,9 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
     return <ErrorPanel err={params} />;
   }
   try {
-    const riBuoyData = await fetchMaBuoyData(params.buoys, params.vars, params.start, params.end);
+    const maBuoyData = await fetchMaBuoyData(params.buoys, params.vars, params.start, params.end);
     const weatherData = await fetchWeatherData(params.start, params.end);
-    if (riBuoyData.length === 0)
+    if (maBuoyData.length === 0)
       return <ErrorPanel err="No data is available given the selected parameters." />;
     return (
       <>
@@ -39,7 +37,7 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
           sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
         </p>
         <div className="flex-1 flex flex-col justify-start items-start">
-          <RiBuoyVariables data={riBuoyData} height={200} />
+          <BuoyVariables data={maBuoyData} height={200} />
           <WeatherHistory data={weatherData} height={100} />
         </div>
         {/* <DownloadBuoyData

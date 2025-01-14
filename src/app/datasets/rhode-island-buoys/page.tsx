@@ -1,16 +1,12 @@
 import { Card, ExploreForm, ExternalLink, RiBuoyLocations, RiBuoySummary } from '@/components';
 import { PageProps } from '@/types';
-import {
-  fetchRiSummaryData,
-  fetchRiBuoyCoordinates,
-  RI_BUOY_VIEWER_VARIABLES,
-} from '@/utils/data/api/buoy';
+import { fetchRiSummaryData, fetchRiBuoyCoordinates } from '@/utils/data/api/buoy';
 // import { getParams } from './getParams';
 import { getParams } from '@/utils/fns';
 import { DataGraph } from './DataGraph';
 
 export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
-  const parsed = getParams(searchParams, RI_BUOY_VIEWER_VARIABLES);
+  const parsed = getParams(searchParams, 'ri');
   const buoyData = await fetchRiSummaryData();
   const buoyCoords = await fetchRiBuoyCoordinates();
 

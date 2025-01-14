@@ -51,7 +51,7 @@ export function ExploreForm({ buoys, location, init = DEFAULT_INITIAL_DATA }: Ex
       );
       router.refresh();
     },
-    [router, selectedBuoys, selectedVars, startDate, endDate]
+    [router, selectedBuoys, selectedVars, startDate, endDate, location]
   );
 
   return (

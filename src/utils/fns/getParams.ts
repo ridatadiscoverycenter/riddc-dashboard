@@ -1,8 +1,44 @@
 import { PageProps } from '@/types';
 // import { RI_BUOY_VIEWER_VARIABLES, RiBuoyViewerVariable, MA_BUOY_VIEWER_VARIABLES, MaBuoyViewerVariable } from '@/utils/data/api/buoy';
-import { MaBuoyViewerVariable, RiBuoyViewerVariable } from '../data/api/buoy';
+import {
+  MA_BUOY_VIEWER_VARIABLES,
+  MaBuoyViewerVariable,
+  RI_BUOY_VIEWER_VARIABLES,
+  RiBuoyViewerVariable,
+} from '../data/api/buoy';
 
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
+type RiOrMa = 'ri' | 'ma';
+// parseVariablesHelper
+type parseVariablesHelper<T extends RiOrMa> = T extends 'ri'
+  ? RiBuoyViewerVariable[]
+  : T extends 'ma'
+    ? MaBuoyViewerVariable[]
+    : never;
+/*
+type RiParams = {
+  buoys: ReturnType<typeof parseBuoyIds>;
+  vars: parseVariablesHelper<'ri'>;
+  start: ReturnType<typeof parseDate>;
+  end: ReturnType<typeof parseDate>;
+};
+type MaParams = {
+  buoys: ReturnType<typeof parseBuoyIds>;
+  vars: parseVariablesHelper<'ma'>;
+  start: ReturnType<typeof parseDate>;
+  end: ReturnType<typeof parseDate>;
+};*/
+type ParmsWhat = {
+  buoys: ReturnType<typeof parseBuoyIds>;
+  start: ReturnType<typeof parseDate>;
+  end: ReturnType<typeof parseDate>;
+};
+
+type GetParamsReturn<T extends RiOrMa> = T extends 'ri'
+  ? ParmsWhat & { vars: parseVariablesHelper<'ri'> }
+  : T extends 'ma'
+    ? ParmsWhat & { vars: parseVariablesHelper<'ma'> }
+    : never;
 
 export const ERROR_CODES = {
   NO_SEARCH_PARAMS: 'no-search-params',
@@ -26,7 +62,10 @@ export const ERROR_CODES = {
     'An invalid variable was selected for the visualization. Select a different variable to view the vizualization.',
 };
 
-export function getParams(searchParams: PageProps['searchParams'], BUOY_VIEWER_VARIABLES) {
+export function getParams<T extends RiOrMa>(
+  searchParams: PageProps['searchParams'],
+  region: T
+): GetParamsReturn<T> | string {
   try {
     if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
 
@@ -49,10 +88,10 @@ export function getParams(searchParams: PageProps['searchParams'], BUOY_VIEWER_V
     if (start.valueOf() >= end.valueOf()) throw new Error(ERROR_CODES.BAD_DATE_ORDER);
     return {
       buoys: parseBuoyIds(buoys),
-      vars: parseVariables(variables, BUOY_VIEWER_VARIABLES),
+      vars: region === 'ri' ? parseVariables(variables, region) : parseVariables(variables, region),
       start: parseDate(startDate, 'start'),
       end: parseDate(endDate, 'end'),
-    };
+    } as GetParamsReturn<T>;
   } catch (ex) {
     return (ex as { message: string }).message;
   }
@@ -64,17 +103,17 @@ function parseBuoyIds(buoysParam: Param) {
   return buoysParam.split(',');
 }
 
-function parseVariables(
-  variablesParam: Param,
-  BUOY_VIEWER_VARIABLES: RiBuoyViewerVariable | MaBuoyViewerVariable
-) {
+function parseVariables(variablesParam: Param, region: RiOrMa): parseVariablesHelper<RiOrMa> {
   if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
   if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
   const variables = variablesParam.split(',');
-  if (
-    variables.every((vari) => BUOY_VIEWER_VARIABLES.includes(vari as typeof BUOY_VIEWER_VARIABLES))
-  )
-    return variables as (typeof BUOY_VIEWER_VARIABLES)[];
+  if (region === 'ri') {
+    if (variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable)))
+      return variables as RiBuoyViewerVariable[];
+  } else if (region === 'ma') {
+    if (variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
+      return variables as MaBuoyViewerVariable[];
+  }
   throw new Error(ERROR_CODES.INVALID_VARS);
 }
 

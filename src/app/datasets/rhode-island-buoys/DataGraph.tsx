@@ -2,17 +2,15 @@ import {
   DownloadBuoyData,
   ExternalLink,
   HardRefreshLink,
-  RiBuoyVariables,
+  BuoyVariables,
   WeatherHistory,
 } from '@/components';
 import { fetchRiBuoyData, RiBuoyCoordinate } from '@/utils/data/api/buoy';
 import { fetchWeatherData } from '@/utils/data';
-import { makeCommaSepList } from '@/utils/fns';
-
-import { getParams, ERROR_CODES } from '@/utils/fns';
+import { makeCommaSepList, getParams, ERROR_CODES } from '@/utils/fns';
 
 type DataGraphProps = {
-  params: ReturnType<typeof getParams>;
+  params: ReturnType<typeof getParams<'ri'>>;
   buoys: RiBuoyCoordinate[];
 };
 
@@ -39,7 +37,7 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
           sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
         </p>
         <div className="flex-1 flex flex-col justify-start items-start">
-          <RiBuoyVariables data={riBuoyData} height={200} />
+          <BuoyVariables data={riBuoyData} height={200} />
           <WeatherHistory data={weatherData} height={100} />
         </div>
         <DownloadBuoyData
