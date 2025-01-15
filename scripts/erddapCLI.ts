@@ -1,11 +1,11 @@
-import yargs from 'yargs';
+/*import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 import { erddapApi } from '@/utils/erddap';
 //import type { BuoyConfigName } from '@/utils/erddap/api/bouy';
 
-const { erddapGet, fish, /*buoy,*/ domoicAcid } = erddapApi;
-
+const { erddapGet, fish, /*buoy, domoicAcid } = erddapApi;*/
+/*
 function doFetch(fetchFunction: Promise<unknown>) {
   fetchFunction.then((data) => console.log(JSON.stringify(data, null, 2))).catch(console.error);
 }
@@ -125,7 +125,7 @@ yargs(hideBin(process.argv))
       },
     },
     ({ config, siteName }) => doFetch(buoy.fetchSiteCoordinates(config as BuoyConfigName, siteName))
-    )*/
+    )* /
   // DOMOIC ACID COMMANDS
   .command('da-data', 'Fetches all domoic acid data.', {}, () =>
     doFetch(domoicAcid.fetchBaseData())
@@ -144,3 +144,4 @@ yargs(hideBin(process.argv))
   )
   .demandCommand(1)
   .parse();
+*/
