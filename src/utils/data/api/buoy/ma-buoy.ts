@@ -138,7 +138,7 @@ function viewerToErddap(v: MaBuoyViewerVariable) {
   throw new Error(`No viewer variable for erddap variable "${v}"`);
 }
 
-const MA_VARIABLE_CONVERTER = {
+export const MA_VARIABLE_CONVERTER = {
   erddapToViewer,
   viewerToErddap,
 };
