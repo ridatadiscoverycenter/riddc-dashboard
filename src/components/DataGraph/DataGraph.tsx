@@ -1,5 +1,5 @@
-import { DownloadBuoyData } from "@/components";
-import { RiBuoyViewerVariable } from "@/utils/data/api/buoy";
+import { DownloadBuoyData } from '@/components';
+import { RiBuoyViewerVariable } from '@/utils/data/api/buoy';
 
 type BuoyGraphProps = {
   description: React.ReactNode;
@@ -9,8 +9,15 @@ type BuoyGraphProps = {
   endDate?: Date;
 };
 
-export function DataGraph({ description, variables, buoys, startDate, endDate, children }: React.PropsWithChildren<BuoyGraphProps>) {
-return (
+export function DataGraph({
+  description,
+  variables,
+  buoys,
+  startDate,
+  endDate,
+  children,
+}: React.PropsWithChildren<BuoyGraphProps>) {
+  return (
     <>
       <p className="text-black">{description}</p>
       <div className="flex-1 flex flex-col justify-start items-start">
@@ -18,12 +25,7 @@ return (
         {/*<RiBuoyVariables data={riBuoyData} height={200} />
         <WeatherHistory data={weatherData} height={100} />*/}
       </div>
-      <DownloadBuoyData
-          variables={variables}
-          buoys={buoys}
-          start={startDate}
-          end={endDate}
-        />
+      <DownloadBuoyData variables={variables} buoys={buoys} start={startDate} end={endDate} />
     </>
   );
   /*if (typeof params === 'string') {

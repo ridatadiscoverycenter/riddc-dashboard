@@ -1,1 +1,1 @@
-export * from "./DataGraph";
+export * from './DataGraph';

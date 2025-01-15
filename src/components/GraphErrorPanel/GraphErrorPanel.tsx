@@ -1,9 +1,9 @@
-import { HardRefreshLink } from "../Link";
+import { HardRefreshLink } from '../Link';
 
 type GraphErrorPanelProps = {
   error?: string;
   links: {
-    href: string; 
+    href: string;
     description: string;
   }[];
 };
@@ -22,7 +22,11 @@ export function GraphErrorPanel({ error, links }: GraphErrorPanelProps) {
       )}
       <p className="text-black">Want some examples?</p>
       {links.map(({ href, description }) => (
-        <HardRefreshLink key={href} href={href} className='no-underline w-full bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 p-2 rounded-md drop-shadow-md hover:drop-shadow-lg focus:drop-shadow-lg'>
+        <HardRefreshLink
+          key={href}
+          href={href}
+          className="no-underline w-full bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 p-2 rounded-md drop-shadow-md hover:drop-shadow-lg focus:drop-shadow-lg"
+        >
           {description}
         </HardRefreshLink>
       ))}
