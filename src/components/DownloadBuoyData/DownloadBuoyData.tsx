@@ -1,16 +1,16 @@
 'use client';
 import React from 'react';
 
-import { Button, DownloadBuoyDataForm, ExternalLink, Modal } from '@/components';
+import {
+  Button,
+  DownloadBuoyDataForm,
+  ExternalLink,
+  Modal,
+  type DownloadDataFormProps,
+} from '@/components';
 import { type RiBuoyViewerVariable, type MaBuoyViewerVariable } from '@/utils/data/api/buoy';
 import { ERDDAP_DATASET_LINK_RI_BUOY } from '@/utils/data/erddap';
-import { DownloadDataFormProps } from '@/components';
-// type DownloadDataProps = {
-//   variables: RiBuoyViewerVariable[];
-//   buoys: string[];
-//   start?: Date;
-//   end?: Date;
-// };
+
 type RiOrMa = 'ri' | 'ma';
 
 type downloadDataHelper<T extends RiOrMa> = T extends 'ri'

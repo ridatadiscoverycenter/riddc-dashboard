@@ -45,6 +45,7 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
           buoys={params.buoys}
           start={params.start}
           end={params.end}
+          region="ri"
         />
       </>
     );

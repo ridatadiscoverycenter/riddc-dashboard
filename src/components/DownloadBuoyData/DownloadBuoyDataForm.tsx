@@ -53,7 +53,7 @@ export function DownloadBuoyDataForm<T extends RiOrMa>({
         '_blank'
       )
       ?.focus();
-  }, [buoys, variables, start, end, format]);
+  }, [buoys, variables, start, end, region, format]);
   return (
     <Form
       onSubmit={(ev) => {
