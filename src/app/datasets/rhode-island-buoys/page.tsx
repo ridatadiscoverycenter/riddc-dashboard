@@ -1,7 +1,6 @@
 import { Card, ExploreForm, ExternalLink, RiBuoyLocations, RiBuoySummary } from '@/components';
 import { PageProps } from '@/types';
 import { fetchRiSummaryData, fetchRiBuoyCoordinates } from '@/utils/data/api/buoy';
-// import { getParams } from './getParams';
 import { getParams } from '@/utils/fns';
 import { DataGraph } from './DataGraph';
 

@@ -1,5 +1,4 @@
 import { PageProps } from '@/types';
-// import { RI_BUOY_VIEWER_VARIABLES, RiBuoyViewerVariable, MA_BUOY_VIEWER_VARIABLES, MaBuoyViewerVariable } from '@/utils/data/api/buoy';
 import {
   MA_BUOY_VIEWER_VARIABLES,
   MaBuoyViewerVariable,
@@ -15,19 +14,7 @@ type parseVariablesHelper<T extends RiOrMa> = T extends 'ri'
   : T extends 'ma'
     ? MaBuoyViewerVariable[]
     : never;
-/*
-type RiParams = {
-  buoys: ReturnType<typeof parseBuoyIds>;
-  vars: parseVariablesHelper<'ri'>;
-  start: ReturnType<typeof parseDate>;
-  end: ReturnType<typeof parseDate>;
-};
-type MaParams = {
-  buoys: ReturnType<typeof parseBuoyIds>;
-  vars: parseVariablesHelper<'ma'>;
-  start: ReturnType<typeof parseDate>;
-  end: ReturnType<typeof parseDate>;
-};*/
+
 type ParmsWhat = {
   buoys: ReturnType<typeof parseBuoyIds>;
   start: ReturnType<typeof parseDate>;

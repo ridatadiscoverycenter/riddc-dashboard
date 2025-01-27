@@ -27,7 +27,7 @@ const DATASETS = [
         <ExternalLink href="https://www.mass.gov/orgs/massachusetts-department-of-environmental-protection">
           MassDEP
         </ExternalLink>{' '}
-        as the lead
+        as the lead agency.
       </>
     ),
   },

@@ -52,13 +52,6 @@ export function DownloadBuoyData<T extends RiOrMa>({
           end,
           region,
         } as DownloadDataFormProps<T>)}
-        {/* <DownloadBuoyDataForm
-          variables={variables}
-          buoys={buoys}
-          start={start}
-          end={end}
-          region={region}
-        /> */}
         <h4>
           Or, download the data directly from{' '}
           <ExternalLink href={ERDDAP_DATASET_LINK_RI_BUOY}>ERDDAP</ExternalLink>.
