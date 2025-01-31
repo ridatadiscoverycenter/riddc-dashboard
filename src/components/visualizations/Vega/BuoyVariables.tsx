@@ -3,11 +3,11 @@ import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
 import { Loading } from '@/components';
-import type { RiBuoyData } from '@/utils/data/api/buoy';
+import type { RiBuoyData, MaBuoyData } from '@/utils/data/api/buoy';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 
-type RiBuoyVariablesProps = {
-  data: RiBuoyData[];
+type BuoyVariablesProps = {
+  data: RiBuoyData[] | MaBuoyData[];
   height?: number;
   colors?: string[];
 };
@@ -44,11 +44,7 @@ function getGraphicWidth(size: Size | undefined) {
   return 750;
 }
 
-export function RiBuoyVariables({
-  data,
-  colors = BASE_COLORS,
-  height = 200,
-}: RiBuoyVariablesProps) {
+export function BuoyVariables({ data, colors = BASE_COLORS, height = 200 }: BuoyVariablesProps) {
   const size = useScreenSize();
   const stations = React.useMemo(
     () => Array.from(new Set(data.map((value) => value.stationName))),

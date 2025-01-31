@@ -87,7 +87,7 @@ function viewerToErddap(v: RiBuoyViewerVariable) {
   throw new Error(`No viewer variable for erddap variable "${v}"`);
 }
 
-export const VARIABLE_CONVERTER = {
+export const RI_VARIABLE_CONVERTER = {
   erddapToViewer,
   viewerToErddap,
 };
@@ -127,7 +127,7 @@ function validateFetchedRiBuoyData(buoyData: unknown): buoyData is { data: Fetch
 
 function formatRiBuoyData(buoyData: FetchedRiBuoyData) {
   return {
-    variable: VARIABLE_CONVERTER.erddapToViewer(buoyData.variable),
+    variable: RI_VARIABLE_CONVERTER.erddapToViewer(buoyData.variable),
     value: buoyData.value || undefined,
     stationName: buoyData.station_name,
     time: new Date(buoyData.time),

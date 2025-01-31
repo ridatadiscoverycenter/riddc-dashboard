@@ -5,13 +5,13 @@ import {
   BuoyVariables,
   WeatherHistory,
 } from '@/components';
-import { fetchRiBuoyData, RiBuoyCoordinate } from '@/utils/data/api/buoy';
+import { fetchMaBuoyData, MaBuoyCoordinate } from '@/utils/data/api/buoy';
 import { fetchWeatherData } from '@/utils/data';
 import { makeCommaSepList, getParams, ERROR_CODES } from '@/utils/fns';
 
 type DataGraphProps = {
-  params: ReturnType<typeof getParams<'ri'>>;
-  buoys: RiBuoyCoordinate[];
+  params: ReturnType<typeof getParams<'ma'>>;
+  buoys: MaBuoyCoordinate[];
 };
 
 export async function DataGraph({ params, buoys }: DataGraphProps) {
@@ -19,9 +19,9 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
     return <ErrorPanel err={params} />;
   }
   try {
-    const riBuoyData = await fetchRiBuoyData(params.buoys, params.vars, params.start, params.end);
+    const maBuoyData = await fetchMaBuoyData(params.buoys, params.vars, params.start, params.end);
     const weatherData = await fetchWeatherData(params.start, params.end);
-    if (riBuoyData.length === 0)
+    if (maBuoyData.length === 0)
       return <ErrorPanel err="No data is available given the selected parameters." />;
     return (
       <>
@@ -37,7 +37,7 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
           sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
         </p>
         <div className="flex-1 flex flex-col justify-start items-start">
-          <BuoyVariables data={riBuoyData} height={200} />
+          <BuoyVariables data={maBuoyData} height={200} />
           <WeatherHistory data={weatherData} height={100} />
         </div>
         <DownloadBuoyData
@@ -45,7 +45,7 @@ export async function DataGraph({ params, buoys }: DataGraphProps) {
           buoys={params.buoys}
           start={params.start}
           end={params.end}
-          region="ri"
+          region="ma"
         />
       </>
     );
@@ -71,17 +71,17 @@ function ErrorPanel({ err }: { err: string }) {
       )}
       <p className="text-black">Want some examples?</p>
       <HardRefreshLink
-        href="/datasets/rhode-island-buoys?buoys=bid2,bid3&vars=temperatureBottom,temperatureSurface&start=2010-01-22&end=2011-01-22"
+        href="/datasets/massachusetts-buoys?buoys=bid101&vars=ChlorophyllSurface,ChlorophyllBottom&start=2017-06-01&end=2017-06-30"
         className={EXPLORE_STYLES}
       >
-        Changes in Water Temperature at N. Prudence and Conimicut Pt. from 2010 - 2011
+        Changes in Chlorophyll at Cole in June 2017
       </HardRefreshLink>
 
       <HardRefreshLink
-        href="/datasets/rhode-island-buoys?buoys=bid15,bid17&vars=depthBottom,depthSurface&start=2008-01-22&end=2009-01-22"
+        href="/datasets/massachusetts-buoys?buoys=bid102&vars=SalinityBottom,SalinitySurface&start=2018-05-01&end=2018-11-01"
         className={EXPLORE_STYLES}
       >
-        Changes in Depth at Greenwich Bay and GSO Dock from 2008 - 2009
+        Changes in Salinity at Taunton from May through October 2018
       </HardRefreshLink>
     </>
   );

@@ -17,7 +17,19 @@ const DATASETS = [
   {
     name: 'Massachusetts Buoys',
     href: '/datasets/massachusetts-buoys',
-    description: () => <>Coming Soon!</>,
+    description: () => (
+      <>
+        Two years of data from two buoys in Narragansett Bay. Collected by the{' '}
+        <ExternalLink href="https://dem.ri.gov/environmental-protection-bureau/water-resources/research-monitoring/narraganset-bay-assessment-fixed-site-monitoring">
+          Fixed-Site Monitoring Stations and Data in Narragansett Bay
+        </ExternalLink>{' '}
+        with{' '}
+        <ExternalLink href="https://www.mass.gov/orgs/massachusetts-department-of-environmental-protection">
+          MassDEP
+        </ExternalLink>{' '}
+        as the lead agency.
+      </>
+    ),
   },
   {
     name: 'Real Time Data',

@@ -1,4 +1,5 @@
 export * from './RiBuoyMap';
 export * from './RiBuoySummary';
 export * from './WeatherHistory';
-export * from './RiBuoyVariables';
+export * from './BuoyVariables';
+export * from './MaBuoySummary';

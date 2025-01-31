@@ -2,7 +2,11 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { RI_BUOY_VIEWER_VARIABLES, RiBuoyCoordinate } from '@/utils/data/api/buoy';
+import {
+  RI_BUOY_VIEWER_VARIABLES,
+  RiBuoyCoordinate,
+  MA_BUOY_VIEWER_VARIABLES,
+} from '@/utils/data/api/buoy';
 import { Multiselect, Label, Input, Form } from '@/components';
 
 type InitialFormData = {
@@ -14,6 +18,7 @@ type InitialFormData = {
 
 type ExploreFormProps = {
   buoys: RiBuoyCoordinate[];
+  location: string;
   //variables: RiBuoyViewerVariable[];
   init?: InitialFormData;
 };
@@ -25,7 +30,7 @@ const DEFAULT_INITIAL_DATA: InitialFormData = {
   end: new Date(),
 };
 
-export function ExploreForm({ buoys, init = DEFAULT_INITIAL_DATA }: ExploreFormProps) {
+export function ExploreForm({ buoys, location, init = DEFAULT_INITIAL_DATA }: ExploreFormProps) {
   const router = useRouter();
   const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(init.buoys);
   const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
@@ -40,11 +45,13 @@ export function ExploreForm({ buoys, init = DEFAULT_INITIAL_DATA }: ExploreFormP
       const start = `start=${startDate.toISOString().split('T')[0]}`;
       const end = `end=${endDate.toISOString().split('T')[0]}`;
       router.push(
-        `/datasets/rhode-island-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+        location === 'ri'
+          ? `/datasets/rhode-island-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+          : `/datasets/massachusetts-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
       );
       router.refresh();
     },
-    [router, selectedBuoys, selectedVars, startDate, endDate]
+    [router, selectedBuoys, selectedVars, startDate, endDate, location]
   );
 
   return (
@@ -57,7 +64,7 @@ export function ExploreForm({ buoys, init = DEFAULT_INITIAL_DATA }: ExploreFormP
       />
       <Multiselect
         label="Variables (up to four)"
-        options={[...RI_BUOY_VIEWER_VARIABLES]}
+        options={location === 'ri' ? [...RI_BUOY_VIEWER_VARIABLES] : [...MA_BUOY_VIEWER_VARIABLES]}
         onChange={setSelectedVars}
         init={init.vars}
       />

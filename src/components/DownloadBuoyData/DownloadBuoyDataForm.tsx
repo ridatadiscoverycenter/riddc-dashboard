@@ -1,28 +1,59 @@
 'use client';
 import React from 'react';
-import { RiBuoyViewerVariable } from '@/utils/data/api/buoy';
+import { MaBuoyViewerVariable, RiBuoyViewerVariable } from '@/utils/data/api/buoy';
 import { Input, Select, Form } from '@/components';
-import { createRiBuoyDownloadUrl, DATA_FORMATS, DF } from '@/utils/data/erddap';
+import {
+  createMaBuoyDownloadUrl,
+  createRiBuoyDownloadUrl,
+  DATA_FORMATS,
+  DF,
+} from '@/utils/data/erddap';
 
-type DownloadDataProps = {
-  variables: RiBuoyViewerVariable[];
+type RiOrMa = 'ri' | 'ma';
+
+type downloadDataHelper<T extends RiOrMa> = T extends 'ri'
+  ? RiBuoyViewerVariable[]
+  : T extends 'ma'
+    ? MaBuoyViewerVariable[]
+    : never;
+
+type Params = {
   buoys: string[];
   start?: Date;
   end?: Date;
+  region: RiOrMa;
 };
 
-export function DownloadBuoyDataForm({
+export type DownloadDataFormProps<T extends RiOrMa> = T extends 'ri'
+  ? Params & { variables: downloadDataHelper<'ri'> }
+  : T extends 'ma'
+    ? Params & { variables: downloadDataHelper<'ma'> }
+    : never;
+
+export function DownloadBuoyDataForm<T extends RiOrMa>({
   variables,
   buoys,
   start = undefined,
   end = undefined,
-}: DownloadDataProps) {
+  region,
+}: DownloadDataFormProps<T>) {
   const [format, setFormat] = React.useState([...DATA_FORMATS][0]);
   const doSubmit = React.useCallback(() => {
     window
-      .open(createRiBuoyDownloadUrl(format, variables, buoys, { start, end }), '_blank')
+      .open(
+        region === 'ri'
+          ? createRiBuoyDownloadUrl(format, variables as RiBuoyViewerVariable[], buoys, {
+              start,
+              end,
+            })
+          : createMaBuoyDownloadUrl(format, variables as MaBuoyViewerVariable[], buoys, {
+              start,
+              end,
+            }),
+        '_blank'
+      )
       ?.focus();
-  }, [buoys, variables, start, end, format]);
+  }, [buoys, variables, start, end, region, format]);
   return (
     <Form
       onSubmit={(ev) => {
