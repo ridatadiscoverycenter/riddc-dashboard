@@ -8,7 +8,7 @@ type BuoyGraphProps = {
 };
 export function DataGraph({
   description,
-  weather, 
+  weather,
   download,
   children,
 }: React.PropsWithChildren<BuoyGraphProps>) {

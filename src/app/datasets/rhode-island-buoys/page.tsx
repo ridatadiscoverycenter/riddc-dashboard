@@ -20,23 +20,27 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
   const buoyCoords = await fetchRiBuoyCoordinates();
 
   let graphBlock: React.ReactNode;
-  if (typeof parsed === "string") {
+  if (typeof parsed === 'string') {
     graphBlock = (
       <GraphErrorPanel
         error={parsed === ERROR_CODES.NO_SEARCH_PARAMS ? undefined : parsed}
         links={RI_BUOY_ERROR_LINKS}
       />
     );
-  }
-  else {
+  } else {
     const riBuoyData = await fetchRiBuoyData(parsed.buoys, parsed.vars, parsed.start, parsed.end);
     const weatherData = await fetchWeatherData(parsed.start, parsed.end);
     if (riBuoyData.length === 0)
-      graphBlock = <GraphErrorPanel error="No data is available given the selected parameters." links={RI_BUOY_ERROR_LINKS} />;
+      graphBlock = (
+        <GraphErrorPanel
+          error="No data is available given the selected parameters."
+          links={RI_BUOY_ERROR_LINKS}
+        />
+      );
     else {
       graphBlock = (
         <DataGraph
-          description={(
+          description={
             <>
               This plot compares {makeCommaSepList(parsed.vars)} between{' '}
               {parsed.start.toLocaleDateString()} and {parsed.end.toLocaleDateString()} at{' '}
@@ -48,9 +52,9 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
               . You can hover over the lines to see more specific data. The weather data below is
               sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
             </>
-          )}
+          }
           weather={weatherData}
-          download={(
+          download={
             <DownloadBuoyData
               variables={parsed.vars}
               region="ri"
@@ -58,7 +62,7 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
               start={parsed.start}
               end={parsed.end}
             />
-          )}
+          }
         >
           <BuoyVariables data={riBuoyData} height={200} />
         </DataGraph>
@@ -110,8 +114,14 @@ function makeCommaSepList(list: string[]) {
 }
 
 const RI_BUOY_ERROR_LINKS = [
-  { href: "/datasets/rhode-island-buoys?buoys=bid2,bid3&vars=temperatureBottom,temperatureSurface&start=2010-01-22&end=2011-01-22", description: "Changes in Water Temperature at N. Prudence and Conimicut Pt. from 2010 - 2011" },
-  { href: "/datasets/rhode-island-buoys?buoys=bid15,bid17&vars=depthBottom,depthSurface&start=2008-01-22&end=2009-01-22", description: "Changes in Depth at Greenwich Bay and GSO Dock from 2008 - 2009" },
+  {
+    href: '/datasets/rhode-island-buoys?buoys=bid2,bid3&vars=temperatureBottom,temperatureSurface&start=2010-01-22&end=2011-01-22',
+    description: 'Changes in Water Temperature at N. Prudence and Conimicut Pt. from 2010 - 2011',
+  },
+  {
+    href: '/datasets/rhode-island-buoys?buoys=bid15,bid17&vars=depthBottom,depthSurface&start=2008-01-22&end=2009-01-22',
+    description: 'Changes in Depth at Greenwich Bay and GSO Dock from 2008 - 2009',
+  },
 ];
 
 const LINKS = {
