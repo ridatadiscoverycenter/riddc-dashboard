@@ -50,6 +50,12 @@ export const RI_BUOY_VIEWER_VARIABLES = [
   'totalFluorescence',
 ] as const;
 
+export const RI_DATES = {
+  startDate: new Date('2017-05-26'),
+  endDate: new Date('2017-05-27'),
+  maxDate: new Date('2018-11-09'),
+};
+
 export type RiBuoyViewerVariable = (typeof RI_BUOY_VIEWER_VARIABLES)[number];
 export type RiBuoyErddapVariable = (typeof RI_BUOY_ERDDAP_VARIABLES)[number];
 

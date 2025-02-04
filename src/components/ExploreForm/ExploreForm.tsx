@@ -6,6 +6,8 @@ import {
   RI_BUOY_VIEWER_VARIABLES,
   RiBuoyCoordinate,
   MA_BUOY_VIEWER_VARIABLES,
+  RI_DATES,
+  MA_DATES,
 } from '@/utils/data/api/buoy';
 import { Multiselect, Label, Input, Form } from '@/components';
 
@@ -71,14 +73,36 @@ export function ExploreForm({ buoys, location, init = DEFAULT_INITIAL_DATA }: Ex
       <div className="w-full flex lg:flex-row flex-col gap-2 [&>label]:flex-1">
         <Label label="Start">
           <Input
-            value={startDate.toISOString().split('T')[0]}
+            value={
+              (location === 'ri' ? RI_DATES.startDate : MA_DATES.startDate)
+                .toISOString()
+                .split('T')[0]
+            }
+            min={
+              (location === 'ri' ? RI_DATES.startDate : MA_DATES.startDate)
+                .toISOString()
+                .split('T')[0]
+            }
+            max={
+              (location === 'ri' ? RI_DATES.maxDate : MA_DATES.maxDate).toISOString().split('T')[0]
+            }
             onChange={(e) => setStartDate(new Date(e.target.value))}
             type="date"
           />
         </Label>
         <Label label="End">
           <Input
-            value={endDate.toISOString().split('T')[0]}
+            value={
+              (location === 'ri' ? RI_DATES.endDate : MA_DATES.endDate).toISOString().split('T')[0]
+            }
+            min={
+              (location === 'ri' ? RI_DATES.startDate : MA_DATES.startDate)
+                .toISOString()
+                .split('T')[0]
+            }
+            max={
+              (location === 'ri' ? RI_DATES.maxDate : MA_DATES.maxDate).toISOString().split('T')[0]
+            }
             onChange={(e) => setEndDate(new Date(e.target.value))}
             type="date"
           />
