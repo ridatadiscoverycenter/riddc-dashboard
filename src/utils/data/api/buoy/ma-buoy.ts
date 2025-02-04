@@ -84,12 +84,6 @@ export const MA_BUOY_VIEWER_VARIABLES = [
   'WaterTempSurface',
 ] as const;
 
-export const MA_DATES = {
-  startDate: new Date('2017-01-01'),
-  endDate: new Date('2017-01-02'),
-  maxDate: new Date('2018-12-31'),
-};
-
 export type MaBuoyViewerVariable = (typeof MA_BUOY_VIEWER_VARIABLES)[number];
 export type MaBuoyErddapVariable = (typeof MA_BUOY_ERDDAP_VARIABLES)[number];
 
