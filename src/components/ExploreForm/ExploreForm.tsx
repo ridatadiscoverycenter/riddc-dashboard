@@ -12,30 +12,36 @@ import { Multiselect, Label, Input, Form } from '@/components';
 type InitialFormData = {
   buoys: string[];
   vars: string[];
-  start: Date;
-  end: Date;
+};
+
+type dateBound = {
+  startDate: Date;
+  endDate: Date;
 };
 
 type ExploreFormProps = {
   buoys: RiBuoyCoordinate[];
   location: string;
-  //variables: RiBuoyViewerVariable[];
+  dateBounds: dateBound;
   init?: InitialFormData;
 };
 
 const DEFAULT_INITIAL_DATA: InitialFormData = {
   buoys: [],
   vars: [],
-  start: new Date(),
-  end: new Date(),
 };
 
-export function ExploreForm({ buoys, location, init = DEFAULT_INITIAL_DATA }: ExploreFormProps) {
+export function ExploreForm({
+  buoys,
+  location,
+  dateBounds,
+  init = DEFAULT_INITIAL_DATA,
+}: ExploreFormProps) {
   const router = useRouter();
   const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(init.buoys);
   const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
-  const [startDate, setStartDate] = React.useState(init.start);
-  const [endDate, setEndDate] = React.useState(init.end);
+  const [startDate, setStartDate] = React.useState(dateBounds.startDate);
+  const [endDate, setEndDate] = React.useState(dateBounds.endDate);
 
   const onSubmit = React.useCallback(
     (event: React.FormEvent) => {
@@ -71,14 +77,18 @@ export function ExploreForm({ buoys, location, init = DEFAULT_INITIAL_DATA }: Ex
       <div className="w-full flex lg:flex-row flex-col gap-2 [&>label]:flex-1">
         <Label label="Start">
           <Input
-            value={startDate.toISOString().split('T')[0]}
+            value={dateBounds.startDate.toISOString().split('T')[0]}
+            min={dateBounds.startDate.toISOString().split('T')[0]}
+            max={dateBounds.endDate.toISOString().split('T')[0]}
             onChange={(e) => setStartDate(new Date(e.target.value))}
             type="date"
           />
         </Label>
         <Label label="End">
           <Input
-            value={endDate.toISOString().split('T')[0]}
+            value={dateBounds.endDate.toISOString().split('T')[0]}
+            min={dateBounds.startDate.toISOString().split('T')[0]}
+            max={dateBounds.endDate.toISOString().split('T')[0]}
             onChange={(e) => setEndDate(new Date(e.target.value))}
             type="date"
           />

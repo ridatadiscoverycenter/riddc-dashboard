@@ -17,6 +17,10 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
       <ExploreForm
         buoys={buoyCoords}
         location="ri"
+        dateBounds={{
+          startDate: new Date('2003-05-22'),
+          endDate: new Date('2019-12-31'),
+        }}
         init={typeof parsed === 'string' ? undefined : parsed}
       />
       <div className="flex flex-col items-center justify-around col-span-1">

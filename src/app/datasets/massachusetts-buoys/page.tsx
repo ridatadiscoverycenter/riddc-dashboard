@@ -17,6 +17,10 @@ export default async function MassachusettsBuoyData({ searchParams }: PageProps)
       <ExploreForm
         buoys={buoyCoords}
         location="ma"
+        dateBounds={{
+          startDate: new Date('2017-05-26'),
+          endDate: new Date('2018-1-09'),
+        }}
         init={typeof parsed === 'string' ? undefined : parsed}
       />
       <div className="flex flex-col items-center justify-around col-span-1">
