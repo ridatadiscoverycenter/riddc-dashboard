@@ -77,7 +77,7 @@ export function ExploreForm({
       <div className="w-full flex lg:flex-row flex-col gap-2 [&>label]:flex-1">
         <Label label="Start">
           <Input
-            value={dateBounds.startDate.toISOString().split('T')[0]}
+            value={startDate.toISOString().split('T')[0]}
             min={dateBounds.startDate.toISOString().split('T')[0]}
             max={dateBounds.endDate.toISOString().split('T')[0]}
             onChange={(e) => setStartDate(new Date(e.target.value))}
@@ -86,7 +86,7 @@ export function ExploreForm({
         </Label>
         <Label label="End">
           <Input
-            value={dateBounds.endDate.toISOString().split('T')[0]}
+            value={endDate.toISOString().split('T')[0]}
             min={dateBounds.startDate.toISOString().split('T')[0]}
             max={dateBounds.endDate.toISOString().split('T')[0]}
             onChange={(e) => setEndDate(new Date(e.target.value))}
