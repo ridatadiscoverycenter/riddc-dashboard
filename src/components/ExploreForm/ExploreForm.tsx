@@ -17,7 +17,6 @@ type InitialFormData = {
 type dateBound = {
   startDate: Date;
   endDate: Date;
-  maxDate: Date;
 };
 
 type ExploreFormProps = {
@@ -80,7 +79,7 @@ export function ExploreForm({
           <Input
             value={dateBounds.startDate.toISOString().split('T')[0]}
             min={dateBounds.startDate.toISOString().split('T')[0]}
-            max={dateBounds.maxDate.toISOString().split('T')[0]}
+            max={dateBounds.endDate.toISOString().split('T')[0]}
             onChange={(e) => setStartDate(new Date(e.target.value))}
             type="date"
           />
@@ -89,7 +88,7 @@ export function ExploreForm({
           <Input
             value={dateBounds.endDate.toISOString().split('T')[0]}
             min={dateBounds.startDate.toISOString().split('T')[0]}
-            max={dateBounds.maxDate.toISOString().split('T')[0]}
+            max={dateBounds.endDate.toISOString().split('T')[0]}
             onChange={(e) => setEndDate(new Date(e.target.value))}
             type="date"
           />

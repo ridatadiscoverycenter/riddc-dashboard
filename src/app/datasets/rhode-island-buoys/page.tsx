@@ -19,8 +19,7 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
         location="ri"
         dateBounds={{
           startDate: new Date('2003-05-22'),
-          endDate: new Date('2003-05-31'),
-          maxDate: new Date('2019-12-31'),
+          endDate: new Date('2019-12-31'),
         }}
         init={typeof parsed === 'string' ? undefined : parsed}
       />

@@ -19,8 +19,7 @@ export default async function MassachusettsBuoyData({ searchParams }: PageProps)
         location="ma"
         dateBounds={{
           startDate: new Date('2017-05-26'),
-          endDate: new Date('2017-05-28'),
-          maxDate: new Date('2018-11-09'),
+          endDate: new Date('2018-1-09'),
         }}
         init={typeof parsed === 'string' ? undefined : parsed}
       />
