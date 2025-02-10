@@ -8,6 +8,7 @@ import {
 } from './buoy';
 
 export const MA_QUALIFIERS = [
+  'ChlorophyllQualifiersBottom',
   'ChlorophyllQualifiersSurface',
   'DepthQualifiersBottom',
   'DepthQualifiersSurface',
@@ -98,10 +99,12 @@ const VARIABLE_PAIRS: { viewer: MaBuoyViewerVariable; erddap: MaBuoyErddapVariab
 ] as const;
 
 const QUALIFIER_PAIRS: { variable: MaBuoyErddapVariable; qualifier: MaQualifiers }[] = [
+  { variable: 'ChlorophyllBottom', qualifier: 'ChlorophyllQualifiersBottom' },
   { variable: 'ChlorophyllSurface', qualifier: 'ChlorophyllQualifiersSurface' },
   { variable: 'DepthSurface', qualifier: 'DepthQualifiersSurface' },
   { variable: 'NitrateNSurface', qualifier: 'NitrateNQualifiersSurface' },
   { variable: 'O2PercentBottom', qualifier: 'O2PercentQualifiersBottom' },
+  { variable: 'O2PercentSurface', qualifier: 'O2PercentQualifiersSurface' },
   { variable: 'O2Bottom', qualifier: 'O2QualifiersBottom' },
   { variable: 'O2Surface', qualifier: 'O2QualifiersSurface' },
   { variable: 'pHBottom', qualifier: 'pHQualifiersBottom' },
