@@ -41,11 +41,6 @@ export default async function MassachusettsBuoyData({ searchParams }: PageProps)
           appropriate format for your analyses! To begin, select a variable to see what data is
           available.{' '}
         </p>
-        <p className="self-left">
-          Note: The variables with &quot;Qualifier&quot; in the name provide annotations for the
-          corresponding variable without &quot;Qualifier&quot;. The qualifers are not plottable, but
-          can be downloaded for analysis offline.
-        </p>
       </div>
     </div>
   );

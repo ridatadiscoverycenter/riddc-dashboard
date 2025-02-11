@@ -67,6 +67,9 @@ export function createMaBuoyDownloadUrl(
 ) {
   const vars = [
     ...variables.map(MA_VARIABLE_CONVERTER.viewerToErddap),
+    ...variables
+      .map(MA_VARIABLE_CONVERTER.variableToQualifier)
+      .filter((element) => element !== undefined),
     'time',
     'latitude',
     'longitude',
