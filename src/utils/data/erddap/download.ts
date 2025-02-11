@@ -65,7 +65,6 @@ export function createMaBuoyDownloadUrl(
   buoys: string[],
   time: StartAndOrEndDate | undefined = undefined
 ) {
-  console.log(variables.map(MA_VARIABLE_CONVERTER.variableToQualifier));
   const vars = [
     ...variables.map(MA_VARIABLE_CONVERTER.viewerToErddap),
     ...variables
