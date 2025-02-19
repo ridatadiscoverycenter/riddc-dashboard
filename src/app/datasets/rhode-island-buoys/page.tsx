@@ -11,7 +11,7 @@ import {
 } from '@/components';
 import { PageProps } from '@/types';
 import { fetchRiSummaryData, fetchRiBuoyCoordinates, fetchRiBuoyData } from '@/utils/data/api/buoy';
-import { ERROR_CODES, getParams } from '@/utils/fns';
+import { ERROR_CODES, getParams, makeCommaSepList } from '@/utils/fns';
 import { fetchWeatherData } from '@/utils/data';
 
 export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
@@ -83,7 +83,6 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
           }}
           init={typeof parsed === 'string' ? undefined : parsed}
         />
-        //<ExploreForm buoys={buoyCoords} init={typeof parsed === 'string' ? undefined : parsed} />
       }
       map={<RiBuoyLocations locations={buoyCoords} />}
       summary={<RiBuoySummary data={buoyData} />}
@@ -102,14 +101,6 @@ export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
         </p>
       }
     />
-  );
-}
-
-function makeCommaSepList(list: string[]) {
-  return list.reduce(
-    (prev, next, index) =>
-      `${prev}${index === 0 ? '' : `${index === list.length - 1 ? '' : ','} `}${index === list.length - 1 ? 'and ' : ''}${next}`,
-    ''
   );
 }
 
