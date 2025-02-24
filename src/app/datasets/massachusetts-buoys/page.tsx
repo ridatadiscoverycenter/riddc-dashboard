@@ -42,7 +42,7 @@ export default async function MassachusettsBuoyData({ searchParams }: PageProps)
       graphBlock = (
         <DataGraph
           description={
-            <p className="text-black">
+            <>
               This plot compares {makeCommaSepList(parsed.vars)} between{' '}
               {parsed.start.toLocaleDateString()} and {parsed.end.toLocaleDateString()} at{' '}
               {makeCommaSepList(
@@ -52,7 +52,7 @@ export default async function MassachusettsBuoyData({ searchParams }: PageProps)
               )}
               . You can hover over the lines to see more specific data. The weather data below is
               sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
-            </p>
+            </>
           }
           weather={weatherData}
           download={
