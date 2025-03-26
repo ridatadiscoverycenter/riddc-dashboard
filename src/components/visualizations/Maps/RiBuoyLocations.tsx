@@ -16,7 +16,10 @@ export function RiBuoyLocations({ locations }: RiBuoyLocationsProps) {
     if (loaded) {
       locations.forEach(({ stationName, /*buoyId,*/ longitude, latitude }) => {
         const popup = new maplibregl.Popup().setHTML(`<p class="text-black">${stationName}</p>`);
-        new maplibregl.Marker().setLngLat([longitude, latitude]).setPopup(popup).addTo(map.current);
+        new maplibregl.Marker({ scale: 0.7, color: '#00008b' })
+          .setLngLat([longitude, latitude])
+          .setPopup(popup)
+          .addTo(map.current);
       });
     }
   }, [map, loaded, locations]);
