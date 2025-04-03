@@ -18,7 +18,7 @@ export function useMap() {
       style: `https://api.maptiler.com/maps/basic/style.json?key=${API_KEY}`,
       // More things can be set here, but I'll ignore them for now.
       bounds: [
-        [-71.5, 41.86],
+        [-71.5, 41.92],
         [-71.16, 41.42],
       ],
     });
