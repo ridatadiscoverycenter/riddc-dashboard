@@ -1,6 +1,13 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import '@/styles/tailwind.css';
 import { Footer, Nav } from '@/components';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export const metadata: Metadata = {
   title: 'Narragansett Bay Data Explorer',
@@ -9,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable}`}>
       <body
         className={`min-h-[100vh] flex flex-col bg-c-background-light dark:bg-c-background-dark text-black dark:text-white font-main`}
       >
