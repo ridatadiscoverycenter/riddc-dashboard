@@ -66,7 +66,9 @@ function getParams(searchParams: PageProps['searchParams']): Params | string {
   }
 }
 
-export function getRiParams(searchParams: PageProps['searchParams']) {
+export function getRiParams(
+  searchParams: PageProps['searchParams']
+): string | (Params & { vars: RiBuoyViewerVariable[] }) {
   try {
     if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
 
@@ -87,7 +89,9 @@ export function getRiParams(searchParams: PageProps['searchParams']) {
   }
 }
 
-export function getMaParams(searchParams: PageProps['searchParams']) {
+export function getMaParams(
+  searchParams: PageProps['searchParams']
+): string | (Params & { vars: MaBuoyViewerVariable[] }) {
   try {
     if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
 
