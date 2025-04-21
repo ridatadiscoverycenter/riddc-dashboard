@@ -5,7 +5,7 @@ import {
   RI_BUOY_VIEWER_VARIABLES,
   RiBuoyViewerVariable,
 } from '../data/api/buoy';
-import { PlanktonVariable } from '../data/api/buoy/plankton';
+import { PLANKTON_VARIABLES, PlanktonVariable } from '../data/api/buoy/plankton';
 import { buoy } from '../data/api';
 
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
@@ -38,41 +38,6 @@ export const ERROR_CODES = {
     'An invalid variable was selected for the visualization. Select a different variable to view the vizualization.',
 };
 
-// export function getParams<T extends RiOrMa>(
-//   searchParams: PageProps['searchParams'],
-//   region: T
-// ): GetParamsReturn<T> | string {
-//   try {
-//     if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-
-//     // Get relevant data from search params.
-
-//     const buoys = searchParams['buoys'];
-//     const variables = searchParams['vars'];
-//     const startDate = searchParams['start'];
-//     const endDate = searchParams['end'];
-
-//     if (
-//       buoys === undefined &&
-//       variables === undefined &&
-//       startDate === undefined &&
-//       endDate === undefined
-//     )
-//       throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-//     const start = parseDate(startDate, 'start');
-//     const end = parseDate(endDate, 'end');
-//     if (start.valueOf() >= end.valueOf()) throw new Error(ERROR_CODES.BAD_DATE_ORDER);
-//     return {
-//       buoys: parseBuoyIds(buoys),
-//       vars: region === 'ri' ? parseVariables(variables, region) : parseVariables(variables, region),
-//       start: parseDate(startDate, 'start'),
-//       end: parseDate(endDate, 'end'),
-//     } as GetParamsReturn<T>;
-//   } catch (ex) {
-//     return (ex as { message: string }).message;
-//   }
-// }
-
 function getParams(searchParams: PageProps['searchParams']): Params | string {
   try {
     if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
@@ -80,7 +45,6 @@ function getParams(searchParams: PageProps['searchParams']): Params | string {
     const variables = searchParams['vars'];
     const startDate = searchParams['start'];
     const endDate = searchParams['end'];
-
     if (
       buoys === undefined &&
       variables === undefined &&
@@ -88,6 +52,7 @@ function getParams(searchParams: PageProps['searchParams']): Params | string {
       endDate === undefined
     )
       throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
+
     const start = parseDate(startDate, 'start');
     const end = parseDate(endDate, 'end');
     if (start.valueOf() >= end.valueOf()) throw new Error(ERROR_CODES.BAD_DATE_ORDER);
@@ -115,7 +80,96 @@ export function getRiParams(searchParams: PageProps['searchParams']) {
     if (
       variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable))
     ) {
-      return { ...params, vars: variables };
+      return { ...params, vars: variables as RiBuoyViewerVariable[] };
+    }
+    throw new Error(ERROR_CODES.INVALID_VARS);
+  } catch (ex) {
+    return (ex as { message: string }).message;
+  }
+}
+
+export function getMaParams(searchParams: PageProps['searchParams']) {
+  try {
+    if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
+
+    // Get relevant data from search params.
+    const params = getParams(searchParams);
+    if (typeof params === 'string') return params;
+
+    const { buoys, start, end } = params;
+    const vars = searchParams['vars'];
+
+    if (buoys === undefined && vars === undefined && start === undefined && end === undefined)
+      throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
+
+    if (start.valueOf() >= end.valueOf()) throw new Error(ERROR_CODES.BAD_DATE_ORDER);
+
+    if (vars === undefined) throw new Error(ERROR_CODES.NO_VARS);
+    if (vars instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
+    const variables = vars.split(',');
+
+    if (!variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
+      throw new Error(ERROR_CODES.INVALID_VARS);
+
+    return {
+      buoys: buoys,
+      vars: variables as MaBuoyViewerVariable[],
+      start: start,
+      end: end,
+    };
+  } catch (ex) {
+    return (ex as { message: string }).message;
+  }
+}
+
+// function parseVariables(variablesParam: Param, region) {
+//   if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
+//   if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
+//   const variables = variablesParam.split(',');
+//   if (region === 'ri') {
+//     if (variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable)))
+//       return variables as RiBuoyViewerVariable[];
+//   } else if (region === 'ma') {
+//     if (variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
+//       return variables as MaBuoyViewerVariable[];
+//   }
+//   throw new Error(ERROR_CODES.INVALID_VARS);
+// }
+// export function getMaParams(searchParams: PageProps['searchParams']) {
+//   try {
+//     if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
+//     const params = getParams(searchParams);
+//     const variablesParam = searchParams['vars'];
+//     if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
+//     if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
+//     const variables = variablesParam.split(',');
+//     if (typeof params === 'string') {
+//       return params;
+//     }
+//     if (
+//       variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable))
+//     ) {
+//       return { ...params, vars: variables as MaBuoyViewerVariable[] };
+//     }
+//     throw new Error(ERROR_CODES.INVALID_VARS);
+//   } catch (ex) {
+//     return (ex as { message: string }).message;
+//   }
+// }
+
+export function getPlanktonParams(searchParams: PageProps['searchParams']) {
+  try {
+    if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
+    const params = getParams(searchParams);
+    const variablesParam = searchParams['vars'];
+    if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
+    if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
+    const variables = variablesParam.split(',');
+    if (typeof params === 'string') {
+      return params;
+    }
+    if (variables.every((vari) => PLANKTON_VARIABLES.includes(vari as PlanktonVariable))) {
+      return { ...params, vars: variables as PlanktonVariable[] };
     }
     throw new Error(ERROR_CODES.INVALID_VARS);
   } catch (ex) {
@@ -128,26 +182,6 @@ export function parseBuoyIds(buoysParam: Param) {
   if (buoysParam instanceof Array) throw new Error(ERROR_CODES.BAD_BUOYS);
   return buoysParam.split(',');
 }
-
-// export function parseMaVariables(variablesParam: Param): MaBuoyViewerVariable[] {
-//   if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
-//   if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
-//   const variables = variablesParam.split(',');
-//   if (variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable)))
-//     return variables as MaBuoyViewerVariable[];
-
-//   throw new Error(ERROR_CODES.INVALID_VARS);
-// }
-
-// export function parsePlanktonVariables(variablesParam: Param): PlanktonVariable[] {
-//   if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
-//   if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
-//   const variables = variablesParam.split(',');
-//   if (variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable)))
-//     return variables as PlanktonVariable[];
-
-//   throw new Error(ERROR_CODES.INVALID_VARS);
-// }
 
 function parseDate(dateParam: Param, dateType: 'start' | 'end') {
   if (dateParam === undefined)
