@@ -9,14 +9,14 @@ import {
   BuoyVariables,
   DownloadBuoyData,
 } from '@/components';
-import { PageProps } from '@/types';
+import type { PageProps } from '@/types';
 import { fetchWeatherData } from '@/utils/data';
 import { fetchMaSummaryData, fetchMaBuoyCoordinates, fetchMaBuoyData } from '@/utils/data/api/buoy';
 import { makeCommaSepList } from '@/utils/fns';
-import { ERROR_CODES, getParams } from '@/utils/fns/getParams';
+import { ERROR_CODES, getMaParams } from '@/utils/fns/getParams';
 
 export default async function MassachusettsBuoyData({ searchParams }: PageProps) {
-  const parsed = getParams(searchParams, 'ma');
+  const parsed = getMaParams(searchParams);
   const buoyData = await fetchMaSummaryData();
   const buoyCoords = await fetchMaBuoyCoordinates();
 

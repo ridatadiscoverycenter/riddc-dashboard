@@ -11,11 +11,11 @@ import {
 } from '@/components';
 import { PageProps } from '@/types';
 import { fetchRiSummaryData, fetchRiBuoyCoordinates, fetchRiBuoyData } from '@/utils/data/api/buoy';
-import { ERROR_CODES, getParams, makeCommaSepList } from '@/utils/fns';
+import { ERROR_CODES, getRiParams, makeCommaSepList } from '@/utils/fns';
 import { fetchWeatherData } from '@/utils/data';
 
 export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
-  const parsed = getParams(searchParams, 'ri');
+  const parsed = getRiParams(searchParams);
   const buoyData = await fetchRiSummaryData();
   const buoyCoords = await fetchRiBuoyCoordinates();
 
