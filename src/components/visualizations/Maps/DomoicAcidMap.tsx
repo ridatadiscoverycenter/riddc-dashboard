@@ -286,7 +286,7 @@ function getProgressBarClasses(value: number, min: number, max: number) {
     'bg-green-500 dark:bg-green-300',
     'bg-amber-500 dark:bg-amber-300',
     'bg-red-500 dark:bg-red-400',
-  ]; 
+  ];
   const valuePercent = (value - min) / (max - min);
   return `${PROGRESS_BAR_WIDTHS[Math.round(valuePercent * 10)]} ${PROGRESS_BAR_COLORS[Math.floor(valuePercent * 2.999)]}`;
 }
