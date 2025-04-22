@@ -27,16 +27,11 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
     () => Array.from(new Set(samples.map(({ pDA }) => pDA))),
     [samples]
   );
-  const rangeNormDA = React.useMemo(
-    () => Array.from(new Set(samples.map(({ normDA }) => normDA))),
-    [samples]
-  );
   const rangeStations = React.useMemo(
     () => Array.from(new Set(samples.map(({ stationName }) => stationName))),
     [samples]
   );
   const [selectedDateIndex, setSelectedDate] = React.useState(0);
-  const [variable, setVariable] = React.useState<'pDA' | 'normDA'>('normDA');
   const selectedDate = React.useMemo(
     () => sampleDates[selectedDateIndex],
     [sampleDates, selectedDateIndex]
@@ -95,8 +90,8 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
           features: samplesAtDate,
         },
       });
-      const minVar = Math.min(...(variable === 'normDA' ? rangeNormDA : rangePDA));
-      const maxVar = Math.max(...(variable === 'normDA' ? rangeNormDA : rangePDA));
+      const minVar = Math.min(...rangePDA);
+      const maxVar = Math.max(...rangePDA);
       const midVar = (maxVar + minVar) / 2;
       map.current.addLayer({
         id: 'da-circles',
@@ -106,7 +101,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
           'circle-color': [
             'interpolate',
             ['linear'],
-            ['get', variable],
+            ['get', 'pDA'],
             minVar,
             '#00c951',
             midVar,
@@ -118,7 +113,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
           'circle-radius': [
             'interpolate',
             ['linear'],
-            ['get', variable],
+            ['get', 'pDA'],
             minVar,
             10,
             midVar,
@@ -158,7 +153,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
             );
             popup.setLngLat(e.lngLat);
             popup.setHTML(
-              `<div style="display: flex; flex-flow: column; gap: 2px;"><h3 style="color: black; font-weight: bold">${station.stationName}</h3>${sample === undefined ? '' : `<p style="color: black">${Math.round(sample.properties.normDA * 1000) / 1000} ng of DA / L</p>`}</div>`
+              `<div style="display: flex; flex-flow: column; gap: 2px;"><h3 style="color: black; font-weight: bold">${station.stationName}</h3>${sample === undefined ? '' : `<p style="color: black">${Math.round(sample.properties.pDA * 1000) / 1000} ng of DA / L</p>`}</div>`
             );
             popup.addTo(map.current);
           }
@@ -174,18 +169,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
         map.current.removeImage('buoy-marker');
       };
     }
-  }, [
-    map,
-    loaded,
-    samples,
-    stations,
-    selectedDate,
-    rangeNormDA,
-    rangePDA,
-    variable,
-    popup,
-    samplesAtDate,
-  ]);
+  }, [map, loaded, samples, stations, selectedDate, rangePDA, popup, samplesAtDate]);
   return (
     <>
       <section className="full-bleed w-full min-h-[70vh] relative p-0 my-0">
@@ -205,19 +189,13 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
                   <li key={stationName} className="flex flex-col">
                     <h3>{stationName}</h3>
                     <p className="text-sm text-slate-600 dark:text-slate-300">
-                      {Math.round(
-                        (variable === 'normDA' ? sample.properties.normDA : sample.properties.pDA) *
-                          1000
-                      ) / 1000}{' '}
-                      ng of DA / L of seawater
+                      {Math.round(sample.properties.pDA * 1000) / 1000} ng of DA / L of seawater
                     </p>
                     <div
                       className={`rounded-sm not-sr-only h-3 ${getProgressBarClasses(
-                        variable === 'normDA' ? sample.properties.normDA : sample.properties.pDA,
-                        variable === 'normDA' ? rangeNormDA[0] : rangePDA[0],
-                        variable === 'normDA'
-                          ? rangeNormDA[rangeNormDA.length - 1]
-                          : rangePDA[rangePDA.length - 1]
+                        sample.properties.pDA,
+                        rangePDA[0],
+                        rangePDA[rangePDA.length - 1]
                       )} transition-all duration-200`}
                     />
                   </li>
