@@ -286,40 +286,7 @@ function getProgressBarClasses(value: number, min: number, max: number) {
     'bg-green-500 dark:bg-green-300',
     'bg-amber-500 dark:bg-amber-300',
     'bg-red-500 dark:bg-red-400',
-  ]; //['bg-cyan-400', 'bg-amber-200', 'bg-green-300'];
+  ]; 
   const valuePercent = (value - min) / (max - min);
   return `${PROGRESS_BAR_WIDTHS[Math.round(valuePercent * 10)]} ${PROGRESS_BAR_COLORS[Math.floor(valuePercent * 2.999)]}`;
-}
-
-type DateSelectorProps = {
-  value: number;
-  setValue: (newValue: number) => void;
-  max: number;
-  dateRange: { index: number; date: Date }[];
-  className: string;
-};
-
-function DateSelector({ value, setValue, max, dateRange }: DateSelectorProps) {
-  const id = React.useMemo(() => crypto.randomUUID(), []);
-  return (
-    <>
-      <input
-        type="range"
-        className="w-full"
-        min={1}
-        max={max}
-        step={1}
-        value={value}
-        onChange={(evt) => setValue(evt.target.valueAsNumber)}
-        list={id}
-      />
-      <datalist id={id} className="flex flex-col justify-between items-center">
-        {dateRange.map(({ index, date }) => (
-          <option key={index} value={index} label={formatDate(date, 'MM/dd/yyyy')}>
-            {formatDate(date, 'MM/dd/yyyy')}
-          </option>
-        ))}
-      </datalist>
-    </>
-  );
 }
