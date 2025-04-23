@@ -228,8 +228,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
         <datalist id="beep" className="flex flex-row w-full justify-between">
           {[
             1,
-            Math.ceil(sampleDates.length / 3),
-            Math.ceil((sampleDates.length * 2) / 3),
+            Math.ceil(sampleDates.length / 2),
             sampleDates.length,
           ].map((index) => (
             <option

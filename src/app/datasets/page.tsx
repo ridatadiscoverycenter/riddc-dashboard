@@ -49,7 +49,12 @@ const DATASETS = [
   {
     name: 'Domoic Acid',
     href: '/datasets/domoic-acid',
-    description: () => <>Coming Soon!</>,
+    description: () => (
+      <>
+        A map of Domoic Acid concentrations in Narragansett Bay collected between September 2017 and
+        November 2019 as part of a URI by Bertin and Jenkins.
+      </>
+    ),
   },
   {
     name: 'Fish Trawl Survey',
