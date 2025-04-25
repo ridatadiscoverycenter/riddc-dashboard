@@ -1,18 +1,8 @@
 import { PageProps } from '@/types';
-import {
-  MA_BUOY_VIEWER_VARIABLES,
-  MaBuoyViewerVariable,
-  RI_BUOY_VIEWER_VARIABLES,
-  RiBuoyViewerVariable,
-} from '../data/api/buoy';
+import { RI_BUOY_VIEWER_VARIABLES, RiBuoyViewerVariable } from '../data/api/buoy';
 
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
 
-// export type Params = {
-//   buoys: ReturnType<typeof parseBuoyIds>;
-//   start: ReturnType<typeof parseDate>;
-//   end: ReturnType<typeof parseDate>;
-// };
 export type Params = {
   buoys: Param;
   start: Param;
@@ -41,22 +31,6 @@ export const ERROR_CODES = {
   INVALID_VARS:
     'An invalid variable was selected for the visualization. Select a different variable to view the vizualization.',
 };
-
-export function getParams(searchParams: PageProps['searchParams']): Params | string {
-  try {
-    if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-    // Get relevant data from search params.
-
-    return {
-      buoys: buoys,
-      start: startDate,
-      end: endDate,
-      vars: variables,
-    };
-  } catch (ex) {
-    return (ex as { message: string }).message;
-  }
-}
 
 export function getRiVars(variablesParam: Param): RiBuoyViewerVariable[] | string {
   try {
