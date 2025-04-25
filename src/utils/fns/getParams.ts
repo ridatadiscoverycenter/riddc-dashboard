@@ -8,10 +8,16 @@ import {
 
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
 
-type Params = {
-  buoys: ReturnType<typeof parseBuoyIds>;
-  start: ReturnType<typeof parseDate>;
-  end: ReturnType<typeof parseDate>;
+// export type Params = {
+//   buoys: ReturnType<typeof parseBuoyIds>;
+//   start: ReturnType<typeof parseDate>;
+//   end: ReturnType<typeof parseDate>;
+// };
+export type Params = {
+  buoys: Param;
+  start: Param;
+  end: Param;
+  vars: Param;
 };
 
 export const ERROR_CODES = {
@@ -36,77 +42,30 @@ export const ERROR_CODES = {
     'An invalid variable was selected for the visualization. Select a different variable to view the vizualization.',
 };
 
-function getParams(searchParams: PageProps['searchParams']): Params | string {
+export function getParams(searchParams: PageProps['searchParams']): Params | string {
   try {
     if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-
     // Get relevant data from search params.
-    const buoys = searchParams['buoys'];
-    const variables = searchParams['vars'];
-    const startDate = searchParams['start'];
-    const endDate = searchParams['end'];
-    if (
-      buoys === undefined &&
-      variables === undefined &&
-      startDate === undefined &&
-      endDate === undefined
-    )
-      throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
 
-    const start = parseDate(startDate, 'start');
-    const end = parseDate(endDate, 'end');
-    if (start.valueOf() >= end.valueOf()) throw new Error(ERROR_CODES.BAD_DATE_ORDER);
     return {
-      buoys: parseBuoyIds(buoys),
-      start: parseDate(startDate, 'start'),
-      end: parseDate(endDate, 'end'),
+      buoys: buoys,
+      start: startDate,
+      end: endDate,
+      vars: variables,
     };
   } catch (ex) {
     return (ex as { message: string }).message;
   }
 }
 
-export function getRiParams(
-  searchParams: PageProps['searchParams']
-): string | (Params & { vars: RiBuoyViewerVariable[] }) {
+export function getRiVars(variablesParam: Param): RiBuoyViewerVariable[] | string {
   try {
-    if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-
-    const params = getParams(searchParams);
-    if (typeof params === 'string') return params;
-
-    const variablesParam = searchParams['vars'];
-
     if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
     if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
     const variables = variablesParam.split(',');
 
     if (variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable)))
-      return { ...params, vars: variables as RiBuoyViewerVariable[] };
-    throw new Error(ERROR_CODES.INVALID_VARS);
-  } catch (ex) {
-    return (ex as { message: string }).message;
-  }
-}
-
-export function getMaParams(
-  searchParams: PageProps['searchParams']
-): string | (Params & { vars: MaBuoyViewerVariable[] }) {
-  try {
-    if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-
-    // Get relevant data from search params.
-    const params = getParams(searchParams);
-    if (typeof params === 'string') return params;
-
-    const variablesParam = searchParams['vars'];
-
-    if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
-    if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
-    const variables = variablesParam.split(',');
-
-    if (variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
-      return { ...params, vars: variables as MaBuoyViewerVariable[] };
+      return variables as RiBuoyViewerVariable[];
     throw new Error(ERROR_CODES.INVALID_VARS);
   } catch (ex) {
     return (ex as { message: string }).message;
@@ -119,7 +78,7 @@ export function parseBuoyIds(buoysParam: Param) {
   return buoysParam.split(',');
 }
 
-function parseDate(dateParam: Param, dateType: 'start' | 'end') {
+export function parseDate(dateParam: Param, dateType: 'start' | 'end') {
   if (dateParam === undefined)
     throw new Error(
       dateType === 'start' ? ERROR_CODES.MISSING_START_DATE : ERROR_CODES.MISSING_END_DATE
@@ -132,4 +91,12 @@ function parseDate(dateParam: Param, dateType: 'start' | 'end') {
   if (isNaN(parsedStartDate.valueOf()))
     throw new Error(dateType === 'start' ? ERROR_CODES.BAD_START_DATE : ERROR_CODES.BAD_END_DATE);
   return parsedStartDate;
+}
+
+export function parseDates(startParam: Param, endParam: Param) {
+  const start = parseDate(startParam, 'start');
+  const end = parseDate(endParam, 'end');
+  if (start.valueOf() >= end.valueOf()) throw new Error(ERROR_CODES.BAD_DATE_ORDER);
+
+  return { start: start, end: end };
 }
