@@ -10,9 +10,53 @@ import {
   BuoyVariables,
 } from '@/components';
 import { PageProps } from '@/types';
-import { fetchRiSummaryData, fetchRiBuoyCoordinates, fetchRiBuoyData } from '@/utils/data/api/buoy';
-import { ERROR_CODES, getRiParams, makeCommaSepList } from '@/utils/fns';
+import {
+  fetchRiSummaryData,
+  fetchRiBuoyCoordinates,
+  fetchRiBuoyData,
+  RI_BUOY_VIEWER_VARIABLES,
+  RiBuoyViewerVariable,
+} from '@/utils/data/api/buoy';
+import { ERROR_CODES, makeCommaSepList, parseBuoyIds, parseDates } from '@/utils/fns';
 import { fetchWeatherData } from '@/utils/data';
+
+function getRiParams(searchParams: PageProps['searchParams']) {
+  try {
+    if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
+
+    // Get relevant data from search params.
+
+    const buoyParam = searchParams['buoys'];
+    const variablesParam = searchParams['vars'];
+    const startDateParam = searchParams['start'];
+    const endDateParam = searchParams['end'];
+
+    if (
+      buoyParam === undefined &&
+      variablesParam === undefined &&
+      startDateParam === undefined &&
+      endDateParam === undefined
+    )
+      throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
+
+    if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
+    if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
+    const variables = variablesParam.split(',');
+
+    const { start, end } = parseDates(startDateParam, endDateParam);
+
+    if (variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable)))
+      return {
+        buoys: parseBuoyIds(buoyParam),
+        start: start,
+        end: end,
+        vars: variables as RiBuoyViewerVariable[],
+      };
+    throw new Error(ERROR_CODES.INVALID_VARS);
+  } catch (ex) {
+    return (ex as { message: string }).message;
+  }
+}
 
 export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
   const parsed = getRiParams(searchParams);

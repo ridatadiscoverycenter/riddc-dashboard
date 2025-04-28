@@ -191,21 +191,17 @@ export async function fetchMaBuoyData(
   startDate: Date,
   endDate: Date
 ) {
-  try {
-    const fetchedMaBuoyData = await fetchBuoyData(
-      'ma-buoy',
-      ids,
-      vars.map(viewerToErddap),
-      startDate,
-      endDate
-    );
-    if (validateFetchedMaBuoyData(fetchedMaBuoyData)) {
-      return fetchedMaBuoyData.data.map(formatMaBuoyData);
-    } else {
-      throw new Error('Invalid data received when fetching MA Buoy Summary Data.');
-    }
-  } catch (ex) {
-    return (ex as { message: string }).message;
+  const fetchedMaBuoyData = await fetchBuoyData(
+    'ma-buoy',
+    ids,
+    vars.map(viewerToErddap),
+    startDate,
+    endDate
+  );
+  if (validateFetchedMaBuoyData(fetchedMaBuoyData)) {
+    return fetchedMaBuoyData.data.map(formatMaBuoyData);
+  } else {
+    throw new Error('Invalid data received when fetching MA Buoy Summary Data.');
   }
 }
 

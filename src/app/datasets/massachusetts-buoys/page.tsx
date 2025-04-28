@@ -19,14 +19,13 @@ import {
   MA_BUOY_VIEWER_VARIABLES,
 } from '@/utils/data/api/buoy';
 import { makeCommaSepList } from '@/utils/fns';
-import { ERROR_CODES, parseBuoyIds, parseDate } from '@/utils/fns/getParams';
+import { ERROR_CODES, parseBuoyIds, parseDates } from '@/utils/fns/getParams';
 
 function getMaParams(searchParams: PageProps['searchParams']) {
   try {
     if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
 
     // Get relevant data from search params.
-
     const buoyParam = searchParams['buoys'];
     const variablesParam = searchParams['vars'];
     const startDateParam = searchParams['start'];
@@ -44,15 +43,13 @@ function getMaParams(searchParams: PageProps['searchParams']) {
     if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
     const variables = variablesParam.split(',');
 
-    const start = parseDate(startDateParam, 'start');
-    const end = parseDate(endDateParam, 'end');
-    if (start.valueOf() >= end.valueOf()) throw new Error(ERROR_CODES.BAD_DATE_ORDER);
+    const { start, end } = parseDates(startDateParam, endDateParam);
 
     if (variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
       return {
         buoys: parseBuoyIds(buoyParam),
-        start: parseDate(startDateParam, 'start'),
-        end: parseDate(endDateParam, 'end'),
+        start: start,
+        end: end,
         vars: variables as MaBuoyViewerVariable[],
       };
     throw new Error(ERROR_CODES.INVALID_VARS);
