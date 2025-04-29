@@ -198,25 +198,25 @@ function formatSummaryData(fetchedData: FetchedPlanktonSummary) {
     stationName: fetchedData.station_name,
     time: new Date(fetchedData.time),
     buoyId: fetchedData.buoyId,
-    silicaBottom: fetchedData.SilicaBottom,
+    SilicaBottom: fetchedData.SilicaBottom,
     NH4Surface: fetchedData.NH4Surface,
-    salinityBottom: fetchedData.SalinityBottom,
-    chlorophyllSurface: fetchedData.ChlorophyllSurface,
-    waterTempBottom: fetchedData.WaterTempBottom,
+    SalinityBottom: fetchedData.SalinityBottom,
+    ChlorophyllSurface: fetchedData.ChlorophyllSurface,
+    WaterTempBottom: fetchedData.WaterTempBottom,
     NH4Bottom: fetchedData.NH4Bottom,
     NO3Bottom: fetchedData.NO3Bottom,
     NO2Surface: fetchedData.NO2Surface,
     DINSurface: fetchedData.DINSurface,
     DIPSurface: fetchedData.DIPSurface,
     NO2Bottom: fetchedData.NO2Bottom,
-    waterTempSurface: fetchedData.WaterTempSurface,
-    chlorophyllBottom: fetchedData.ChlorophyllBottom,
-    phaeoBottom: fetchedData.PhaeoBottom,
-    silicaSurface: fetchedData.SilicaSurface,
-    salinitySurface: fetchedData.SalinitySurface,
+    WaterTempSurface: fetchedData.WaterTempSurface,
+    ChlorophyllBottom: fetchedData.ChlorophyllBottom,
+    PhaeoBottom: fetchedData.PhaeoBottom,
+    SilicaSurface: fetchedData.SilicaSurface,
+    SalinitySurface: fetchedData.SalinitySurface,
     NO3Surface: fetchedData.NO3Surface,
     DINBottom: fetchedData.DINBottom,
-    phaeoSurface: fetchedData.PhaeoSurface,
+    PhaeoSurface: fetchedData.PhaeoSurface,
     DIPBottom: fetchedData.DIPBottom,
   };
 }
@@ -225,6 +225,7 @@ export type PlanktonSummaryData = ReturnType<typeof formatSummaryData>;
 
 export async function fetchPlanktonSummary(bustCache = false) {
   const fetchedSummaryData = await fetchSummaryData('plankton', bustCache);
+  
   if (validateFetchedSummary(fetchedSummaryData)) {
     return fetchedSummaryData.map(formatSummaryData);
   } else {

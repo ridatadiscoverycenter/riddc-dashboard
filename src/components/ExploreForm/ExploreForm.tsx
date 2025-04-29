@@ -8,6 +8,7 @@ import {
   MA_BUOY_VIEWER_VARIABLES,
 } from '@/utils/data/api/buoy';
 import { Multiselect, Label, Input, Form } from '@/components';
+import { PLANKTON_VARIABLES } from '@/utils/data/api/buoy/plankton';
 
 type InitialFormData = {
   buoys: string[];
@@ -31,6 +32,8 @@ const DEFAULT_INITIAL_DATA: InitialFormData = {
   vars: [],
 };
 
+// TODO: make this take in the buoy viewer variable?
+// TODO: plankton only has one buoy -- how to handle?
 export function ExploreForm({
   buoys,
   location,
@@ -53,7 +56,9 @@ export function ExploreForm({
       router.push(
         location === 'ri'
           ? `/datasets/rhode-island-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
-          : `/datasets/massachusetts-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+          : location === 'ma'
+            ? `/datasets/massachusetts-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+            : `/datasets/${location}?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
       );
       router.refresh();
     },
@@ -70,7 +75,13 @@ export function ExploreForm({
       />
       <Multiselect
         label="Variables (up to four)"
-        options={location === 'ri' ? [...RI_BUOY_VIEWER_VARIABLES] : [...MA_BUOY_VIEWER_VARIABLES]}
+        options={
+          location === 'ri'
+            ? [...RI_BUOY_VIEWER_VARIABLES]
+            : location === 'ma'
+              ? [...MA_BUOY_VIEWER_VARIABLES]
+              : [...PLANKTON_VARIABLES]
+        }
         onChange={setSelectedVars}
         init={init.vars}
       />

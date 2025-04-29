@@ -2,13 +2,16 @@
 import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
-import type { PlanktonData, PlanktonVariable } from '@/utils/data/api/buoy/plankton';
-import { PLANKTON_VARIABLES } from '@/utils/data/api/buoy/plankton';
+import {
+  PLANKTON_VARIABLES,
+  type PlanktonSummaryData,
+  type PlanktonVariable,
+} from '@/utils/data/api/buoy/plankton';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading, Select } from '@/components';
 
-type PlanktonProps = {
-  data: PlanktonData[];
+type PlanktonBuoySummaryProps = {
+  data: PlanktonSummaryData[];
 };
 
 function getGraphicWidth(size: Size | undefined) {
@@ -19,13 +22,13 @@ function getGraphicWidth(size: Size | undefined) {
   return 550;
 }
 
-export function PlanktonSummary({ data }: PlanktonProps) {
+export function PlanktonSummary({ data }: PlanktonBuoySummaryProps) {
   const size = useScreenSize();
-  const [variable, setVariable] = React.useState<PlanktonVariable>('ChlorophyllBottom');
-  const planktonSpec = React.useMemo<VisualizationSpec>(
+  const [variable, setVariable] = React.useState<PlanktonVariable>('SilicaBottom');
+  const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
-      description: 'Plankton Data Summary Chart',
+      description: 'Buoy Data Summary Chart',
       background: 'transparent',
       width: getGraphicWidth(size),
       height: 300,
@@ -84,11 +87,14 @@ export function PlanktonSummary({ data }: PlanktonProps) {
           domain: false,
           title: 'Month/Year',
           labelOverlap: 'parity',
+          titleFont: 'serif',
+          labelFont: 'serif',
         },
         {
           orient: 'left',
           scale: 'y',
           domain: false,
+          labelFont: 'serif',
         },
       ],
       legends: [
@@ -97,6 +103,8 @@ export function PlanktonSummary({ data }: PlanktonProps) {
           fill: 'color',
           type: 'gradient',
           gradientLength: { signal: 'height' },
+          titleFont: 'serif',
+          labelFont: 'serif',
         },
       ],
       marks: [
@@ -151,7 +159,7 @@ export function PlanktonSummary({ data }: PlanktonProps) {
         <Vega
           className="flex flex-col items-center justify-center"
           actions={false}
-          spec={planktonSpec}
+          spec={buoySummarySpec}
         />
       )}
     </>

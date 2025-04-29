@@ -26,6 +26,7 @@ export default async function Plankton({ searchParams }: PageProps) {
   const parsed = getPlanktonParams(searchParams);
   const buoyCoords = await fetchPlanktonCoordinates();
   const data = await fetchPlanktonSummary();
+  console.log(Object.keys(data[0]));
 
   let graphBlock: React.ReactNode;
   if (typeof parsed === 'string') {
@@ -87,7 +88,7 @@ export default async function Plankton({ searchParams }: PageProps) {
       form={
         <ExploreForm
           buoys={buoyCoords}
-          location="ri"
+          location="plankton"
           dateBounds={{
             startDate: new Date('2003-05-22'),
             endDate: new Date('2019-12-31'),
