@@ -68,7 +68,7 @@ export function PlanktonSummary({ data }: PlanktonProps) {
         {
           name: 'color',
           type: 'linear',
-          range: { schema: 'tealblues' },
+          range: { scheme: 'tealblues' },
           domain: { data: 'data', field: variable },
           reverse: false,
           zero: false,

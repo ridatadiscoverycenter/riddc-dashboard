@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { fetchBuoyData, fetchBuoyCoordinates } from './buoy';
+import { fetchBuoyData, fetchBuoyCoordinates, fetchSummaryData } from './buoy';
 
 export const PLANKTON_VARIABLES = [
   'SilicaBottom',
@@ -77,7 +77,7 @@ export async function fetchPlanktonData(
 ) {
   const planktonData = await fetchBuoyData('plankton', ids, vars, startDate, endDate);
   if (validateFetchedPlanktonData(planktonData)) {
-    return planktonData.data;
+    return planktonData.data.map(formatData);
   } else {
     throw new Error('Invalid data received when fetching plankton data.');
   }
@@ -97,7 +97,7 @@ const ZodFetchedBuoyCoordinate = z.object({
   buoyId: z.string(),
 });
 
-function validateFetchedMaBuoyCoordinate(
+function validateFetchedBuoyCoordinate(
   coordinates: unknown[]
 ): coordinates is FetchedBuoyCoordinate[] {
   try {
@@ -121,9 +121,113 @@ export type BuoyCoordinate = ReturnType<typeof formatBuoyCoordinate>;
 
 export async function fetchPlanktonCoordinates() {
   const fetchedCoordinates = await fetchBuoyCoordinates('plankton');
-  if (validateFetchedMaBuoyCoordinate(fetchedCoordinates)) {
+  if (validateFetchedBuoyCoordinate(fetchedCoordinates)) {
     return fetchedCoordinates.map(formatBuoyCoordinate);
   } else {
     throw new Error('Invalid data received when fetching MA Buoy Coordinates');
+  }
+}
+
+/**
+ * Buoy Summary Data
+ */
+
+export type FetchedPlanktonSummary = {
+  SilicaBottom: number;
+  NH4Surface: number;
+  SalinityBottom: number;
+  ChlorophyllSurface: number;
+  WaterTempBottom: number;
+  NH4Bottom: number;
+  NO3Bottom: number;
+  NO2Surface: number;
+  DINSurface: number;
+  DIPSurface: number;
+  NO2Bottom: number;
+  WaterTempSurface: number;
+  ChlorophyllBottom: number;
+  PhaeoBottom: number;
+  SilicaSurface: number;
+  SalinitySurface: number;
+  NO3Surface: number;
+  DINBottom: number;
+  PhaeoSurface: number;
+  DIPBottom: number;
+  station_name: string;
+  time: string;
+  buoyId: string;
+};
+
+const ZodFetchedPlanktonSummary = z.object({
+  SilicaBottom: z.number(),
+  NH4Surface: z.number(),
+  SalinityBottom: z.number(),
+  ChlorophyllSurface: z.number(),
+  WaterTempBottom: z.number(),
+  NH4Bottom: z.number(),
+  NO3Bottom: z.number(),
+  NO2Surface: z.number(),
+  DINSurface: z.number(),
+  DIPSurface: z.number(),
+  NO2Bottom: z.number(),
+  WaterTempSurface: z.number(),
+  ChlorophyllBottom: z.number(),
+  PhaeoBottom: z.number(),
+  SilicaSurface: z.number(),
+  SalinitySurface: z.number(),
+  NO3Surface: z.number(),
+  DINBottom: z.number(),
+  PhaeoSurface: z.number(),
+  DIPBottom: z.number(),
+  station_name: z.string(),
+  time: z.string(),
+  buoyId: z.string(),
+});
+
+function validateFetchedSummary(summary: unknown[]): summary is FetchedPlanktonSummary[] {
+  try {
+    z.array(ZodFetchedPlanktonSummary).parse(summary);
+    return true;
+  } catch (ex) {
+    return false;
+  }
+}
+
+function formatSummaryData(fetchedData: FetchedPlanktonSummary) {
+  return {
+    stationName: fetchedData.station_name,
+    time: new Date(fetchedData.time),
+    buoyId: fetchedData.buoyId,
+    silicaBottom: fetchedData.SilicaBottom,
+    NH4Surface: fetchedData.NH4Surface,
+    salinityBottom: fetchedData.SalinityBottom,
+    chlorophyllSurface: fetchedData.ChlorophyllSurface,
+    waterTempBottom: fetchedData.WaterTempBottom,
+    NH4Bottom: fetchedData.NH4Bottom,
+    NO3Bottom: fetchedData.NO3Bottom,
+    NO2Surface: fetchedData.NO2Surface,
+    DINSurface: fetchedData.DINSurface,
+    DIPSurface: fetchedData.DIPSurface,
+    NO2Bottom: fetchedData.NO2Bottom,
+    waterTempSurface: fetchedData.WaterTempSurface,
+    chlorophyllBottom: fetchedData.ChlorophyllBottom,
+    phaeoBottom: fetchedData.PhaeoBottom,
+    silicaSurface: fetchedData.SilicaSurface,
+    salinitySurface: fetchedData.SalinitySurface,
+    NO3Surface: fetchedData.NO3Surface,
+    DINBottom: fetchedData.DINBottom,
+    phaeoSurface: fetchedData.PhaeoSurface,
+    DIPBottom: fetchedData.DIPBottom,
+  };
+}
+
+export type PlanktonSummaryData = ReturnType<typeof formatSummaryData>;
+
+export async function fetchPlanktonSummary(bustCache = false) {
+  const fetchedSummaryData = await fetchSummaryData('plankton', bustCache);
+  if (validateFetchedSummary(fetchedSummaryData)) {
+    return fetchedSummaryData.map(formatSummaryData);
+  } else {
+    throw new Error('Invalid data received when fetching Summary Data.');
   }
 }
