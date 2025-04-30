@@ -1,7 +1,5 @@
 import {
   GraphErrorPanel,
-  MaBuoySummary,
-  Card,
   DataGraph,
   ExternalLink,
   DownloadBuoyData,
@@ -22,11 +20,9 @@ import {
 import { ERROR_CODES, getPlanktonParams, makeCommaSepList } from '@/utils/fns';
 
 export default async function Plankton({ searchParams }: PageProps) {
-  const timerange = await fetchBuoyTimeRange('ri-buoy');
   const parsed = getPlanktonParams(searchParams);
   const buoyCoords = await fetchPlanktonCoordinates();
   const data = await fetchPlanktonSummary();
-  console.log(Object.keys(data[0]));
 
   let graphBlock: React.ReactNode;
   if (typeof parsed === 'string') {
@@ -53,33 +49,35 @@ export default async function Plankton({ searchParams }: PageProps) {
         />
       );
     } else {
-      <DataGraph
-        description={
-          <>
-            This plot compares {makeCommaSepList(parsed.vars)} between{' '}
-            {parsed.start.toLocaleDateString()} and {parsed.end.toLocaleDateString()} at{' '}
-            {makeCommaSepList(
-              parsed.buoys.map(
-                (bid) => data.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
-              )
-            )}
-            . You can hover over the lines to see more specific data. The weather data below is
-            sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
-          </>
-        }
-        weather={weatherData}
-        download={
-          <DownloadBuoyData
-            variables={parsed.vars}
-            region="plankton"
-            buoys={parsed.buoys}
-            start={parsed.start}
-            end={parsed.end}
-          />
-        }
-      >
-        <BuoyVariables data={planktonData} height={200} />
-      </DataGraph>;
+      graphBlock = (
+        <DataGraph
+          description={
+            <>
+              This plot compares {makeCommaSepList(parsed.vars)} between{' '}
+              {parsed.start.toLocaleDateString()} and {parsed.end.toLocaleDateString()} at{' '}
+              {makeCommaSepList(
+                parsed.buoys.map(
+                  (bid) => data.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
+                )
+              )}
+              . You can hover over the lines to see more specific data. The weather data below is
+              sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
+            </>
+          }
+          weather={weatherData}
+          download={
+            <DownloadBuoyData
+              variables={parsed.vars}
+              region="plankton"
+              buoys={parsed.buoys}
+              start={parsed.start}
+              end={parsed.end}
+            />
+          }
+        >
+          <BuoyVariables data={planktonData} height={200} />
+        </DataGraph>
+      );
     }
   }
   return (

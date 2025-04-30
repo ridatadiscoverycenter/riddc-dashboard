@@ -6,7 +6,6 @@ import {
   RiBuoyViewerVariable,
 } from '../data/api/buoy';
 import { PLANKTON_VARIABLES, PlanktonVariable } from '../data/api/buoy/plankton';
-import { buoy } from '../data/api';
 
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
 

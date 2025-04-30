@@ -225,7 +225,7 @@ export type PlanktonSummaryData = ReturnType<typeof formatSummaryData>;
 
 export async function fetchPlanktonSummary(bustCache = false) {
   const fetchedSummaryData = await fetchSummaryData('plankton', bustCache);
-  
+
   if (validateFetchedSummary(fetchedSummaryData)) {
     return fetchedSummaryData.map(formatSummaryData);
   } else {
