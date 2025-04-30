@@ -15,12 +15,14 @@ export function useMap() {
     map.current = new maplibregl.Map({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       container: containerRef.current as any,
-      style: `https://api.maptiler.com/maps/backdrop/style.json?key=${API_KEY}`,
+      style: `https://api.maptiler.com/maps/basic/style.json?key=${API_KEY}`,
       // More things can be set here, but I'll ignore them for now.
-      center: [-71.4128, 41.584],
-      zoom: 6.5,
-      minZoom: 7,
+      bounds: [
+        [-71.5, 41.92],
+        [-71.16, 41.42],
+      ],
     });
+    map.current.scrollZoom.disable();
     map.current.on('load', () => {
       setLoaded(true);
     });
