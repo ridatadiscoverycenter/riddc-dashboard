@@ -2,7 +2,7 @@ import React from 'react';
 //import { Link } from "../Link";
 
 const BASE_STYLES =
-  'h-full flex flex-col gap-2 rounded-lg drop-shadow-md hover:drop-shadow-lg transition duration-500 p-4';
+  'h-full flex flex-col gap-2 rounded-lg drop-shadow-md transition duration-500 p-4';
 const COLOR_STYLES = 'bg-white dark:bg-black border-white dark:border-gray-500 border-2';
 
 type CardProps = {

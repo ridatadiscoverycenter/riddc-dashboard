@@ -1,41 +1,106 @@
-import { Card, Link } from '@/components';
+import { Card, ExternalLink, Link } from '@/components';
 
-const DATA_BETTER = [
+const DATASETS = [
   {
-    title: 'ERDDAP',
+    name: 'Rhode Island Buoys',
+    href: '/datasets/rhode-island-buoys',
+    description: () => (
+      <>
+        Collected over 16 years by the{' '}
+        <ExternalLink href="https://dem.ri.gov/environmental-protection-bureau/water-resources/research-monitoring/narraganset-bay-assessment-fixed-site-monitoring">
+          Fixed-Site Monitoring Stations and Data in Narragansett Bay
+        </ExternalLink>
+        . Records 19 values from 13 buoys across Narragansett Bay.
+      </>
+    ),
+  },
+  {
+    name: 'Massachusetts Buoys',
+    href: '/datasets/massachusetts-buoys',
+    description: () => (
+      <>
+        Two years of data from two buoys in Narragansett Bay. Collected by the{' '}
+        <ExternalLink href="https://dem.ri.gov/environmental-protection-bureau/water-resources/research-monitoring/narraganset-bay-assessment-fixed-site-monitoring">
+          Fixed-Site Monitoring Stations and Data in Narragansett Bay
+        </ExternalLink>{' '}
+        with{' '}
+        <ExternalLink href="https://www.mass.gov/orgs/massachusetts-department-of-environmental-protection">
+          MassDEP
+        </ExternalLink>{' '}
+        as the lead agency.
+      </>
+    ),
+  },
+  {
+    name: 'Real Time Data',
+    href: '/datasets/real-time',
+    description: () => <>Coming Soon!</>,
+  },
+  {
+    name: 'Ocean State Ocean Model',
+    href: '/datasets/osom',
+    description: () => <>Coming Soon!</>,
+  },
+  {
+    name: 'Plankton Time Series',
+    href: '/datasets/plankton',
+    description: () => <>Coming Soon!</>,
+  },
+  {
+    name: 'Domoic Acid',
+    href: '/datasets/domoic-acid',
+    description: () => <>Coming Soon!</>,
+  },
+  {
+    name: 'Fish Trawl Survey',
+    href: '/datasets/fish-trawl',
+    description: () => <>Coming Soon!</>,
+  },
+];
+
+const EXTERNAL_RESOURCES = [
+  {
+    name: 'ERDDAP',
     description: 'The database that stores raw data for RIDDC.',
     href: 'https://pricaimcit.services.brown.edu/erddap/index.html',
   },
   {
-    title: 'Narragansett Bay Volume Viewer',
+    name: 'Narragansett Bay Volume Viewer',
     description:
       'An accessible and interactive environment to explore and showcase volumetric Narragansett Bay data.',
     href: 'https://bay-viewer.riddc.brown.edu/',
   },
   {
-    title: 'RIDDC Data Articles',
+    name: 'RIDDC Data Articles',
     description:
       'Articles and jupyter notebooks with stories, exploratory data analyses, and code examples using data stored in ERDDAP.',
     href: 'https://riddc-jupyter-book.web.app/notebooks/fox-kemper/first_example_aquarius.html',
   },
 ];
 
-export default function Home() {
+export default function Datasets() {
   return (
     <>
-      <Link
-        href="/datasets"
-        className="text-2xl py-12 px-6 max-w-[34rem] no-underline font-header my-12 rounded-lg transition-all duration-500 bg-clear-700 hover:bg-clear-900 dark:bg-clear-300 hover:dark:bg-clear-400 shadow-none hover:shadow-lg hover:dark:shadow-slate-500 dark:shadow-white"
-      >
-        Explore our collection of present and historical data from the Narragansett Bay
-      </Link>
-      <h2 className="text-lg">Additional RIDDC Data and Visualizations</h2>
-      <ul className="margin-auto max-w-[1000px] grid sm:grid-cols-1 md:grid-cols-3 gap-4 p-4">
-        {DATA_BETTER.map(({ title, description, href }) => (
-          <li key={title}>
-            <Card className="bg-clear-300 hover:bg-clear-800 dark:bg-clear-100 hover:dark:bg-clear-300">
+      <h1 className="w-full my-auto text-center text-2xl font-header mt-4">Datasets</h1>
+      <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4">
+        {DATASETS.map(({ name, href, description }) => (
+          <li key={href}>
+            <Card className="bg-clear-900 dark:bg-clear-100">
               <h3 className="text-lg font-bold font-header">
-                <Link href={href}>{title}</Link>
+                <Link href={href}>{name}</Link>
+              </h3>
+              <p className="text-sm">{description()}</p>
+            </Card>
+          </li>
+        ))}
+      </ul>
+      <h1 className="w-full my-auto text-center text-2xl font-header mt-4">External Resources</h1>
+      <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4 mb-4">
+        {EXTERNAL_RESOURCES.map(({ name, href, description }) => (
+          <li key={href}>
+            <Card className="bg-clear-900 dark:bg-clear-100">
+              <h3 className="text-lg font-bold font-header">
+                <Link href={href}>{name}</Link>
               </h3>
               <p className="text-sm">{description}</p>
             </Card>
