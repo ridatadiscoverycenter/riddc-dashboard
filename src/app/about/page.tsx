@@ -1,4 +1,4 @@
-import { Card } from '@/components';
+import { Card, Link } from '@/components';
 
 const LEADERSHIP = [
   {
@@ -55,7 +55,7 @@ export default function About() {
         land-use managers, relevant industries, citizen scientists and students can find data on the
         Narragansett Bay ecosystem.
       </p>
-      <h1 className="w-full text-center text-5xl font-header mt-8">Leadership </h1>
+      <h2 className="w-full text-center text-4xl font-header mt-8">Leadership</h2>
       <ul className="margin-auto max-w-[1000px] grid sm:grid-cols-1 md:grid-cols-3 gap-4 p-4">
         {LEADERSHIP.map(({ name, affiliations }) => (
           <li key={name}>
@@ -68,6 +68,12 @@ export default function About() {
           </li>
         ))}
       </ul>
+      <h2 className="w-full text-center text-4xl font-header mt-8">Data Acceptance Guidelines</h2>
+      <p className="margin-auto px-4 mx-4 mb-4 text-lg">
+        Contact us if you want us to host your Narragansett Bay related data! See our data
+        acceptance guidelines{' '}
+        <Link href="https://riddc.brown.edu/files/riddc_data_guidelines.pdf">here</Link>.
+      </p>
     </>
   );
 }
