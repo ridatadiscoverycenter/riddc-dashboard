@@ -1,25 +1,33 @@
-import {
-  ExploreForm,
-  ExternalLink,
-  RiBuoyLocations,
-  MaBuoySummary,
-  BuoyPageSkeleton,
-  DataGraph,
-  GraphErrorPanel,
-  BuoyVariables,
-  DownloadBuoyData,
-} from '@/components';
+import React from 'react';
+import { ExternalLink, DefaultBuoyPage } from '@/components';
+//import { BuoyVariablesCard } from '@/components/visualizations/BuoyVariablesCard/BuoyVariablesCard';
 import { PageProps } from '@/types';
-import { fetchWeatherData } from '@/utils/data';
-import { fetchMaSummaryData, fetchMaBuoyCoordinates, fetchMaBuoyData } from '@/utils/data/api/buoy';
-import { makeCommaSepList } from '@/utils/fns';
-import { ERROR_CODES, getParams } from '@/utils/fns/getParams';
+//import { fetchWeatherData, WeatherData } from '@/utils/data';
+//import {
+//  fetchMaSummaryData,
+//  fetchMaBuoyCoordinates,
+//  fetchMaBuoyData,
+//  MaBuoyData,
+//  RiBuoyData,
+//} from '@/utils/data/api/buoy';
+//import { makeCommaSepList } from '@/utils/fns';
+//import { ERROR_CODES, getParams } from '@/utils/fns/getParams';
+import { PageWrapper } from './PageWrapper';
 
 export default async function MassachusettsBuoyData({ searchParams }: PageProps) {
-  const parsed = getParams(searchParams, 'ma');
-  const buoyData = await fetchMaSummaryData();
-  const buoyCoords = await fetchMaBuoyCoordinates();
-
+  return (
+    <React.Suspense fallback={<DefaultBuoyPage description={DESCRIPTION} />}>
+      <PageWrapper
+        params={searchParams}
+        errorLinks={MA_BUOY_ERROR_LINKS}
+        description={DESCRIPTION}
+      />
+    </React.Suspense>
+  );
+  //const parsed = getParams(searchParams, 'ma');
+  //const buoyCoords = await fetchMaBuoyCoordinates();
+  //const buoyData = await fetchMaSummaryData();
+  /*
   let graphBlock: React.ReactNode;
   if (typeof parsed === 'string') {
     graphBlock = (
@@ -72,7 +80,25 @@ export default async function MassachusettsBuoyData({ searchParams }: PageProps)
   }
   return (
     <BuoyPageSkeleton
-      graph={graphBlock}
+      graph={
+        <React.Suspense fallback={<Loading />}>
+          <BuoyVariablesCard
+            params={searchParams}
+            errorLinks={MA_BUOY_ERROR_LINKS}
+            buoyDataFetcher={() =>
+              typeof parsed === 'string'
+                ? Promise.resolve([])
+                : fetchMaBuoyData(parsed.buoys, parsed.vars, parsed.start, parsed.end)
+            }
+            weatherDataFetcher={() =>
+              typeof parsed === 'string'
+                ? Promise.resolve([])
+                : fetchWeatherData(parsed.start, parsed.end)
+            }
+            description={'descriptions'}
+          />
+        </React.Suspense>
+      }
       form={
         <ExploreForm
           buoys={buoyCoords}
@@ -84,8 +110,8 @@ export default async function MassachusettsBuoyData({ searchParams }: PageProps)
           init={typeof parsed === 'string' ? undefined : parsed}
         />
       }
-      map={<RiBuoyLocations locations={buoyCoords} />}
-      summary={<MaBuoySummary data={buoyData} />}
+      map={<></> /*<RiBuoyLocations locations={buoyCoords} />* /}
+      summary={<></> /*<MaBuoySummary data={buoyData} />* /}
       description={
         <p>
           This dataset spans from 2017 to 2018 and was collected by the <LINKS.NBFSMN /> with{' '}
@@ -98,7 +124,7 @@ export default async function MassachusettsBuoyData({ searchParams }: PageProps)
         </p>
       }
     />
-  );
+  );*/
 }
 
 const MA_BUOY_ERROR_LINKS = [
@@ -124,3 +150,14 @@ const LINKS = {
     </ExternalLink>
   ),
 };
+
+const DESCRIPTION = (
+  <p>
+    This dataset spans from 2017 to 2018 and was collected by the <LINKS.NBFSMN /> with{' '}
+    <LINKS.MassDEP /> as the lead agency. The heatmap above summarizes the number of observations
+    collected for each month for different variables. Use this heatmap to help you decide what data
+    you want to visualize or download. When you have an idea, go ahead and select the buoys,
+    variables and dates to explore. Or download the data in the most appropriate format for your
+    analyses! To begin, select a variable to see what data is available.
+  </p>
+);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '@/components';
+import { Card, ExploreForm, Loading } from '@/components';
 
 type BuoyPageSkeletonProps = {
   graph: React.ReactNode;
@@ -32,5 +32,30 @@ export function BuoyPageSkeleton({
         {description}
       </div>
     </div>
+  );
+}
+
+/**
+ * A default version of the buoy page used as a placeholder on
+ * the client before data has finished loading.
+ */
+export function DefaultBuoyPage({ description }: { description: React.ReactNode }) {
+  return (
+    <BuoyPageSkeleton
+      graph={<Loading />}
+      form={
+        <ExploreForm
+          buoys={[]}
+          location={'ri'}
+          dateBounds={{
+            startDate: new Date(),
+            endDate: new Date(),
+          }}
+        />
+      }
+      map={<Loading />}
+      summary={<Loading />}
+      description={description}
+    />
   );
 }
