@@ -5,16 +5,16 @@ import { BuoyLocations } from '@/components/visualizations/Maps/BuoyLocations';
 import { PageProps } from '@/types';
 import { fetchWeatherData } from '@/utils/data';
 import {
-  fetchMaBuoyCoordinates,
-  fetchMaBuoyData,
-  fetchMaSummaryData,
-  MaBuoyViewerVariable,
+  fetchRiBuoyCoordinates,
+  fetchRiBuoyData,
+  fetchRiSummaryData,
+  RiBuoyViewerVariable,
 } from '@/utils/data/api/buoy';
 import {
   ERROR_CODES,
   makeCommaSepList,
   parseParamBuoyIds,
-  parseParamBuoyVariablesMA,
+  parseParamBuoyVariablesRI,
   parseParamDate,
 } from '@/utils/fns';
 
@@ -25,9 +25,9 @@ type PageWrapperProps = {
 };
 
 export async function PageWrapper({ description, params, errorLinks }: PageWrapperProps) {
-  const buoyData = await fetchMaBuoyCoordinates();
+  const buoyData = await fetchRiBuoyCoordinates();
   const parsedBuoyIds = parseParamBuoyIds(params ? params['buoys'] : undefined);
-  const parsedVariables = parseParamBuoyVariablesMA(params ? params['vars'] : undefined);
+  const parsedVariables = parseParamBuoyVariablesRI(params ? params['vars'] : undefined);
   const parsedStartDate = parseParamDate(params ? params['start'] : undefined, 'start');
   const parsedEndDate = parseParamDate(params ? params['end'] : undefined, 'end');
 
@@ -46,7 +46,7 @@ export async function PageWrapper({ description, params, errorLinks }: PageWrapp
       : allErrors.pop();
   const parsedParams = {
     buoys: parsedBuoyIds.value as string[],
-    vars: parsedVariables.value as MaBuoyViewerVariable[],
+    vars: parsedVariables.value as RiBuoyViewerVariable[],
     start: parsedStartDate.value as Date,
     end: parsedEndDate.value as Date,
   };
@@ -58,16 +58,16 @@ export async function PageWrapper({ description, params, errorLinks }: PageWrapp
           params={error || parsedParams}
           errorLinks={errorLinks}
           buoyDataFetcher={(ids, vars, start, end) =>
-            fetchMaBuoyData(ids, vars as MaBuoyViewerVariable[], start, end)
+            fetchRiBuoyData(ids, vars as RiBuoyViewerVariable[], start, end)
           }
-          region="ma"
+          region="ri"
           weatherDataFetcher={fetchWeatherData}
           description={<CardDescription parsedParams={error || parsedParams} buoyData={buoyData} />}
         />
       }
       form={<ExploreFormWrapper parsed={error || parsedParams} />}
-      map={<BuoyLocations fetcher={fetchMaBuoyCoordinates} />}
-      summary={<BuoySummary location="ma" fetcher={fetchMaSummaryData} />}
+      map={<BuoyLocations fetcher={fetchRiBuoyCoordinates} />}
+      summary={<BuoySummary location="ri" fetcher={fetchRiSummaryData} />}
       description={description}
     />
   );
@@ -78,7 +78,7 @@ function CardDescription({
   buoyData,
 }: {
   parsedParams: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
-  buoyData: Awaited<ReturnType<typeof fetchMaBuoyCoordinates>>;
+  buoyData: Awaited<ReturnType<typeof fetchRiBuoyCoordinates>>;
 }) {
   if (typeof parsedParams === 'string') return undefined;
   return (
@@ -101,14 +101,14 @@ async function ExploreFormWrapper({
 }: {
   parsed: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
 }) {
-  const coordinates = await fetchMaBuoyCoordinates();
+  const coordinates = await fetchRiBuoyCoordinates();
   return (
     <ExploreForm
       buoys={coordinates}
-      location="ma"
+      location="ri"
       dateBounds={{
-        startDate: new Date('2017-05-26'),
-        endDate: new Date('2018-1-09'),
+        startDate: new Date('2003-05-22'),
+        endDate: new Date('2019-12-31'),
       }}
       init={typeof parsed === 'string' ? undefined : parsed}
     />

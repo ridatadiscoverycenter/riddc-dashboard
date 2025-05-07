@@ -8,24 +8,24 @@ import {
 
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
 type RiOrMa = 'ri' | 'ma';
-// parseVariablesHelper
 type parseVariablesHelper<T extends RiOrMa> = T extends 'ri'
   ? RiBuoyViewerVariable[]
   : T extends 'ma'
     ? MaBuoyViewerVariable[]
     : never;
 
-type ParmsWhat = {
-  buoys: ReturnType<typeof parseBuoyIds>;
-  start: ReturnType<typeof parseDate>;
-  end: ReturnType<typeof parseDate>;
-};
+// parseVariablesHelper
+//type ParmsWhat = {
+//  buoys: ReturnType<typeof parseBuoyIds>;
+//  start: ReturnType<typeof parseDate>;
+//  end: ReturnType<typeof parseDate>;
+//};
 
-type GetParamsReturn<T extends RiOrMa> = T extends 'ri'
-  ? ParmsWhat & { vars: parseVariablesHelper<'ri'> }
-  : T extends 'ma'
-    ? ParmsWhat & { vars: parseVariablesHelper<'ma'> }
-    : never;
+//type GetParamsReturn<T extends RiOrMa> = T extends 'ri'
+//  ? ParmsWhat & { vars: parseVariablesHelper<'ri'> }
+//  : T extends 'ma'
+//    ? ParmsWhat & { vars: parseVariablesHelper<'ma'> }
+//    : never;
 
 export const ERROR_CODES = {
   NO_SEARCH_PARAMS: 'no-search-params',
@@ -48,7 +48,7 @@ export const ERROR_CODES = {
   INVALID_VARS:
     'An invalid variable was selected for the visualization. Select a different variable to view the vizualization.',
 };
-
+/*
 export function getParams<T extends RiOrMa>(
   searchParams: PageProps['searchParams'],
   region: T
@@ -83,11 +83,58 @@ export function getParams<T extends RiOrMa>(
     return (ex as { message: string }).message;
   }
 }
+*/
+export type ParsedParam<T> = { error: string; value: undefined } | { error: undefined; value: T };
 
-function parseBuoyIds(buoysParam: Param) {
-  if (buoysParam === undefined) throw new Error(ERROR_CODES.NO_BUOYS);
-  if (buoysParam instanceof Array) throw new Error(ERROR_CODES.BAD_BUOYS);
-  return buoysParam.split(',');
+export function parseParamBuoyIds(buoysParam: Param): ParsedParam<string[]> {
+  if (buoysParam === undefined) return { error: ERROR_CODES.NO_BUOYS, value: undefined };
+  if (buoysParam instanceof Array) return { error: ERROR_CODES.BAD_BUOYS, value: undefined };
+  return { error: undefined, value: buoysParam.split(',') };
+}
+
+export function parseParamBuoyVariablesRI(
+  variablesParam: Param
+): ParsedParam<RiBuoyViewerVariable[]> {
+  if (variablesParam === undefined) return { error: ERROR_CODES.NO_VARS, value: undefined };
+  if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
+  const variables = variablesParam.split(',');
+  if (variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable)))
+    return { error: undefined, value: variables as RiBuoyViewerVariable[] };
+  return { error: ERROR_CODES.INVALID_VARS, value: undefined };
+}
+
+export function parseParamBuoyVariablesMA(
+  variablesParam: Param
+): ParsedParam<MaBuoyViewerVariable[]> {
+  if (variablesParam === undefined) return { error: ERROR_CODES.NO_VARS, value: undefined };
+  if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
+  const variables = variablesParam.split(',');
+  if (variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
+    return { error: undefined, value: variables as MaBuoyViewerVariable[] };
+  return { error: ERROR_CODES.INVALID_VARS, value: undefined };
+}
+
+export function parseParamDate(dateParam: Param, dateType: 'start' | 'end'): ParsedParam<Date> {
+  if (dateParam === undefined)
+    return {
+      error: dateType === 'start' ? ERROR_CODES.MISSING_START_DATE : ERROR_CODES.MISSING_END_DATE,
+      value: undefined,
+    };
+  if (dateParam instanceof Array)
+    return {
+      error:
+        dateType === 'start'
+          ? ERROR_CODES.INVALID_START_DATE_TYPE
+          : ERROR_CODES.INVALID_END_DATE_TYPE,
+      value: undefined,
+    };
+  const parsedStartDate = new Date(dateParam);
+  if (isNaN(parsedStartDate.valueOf()))
+    return {
+      error: dateType === 'start' ? ERROR_CODES.BAD_START_DATE : ERROR_CODES.BAD_END_DATE,
+      value: undefined,
+    };
+  return { error: undefined, value: parsedStartDate };
 }
 
 function parseVariables(variablesParam: Param, region: RiOrMa): parseVariablesHelper<RiOrMa> {
@@ -102,19 +149,4 @@ function parseVariables(variablesParam: Param, region: RiOrMa): parseVariablesHe
       return variables as MaBuoyViewerVariable[];
   }
   throw new Error(ERROR_CODES.INVALID_VARS);
-}
-
-function parseDate(dateParam: Param, dateType: 'start' | 'end') {
-  if (dateParam === undefined)
-    throw new Error(
-      dateType === 'start' ? ERROR_CODES.MISSING_START_DATE : ERROR_CODES.MISSING_END_DATE
-    );
-  if (dateParam instanceof Array)
-    throw new Error(
-      dateType === 'start' ? ERROR_CODES.INVALID_START_DATE_TYPE : ERROR_CODES.INVALID_END_DATE_TYPE
-    );
-  const parsedStartDate = new Date(dateParam);
-  if (isNaN(parsedStartDate.valueOf()))
-    throw new Error(dateType === 'start' ? ERROR_CODES.BAD_START_DATE : ERROR_CODES.BAD_END_DATE);
-  return parsedStartDate;
 }
