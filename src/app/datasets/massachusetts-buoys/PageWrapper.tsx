@@ -16,6 +16,8 @@ import {
 } from '@/utils/data/api/buoy';
 import {
   ERROR_CODES,
+  extractParams,
+  fetchMulti,
   makeCommaSepList,
   parseParamBuoyIds,
   parseParamBuoyVariablesMA,
@@ -28,44 +30,32 @@ type PageWrapperProps = {
   errorLinks: { href: string; description: string }[];
 };
 
-async function fetchDatasets(datasets: { [key: string]: Promise<any> }, errorCodes: string[]) {
-  Object.entries;
-}
-
 export async function PageWrapper({ description, params, errorLinks }: PageWrapperProps) {
-  const buoyData = await fetchMaBuoyCoordinates();
-  const summaryData = await fetchMaSummaryData();
+  const { buoyData, summaryData } = await fetchMulti({
+    buoyData: fetchMaBuoyCoordinates(),
+    summaryData: fetchMaSummaryData(),
+  });
 
-  const parsedBuoyIds = parseParamBuoyIds(params ? params['buoys'] : undefined);
-  const parsedVariables = parseParamBuoyVariablesMA(params ? params['vars'] : undefined);
-  const parsedStartDate = parseParamDate(params ? params['start'] : undefined, 'start');
-  const parsedEndDate = parseParamDate(params ? params['end'] : undefined, 'end');
-
-  const allErrors = [
-    parsedBuoyIds.error,
-    parsedVariables.error,
-    parsedStartDate.error,
-    parsedEndDate.error,
-  ].filter((e) => e !== undefined);
-  const error =
-    allErrors.includes(ERROR_CODES.NO_BUOYS) &&
-    allErrors.includes(ERROR_CODES.NO_VARS) &&
-    allErrors.includes(ERROR_CODES.MISSING_START_DATE) &&
-    allErrors.includes(ERROR_CODES.MISSING_END_DATE)
-      ? ERROR_CODES.NO_SEARCH_PARAMS
-      : allErrors.pop();
-  const parsedParams = {
-    buoys: parsedBuoyIds.value as string[],
-    vars: parsedVariables.value as MaBuoyViewerVariable[],
-    start: parsedStartDate.value as Date,
-    end: parsedEndDate.value as Date,
-  };
+  const paramsOrError = extractParams(
+    {
+      buoys: parseParamBuoyIds(params ? params['buoys'] : undefined),
+      vars: parseParamBuoyVariablesMA(params ? params['vars'] : undefined),
+      start: parseParamDate(params ? params['start'] : undefined, 'start'),
+      end: parseParamDate(params ? params['end'] : undefined, 'end'),
+    },
+    [
+      ERROR_CODES.NO_BUOYS,
+      ERROR_CODES.NO_VARS,
+      ERROR_CODES.MISSING_START_DATE,
+      ERROR_CODES.MISSING_END_DATE,
+    ]
+  );
 
   return (
     <BuoyPageSkeleton
       graph={
         <BuoyVariablesCard
-          params={error || parsedParams}
+          params={paramsOrError}
           errorLinks={errorLinks}
           buoyDataFetcher={(ids, vars, start, end) =>
             fetchMaBuoyData(ids, vars as MaBuoyViewerVariable[], start, end)
@@ -73,13 +63,13 @@ export async function PageWrapper({ description, params, errorLinks }: PageWrapp
           region="ma"
           weatherDataFetcher={fetchWeatherData}
           description={
-            typeof (error || parsedParams) === 'string' ? undefined : (
+            typeof paramsOrError === 'string' ? undefined : (
               <>
-                This plot compares {makeCommaSepList(parsedParams.vars)} between{' '}
-                {parsedParams.start.toLocaleDateString()} and{' '}
-                {parsedParams.end.toLocaleDateString()} at{' '}
+                This plot compares {makeCommaSepList(paramsOrError.vars)} between{' '}
+                {paramsOrError.start.toLocaleDateString()} and{' '}
+                {paramsOrError.end.toLocaleDateString()} at{' '}
                 {makeCommaSepList(
-                  parsedParams.buoys.map(
+                  paramsOrError.buoys.map(
                     (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
                   )
                 )}
@@ -98,7 +88,7 @@ export async function PageWrapper({ description, params, errorLinks }: PageWrapp
             startDate: new Date('2017-05-26'),
             endDate: new Date('2018-1-09'),
           }}
-          init={typeof (error || parsedParams) === 'string' ? undefined : parsedParams}
+          init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
         />
       }
       map={<BuoyLocationsMap locations={buoyData} />}

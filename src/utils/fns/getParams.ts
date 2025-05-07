@@ -7,25 +7,6 @@ import {
 } from '../data/api/buoy';
 
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
-type RiOrMa = 'ri' | 'ma';
-type parseVariablesHelper<T extends RiOrMa> = T extends 'ri'
-  ? RiBuoyViewerVariable[]
-  : T extends 'ma'
-    ? MaBuoyViewerVariable[]
-    : never;
-
-// parseVariablesHelper
-//type ParmsWhat = {
-//  buoys: ReturnType<typeof parseBuoyIds>;
-//  start: ReturnType<typeof parseDate>;
-//  end: ReturnType<typeof parseDate>;
-//};
-
-//type GetParamsReturn<T extends RiOrMa> = T extends 'ri'
-//  ? ParmsWhat & { vars: parseVariablesHelper<'ri'> }
-//  : T extends 'ma'
-//    ? ParmsWhat & { vars: parseVariablesHelper<'ma'> }
-//    : never;
 
 export const ERROR_CODES = {
   NO_SEARCH_PARAMS: 'no-search-params',
@@ -48,42 +29,7 @@ export const ERROR_CODES = {
   INVALID_VARS:
     'An invalid variable was selected for the visualization. Select a different variable to view the vizualization.',
 };
-/*
-export function getParams<T extends RiOrMa>(
-  searchParams: PageProps['searchParams'],
-  region: T
-): GetParamsReturn<T> | string {
-  try {
-    if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
 
-    // Get relevant data from search params.
-
-    const buoys = searchParams['buoys'];
-    const variables = searchParams['vars'];
-    const startDate = searchParams['start'];
-    const endDate = searchParams['end'];
-
-    if (
-      buoys === undefined &&
-      variables === undefined &&
-      startDate === undefined &&
-      endDate === undefined
-    )
-      throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-    const start = parseDate(startDate, 'start');
-    const end = parseDate(endDate, 'end');
-    if (start.valueOf() >= end.valueOf()) throw new Error(ERROR_CODES.BAD_DATE_ORDER);
-    return {
-      buoys: parseBuoyIds(buoys),
-      vars: region === 'ri' ? parseVariables(variables, region) : parseVariables(variables, region),
-      start: parseDate(startDate, 'start'),
-      end: parseDate(endDate, 'end'),
-    } as GetParamsReturn<T>;
-  } catch (ex) {
-    return (ex as { message: string }).message;
-  }
-}
-*/
 export type ParsedParam<T> = { error: string; value: undefined } | { error: undefined; value: T };
 
 export function parseParamBuoyIds(buoysParam: Param): ParsedParam<string[]> {
@@ -137,16 +83,26 @@ export function parseParamDate(dateParam: Param, dateType: 'start' | 'end'): Par
   return { error: undefined, value: parsedStartDate };
 }
 
-function parseVariables(variablesParam: Param, region: RiOrMa): parseVariablesHelper<RiOrMa> {
-  if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
-  if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
-  const variables = variablesParam.split(',');
-  if (region === 'ri') {
-    if (variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable)))
-      return variables as RiBuoyViewerVariable[];
-  } else if (region === 'ma') {
-    if (variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
-      return variables as MaBuoyViewerVariable[];
-  }
-  throw new Error(ERROR_CODES.INVALID_VARS);
+export function extractParams<T extends Record<string, ParsedParam<any>>>(
+  params: T,
+  missingDataErrorCodes: string[]
+): string | { [K in keyof T]: Exclude<T[K]['value'], undefined> } {
+  // Get all errors from parsed param objects, filtering for correctly parsed params.
+  const allErrors = Object.values(params)
+    .map(({ error }) => error)
+    .filter((error) => error !== undefined);
+  // If every "missingDataErrorCode" is included in the set of allErrors,
+  // set the paramsError to NO_SEARCH_PARAMS. Otherwise, select the
+  // first error (which may be undefined).
+  const paramsError = missingDataErrorCodes.every((missingDataErrorCode) =>
+    allErrors.includes(missingDataErrorCode)
+  )
+    ? ERROR_CODES.NO_SEARCH_PARAMS
+    : allErrors.pop();
+  // If there was an encountered error, return it. Otherwise, send back the params data.
+  if (paramsError) return paramsError;
+  // Unwrap the map and extract the values which will be defined (there were no parsing errors).
+  return Object.fromEntries(Object.entries(params).map(([k, v]) => [k, v.value])) as {
+    [K in keyof T]: Exclude<T[K]['value'], undefined>;
+  };
 }
