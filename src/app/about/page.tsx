@@ -5,10 +5,11 @@ import { Card } from '@/components';
 export default function About() {
   return (
     <>
-      <Card className="max-w-[1000px] bg-clear-800 dark:bg-clear-100 my-6 py-8">
-        <h1 className="w-full text-center text-4xl font-header">
-          About the Rhode Island Data Discovery Center
-        </h1>
+      <h1 className="w-full text-center text-4xl font-header font-bold mt-8">About</h1>
+      <Card className="max-w-[1000px] bg-white my-6 py-8 text-black shadow-lg">
+        <h2 className="w-full text-center text-2xl font-header font-bold">
+          Rhode Island Data Discovery Center
+        </h2>
         <div className="px-4 mx-6 text-xl">
           <p className="my-4">
             The National Science Foundation in 2017 awarded the University of Rhode Island with a
@@ -34,8 +35,8 @@ export default function About() {
           </p>
         </div>
       </Card>
-      <Card className="max-w-[1000px] bg-clear-800 dark:bg-clear-100 mb-8 py-6">
-        <h2 className="w-full text-center text-4xl font-header">Credits</h2>
+      <Card className="max-w-[1000px] bg-white mb-8 py-8 text-black shadow-lg">
+        <h2 className="w-full text-center text-2xl font-header font-bold">Credits</h2>
         <div className="px-4 mx-8 mb-4 text-xl">
           <p className="my-2">
             The historical data available for lookup on this site has been compiled from quality
