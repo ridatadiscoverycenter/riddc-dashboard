@@ -1,7 +1,11 @@
-import { BuoyPageSkeleton, ExploreForm, ExternalLink } from '@/components';
-import { BuoySummary } from '@/components/visualizations/BuoySummary/BuoySummary';
-import { BuoyVariablesCard } from '@/components/visualizations/BuoyVariablesCard';
-import { BuoyLocations } from '@/components/visualizations/Maps/BuoyLocations';
+import {
+  BuoyPageSkeleton,
+  ExploreForm,
+  ExternalLink,
+  MaBuoySummary,
+  BuoyVariablesCard,
+  BuoyLocationsMap,
+} from '@/components';
 import { PageProps } from '@/types';
 import { fetchWeatherData } from '@/utils/data';
 import {
@@ -24,8 +28,14 @@ type PageWrapperProps = {
   errorLinks: { href: string; description: string }[];
 };
 
+async function fetchDatasets(datasets: { [key: string]: Promise<any> }, errorCodes: string[]) {
+  Object.entries;
+}
+
 export async function PageWrapper({ description, params, errorLinks }: PageWrapperProps) {
   const buoyData = await fetchMaBuoyCoordinates();
+  const summaryData = await fetchMaSummaryData();
+
   const parsedBuoyIds = parseParamBuoyIds(params ? params['buoys'] : undefined);
   const parsedVariables = parseParamBuoyVariablesMA(params ? params['vars'] : undefined);
   const parsedStartDate = parseParamDate(params ? params['start'] : undefined, 'start');
@@ -62,55 +72,38 @@ export async function PageWrapper({ description, params, errorLinks }: PageWrapp
           }
           region="ma"
           weatherDataFetcher={fetchWeatherData}
-          description={<CardDescription parsedParams={error || parsedParams} buoyData={buoyData} />}
+          description={
+            typeof (error || parsedParams) === 'string' ? undefined : (
+              <>
+                This plot compares {makeCommaSepList(parsedParams.vars)} between{' '}
+                {parsedParams.start.toLocaleDateString()} and{' '}
+                {parsedParams.end.toLocaleDateString()} at{' '}
+                {makeCommaSepList(
+                  parsedParams.buoys.map(
+                    (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
+                  )
+                )}
+                . You can hover over the lines to see more specific data. The weather data below is
+                sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
+              </>
+            )
+          }
         />
       }
-      form={<ExploreFormWrapper parsed={error || parsedParams} />}
-      map={<BuoyLocations fetcher={fetchMaBuoyCoordinates} />}
-      summary={<BuoySummary location="ma" fetcher={fetchMaSummaryData} />}
+      form={
+        <ExploreForm
+          buoys={buoyData}
+          location="ma"
+          dateBounds={{
+            startDate: new Date('2017-05-26'),
+            endDate: new Date('2018-1-09'),
+          }}
+          init={typeof (error || parsedParams) === 'string' ? undefined : parsedParams}
+        />
+      }
+      map={<BuoyLocationsMap locations={buoyData} />}
+      summary={<MaBuoySummary data={summaryData} />}
       description={description}
-    />
-  );
-}
-
-function CardDescription({
-  parsedParams,
-  buoyData,
-}: {
-  parsedParams: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
-  buoyData: Awaited<ReturnType<typeof fetchMaBuoyCoordinates>>;
-}) {
-  if (typeof parsedParams === 'string') return undefined;
-  return (
-    <>
-      This plot compares {makeCommaSepList(parsedParams.vars)} between{' '}
-      {parsedParams.start.toLocaleDateString()} and {parsedParams.end.toLocaleDateString()} at{' '}
-      {makeCommaSepList(
-        parsedParams.buoys.map(
-          (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
-        )
-      )}
-      . You can hover over the lines to see more specific data. The weather data below is sourced
-      from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
-    </>
-  );
-}
-
-async function ExploreFormWrapper({
-  parsed,
-}: {
-  parsed: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
-}) {
-  const coordinates = await fetchMaBuoyCoordinates();
-  return (
-    <ExploreForm
-      buoys={coordinates}
-      location="ma"
-      dateBounds={{
-        startDate: new Date('2017-05-26'),
-        endDate: new Date('2018-1-09'),
-      }}
-      init={typeof parsed === 'string' ? undefined : parsed}
     />
   );
 }

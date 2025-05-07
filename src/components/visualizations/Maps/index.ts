@@ -1,2 +1,2 @@
-export * from './RiBuoyLocations';
 export * from './DomoicAcidMap';
+export * from './BuoyLocationsMap';

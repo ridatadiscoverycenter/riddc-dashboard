@@ -1,7 +1,11 @@
-import { BuoyPageSkeleton, ExploreForm, ExternalLink } from '@/components';
-import { BuoySummary } from '@/components/visualizations/BuoySummary/BuoySummary';
-import { BuoyVariablesCard } from '@/components/visualizations/BuoyVariablesCard';
-import { BuoyLocations } from '@/components/visualizations/Maps/BuoyLocations';
+import {
+  BuoyPageSkeleton,
+  ExploreForm,
+  ExternalLink,
+  RiBuoySummary,
+  BuoyVariablesCard,
+  BuoyLocationsMap,
+} from '@/components';
 import { PageProps } from '@/types';
 import { fetchWeatherData } from '@/utils/data';
 import {
@@ -26,6 +30,8 @@ type PageWrapperProps = {
 
 export async function PageWrapper({ description, params, errorLinks }: PageWrapperProps) {
   const buoyData = await fetchRiBuoyCoordinates();
+  const summaryData = await fetchRiSummaryData();
+
   const parsedBuoyIds = parseParamBuoyIds(params ? params['buoys'] : undefined);
   const parsedVariables = parseParamBuoyVariablesRI(params ? params['vars'] : undefined);
   const parsedStartDate = parseParamDate(params ? params['start'] : undefined, 'start');
@@ -62,55 +68,38 @@ export async function PageWrapper({ description, params, errorLinks }: PageWrapp
           }
           region="ri"
           weatherDataFetcher={fetchWeatherData}
-          description={<CardDescription parsedParams={error || parsedParams} buoyData={buoyData} />}
+          description={
+            typeof (error || parsedParams) === 'string' ? undefined : (
+              <>
+                This plot compares {makeCommaSepList(parsedParams.vars)} between{' '}
+                {parsedParams.start.toLocaleDateString()} and{' '}
+                {parsedParams.end.toLocaleDateString()} at{' '}
+                {makeCommaSepList(
+                  parsedParams.buoys.map(
+                    (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
+                  )
+                )}
+                . You can hover over the lines to see more specific data. The weather data below is
+                sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
+              </>
+            )
+          }
         />
       }
-      form={<ExploreFormWrapper parsed={error || parsedParams} />}
-      map={<BuoyLocations fetcher={fetchRiBuoyCoordinates} />}
-      summary={<BuoySummary location="ri" fetcher={fetchRiSummaryData} />}
+      form={
+        <ExploreForm
+          buoys={buoyData}
+          location="ri"
+          dateBounds={{
+            startDate: new Date('2003-05-22'),
+            endDate: new Date('2019-12-31'),
+          }}
+          init={typeof (error || parsedParams) === 'string' ? undefined : parsedParams}
+        />
+      }
+      map={<BuoyLocationsMap locations={buoyData} />}
+      summary={<RiBuoySummary data={summaryData} />}
       description={description}
-    />
-  );
-}
-
-function CardDescription({
-  parsedParams,
-  buoyData,
-}: {
-  parsedParams: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
-  buoyData: Awaited<ReturnType<typeof fetchRiBuoyCoordinates>>;
-}) {
-  if (typeof parsedParams === 'string') return undefined;
-  return (
-    <>
-      This plot compares {makeCommaSepList(parsedParams.vars)} between{' '}
-      {parsedParams.start.toLocaleDateString()} and {parsedParams.end.toLocaleDateString()} at{' '}
-      {makeCommaSepList(
-        parsedParams.buoys.map(
-          (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
-        )
-      )}
-      . You can hover over the lines to see more specific data. The weather data below is sourced
-      from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
-    </>
-  );
-}
-
-async function ExploreFormWrapper({
-  parsed,
-}: {
-  parsed: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
-}) {
-  const coordinates = await fetchRiBuoyCoordinates();
-  return (
-    <ExploreForm
-      buoys={coordinates}
-      location="ri"
-      dateBounds={{
-        startDate: new Date('2003-05-22'),
-        endDate: new Date('2019-12-31'),
-      }}
-      init={typeof parsed === 'string' ? undefined : parsed}
     />
   );
 }
