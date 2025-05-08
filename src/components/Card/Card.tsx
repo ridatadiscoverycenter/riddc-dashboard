@@ -1,4 +1,6 @@
 import React from 'react';
+import { twMerge } from 'tailwind-merge';
+
 //import { Link } from "../Link";
 
 const BASE_STYLES =
@@ -14,7 +16,7 @@ export function Card({ className = '', children }: React.PropsWithChildren<CardP
   //<button onClick={(e) => {}}></button>
   return (
     <section
-      className={`${BASE_STYLES} ${className ? className : COLOR_STYLES}`}
+      className={twMerge(BASE_STYLES, className ? className : COLOR_STYLES)}
       /* https://design-system.w3.org/components/cards.html#block-link-cards */ data-component="card"
     >
       {children}

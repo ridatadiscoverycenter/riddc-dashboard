@@ -21,6 +21,10 @@ export function useMap() {
         [-71.5, 41.92],
         [-71.16, 41.42],
       ],
+      center: [-71.4128, 41.584],
+      zoom: 8.5,
+      maxZoom: 10,
+      minZoom: 8,
     });
     map.current.scrollZoom.disable();
     map.current.on('load', () => {
