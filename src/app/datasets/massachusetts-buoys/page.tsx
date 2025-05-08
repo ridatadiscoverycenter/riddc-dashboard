@@ -31,16 +31,15 @@ import { PageProps } from '@/types';
 export default async function MassachusettsBuoyData({ searchParams }: PageProps) {
   return (
     <React.Suspense fallback={<DefaultBuoyPage description={DESCRIPTION} />}>
-      <PageWrapper
-        params={searchParams}
-        errorLinks={MA_BUOY_ERROR_LINKS}
-      />
+      <PageWrapper params={searchParams} errorLinks={MA_BUOY_ERROR_LINKS} />
     </React.Suspense>
   );
 }
 
-
-export async function PageWrapper({ params, errorLinks }: {
+export async function PageWrapper({
+  params,
+  errorLinks,
+}: {
   params: PageProps['searchParams'];
   errorLinks: { href: string; description: string }[];
 }) {
