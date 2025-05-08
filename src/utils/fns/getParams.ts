@@ -6,6 +6,7 @@ import {
   RiBuoyViewerVariable,
 } from '../data/api/buoy';
 
+export type ParsedParam<T> = { error: string; value: undefined } | { error: undefined; value: T };
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
 
 export const ERROR_CODES = {
@@ -30,7 +31,41 @@ export const ERROR_CODES = {
     'An invalid variable was selected for the visualization. Select a different variable to view the vizualization.',
 };
 
-export type ParsedParam<T> = { error: string; value: undefined } | { error: undefined; value: T };
+/**
+ * A helper function to find any errors resulting from search param parsing 
+ * and return the params as a typed map.
+ * @param params A map of string / ParsedParams
+ * @param missingDataErrorCodes A list of all "missing param" error codes for the required parameters.
+ * @returns A map of correctly typed param data.
+ */
+export function extractParams<T extends Record<string, ParsedParam<any>>>(
+  params: T,
+  missingDataErrorCodes: string[]
+): string | { [K in keyof T]: Exclude<T[K]['value'], undefined> } {
+  // Get all errors from parsed param objects, filtering for correctly parsed params.
+  const allErrors = Object.values(params)
+    .map(({ error }) => error)
+    .filter((error) => error !== undefined);
+  // If every "missingDataErrorCode" is included in the set of allErrors,
+  // set the paramsError to NO_SEARCH_PARAMS. Otherwise, select the
+  // first error (which may be undefined).
+  const paramsError = missingDataErrorCodes.every((missingDataErrorCode) =>
+    allErrors.includes(missingDataErrorCode)
+  )
+    ? ERROR_CODES.NO_SEARCH_PARAMS
+    : allErrors.pop();
+  // If there was an encountered error, return it. Otherwise, send back the params data.
+  if (paramsError) return paramsError;
+  // Unwrap the map and extract the values which will be defined (there were no parsing errors).
+  return Object.fromEntries(Object.entries(params).map(([k, v]) => [k, v.value])) as {
+    [K in keyof T]: Exclude<T[K]['value'], undefined>;
+  };
+}
+
+/**
+ * Param parsers
+ * Helper Functions that validate the presence and type of a search parameter, and return errors in an optional `error` field.
+ */
 
 export function parseParamBuoyIds(buoysParam: Param): ParsedParam<string[]> {
   if (buoysParam === undefined) return { error: ERROR_CODES.NO_BUOYS, value: undefined };
@@ -81,28 +116,4 @@ export function parseParamDate(dateParam: Param, dateType: 'start' | 'end'): Par
       value: undefined,
     };
   return { error: undefined, value: parsedStartDate };
-}
-
-export function extractParams<T extends Record<string, ParsedParam<any>>>(
-  params: T,
-  missingDataErrorCodes: string[]
-): string | { [K in keyof T]: Exclude<T[K]['value'], undefined> } {
-  // Get all errors from parsed param objects, filtering for correctly parsed params.
-  const allErrors = Object.values(params)
-    .map(({ error }) => error)
-    .filter((error) => error !== undefined);
-  // If every "missingDataErrorCode" is included in the set of allErrors,
-  // set the paramsError to NO_SEARCH_PARAMS. Otherwise, select the
-  // first error (which may be undefined).
-  const paramsError = missingDataErrorCodes.every((missingDataErrorCode) =>
-    allErrors.includes(missingDataErrorCode)
-  )
-    ? ERROR_CODES.NO_SEARCH_PARAMS
-    : allErrors.pop();
-  // If there was an encountered error, return it. Otherwise, send back the params data.
-  if (paramsError) return paramsError;
-  // Unwrap the map and extract the values which will be defined (there were no parsing errors).
-  return Object.fromEntries(Object.entries(params).map(([k, v]) => [k, v.value])) as {
-    [K in keyof T]: Exclude<T[K]['value'], undefined>;
-  };
 }

@@ -4,11 +4,7 @@ import React from 'react';
 
 import { BuoyVariables, DataGraph, DownloadBuoyData, GraphErrorPanel } from '@/components';
 import type { WeatherData } from '@/utils/data';
-import type {
-  MaBuoyData,
-  MaBuoyViewerVariable,
-  RiBuoyData,
-} from '@/utils/data/api/buoy';
+import type { MaBuoyData, MaBuoyViewerVariable, RiBuoyData } from '@/utils/data/api/buoy';
 import { ERROR_CODES } from '@/utils/fns';
 
 type BuoyVariablesProps = {
