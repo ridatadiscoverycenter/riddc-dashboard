@@ -8,7 +8,6 @@ import type {
   MaBuoyData,
   MaBuoyViewerVariable,
   RiBuoyData,
-  RiBuoyViewerVariable,
 } from '@/utils/data/api/buoy';
 import { ERROR_CODES } from '@/utils/fns';
 
