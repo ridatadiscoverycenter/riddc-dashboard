@@ -32,7 +32,7 @@ export const ERROR_CODES = {
 };
 
 /**
- * A helper function to find any errors resulting from search param parsing 
+ * A helper function to find any errors resulting from search param parsing
  * and return the params as a typed map.
  * @param params A map of string / ParsedParams
  * @param missingDataErrorCodes A list of all "missing param" error codes for the required parameters.

@@ -1,6 +1,6 @@
 /**
  * A helper function to await several asynchonous calls simultaneously (API calls)
- * and return the data in a typed Map. 
+ * and return the data in a typed Map.
  * @param promises A map of promises that return any data type.
  * @returns A map with keys matched to resolved promises.
  */
