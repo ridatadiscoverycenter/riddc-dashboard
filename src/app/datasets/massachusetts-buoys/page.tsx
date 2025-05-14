@@ -36,7 +36,7 @@ export default async function MassachusettsBuoyData({ searchParams }: PageProps)
   );
 }
 
-export async function PageWrapper({
+async function PageWrapper({
   params,
   errorLinks,
 }: {
