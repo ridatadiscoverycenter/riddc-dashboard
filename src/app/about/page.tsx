@@ -1,11 +1,11 @@
-import NarBay from '@/components/Image/NarBay';
+import { NarBay } from '@/components/Image/NarBay';
 
 // TODO: figure out what's meant by "(look under Citation for Data users)" and "For more information about the RI DEM Fixed-Site Monitoring Stations please refer to RI DEM Fixed-Site Monitoring Stations and Data in Narragansett Bay"
 
 export default function About() {
   return (
     <>
-      <NarBay style={{ margin: -20 }} />
+      <NarBay />
       <h1 className="w-full text-center text-4xl font-header font-bold mt-8">About</h1>
       <h2 className="w-full text-center text-2xl font-header font-bold">
         Rhode Island Data Discovery Center
