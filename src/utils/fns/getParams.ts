@@ -7,13 +7,8 @@ import {
 } from '../data/api/buoy';
 import { PLANKTON_VARIABLES, PlanktonVariable } from '../data/api/buoy/plankton';
 
+export type ParsedParam<T> = { error: string; value: undefined } | { error: undefined; value: T };
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
-
-type Params = {
-  buoys: ReturnType<typeof parseBuoyIds>;
-  start: ReturnType<typeof parseDate>;
-  end: ReturnType<typeof parseDate>;
-};
 
 export const ERROR_CODES = {
   NO_SEARCH_PARAMS: 'no-search-params',
@@ -37,162 +32,89 @@ export const ERROR_CODES = {
     'An invalid variable was selected for the visualization. Select a different variable to view the vizualization.',
 };
 
-function getParams(searchParams: PageProps['searchParams']): Params | string {
-  try {
-    if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-    const buoys = searchParams['buoys'];
-    const variables = searchParams['vars'];
-    const startDate = searchParams['start'];
-    const endDate = searchParams['end'];
-    if (
-      buoys === undefined &&
-      variables === undefined &&
-      startDate === undefined &&
-      endDate === undefined
-    )
-      throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-
-    const start = parseDate(startDate, 'start');
-    const end = parseDate(endDate, 'end');
-    if (start.valueOf() >= end.valueOf()) throw new Error(ERROR_CODES.BAD_DATE_ORDER);
-    return {
-      buoys: parseBuoyIds(buoys),
-      start: parseDate(startDate, 'start'),
-      end: parseDate(endDate, 'end'),
-    };
-  } catch (ex) {
-    return (ex as { message: string }).message;
-  }
+/**
+ * A helper function to find any errors resulting from search param parsing
+ * and return the params as a typed map.
+ * @param params A map of string / ParsedParams
+ * @param missingDataErrorCodes A list of all "missing param" error codes for the required parameters.
+ * @returns A map of correctly typed param data.
+ */
+export function extractParams<T extends Record<string, ParsedParam<any>>>(
+  params: T,
+  missingDataErrorCodes: string[]
+): string | { [K in keyof T]: Exclude<T[K]['value'], undefined> } {
+  // Get all errors from parsed param objects, filtering for correctly parsed params.
+  const allErrors = Object.values(params)
+    .map(({ error }) => error)
+    .filter((error) => error !== undefined);
+  // If every "missingDataErrorCode" is included in the set of allErrors,
+  // set the paramsError to NO_SEARCH_PARAMS. Otherwise, select the
+  // first error (which may be undefined).
+  const paramsError = missingDataErrorCodes.every((missingDataErrorCode) =>
+    allErrors.includes(missingDataErrorCode)
+  )
+    ? ERROR_CODES.NO_SEARCH_PARAMS
+    : allErrors.pop();
+  // If there was an encountered error, return it. Otherwise, send back the params data.
+  if (paramsError) return paramsError;
+  // Unwrap the map and extract the values which will be defined (there were no parsing errors).
+  return Object.fromEntries(Object.entries(params).map(([k, v]) => [k, v.value])) as {
+    [K in keyof T]: Exclude<T[K]['value'], undefined>;
+  };
 }
 
-export function getRiParams(searchParams: PageProps['searchParams']) {
-  try {
-    if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-    const params = getParams(searchParams);
-    const variablesParam = searchParams['vars'];
-    if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
-    if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
-    const variables = variablesParam.split(',');
-    if (typeof params === 'string') {
-      return params;
-    }
-    if (
-      variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable))
-    ) {
-      return { ...params, vars: variables as RiBuoyViewerVariable[] };
-    }
-    throw new Error(ERROR_CODES.INVALID_VARS);
-  } catch (ex) {
-    return (ex as { message: string }).message;
-  }
+/**
+ * Param parsers
+ * Helper Functions that validate the presence and type of a search parameter, and return errors in an optional `error` field.
+ */
+
+export function parseParamBuoyIds(buoysParam: Param): ParsedParam<string[]> {
+  if (buoysParam === undefined) return { error: ERROR_CODES.NO_BUOYS, value: undefined };
+  if (buoysParam instanceof Array) return { error: ERROR_CODES.BAD_BUOYS, value: undefined };
+  return { error: undefined, value: buoysParam.split(',') };
 }
 
-export function getMaParams(searchParams: PageProps['searchParams']) {
-  try {
-    if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-
-    // Get relevant data from search params.
-    const params = getParams(searchParams);
-    if (typeof params === 'string') return params;
-
-    const { buoys, start, end } = params;
-    const vars = searchParams['vars'];
-
-    if (buoys === undefined && vars === undefined && start === undefined && end === undefined)
-      throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-
-    if (start.valueOf() >= end.valueOf()) throw new Error(ERROR_CODES.BAD_DATE_ORDER);
-
-    if (vars === undefined) throw new Error(ERROR_CODES.NO_VARS);
-    if (vars instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
-    const variables = vars.split(',');
-
-    if (!variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
-      throw new Error(ERROR_CODES.INVALID_VARS);
-
-    return {
-      buoys: buoys,
-      vars: variables as MaBuoyViewerVariable[],
-      start: start,
-      end: end,
-    };
-  } catch (ex) {
-    return (ex as { message: string }).message;
-  }
+export function parseParamBuoyVariablesRI(
+  variablesParam: Param
+): ParsedParam<RiBuoyViewerVariable[]> {
+  if (variablesParam === undefined) return { error: ERROR_CODES.NO_VARS, value: undefined };
+  if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
+  const variables = variablesParam.split(',');
+  if (variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable)))
+    return { error: undefined, value: variables as RiBuoyViewerVariable[] };
+  return { error: ERROR_CODES.INVALID_VARS, value: undefined };
 }
 
-// function parseVariables(variablesParam: Param, region) {
-//   if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
-//   if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
-//   const variables = variablesParam.split(',');
-//   if (region === 'ri') {
-//     if (variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable)))
-//       return variables as RiBuoyViewerVariable[];
-//   } else if (region === 'ma') {
-//     if (variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
-//       return variables as MaBuoyViewerVariable[];
-//   }
-//   throw new Error(ERROR_CODES.INVALID_VARS);
-// }
-// export function getMaParams(searchParams: PageProps['searchParams']) {
-//   try {
-//     if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-//     const params = getParams(searchParams);
-//     const variablesParam = searchParams['vars'];
-//     if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
-//     if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
-//     const variables = variablesParam.split(',');
-//     if (typeof params === 'string') {
-//       return params;
-//     }
-//     if (
-//       variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable))
-//     ) {
-//       return { ...params, vars: variables as MaBuoyViewerVariable[] };
-//     }
-//     throw new Error(ERROR_CODES.INVALID_VARS);
-//   } catch (ex) {
-//     return (ex as { message: string }).message;
-//   }
-// }
-
-export function getPlanktonParams(searchParams: PageProps['searchParams']) {
-  try {
-    if (searchParams === undefined) throw new Error(ERROR_CODES.NO_SEARCH_PARAMS);
-    const params = getParams(searchParams);
-    const variablesParam = searchParams['vars'];
-    if (variablesParam === undefined) throw new Error(ERROR_CODES.NO_VARS);
-    if (variablesParam instanceof Array) throw new Error(ERROR_CODES.BAD_VARS);
-    const variables = variablesParam.split(',');
-    if (typeof params === 'string') {
-      return params;
-    }
-    if (variables.every((vari) => PLANKTON_VARIABLES.includes(vari as PlanktonVariable))) {
-      return { ...params, vars: variables as PlanktonVariable[] };
-    }
-    throw new Error(ERROR_CODES.INVALID_VARS);
-  } catch (ex) {
-    return (ex as { message: string }).message;
-  }
+export function parseParamBuoyVariablesMA(
+  variablesParam: Param
+): ParsedParam<MaBuoyViewerVariable[]> {
+  if (variablesParam === undefined) return { error: ERROR_CODES.NO_VARS, value: undefined };
+  if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
+  const variables = variablesParam.split(',');
+  if (variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
+    return { error: undefined, value: variables as MaBuoyViewerVariable[] };
+  return { error: ERROR_CODES.INVALID_VARS, value: undefined };
 }
 
-export function parseBuoyIds(buoysParam: Param) {
-  if (buoysParam === undefined) throw new Error(ERROR_CODES.NO_BUOYS);
-  if (buoysParam instanceof Array) throw new Error(ERROR_CODES.BAD_BUOYS);
-  return buoysParam.split(',');
-}
-
-function parseDate(dateParam: Param, dateType: 'start' | 'end') {
+export function parseParamDate(dateParam: Param, dateType: 'start' | 'end'): ParsedParam<Date> {
   if (dateParam === undefined)
-    throw new Error(
-      dateType === 'start' ? ERROR_CODES.MISSING_START_DATE : ERROR_CODES.MISSING_END_DATE
-    );
+    return {
+      error: dateType === 'start' ? ERROR_CODES.MISSING_START_DATE : ERROR_CODES.MISSING_END_DATE,
+      value: undefined,
+    };
   if (dateParam instanceof Array)
-    throw new Error(
-      dateType === 'start' ? ERROR_CODES.INVALID_START_DATE_TYPE : ERROR_CODES.INVALID_END_DATE_TYPE
-    );
+    return {
+      error:
+        dateType === 'start'
+          ? ERROR_CODES.INVALID_START_DATE_TYPE
+          : ERROR_CODES.INVALID_END_DATE_TYPE,
+      value: undefined,
+    };
   const parsedStartDate = new Date(dateParam);
   if (isNaN(parsedStartDate.valueOf()))
-    throw new Error(dateType === 'start' ? ERROR_CODES.BAD_START_DATE : ERROR_CODES.BAD_END_DATE);
-  return parsedStartDate;
+    return {
+      error: dateType === 'start' ? ERROR_CODES.BAD_START_DATE : ERROR_CODES.BAD_END_DATE,
+      value: undefined,
+    };
+  return { error: undefined, value: parsedStartDate };
 }

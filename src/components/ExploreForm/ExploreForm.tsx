@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import {
@@ -22,7 +21,7 @@ type dateBound = {
 
 type ExploreFormProps = {
   buoys: RiBuoyCoordinate[];
-  location: string;
+  location: 'ri' | 'ma';
   dateBounds: dateBound;
   init?: InitialFormData;
 };
@@ -40,7 +39,6 @@ export function ExploreForm({
   dateBounds,
   init = DEFAULT_INITIAL_DATA,
 }: ExploreFormProps) {
-  const router = useRouter();
   const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(init.buoys);
   const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
   const [startDate, setStartDate] = React.useState(dateBounds.startDate);
@@ -53,16 +51,15 @@ export function ExploreForm({
       const vars = selectedVars.length === 0 ? '' : `vars=${selectedVars.join(',')}`;
       const start = `start=${startDate.toISOString().split('T')[0]}`;
       const end = `end=${endDate.toISOString().split('T')[0]}`;
-      router.push(
+      window.location.replace(
         location === 'ri'
           ? `/datasets/rhode-island-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
           : location === 'ma'
             ? `/datasets/massachusetts-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
             : `/datasets/${location}?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
       );
-      router.refresh();
     },
-    [router, selectedBuoys, selectedVars, startDate, endDate, location]
+    [selectedBuoys, selectedVars, startDate, endDate, location]
   );
 
   return (

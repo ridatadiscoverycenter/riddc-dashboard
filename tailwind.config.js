@@ -4,9 +4,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        header: 'var(--font-header)',
-        main: 'var(--font-main)',
-        accent: 'var(--font-accent)',
+        header: 'var(--font-inter)',
+        main: 'var(--font-inter)',
       },
       colors: {
         'c-background': {

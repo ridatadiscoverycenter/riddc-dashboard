@@ -1,102 +1,111 @@
+import React from 'react';
+
 import {
+  BuoyPageSkeleton,
+  DefaultBuoyPage,
   ExploreForm,
   ExternalLink,
-  RiBuoyLocations,
   MaBuoySummary,
-  BuoyPageSkeleton,
-  DataGraph,
-  GraphErrorPanel,
-  BuoyVariables,
-  DownloadBuoyData,
+  BuoyVariablesCard,
+  BuoyLocationsMap,
 } from '@/components';
-import type { PageProps } from '@/types';
 import { fetchWeatherData } from '@/utils/data';
-import { fetchMaSummaryData, fetchMaBuoyCoordinates, fetchMaBuoyData } from '@/utils/data/api/buoy';
-import { makeCommaSepList } from '@/utils/fns';
-import { ERROR_CODES, getMaParams } from '@/utils/fns/getParams';
+import {
+  fetchMaBuoyCoordinates,
+  fetchMaBuoyData,
+  fetchMaSummaryData,
+  MaBuoyViewerVariable,
+} from '@/utils/data/api/buoy';
+import {
+  ERROR_CODES,
+  extractParams,
+  fetchMulti,
+  makeCommaSepList,
+  parseParamBuoyIds,
+  parseParamBuoyVariablesMA,
+  parseParamDate,
+} from '@/utils/fns';
+
+import { PageProps } from '@/types';
 
 export default async function MassachusettsBuoyData({ searchParams }: PageProps) {
-  const parsed = getMaParams(searchParams);
-  const buoyData = await fetchMaSummaryData();
-  const buoyCoords = await fetchMaBuoyCoordinates();
+  return (
+    <React.Suspense fallback={<DefaultBuoyPage description={DESCRIPTION} />}>
+      <PageWrapper params={searchParams} errorLinks={MA_BUOY_ERROR_LINKS} />
+    </React.Suspense>
+  );
+}
 
-  let graphBlock: React.ReactNode;
-  if (typeof parsed === 'string') {
-    graphBlock = (
-      <GraphErrorPanel
-        error={parsed === ERROR_CODES.NO_SEARCH_PARAMS ? undefined : parsed}
-        links={MA_BUOY_ERROR_LINKS}
-      />
-    );
-  } else {
-    const maBuoyData = await fetchMaBuoyData(parsed.buoys, parsed.vars, parsed.start, parsed.end);
-    const weatherData = await fetchWeatherData(parsed.start, parsed.end);
-    if (maBuoyData.length === 0) {
-      graphBlock = (
-        <GraphErrorPanel
-          error="No data is available given the selected parameters."
-          links={MA_BUOY_ERROR_LINKS}
-        />
-      );
-    } else {
-      graphBlock = (
-        <DataGraph
-          description={
-            <>
-              This plot compares {makeCommaSepList(parsed.vars)} between{' '}
-              {parsed.start.toLocaleDateString()} and {parsed.end.toLocaleDateString()} at{' '}
-              {makeCommaSepList(
-                parsed.buoys.map(
-                  (bid) => buoyCoords.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
-                )
-              )}
-              . You can hover over the lines to see more specific data. The weather data below is
-              sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
-            </>
-          }
-          weather={weatherData}
-          download={
-            <DownloadBuoyData
-              variables={parsed.vars}
-              region="ma"
-              buoys={parsed.buoys}
-              start={parsed.start}
-              end={parsed.end}
-            />
-          }
-        >
-          <BuoyVariables data={maBuoyData} height={200} />
-        </DataGraph>
-      );
-    }
-  }
+async function PageWrapper({
+  params,
+  errorLinks,
+}: {
+  params: PageProps['searchParams'];
+  errorLinks: { href: string; description: string }[];
+}) {
+  const { buoyData, summaryData } = await fetchMulti({
+    buoyData: fetchMaBuoyCoordinates(),
+    summaryData: fetchMaSummaryData(),
+  });
+
+  const paramsOrError = extractParams(
+    {
+      buoys: parseParamBuoyIds(params ? params['buoys'] : undefined),
+      vars: parseParamBuoyVariablesMA(params ? params['vars'] : undefined),
+      start: parseParamDate(params ? params['start'] : undefined, 'start'),
+      end: parseParamDate(params ? params['end'] : undefined, 'end'),
+    },
+    [
+      ERROR_CODES.NO_BUOYS,
+      ERROR_CODES.NO_VARS,
+      ERROR_CODES.MISSING_START_DATE,
+      ERROR_CODES.MISSING_END_DATE,
+    ]
+  );
+
   return (
     <BuoyPageSkeleton
-      graph={graphBlock}
+      graph={
+        <BuoyVariablesCard
+          params={paramsOrError}
+          errorLinks={errorLinks}
+          buoyDataFetcher={(ids, vars, start, end) =>
+            fetchMaBuoyData(ids, vars as MaBuoyViewerVariable[], start, end)
+          }
+          region="ma"
+          weatherDataFetcher={fetchWeatherData}
+          description={
+            typeof paramsOrError === 'string' ? undefined : (
+              <>
+                This plot compares {makeCommaSepList(paramsOrError.vars)} between{' '}
+                {paramsOrError.start.toLocaleDateString()} and{' '}
+                {paramsOrError.end.toLocaleDateString()} at{' '}
+                {makeCommaSepList(
+                  paramsOrError.buoys.map(
+                    (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
+                  )
+                )}
+                . You can hover over the lines to see more specific data. The weather data below is
+                sourced from <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
+              </>
+            )
+          }
+        />
+      }
       form={
         <ExploreForm
-          buoys={buoyCoords}
+          buoys={buoyData}
           location="ma"
           dateBounds={{
             startDate: new Date('2017-05-26'),
             endDate: new Date('2018-1-09'),
           }}
-          init={typeof parsed === 'string' ? undefined : parsed}
+          init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
         />
       }
-      map={<RiBuoyLocations locations={buoyCoords} />}
-      summary={<MaBuoySummary data={buoyData} />}
-      description={
-        <p>
-          This dataset spans from 2017 to 2018 and was collected by the <LINKS.NBFSMN /> with{' '}
-          <LINKS.MassDEP /> as the lead agency. The heatmap above summarizes the number of
-          observations collected for each month for different variables. Use this heatmap to help
-          you decide what data you want to visualize or download. When you have an idea, go ahead
-          and select the buoys, variables and dates to explore. Or download the data in the most
-          appropriate format for your analyses! To begin, select a variable to see what data is
-          available.
-        </p>
-      }
+      map={<BuoyLocationsMap locations={buoyData} />}
+      summary={<MaBuoySummary data={summaryData} />}
+      description={DESCRIPTION}
     />
   );
 }
@@ -124,3 +133,14 @@ const LINKS = {
     </ExternalLink>
   ),
 };
+
+const DESCRIPTION = (
+  <p>
+    This dataset spans from 2017 to 2018 and was collected by the <LINKS.NBFSMN /> with{' '}
+    <LINKS.MassDEP /> as the lead agency. The heatmap above summarizes the number of observations
+    collected for each month for different variables. Use this heatmap to help you decide what data
+    you want to visualize or download. When you have an idea, go ahead and select the buoys,
+    variables and dates to explore. Or download the data in the most appropriate format for your
+    analyses! To begin, select a variable to see what data is available.
+  </p>
+);

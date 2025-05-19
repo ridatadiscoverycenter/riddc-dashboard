@@ -3,14 +3,14 @@ import React from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-import { RiBuoyCoordinate } from '@/utils/data/api/buoy';
-import { useMap } from './useMap';
+import { useMap } from '@/components/visualizations/Maps/useMap';
+import { RiBuoyCoordinate as BuoyCoordinate } from '@/utils/data/api/buoy';
 
-type RiBuoyLocationsProps = {
-  locations: RiBuoyCoordinate[];
+type BuoyLocationsProps = {
+  locations: BuoyCoordinate[];
 };
 
-export function RiBuoyLocations({ locations }: RiBuoyLocationsProps) {
+export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
   const { map, loaded, containerRef } = useMap();
   React.useEffect(() => {
     if (loaded) {
