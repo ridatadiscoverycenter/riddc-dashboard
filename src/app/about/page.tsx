@@ -1,10 +1,10 @@
+import Image from 'next/image';
 import NarBay from '@/components/Image/NarBay';
 import { Card, Link } from '@/components';
 import ridemImage from '@/assets/ridem-crest.png';
 import urigsolight from '@/assets/URIGSO.webp';
 import urigsodark from '@/assets/urigsoDark.webp';
 import narrabay from '@/assets/narrabay-logo.png';
-import Image from 'next/image';
 
 // TODO: figure out what's meant by "(look under Citation for Data users)" and "For more information about the RI DEM Fixed-Site Monitoring Stations please refer to RI DEM Fixed-Site Monitoring Stations and Data in Narragansett Bay"
 
@@ -43,18 +43,21 @@ const LEADERSHIP = [
 const CREDITS = [
   {
     name: 'Rhode Island Department of Environmental Management- Office of Water Resources (RIDEM-OWR)',
-    logoLight: <Image src={ridemImage} width={50} height={50} alt="RIDEM logo" />,
-    logoDark: <Image src={ridemImage} width={50} height={50} alt="RIDEM logo" />,
+    logoLight: ridemImage,
+    logoDark: ridemImage,
+    alt: 'RIDEM OWR Logo',
   },
   {
     name: 'University of Rhode Island, Graduate School of Oceanography (URI-GSO)',
-    logoLight: <Image src={urigsolight} width={100} height={100} alt="URI GSO logo" />,
-    logoDark: <Image src={urigsodark} width={100} height={100} alt="URI GSO logo" />,
+    logoLight: urigsolight,
+    logoDark: urigsodark,
+    alt: 'URI GSO Logo',
   },
   {
     name: 'Narragansett Bay Commission (NBC)',
-    logoLight: <Image src={narrabay} width={200} height={200} alt="NBC logo" />,
-    logoDark: <Image src={narrabay} width={200} height={200} alt="NBC logo" />,
+    logoLight: narrabay,
+    logoDark: narrabay,
+    alt: 'NBC Logo',
   },
 ];
 
@@ -118,14 +121,14 @@ export default function About() {
             monitoring stations:
           </p>
           <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4">
-            {CREDITS.map(({ name, logoDark, logoLight }) => (
+            {CREDITS.map(({ name, logoDark, logoLight, alt }) => (
               <li key={name}>
                 <Card className="bg-clear-300 hover:bg-clear-800 dark:bg-clear-100 hover:dark:bg-clear-300 place-items-center">
                   <h3 className="text-xl font-bold font-header text-center dark:hidden">
-                    {logoLight}
+                    <Image src={logoLight} height={100} alt={alt} />
                   </h3>
                   <h3 className="text-xl font-bold font-header text-center hidden dark:block">
-                    {logoDark}
+                    <Image src={logoDark} height={100} alt={alt} />
                   </h3>
                   <p className="pb-4" key={name}>
                     {name}
@@ -151,7 +154,6 @@ export default function About() {
             production or similar, please remember that you need to cite the data sources listed on
             RI DEM Fixed-Site Monitoring Stations Network Data (look under Citation for Data users)
           </p>
-
           <p>
             For more information about the RI DEM Fixed-Site Monitoring Stations please refer to RI
             DEM Fixed-Site Monitoring Stations and Data in Narragansett Bay
@@ -161,7 +163,7 @@ export default function About() {
           <h2 className="w-full text-center text-2xl font-header mt-8 mb-2">
             Data Acceptance Guidelines
           </h2>
-          <p className="margin-auto px-4 mx-4 mb-4">
+          <p>
             Contact us if you want us to host your Narragansett Bay related data! See our data
             acceptance guidelines <Link href="/riddc_data_guidelines.pdf">here</Link>.
           </p>
