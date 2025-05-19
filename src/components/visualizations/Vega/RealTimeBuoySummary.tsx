@@ -21,7 +21,7 @@ function getGraphicWidth(size: Size | undefined) {
 
 export function RealTimeBuoySummary({ data }: RealTimeBuoySummaryProps) {
   const size = useScreenSize();
-  const [variable, setVariable] = React.useState<RealTimeBuoyViewerVariable>("airPressure");
+  const [variable, setVariable] = React.useState<RealTimeBuoyViewerVariable>('airPressure');
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
