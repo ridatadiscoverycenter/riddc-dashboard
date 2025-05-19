@@ -564,7 +564,7 @@ const ZodFetchedRealTimeBuoyData = z.object({
       variable: z.enum(REAL_TIME_BUOY_ERDDAP_VARIABLES),
       value: z.union([z.number(), z.null()]),
       station_name: z.string(),
-      time: z.string().datetime(),
+      time: z.union([z.string().datetime(), z.number()]),
       units: z.string(),
     })
   ),
@@ -579,7 +579,7 @@ export async function fetchRealTimeBuoyData(
   endDate: Date
 ) {
   const fetchedRealTimeBuoyData = await fetchBuoyData(
-    'ri-buoy',
+    'buoy-telemetry',
     ids,
     vars.map(viewerToErddap),
     startDate,
