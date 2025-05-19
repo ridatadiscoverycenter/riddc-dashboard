@@ -1,6 +1,10 @@
 import NarBay from '@/components/Image/NarBay';
 import { Card, Link } from '@/components';
-// import riddc_data_guidelines from '@/../public/r';
+import ridemImage from '@/assets/ridem-crest.png';
+import urigsolight from '@/assets/URIGSO.webp';
+import urigsodark from '@/assets/urigsoDark.webp';
+import narrabay from '@/assets/narrabay-logo.png';
+import Image from 'next/image';
 
 // TODO: figure out what's meant by "(look under Citation for Data users)" and "For more information about the RI DEM Fixed-Site Monitoring Stations please refer to RI DEM Fixed-Site Monitoring Stations and Data in Narragansett Bay"
 
@@ -33,6 +37,24 @@ const LEADERSHIP = [
   {
     name: 'Dr. Baylor Fox-Kemper',
     affiliations: ['Department of Earth, Environmental, & Planetary Sciences, Brown University'],
+  },
+];
+
+const CREDITS = [
+  {
+    name: 'Rhode Island Department of Environmental Management- Office of Water Resources (RIDEM-OWR)',
+    logoLight: <Image src={ridemImage} width={50} height={50} alt="RIDEM logo" />,
+    logoDark: <Image src={ridemImage} width={50} height={50} alt="RIDEM logo" />,
+  },
+  {
+    name: 'University of Rhode Island, Graduate School of Oceanography (URI-GSO)',
+    logoLight: <Image src={urigsolight} width={100} height={100} alt="URI GSO logo" />,
+    logoDark: <Image src={urigsodark} width={100} height={100} alt="URI GSO logo" />,
+  },
+  {
+    name: 'Narragansett Bay Commission (NBC)',
+    logoLight: <Image src={narrabay} width={200} height={200} alt="NBC logo" />,
+    logoDark: <Image src={narrabay} width={200} height={200} alt="NBC logo" />,
   },
 ];
 
@@ -95,17 +117,35 @@ export default function About() {
             multi-agency collaboration. Folllowing agencies contributed to the network of fixed-site
             monitoring stations:
           </p>
-          <ul className="list-disc list-inside ps-4">
+          <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4">
+            {CREDITS.map(({ name, logoDark, logoLight }) => (
+              <li key={name}>
+                <Card className="bg-clear-300 hover:bg-clear-800 dark:bg-clear-100 hover:dark:bg-clear-300 place-items-center">
+                  <h3 className="text-xl font-bold font-header text-center dark:hidden">
+                    {logoLight}
+                  </h3>
+                  <h3 className="text-xl font-bold font-header text-center hidden dark:block">
+                    {logoDark}
+                  </h3>
+                  <p className="pb-4" key={name}>
+                    {name}
+                  </p>
+                </Card>
+              </li>
+            ))}
+          </ul>
+          {/* <ul className="list-disc list-inside ps-4">
             <li>
               Rhode Island Department of Environmental Management- Office of Water Resources
               (RIDEM-OWR)
             </li>
+            
             <li>University of Rhode Island, Graduate School of Oceanography (URI-GSO)</li>
             <li>Narragansett Bay Commission (NBC)</li>
             <li>Narragansett Bay National Estuarine Research Reserve (NBNERR)</li>
             <li>Roger Williams University (RWU)</li>
             <li>Narragansett Bay Estuary Program (NBNEP), and URI Coastal Institute</li>
-          </ul>
+          </ul> */}
           <p className="my-2">
             If you use any of these historical data in any publication, presentation, poster, media
             production or similar, please remember that you need to cite the data sources listed on
