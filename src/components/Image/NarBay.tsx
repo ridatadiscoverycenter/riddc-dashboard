@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './NarBay.modules.css';
 
-export function NarBay() {
+export default function NarBay() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
