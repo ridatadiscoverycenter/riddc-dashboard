@@ -6,17 +6,18 @@ import { BuoyVariables, DataGraph, DownloadBuoyData, GraphErrorPanel } from '@/c
 import type { WeatherData } from '@/utils/data';
 import type { MaBuoyData, MaBuoyViewerVariable, RiBuoyData } from '@/utils/data/api/buoy';
 import { ERROR_CODES } from '@/utils/fns';
+import { PlanktonData } from '@/utils/data/api/buoy/plankton';
 
 type BuoyVariablesProps = {
   params: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
-  region: 'ri' | 'ma';
+  region: 'ri' | 'ma' | 'plankton';
   errorLinks: { href: string; description: string }[];
   buoyDataFetcher: (
     buoys: string[],
     variables: string[],
     start: Date,
     end: Date
-  ) => Promise<RiBuoyData[] | MaBuoyData[]>;
+  ) => Promise<RiBuoyData[] | MaBuoyData[] | PlanktonData[]>;
   weatherDataFetcher: (start: Date, end: Date) => Promise<WeatherData[]>;
   description: React.ReactNode;
 };

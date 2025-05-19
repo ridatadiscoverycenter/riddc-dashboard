@@ -96,6 +96,17 @@ export function parseParamBuoyVariablesMA(
   return { error: ERROR_CODES.INVALID_VARS, value: undefined };
 }
 
+export function parseParamBuoyVariablesPlankton(
+  variablesParam: Param
+): ParsedParam<PlanktonVariable[]> {
+  if (variablesParam === undefined) return { error: ERROR_CODES.NO_VARS, value: undefined };
+  if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
+  const variables = variablesParam.split(',');
+  if (variables.every((vari) => PLANKTON_VARIABLES.includes(vari as PlanktonVariable)))
+    return { error: undefined, value: variables as PlanktonVariable[] };
+  return { error: ERROR_CODES.INVALID_VARS, value: undefined };
+}
+
 export function parseParamDate(dateParam: Param, dateType: 'start' | 'end'): ParsedParam<Date> {
   if (dateParam === undefined)
     return {

@@ -21,7 +21,7 @@ type dateBound = {
 
 type ExploreFormProps = {
   buoys: RiBuoyCoordinate[];
-  location: 'ri' | 'ma';
+  location: 'ri' | 'ma' | 'plankton';
   dateBounds: dateBound;
   init?: InitialFormData;
 };
