@@ -44,7 +44,13 @@ const DATASETS = [
   {
     name: 'Plankton Time Series',
     href: '/datasets/plankton',
-    description: () => <>Coming Soon!</>,
+    description: () => (
+      <>
+        One of the world’s longest-running plankton surveys. Since 1957, weekly samples have been
+        collected to assess the phytoplankton community and characterize the physical parameters of
+        Narragansett Bay.
+      </>
+    ),
   },
   {
     name: 'Domoic Acid',
