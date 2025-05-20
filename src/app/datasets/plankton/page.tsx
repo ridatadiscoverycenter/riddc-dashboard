@@ -114,6 +114,10 @@ const PLANKTON_ERROR_LINKS = [
     href: '/datasets/plankton?buoys=bid21&vars=WaterTempSurface,WaterTempBottom&start=2017-01-01&end=2018-12-31',
     description: 'Changes in Water Temperature from 2017-2018',
   },
+  {
+    href: '/datasets/plankton?buoys=bid21&vars=SilicaBottom,SilicaSurface&start=2003-01-01&end=2009-12-31',
+    description: 'Changes in Silica Levels from 2003-2009',
+  },
 ];
 
 const LINKS = {
