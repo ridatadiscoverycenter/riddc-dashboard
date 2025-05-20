@@ -135,13 +135,13 @@ export default function About() {
           </p>
           <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4">
             {CREDITS.map(({ title, logoDark, logoLight }) => (
-              <li key={title} className="place-items-center">
-                <h3 className="text-xl font-bold font-header text-center dark:hidden">
+              <li key={title} className="place-content-center place-items-center">
+                <div className="dark:hidden">
                   <Image src={logoLight} height={100} alt={title} title={title} />
-                </h3>
-                <h3 className="text-xl font-bold font-header text-center hidden dark:block">
+                </div>
+                <div className="hidden dark:block">
                   <Image src={logoDark} height={100} alt={title} title={title} />
-                </h3>
+                </div>
               </li>
             ))}
           </ul>
