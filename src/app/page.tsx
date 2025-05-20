@@ -81,7 +81,9 @@ const EXTERNAL_RESOURCES = [
 export default function Datasets() {
   return (
     <>
-      <h1 className="w-full my-auto text-center text-2xl font-header mt-4">Datasets</h1>
+      <h2 className="w-full text-center text-2xl font-header mt-8 -mb-2">
+        Explore our collection of present and historical data from the Narragansett Bay
+      </h2>
       <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4">
         {DATASETS.map(({ name, href, description }) => (
           <li key={href}>
@@ -94,7 +96,7 @@ export default function Datasets() {
           </li>
         ))}
       </ul>
-      <h1 className="w-full my-auto text-center text-2xl font-header mt-4">External Resources</h1>
+      <h2 className="w-full text-center text-2xl font-header -mt-2">External Resources</h2>
       <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4 mb-4">
         {EXTERNAL_RESOURCES.map(({ name, href, description }) => (
           <li key={href}>
