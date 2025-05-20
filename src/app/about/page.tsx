@@ -1,12 +1,13 @@
 import Image from 'next/image';
 import NarBay from '@/components/Image/NarBay';
 import { Card, Link } from '@/components';
-import ridemImage from '@/assets/ridem-crest.svg';
+import ridemImage from '@/assets/ridem-logo.svg';
 import urigsolight from '@/assets/urigso-light.svg';
 import urigsodark from '@/assets/urigso-dark.svg';
 import narrabay from '@/assets/narrabay-logo.svg';
 import nbnerr from '@/assets/nbnerr.svg';
-import rwu from '@/assets/RWUSeal_Light_Blue.svg';
+import rwuDark from '@/assets/RWUSeal_Light_Blue.svg';
+import rwuLight from '@/assets/RWUSeal_Blue.svg';
 import nbep from '@/assets/nbep.svg';
 
 // TODO: figure out what's meant by "(look under Citation for Data users)" and "For more information about the RI DEM Fixed-Site Monitoring Stations please refer to RI DEM Fixed-Site Monitoring Stations and Data in Narragansett Bay"
@@ -65,7 +66,7 @@ const CREDITS = [
     logoLight: nbnerr,
     logoDark: nbnerr,
   },
-  { title: 'Roger Williams University (RWU)', logoLight: rwu, logoDark: rwu },
+  { title: 'Roger Williams University (RWU)', logoLight: rwuLight, logoDark: rwuDark },
   {
     title: 'Narragansett Bay Estuary Program (NBEP), and URI Coastal Institute',
     logoLight: nbep,
@@ -134,15 +135,13 @@ export default function About() {
           </p>
           <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4">
             {CREDITS.map(({ title, logoDark, logoLight }) => (
-              <li key={title}>
-                <Card className="bg-clear-300 hover:bg-clear-800 dark:bg-clear-100 hover:dark:bg-clear-300 place-items-center">
-                  <h3 className="text-xl font-bold font-header text-center dark:hidden">
-                    <Image src={logoLight} height={100} alt={title} title={title} />
-                  </h3>
-                  <h3 className="text-xl font-bold font-header text-center hidden dark:block">
-                    <Image src={logoDark} height={100} alt={title} title={title} />
-                  </h3>
-                </Card>
+              <li key={title} className="place-items-center">
+                <h3 className="text-xl font-bold font-header text-center dark:hidden">
+                  <Image src={logoLight} height={100} alt={title} title={title} />
+                </h3>
+                <h3 className="text-xl font-bold font-header text-center hidden dark:block">
+                  <Image src={logoDark} height={100} alt={title} title={title} />
+                </h3>
               </li>
             ))}
           </ul>
