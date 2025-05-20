@@ -1,10 +1,13 @@
 import Image from 'next/image';
 import NarBay from '@/components/Image/NarBay';
 import { Card, Link } from '@/components';
-import ridemImage from '@/assets/ridem-crest.png';
-import urigsolight from '@/assets/URIGSO.webp';
-import urigsodark from '@/assets/urigsoDark.webp';
-import narrabay from '@/assets/narrabay-logo.png';
+import ridemImage from '@/assets/ridem-crest.svg';
+import urigsolight from '@/assets/urigso-light.svg';
+import urigsodark from '@/assets/urigso-dark.svg';
+import narrabay from '@/assets/narrabay-logo.svg';
+import nbnerr from '@/assets/nbnerr.svg';
+import rwu from '@/assets/RWUSeal_Light_Blue.svg';
+import nbep from '@/assets/nbep.svg';
 
 // TODO: figure out what's meant by "(look under Citation for Data users)" and "For more information about the RI DEM Fixed-Site Monitoring Stations please refer to RI DEM Fixed-Site Monitoring Stations and Data in Narragansett Bay"
 
@@ -42,22 +45,31 @@ const LEADERSHIP = [
 
 const CREDITS = [
   {
-    name: 'Rhode Island Department of Environmental Management- Office of Water Resources (RIDEM-OWR)',
+    title:
+      'Rhode Island Department of Environmental Management- Office of Water Resources (RIDEM-OWR)',
     logoLight: ridemImage,
     logoDark: ridemImage,
-    alt: 'RIDEM OWR Logo',
   },
   {
-    name: 'University of Rhode Island, Graduate School of Oceanography (URI-GSO)',
+    title: 'University of Rhode Island, Graduate School of Oceanography (URI-GSO)',
     logoLight: urigsolight,
     logoDark: urigsodark,
-    alt: 'URI GSO Logo',
   },
   {
-    name: 'Narragansett Bay Commission (NBC)',
+    title: 'Narragansett Bay Commission (NBC)',
     logoLight: narrabay,
     logoDark: narrabay,
-    alt: 'NBC Logo',
+  },
+  {
+    title: 'Narragansett Bay National Estuarine Research Reserve (NBNERR)',
+    logoLight: nbnerr,
+    logoDark: nbnerr,
+  },
+  { title: 'Roger Williams University (RWU)', logoLight: rwu, logoDark: rwu },
+  {
+    title: 'Narragansett Bay Estuary Program (NBEP), and URI Coastal Institute',
+    logoLight: nbep,
+    logoDark: nbep,
   },
 ];
 
@@ -121,34 +133,19 @@ export default function About() {
             monitoring stations:
           </p>
           <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4">
-            {CREDITS.map(({ name, logoDark, logoLight, alt }) => (
-              <li key={name}>
+            {CREDITS.map(({ title, logoDark, logoLight }) => (
+              <li key={title}>
                 <Card className="bg-clear-300 hover:bg-clear-800 dark:bg-clear-100 hover:dark:bg-clear-300 place-items-center">
                   <h3 className="text-xl font-bold font-header text-center dark:hidden">
-                    <Image src={logoLight} height={100} alt={alt} />
+                    <Image src={logoLight} height={100} alt={title} title={title} />
                   </h3>
                   <h3 className="text-xl font-bold font-header text-center hidden dark:block">
-                    <Image src={logoDark} height={100} alt={alt} />
+                    <Image src={logoDark} height={100} alt={title} title={title} />
                   </h3>
-                  <p className="pb-4" key={name}>
-                    {name}
-                  </p>
                 </Card>
               </li>
             ))}
           </ul>
-          {/* <ul className="list-disc list-inside ps-4">
-            <li>
-              Rhode Island Department of Environmental Management- Office of Water Resources
-              (RIDEM-OWR)
-            </li>
-            
-            <li>University of Rhode Island, Graduate School of Oceanography (URI-GSO)</li>
-            <li>Narragansett Bay Commission (NBC)</li>
-            <li>Narragansett Bay National Estuarine Research Reserve (NBNERR)</li>
-            <li>Roger Williams University (RWU)</li>
-            <li>Narragansett Bay Estuary Program (NBNEP), and URI Coastal Institute</li>
-          </ul> */}
           <p className="my-2">
             If you use any of these historical data in any publication, presentation, poster, media
             production or similar, please remember that you need to cite the data sources listed on
