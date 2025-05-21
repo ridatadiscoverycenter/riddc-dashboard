@@ -22,6 +22,7 @@ function getGraphicWidth(size: Size | undefined) {
 export function RiBuoySummary({ data }: RiBuoySummaryProps) {
   const size = useScreenSize();
   const [variable, setVariable] = React.useState<RiBuoyViewerVariable>('chlorophyll');
+  console.log(variable);
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -134,8 +135,8 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
         <Select
           forceLight
           label="Data:"
-          value={variable}
-          onChange={(e) => setVariable(e.target.value as RiBuoyViewerVariable)}
+          defaultValue={variable}
+          onChange={(newValue) => setVariable((newValue as { value: RiBuoyViewerVariable }).value)}
           options={RI_BUOY_VIEWER_VARIABLES.map((key) => ({
             label: key
               .replace(/([a-z])([A-Z])/g, '$1 $2')
