@@ -2,7 +2,7 @@ import { FullBleedColumn } from '@/components';
 
 export default function Glossary() {
   return (
-    <FullBleedColumn className="my-2 gap-4 font-light font-lg">
+    <FullBleedColumn className="my-2 gap-4">
       <h1 className="text-4xl font-extralight">Glossary</h1>
       <h2 className="text-2xl">Agencies and Organizations</h2>
       <List

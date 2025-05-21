@@ -23,7 +23,7 @@ export function BuoyPageSkeleton({
       </Card>
       {form}
       <div className="flex flex-col items-center justify-around col-span-1">
-        <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
+        <h2 className="text-xl font-header font-extralight">Where are these buoys?</h2>
         {map}
       </div>
       <Card className="bg-clear-900 col-span-2 items-center">{summary}</Card>
