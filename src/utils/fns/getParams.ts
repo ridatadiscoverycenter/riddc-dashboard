@@ -2,6 +2,8 @@ import { PageProps } from '@/types';
 import {
   MA_BUOY_VIEWER_VARIABLES,
   MaBuoyViewerVariable,
+  REAL_TIME_BUOY_VIEWER_VARIABLES,
+  RealTimeBuoyViewerVariable,
   RI_BUOY_VIEWER_VARIABLES,
   RiBuoyViewerVariable,
 } from '../data/api/buoy';
@@ -70,6 +72,7 @@ export function extractParams<T extends Record<string, ParsedParam<any>>>(
 export function parseParamBuoyIds(buoysParam: Param): ParsedParam<string[]> {
   if (buoysParam === undefined) return { error: ERROR_CODES.NO_BUOYS, value: undefined };
   if (buoysParam instanceof Array) return { error: ERROR_CODES.BAD_BUOYS, value: undefined };
+  console.log(buoysParam);
   return { error: undefined, value: buoysParam.split(',') };
 }
 
@@ -92,6 +95,21 @@ export function parseParamBuoyVariablesMA(
   const variables = variablesParam.split(',');
   if (variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
     return { error: undefined, value: variables as MaBuoyViewerVariable[] };
+  return { error: ERROR_CODES.INVALID_VARS, value: undefined };
+}
+
+export function parseParamBuoyVariablesRT(
+  variablesParam: Param
+): ParsedParam<RealTimeBuoyViewerVariable[]> {
+  if (variablesParam === undefined) return { error: ERROR_CODES.NO_VARS, value: undefined };
+  if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
+  const variables = variablesParam.split(',');
+  if (
+    variables.every((vari) =>
+      REAL_TIME_BUOY_VIEWER_VARIABLES.includes(vari as RealTimeBuoyViewerVariable)
+    )
+  )
+    return { error: undefined, value: variables as RealTimeBuoyViewerVariable[] };
   return { error: ERROR_CODES.INVALID_VARS, value: undefined };
 }
 

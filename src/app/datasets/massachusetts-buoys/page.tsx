@@ -72,7 +72,7 @@ export async function PageWrapper({
           buoyDataFetcher={(ids, vars, start, end) =>
             fetchMaBuoyData(ids, vars as MaBuoyViewerVariable[], start, end)
           }
-          region="ma"
+          dataset="ma"
           weatherDataFetcher={fetchWeatherData}
           description={
             typeof paramsOrError === 'string' ? undefined : (
@@ -95,7 +95,7 @@ export async function PageWrapper({
       form={
         <ExploreForm
           buoys={buoyData}
-          location="ma"
+          dataset="ma"
           dateBounds={{
             startDate: new Date('2017-05-26'),
             endDate: new Date('2018-1-09'),
