@@ -1,2 +1,2 @@
-export * from "./fetchStreamGageData";
+export * from './fetchStreamGageData';
 export * from './types';

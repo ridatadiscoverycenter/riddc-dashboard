@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const StreamGageDataSchema = z.object({
   value: z.object({
@@ -31,4 +31,4 @@ export const StreamGageDataSchema = z.object({
   }),
 });
 
-export type StreamGageData = z.infer<typeof StreamGageDataSchema>["value"]["timeSeries"][number];
+export type StreamGageData = z.infer<typeof StreamGageDataSchema>['value']['timeSeries'][number];
