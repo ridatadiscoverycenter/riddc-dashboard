@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import NarBay from '@/components/Image/NarBay';
-import { Card, Link } from '@/components';
-import ridemImage from '@/assets/ridem-logo.svg';
+import { Card, Link, FullBleedColumn } from '@/components';
+import ridemImage from '@/assets/ridem.svg';
 import urigsolight from '@/assets/urigso-light.svg';
 import urigsodark from '@/assets/urigso-dark.svg';
 import narrabay from '@/assets/narrabay-logo.svg';
@@ -78,7 +78,7 @@ export default function About() {
   return (
     <>
       <NarBay />
-      <div className="max-w-[1000px]">
+      <FullBleedColumn>
         <h1 className="w-full text-center text-4xl font-header font-bold mt-8 mb-8">About</h1>
         <h2 className="w-full text-center text-2xl font-header font-bold">
           Rhode Island Data Discovery Center
@@ -107,8 +107,8 @@ export default function About() {
             data on the Narragansett Bay ecosystem.
           </p>
         </div>
-        <h2 className="w-full text-center text-2xl font-header font-bold mb-4">Leadership</h2>
-        <div className="px-4 mb-4 mx-6">
+        <h2 className="w-full text-center text-2xl font-header font-bold my-4">Leadership</h2>
+        <div className="px-4 mx-6 my-4">
           <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4">
             {LEADERSHIP.map(({ name, affiliations }) => (
               <li key={name}>
@@ -124,7 +124,7 @@ export default function About() {
             ))}
           </ul>
         </div>
-        <h2 className="w-full text-center text-2xl font-header font-bold mb-2">Credits</h2>
+        <h2 className="w-full text-center text-2xl font-header font-bold mt-4">Credits</h2>
         <div className="px-4 mx-6 mb-4 text-xl">
           <p className="my-2">
             The historical data available for lookup on this site has been compiled from quality
@@ -164,7 +164,7 @@ export default function About() {
             acceptance guidelines <Link href="/riddc_data_guidelines.pdf">here</Link>.
           </p>
         </div>
-      </div>
+      </FullBleedColumn>
     </>
   );
 }
