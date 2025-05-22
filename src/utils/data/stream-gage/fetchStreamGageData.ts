@@ -31,7 +31,6 @@ export const StreamGageDataSchema = z.object({
   }),
 });
 
-
 /**
  * Fetches stream gage data in Rhode Island for the given number of past days.
  * @param days The number of past days to fetch data for, including today.
@@ -63,9 +62,18 @@ function formatFetchedStreamGageData(
   );
 
   return filteredData.map((v) => {
-    const { siteName, geoLocation: { geogLocation: { longitude, latitude } } } = v.sourceInfo;
+    const {
+      siteName,
+      geoLocation: {
+        geogLocation: { longitude, latitude },
+      },
+    } = v.sourceInfo;
     const { variableName } = v.variable;
-    const values = v.values.flat().map(({ value }) => value).flat().map(({ value, dateTime }) => ({ value: Number(value), dateTime: new Date(dateTime) }));
+    const values = v.values
+      .flat()
+      .map(({ value }) => value)
+      .flat()
+      .map(({ value, dateTime }) => ({ value: Number(value), dateTime: new Date(dateTime) }));
     return {
       siteName,
       longitude,
