@@ -1,19 +1,14 @@
 import Image from 'next/image';
 
-import NarBay from '@/components/Image/NarBay';
-import { Card, Link, ExternalLink, FullBleedColumn } from '@/components';
-import {
-  nbnerr,
-  nbep,
-  narrabay,
-  ridemImage,
-  urigsolight,
-  urigsodark,
-  rwuDark,
-  rwuLight,
-} from '@/assets';
-
-// TODO: figure out what's meant by "(look under Citation for Data users)" and "For more information about the RI DEM Fixed-Site Monitoring Stations please refer to RI DEM Fixed-Site Monitoring Stations and Data in Narragansett Bay"
+import { Card, Link, ExternalLink, FullBleedColumn, Hero } from '@/components';
+import nbnerr from '@/assets/nbnerr.svg';
+import nbep from '@/assets/nbep.svg';
+import narrabay from '@/assets/narrabay-logo.svg';
+import ridemImage from '@/assets/ridem.svg';
+import urigsoDark from '@/assets/urigso-dark.svg';
+import urigsoLight from '@/assets/urigso-light.svg';
+import rwuDark from '@/assets/RWUSeal_Light_Blue.svg';
+import rwuLight from '@/assets/RWUSeal_Blue.svg';
 
 const LEADERSHIP = [
   {
@@ -56,8 +51,8 @@ const CREDITS = [
   },
   {
     title: 'University of Rhode Island, Graduate School of Oceanography (URI-GSO)',
-    logoLight: urigsolight,
-    logoDark: urigsodark,
+    logoLight: urigsoLight,
+    logoDark: urigsoDark,
   },
   {
     title: 'Narragansett Bay Commission (NBC)',
@@ -155,12 +150,18 @@ const EXTERNAL_RESOURCES = [
   },
 ];
 
-export default function About() {
+export default function Home() {
   return (
     <>
-      <NarBay />
+      <Hero />
       <FullBleedColumn className="flex flex-col text-lg/7 gap-4 mb-8">
-        <h1 className="w-full text-center text-4xl font-header font-bold">About</h1>
+        <h1
+          className="w-full text-center text-4xl font-header font-bold"
+          id="about"
+          style={{ scrollMarginTop: '5rem' }}
+        >
+          About
+        </h1>
         <h2 className="w-full text-center text-2xl font-header font-bold">
           Rhode Island Data Discovery Center
         </h2>
@@ -208,17 +209,17 @@ export default function About() {
           The historical data available for lookup on this site has been compiled from quality
           controlled data from Narragansett Bay Fixed Site Monitoring Network (NBFSMN). The RI DEM
           Office of Water Resources (RIDEM-OWR) has been leading the effort of coordinating this
-          multi-agency collaboration. Folllowing agencies contributed to the network of fixed-site
-          monitoring stations:
+          multi-agency collaboration. The following agencies contributed to the network of
+          fixed-site monitoring stations:
         </p>
         <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4 my-4">
           {CREDITS.map(({ title, logoDark, logoLight }) => (
             <li key={title} className="place-content-center place-items-center">
               <div className="dark:hidden">
-                <Image src={logoLight} height={100} alt={title} title={title} />
+                <Image src={logoLight} height="100" alt={title} title={title} />
               </div>
               <div className="hidden dark:block">
-                <Image src={logoDark} height={100} alt={title} title={title} />
+                <Image src={logoDark} height="100" alt={title} title={title} />
               </div>
             </li>
           ))}
@@ -239,7 +240,11 @@ export default function About() {
           Contact us if you want us to host your Narragansett Bay related data! See our data
           acceptance guidelines <Link href="/riddc_data_guidelines.pdf">here</Link>.
         </p>
-        <h2 className="w-full text-center text-2xl font-header mt-4 -mb-2">
+        <h2
+          className="w-full text-center text-2xl font-header mt-4 -mb-2"
+          id="datasets"
+          style={{ scrollMarginTop: '5rem' }}
+        >
           Explore our collection of present and historical data from Narragansett Bay
         </h2>
         <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4">
