@@ -30,9 +30,11 @@ module.exports = {
       },
     },
   },
-  plugins: [plugin(function({ addBase }){
-    addBase({
-      'html': { fontSize: "18px"}
-    })
-  })],
+  plugins: [
+    plugin(function ({ addBase }) {
+      addBase({
+        html: { fontSize: '18px' },
+      });
+    }),
+  ],
 };
