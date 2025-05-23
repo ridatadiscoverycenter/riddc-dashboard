@@ -72,7 +72,7 @@ export function extractParams<T extends Record<string, ParsedParam<any>>>(
 export function parseParamBuoyIds(buoysParam: Param): ParsedParam<string[]> {
   if (buoysParam === undefined) return { error: ERROR_CODES.NO_BUOYS, value: undefined };
   if (buoysParam instanceof Array) return { error: ERROR_CODES.BAD_BUOYS, value: undefined };
-  console.log(buoysParam);
+  
   return { error: undefined, value: buoysParam.split(',') };
 }
 
