@@ -12,128 +12,126 @@ import rwuLight from '@/assets/RWUSeal_Blue.svg';
 
 export default function Home() {
   return (
-    <>
-      <Hero />
-      <FullBleedColumn className="flex flex-col text-lg/7 gap-4 mb-8">
-        <h1
-          className="w-full text-center text-4xl font-header font-bold"
-          id="about"
-          style={{ scrollMarginTop: '5rem' }}
-        >
-          About
-        </h1>
-        <h2 className="w-full text-center text-2xl font-header font-bold">
-          Rhode Island Data Discovery Center
-        </h2>
-        <p>
-          The National Science Foundation in 2017 awarded the University of Rhode Island with a
-          grant to establish a statewide research consortium — the RI Consortium for Coastal Ecology
-          Assessment, Innovation, and Modeling (RI C-AIM) — to study the effects of climate
-          variability on coastal ecosystems. The RI Data Discovery Center is one of the efforts of
-          RI C-AIM consortium.
-        </p>
-        <p>
-          The goal of the RI Data Discovery Center is to become the national and international
-          go-to-source for data on the Narragansett Bay ecosystem. For C-AIM investigators pursuing
-          the research goals of the Integrated Bay Observatory, Predicting Ecosystem Response and
-          Visualization & Imaging, RI Data Discovery Center will become the site where they will
-          store their data, share their data internally with other C-AIM investigators and share
-          their data externally with investigators around the world.
-        </p>
-        <p>
-          In addition to new data collected by C-AIM investigators, RI Data Discovery Center will
-          also collect and share historical data on the Narragansett Bay ecosystem. In addition to
-          sharing data with scientists, RIDDC will also become the go-to-source where decision
-          makers, land-use managers, relevant industries, citizen scientists and students can find
-          data on the Narragansett Bay ecosystem.
-        </p>
-        <h3 className="w-full text-center text-2xl font-header font-bold">Leadership</h3>
-        <div className="px-4 mx-6">
-          <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4">
-            {LEADERSHIP.map(({ name, affiliations }) => (
-              <li key={name}>
-                <Card className="bg-clear-300 hover:bg-clear-800 dark:bg-clear-100 hover:dark:bg-clear-300">
-                  <h3 className="text-xl font-bold font-header">{name}</h3>
-                  {affiliations.map((affiliation) => (
-                    <p className="pb-4" key={affiliation}>
-                      {affiliation}
-                    </p>
-                  ))}
-                </Card>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <h3 className="w-full text-center text-2xl font-header font-bold mt-2">Credits</h3>
-        <p>
-          The historical data available for lookup on this site has been compiled from quality
-          controlled data from Narragansett Bay Fixed Site Monitoring Network (NBFSMN). The RI DEM
-          Office of Water Resources (RIDEM-OWR) has been leading the effort of coordinating this
-          multi-agency collaboration. The following agencies contributed to the network of
-          fixed-site monitoring stations:
-        </p>
-        <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4 my-4">
-          {CREDITS.map(({ title, logoDark, logoLight }) => (
-            <li key={title} className="place-content-center place-items-center">
-              <div className="dark:hidden">
-                <Image src={logoLight} height="100" alt={title} title={title} />
-              </div>
-              <div className="hidden dark:block">
-                <Image src={logoDark} height="100" alt={title} title={title} />
-              </div>
-            </li>
-          ))}
-        </ul>
-        <p>
-          If you use any of these historical data in any publication, presentation, poster, media
-          production or similar, please remember that you need to cite the data sources listed on RI
-          DEM Fixed-Site Monitoring Stations Network Data (look under Citation for Data users)
-        </p>
-        <p>
-          For more information about the RI DEM Fixed-Site Monitoring Stations please refer to RI
-          DEM Fixed-Site Monitoring Stations and Data in Narragansett Bay
-        </p>
-        <h3 className="w-full text-center text-2xl font-header text-bold mt-2">
-          Data Acceptance Guidelines
-        </h3>
-        <p>
-          Contact us if you want us to host your Narragansett Bay related data! See our data
-          acceptance guidelines <Link href="/riddc_data_guidelines.pdf">here</Link>.
-        </p>
-        <h2
-          className="w-full text-center text-2xl font-header mt-4 -mb-2"
-          id="datasets"
-          style={{ scrollMarginTop: '5rem' }}
-        >
-          Explore our collection of present and historical data from Narragansett Bay
-        </h2>
-        <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4">
-          {DATASETS.map(({ name, href, description }) => (
-            <li key={href}>
-              <Card className="bg-clear-900 dark:bg-clear-100">
-                <h3 className="text-lg font-bold font-header">
-                  <Link href={href}>{name}</Link>
-                </h3>
-                <p className="text-sm">{description()}</p>
+    <FullBleedColumn className="flex flex-col text-lg gap-4 mb-8">
+      <Hero className="full-bleed" />
+      <h1
+        className="w-full text-center text-4xl font-header font-bold"
+        id="about"
+        style={{ scrollMarginTop: '5rem' }}
+      >
+        About
+      </h1>
+      <h2 className="w-full text-center text-2xl font-header font-bold">
+        Rhode Island Data Discovery Center
+      </h2>
+      <p>
+        The National Science Foundation in 2017 awarded the University of Rhode Island with a grant
+        to establish a statewide research consortium — the RI Consortium for Coastal Ecology
+        Assessment, Innovation, and Modeling (RI C-AIM) — to study the effects of climate
+        variability on coastal ecosystems. The RI Data Discovery Center is one of the efforts of RI
+        C-AIM consortium.
+      </p>
+      <p>
+        The goal of the RI Data Discovery Center is to become the national and international
+        go-to-source for data on the Narragansett Bay ecosystem. For C-AIM investigators pursuing
+        the research goals of the Integrated Bay Observatory, Predicting Ecosystem Response and
+        Visualization & Imaging, RI Data Discovery Center will become the site where they will store
+        their data, share their data internally with other C-AIM investigators and share their data
+        externally with investigators around the world.
+      </p>
+      <p>
+        In addition to new data collected by C-AIM investigators, RI Data Discovery Center will also
+        collect and share historical data on the Narragansett Bay ecosystem. In addition to sharing
+        data with scientists, RIDDC will also become the go-to-source where decision makers,
+        land-use managers, relevant industries, citizen scientists and students can find data on the
+        Narragansett Bay ecosystem.
+      </p>
+      <h3 className="w-full text-center text-2xl font-header font-bold">Leadership</h3>
+      <div className="px-4 mx-6">
+        <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4">
+          {LEADERSHIP.map(({ name, affiliations }) => (
+            <li key={name}>
+              <Card className="bg-clear-300 hover:bg-clear-800 dark:bg-clear-100 hover:dark:bg-clear-300">
+                <h3 className="text-xl font-bold font-header">{name}</h3>
+                {affiliations.map((affiliation) => (
+                  <p className="pb-4" key={affiliation}>
+                    {affiliation}
+                  </p>
+                ))}
               </Card>
             </li>
           ))}
         </ul>
-        <h2 className="w-full text-center text-2xl font-header -mt-2">External Resources</h2>
-        <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4 mb-4">
-          {EXTERNAL_RESOURCES.map(({ name, href, description }) => (
-            <li key={href}>
-              <Card className="bg-clear-900 dark:bg-clear-100">
-                <h3 className="text-lg font-bold font-header">
-                  <Link href={href}>{name}</Link>
-                </h3>
-                <p className="text-sm">{description}</p>
-              </Card>
-            </li>
-          ))}
-        </ul>
-      </FullBleedColumn>
-    </>
+      </div>
+      <h3 className="w-full text-center text-2xl font-header font-bold mt-2">Credits</h3>
+      <p>
+        The historical data available for lookup on this site has been compiled from quality
+        controlled data from Narragansett Bay Fixed Site Monitoring Network (NBFSMN). The RI DEM
+        Office of Water Resources (RIDEM-OWR) has been leading the effort of coordinating this
+        multi-agency collaboration. The following agencies contributed to the network of fixed-site
+        monitoring stations:
+      </p>
+      <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4 my-4">
+        {CREDITS.map(({ title, logoDark, logoLight }) => (
+          <li key={title} className="place-content-center place-items-center">
+            <div className="dark:hidden">
+              <Image src={logoLight} height="100" alt={title} title={title} />
+            </div>
+            <div className="hidden dark:block">
+              <Image src={logoDark} height="100" alt={title} title={title} />
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p>
+        If you use any of these historical data in any publication, presentation, poster, media
+        production or similar, please remember that you need to cite the data sources listed on RI
+        DEM Fixed-Site Monitoring Stations Network Data (look under Citation for Data users)
+      </p>
+      <p>
+        For more information about the RI DEM Fixed-Site Monitoring Stations please refer to RI DEM
+        Fixed-Site Monitoring Stations and Data in Narragansett Bay
+      </p>
+      <h3 className="w-full text-center text-2xl font-header text-bold mt-2">
+        Data Acceptance Guidelines
+      </h3>
+      <p>
+        Contact us if you want us to host your Narragansett Bay related data! See our data
+        acceptance guidelines <Link href="/riddc_data_guidelines.pdf">here</Link>.
+      </p>
+      <h2
+        className="w-full text-center text-2xl font-header mt-4 -mb-2"
+        id="datasets"
+        style={{ scrollMarginTop: '5rem' }}
+      >
+        Explore our collection of present and historical data from Narragansett Bay
+      </h2>
+      <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4">
+        {DATASETS.map(({ name, href, description }) => (
+          <li key={href}>
+            <Card className="bg-clear-900 dark:bg-clear-100">
+              <h3 className="text-lg font-bold font-header">
+                <Link href={href}>{name}</Link>
+              </h3>
+              <p className="text-sm">{description()}</p>
+            </Card>
+          </li>
+        ))}
+      </ul>
+      <h2 className="w-full text-center text-2xl font-header -mt-2">External Resources</h2>
+      <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4 mb-4">
+        {EXTERNAL_RESOURCES.map(({ name, href, description }) => (
+          <li key={href}>
+            <Card className="bg-clear-900 dark:bg-clear-100">
+              <h3 className="text-lg font-bold font-header">
+                <Link href={href}>{name}</Link>
+              </h3>
+              <p className="text-sm">{description}</p>
+            </Card>
+          </li>
+        ))}
+      </ul>
+    </FullBleedColumn>
   );
 }
 

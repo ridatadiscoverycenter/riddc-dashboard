@@ -1,9 +1,9 @@
 import NarBay from '@/components/Image/NarBay';
 import { Button } from '@/components';
 
-export function Hero() {
+export function Hero({ ...props }) {
   return (
-    <div className="relative overflow-hidden w-full">
+    <div className="relative overflow-hidden w-full" {...props}>
       <div className="inset-0 -z-10 size-full object-cover">
         <NarBay />
         <div className="absolute max-w-2xl" style={{ bottom: 20, left: 10 }}>
