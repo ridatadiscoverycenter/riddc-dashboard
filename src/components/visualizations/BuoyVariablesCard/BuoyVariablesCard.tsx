@@ -4,27 +4,32 @@ import React from 'react';
 
 import { BuoyVariables, DataGraph, DownloadBuoyData, GraphErrorPanel } from '@/components';
 import type { WeatherData } from '@/utils/data';
-import type { MaBuoyData, MaBuoyViewerVariable, RiBuoyData } from '@/utils/data/api/buoy';
+import type {
+  MaBuoyData,
+  MaBuoyViewerVariable,
+  RealTimeBuoyData,
+  RiBuoyData,
+} from '@/utils/data/api/buoy';
 import { ERROR_CODES } from '@/utils/fns';
 import { PlanktonData } from '@/utils/data/api/buoy/plankton';
 
 type BuoyVariablesProps = {
   params: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
-  region: 'ri' | 'ma' | 'plankton';
+  dataset: 'ri' | 'ma' | 'real-time' | 'plankton';
   errorLinks: { href: string; description: string }[];
   buoyDataFetcher: (
     buoys: string[],
     variables: string[],
     start: Date,
     end: Date
-  ) => Promise<RiBuoyData[] | MaBuoyData[] | PlanktonData[]>;
+  ) => Promise<RiBuoyData[] | MaBuoyData[] | RealTimeBuoyData[] | PlanktonData[]>;
   weatherDataFetcher: (start: Date, end: Date) => Promise<WeatherData[]>;
   description: React.ReactNode;
 };
 
 export async function BuoyVariablesCard({
   params,
-  region,
+  dataset,
   errorLinks,
   buoyDataFetcher,
   weatherDataFetcher,
@@ -62,7 +67,7 @@ export async function BuoyVariablesCard({
       download={
         <DownloadBuoyData
           variables={params.vars as MaBuoyViewerVariable[]}
-          region={region}
+          dataset={dataset}
           buoys={params.buoys}
           start={params.start}
           end={params.end}

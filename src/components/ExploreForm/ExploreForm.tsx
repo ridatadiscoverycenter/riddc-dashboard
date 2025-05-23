@@ -5,6 +5,7 @@ import {
   RI_BUOY_VIEWER_VARIABLES,
   RiBuoyCoordinate,
   MA_BUOY_VIEWER_VARIABLES,
+  REAL_TIME_BUOY_VIEWER_VARIABLES,
 } from '@/utils/data/api/buoy';
 import { Multiselect, Label, Input, Form } from '@/components';
 import { PLANKTON_VARIABLES } from '@/utils/data/api/buoy/plankton';
@@ -21,7 +22,7 @@ type dateBound = {
 
 type ExploreFormProps = {
   buoys: RiBuoyCoordinate[];
-  location: 'ri' | 'ma' | 'plankton';
+  dataset: 'ri' | 'ma' | 'real-time' | 'plankton';
   dateBounds: dateBound;
   init?: InitialFormData;
 };
@@ -35,7 +36,7 @@ const DEFAULT_INITIAL_DATA: InitialFormData = {
 // TODO: plankton only has one buoy -- how to handle?
 export function ExploreForm({
   buoys,
-  location,
+  dataset,
   dateBounds,
   init = DEFAULT_INITIAL_DATA,
 }: ExploreFormProps) {
@@ -52,14 +53,16 @@ export function ExploreForm({
       const start = `start=${startDate.toISOString().split('T')[0]}`;
       const end = `end=${endDate.toISOString().split('T')[0]}`;
       window.location.replace(
-        location === 'ri'
+        dataset === 'ri'
           ? `/datasets/rhode-island-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
-          : location === 'ma'
+          : dataset === 'ma'
             ? `/datasets/massachusetts-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
-            : `/datasets/${location}?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+            : dataset === 'plankton'
+              ? `/datasets/plankton?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+              : `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
       );
     },
-    [selectedBuoys, selectedVars, startDate, endDate, location]
+    [selectedBuoys, selectedVars, startDate, endDate, dataset]
   );
 
   return (
@@ -73,11 +76,13 @@ export function ExploreForm({
       <Multiselect
         label="Variables (up to four)"
         options={
-          location === 'ri'
+          dataset === 'ri'
             ? [...RI_BUOY_VIEWER_VARIABLES]
-            : location === 'ma'
+            : dataset === 'ma'
               ? [...MA_BUOY_VIEWER_VARIABLES]
-              : [...PLANKTON_VARIABLES]
+              : dataset === 'plankton'
+                ? [...PLANKTON_VARIABLES]
+                : [...REAL_TIME_BUOY_VIEWER_VARIABLES]
         }
         onChange={setSelectedVars}
         init={init.vars}

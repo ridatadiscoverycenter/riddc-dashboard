@@ -2,8 +2,10 @@ import {
   CONFIG,
   RI_VARIABLE_CONVERTER,
   MA_VARIABLE_CONVERTER,
+  REAL_TIME_VARIABLE_CONVERTER,
   type RiBuoyViewerVariable,
   type MaBuoyViewerVariable,
+  type RealTimeBuoyViewerVariable,
 } from '@/utils/data/api/buoy';
 
 const BASE_URL = 'https://pricaimcit.services.brown.edu/erddap/tabledap';
@@ -80,6 +82,29 @@ export function createMaBuoyDownloadUrl(
   const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
   return createDownloadUrl(
     CONFIG['ma-buoy'].datasetId,
+    fileFormat,
+    `${vars}&station_name=~"(${stations})"${start}${end}`
+  );
+}
+
+export function createRealTimeDownloadUrl(
+  fileFormat: DF,
+  variables: RealTimeBuoyViewerVariable[],
+  buoys: string[],
+  time: StartAndOrEndDate | undefined = undefined
+) {
+  const vars = [
+    ...variables.map(REAL_TIME_VARIABLE_CONVERTER.viewerToErddap),
+    'time',
+    'latitude',
+    'longitude',
+    'station_name',
+  ].join(',');
+  const stations = buoys.join('|');
+  const start = time && time.start ? `&time>=${time.start.toISOString().split('T')[0]}` : '';
+  const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
+  return createDownloadUrl(
+    CONFIG['buoy-telemetry'].datasetId,
     fileFormat,
     `${vars}&station_name=~"(${stations})"${start}${end}`
   );

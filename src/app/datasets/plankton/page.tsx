@@ -149,8 +149,7 @@ const DESCRIPTION = (
   <p>
     This dataset spans from 2003 to 2019 and was collected by the <LINKS.NBFSMN /> with{' '}
     <LINKS.RIDEM_OWR /> as the lead agency. Agencies involved in collection and maintenance of the
-    data are:
-    <LINKS.RIDEM_OWR />, <LINKS.URI_GSO_MERL />
+    data are: <LINKS.RIDEM_OWR />, <LINKS.URI_GSO_MERL />
     , <LINKS.NBC />, <LINKS.NBNERR />, and <LINKS.MASS_DEP />. The heatmap below summarizes the
     number of observations collected for each month for different variables. Use this heatmap to
     help you decide what data you want to visualize or download. When you have an idea, go ahead and

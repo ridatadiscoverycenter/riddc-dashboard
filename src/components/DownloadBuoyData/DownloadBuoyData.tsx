@@ -26,7 +26,7 @@ type Params = {
   buoys: string[];
   start?: Date;
   end?: Date;
-  region: Region;
+  dataset: 'ri' | 'ma' | 'real-time' | 'plankton';
 };
 
 type DownloadDataProps<T extends Region> = T extends 'ri'
@@ -42,7 +42,7 @@ export function DownloadBuoyData<T extends Region>({
   buoys,
   start = undefined,
   end = undefined,
-  region,
+  dataset,
 }: DownloadDataProps<T>) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -55,7 +55,7 @@ export function DownloadBuoyData<T extends Region>({
           buoys,
           start,
           end,
-          region,
+          dataset,
         } as DownloadDataFormProps<T>)}
         <h4>
           Or, download the data directly from{' '}

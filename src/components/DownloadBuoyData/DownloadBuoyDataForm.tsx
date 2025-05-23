@@ -1,64 +1,74 @@
 'use client';
 import React from 'react';
-import { MaBuoyViewerVariable, RiBuoyViewerVariable } from '@/utils/data/api/buoy';
+import {
+  MaBuoyViewerVariable,
+  RealTimeBuoyViewerVariable,
+  RiBuoyViewerVariable,
+} from '@/utils/data/api/buoy';
 import { Input, Select, Form } from '@/components';
 import {
   createMaBuoyDownloadUrl,
+  createRealTimeDownloadUrl,
   createRiBuoyDownloadUrl,
   DATA_FORMATS,
   DF,
 } from '@/utils/data/erddap';
 import { PlanktonVariable } from '@/utils/data/api/buoy/plankton';
 
-type Region = 'ri' | 'ma' | 'plankton';
+type Dataset = 'ri' | 'ma' | 'real-time' | 'plankton';
 
-type downloadDataHelper<T extends Region> = T extends 'ri'
+type downloadDataHelper<T extends Dataset> = T extends 'ri'
   ? RiBuoyViewerVariable[]
   : T extends 'ma'
     ? MaBuoyViewerVariable[]
     : T extends 'plankton'
       ? PlanktonVariable
-      : never;
+      : RealTimeBuoyViewerVariable[];
 
 type Params = {
   buoys: string[];
   start?: Date;
   end?: Date;
-  region: Region;
+  dataset: Dataset;
 };
 
-export type DownloadDataFormProps<T extends Region> = T extends 'ri'
+export type DownloadDataFormProps<T extends Dataset> = T extends 'ri'
   ? Params & { variables: downloadDataHelper<'ri'> }
   : T extends 'ma'
     ? Params & { variables: downloadDataHelper<'ma'> }
     : T extends 'plankton'
       ? Params & { variables: downloadDataHelper<'plankton'> }
-      : never;
+      : Params & { variables: downloadDataHelper<'real-time'> };
 
-export function DownloadBuoyDataForm<T extends Region>({
+export function DownloadBuoyDataForm<T extends Dataset>({
   variables,
   buoys,
   start = undefined,
   end = undefined,
-  region,
+  dataset,
 }: DownloadDataFormProps<T>) {
   const [format, setFormat] = React.useState([...DATA_FORMATS][0]);
   const doSubmit = React.useCallback(() => {
     window
       .open(
-        region === 'ri'
+        dataset === 'ri'
           ? createRiBuoyDownloadUrl(format, variables as RiBuoyViewerVariable[], buoys, {
               start,
               end,
             })
-          : createMaBuoyDownloadUrl(format, variables as MaBuoyViewerVariable[], buoys, {
-              start,
-              end,
-            }),
+          : dataset === 'ma'
+            ? createMaBuoyDownloadUrl(format, variables as MaBuoyViewerVariable[], buoys, {
+                start,
+                end,
+              })
+            : createRealTimeDownloadUrl(format, variables as RealTimeBuoyViewerVariable[], buoys, {
+                start,
+                end,
+              }),
         '_blank'
       )
       ?.focus();
-  }, [buoys, variables, start, end, region, format]);
+  }, [buoys, variables, start, end, dataset, format]);
   return (
     <Form
       onSubmit={(ev) => {

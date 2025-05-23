@@ -71,7 +71,7 @@ async function PageWrapper({
           buoyDataFetcher={(ids, vars, start, end) =>
             fetchRiBuoyData(ids, vars as RiBuoyViewerVariable[], start, end)
           }
-          region="ri"
+          dataset="ri"
           weatherDataFetcher={fetchWeatherData}
           description={
             typeof paramsOrError === 'string' ? undefined : (
@@ -94,7 +94,7 @@ async function PageWrapper({
       form={
         <ExploreForm
           buoys={buoyData}
-          location="ri"
+          dataset="ri"
           dateBounds={{
             startDate: new Date('2003-05-22'),
             endDate: new Date('2019-12-31'),

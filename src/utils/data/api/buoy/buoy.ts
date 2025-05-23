@@ -62,13 +62,6 @@ export async function fetchSummaryData(configName: BuoyConfigName, bustCache = f
 export async function fetchBuoyCoordinates(configName: BuoyConfigName) {
   const config = getConfig(configName);
   return await erddapAPIGet<unknown[]>(`/${config.route}/coordinates`);
-
-  /*
-    c.fullName = `${c.station_name} (${c.buoyId})`;
-    this.coordinates = coordinates;
-    const colorMap = useColorMap();
-    colorMap.update({ ids: coordinates.map((v) => v.station_name) });
-    */
 }
 
 export async function fetchBuoyVariables(configName: BuoyConfigName) {
@@ -95,18 +88,4 @@ export async function fetchBuoyData(
   const config = getConfig(configName);
   const url = `${config.route}/query?ids=${ids.join(',')}&variables=${vars.join(',')}&start=${formatDateForQueryParams(startDate)}&end=${formatDateForQueryParams(endDate)}`;
   return await erddapAPIGet<unknown>(url);
-  /*
-  // Note (AM): Get a better sense of where this data comes from.
-  //const ids = undefined;
-  //const vars = undefined;
-  //const startDate = undefined;
-  //const endDate = undefined;
-  const dataset: BuoyDataset = {
-    downsampled: fetchedDataset.downsampled,
-    data: fetchedDataset.data.map(
-      (data) => ({ ...data, stationName: data.station_name }) as BuoyData
-    ),
-  };
-  return dataset;
-  */
 }
