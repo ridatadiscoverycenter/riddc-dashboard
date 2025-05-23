@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-const plugin = require('tailwindcss/plugin');
 module.exports = {
   content: ['./src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
@@ -13,6 +12,10 @@ module.exports = {
           light: '#f0fffb',
           dark: '#000F0F',
           DEFAULT: '#f0fffb',
+        },
+        header: {
+          primary: '#598DAF',
+          secondary: '#F2E7DC',
         },
         clear: {
           50: 'rgba(255,255,255,0.05)',
@@ -30,11 +33,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    plugin(function ({ addBase }) {
-      addBase({
-        html: { fontSize: '18px' },
-      });
-    }),
-  ],
+  plugins: [],
 };

@@ -1,7 +1,7 @@
 import NarBay from '@/components/Image/NarBay';
 import { Button } from '@/components';
 
-export function Hero(className: string) {
+export function Hero({ className }: { className: string }) {
   return (
     <div className={`relative overflow-hidden w-full ${className}`}>
       <div className="inset-0 -z-10 size-full object-cover">

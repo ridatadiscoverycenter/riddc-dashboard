@@ -14,15 +14,12 @@ export default function Home() {
   return (
     <FullBleedColumn className="flex flex-col text-lg gap-4 mb-8">
       <Hero className="full-bleed" />
-      <h1
-        className="w-full text-center text-4xl font-header font-bold"
+      <h2
+        className="w-full text-center text-4xl font-header font-bold text-header-primary"
         id="about"
         style={{ scrollMarginTop: '5rem' }}
       >
-        About
-      </h1>
-      <h2 className="w-full text-center text-2xl font-header font-bold">
-        Rhode Island Data Discovery Center
+        About RIDDC
       </h2>
       <p>
         The National Science Foundation in 2017 awarded the University of Rhode Island with a grant
@@ -46,13 +43,15 @@ export default function Home() {
         land-use managers, relevant industries, citizen scientists and students can find data on the
         Narragansett Bay ecosystem.
       </p>
-      <h3 className="w-full text-center text-2xl font-header font-bold">Leadership</h3>
+      <h3 className="w-full text-center text-2xl font-header font-bold text-header-light dark:text-header-dark">
+        Leadership
+      </h3>
       <div className="px-4 mx-6">
         <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4">
           {LEADERSHIP.map(({ name, affiliations }) => (
             <li key={name}>
               <Card className="bg-clear-300 hover:bg-clear-800 dark:bg-clear-100 hover:dark:bg-clear-300">
-                <h3 className="text-xl font-bold font-header">{name}</h3>
+                <h3 className="text-xl font-header">{name}</h3>
                 {affiliations.map((affiliation) => (
                   <p className="pb-4" key={affiliation}>
                     {affiliation}
@@ -63,7 +62,9 @@ export default function Home() {
           ))}
         </ul>
       </div>
-      <h3 className="w-full text-center text-2xl font-header font-bold mt-2">Credits</h3>
+      <h3 className="w-full text-center text-2xl font-header font-bold mt-2 text-header-light dark:text-header-dark">
+        Credits
+      </h3>
       <p>
         The historical data available for lookup on this site has been compiled from quality
         controlled data from Narragansett Bay Fixed Site Monitoring Network (NBFSMN). The RI DEM
@@ -92,7 +93,7 @@ export default function Home() {
         For more information about the RI DEM Fixed-Site Monitoring Stations please refer to RI DEM
         Fixed-Site Monitoring Stations and Data in Narragansett Bay
       </p>
-      <h3 className="w-full text-center text-2xl font-header text-bold mt-2">
+      <h3 className="w-full text-center text-2xl font-header font-bold mt-2">
         Data Acceptance Guidelines
       </h3>
       <p>
@@ -100,7 +101,7 @@ export default function Home() {
         acceptance guidelines <Link href="/riddc_data_guidelines.pdf">here</Link>.
       </p>
       <h2
-        className="w-full text-center text-2xl font-header mt-4 -mb-2"
+        className="w-full text-center text-4xl font-header mt-4 -mb-2 font-bold text-header-primary"
         id="datasets"
         style={{ scrollMarginTop: '5rem' }}
       >
@@ -118,7 +119,9 @@ export default function Home() {
           </li>
         ))}
       </ul>
-      <h2 className="w-full text-center text-2xl font-header -mt-2">External Resources</h2>
+      <h2 className="w-full text-center text-4xl font-header text-header-primary font-bold">
+        External Resources
+      </h2>
       <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4 mb-4">
         {EXTERNAL_RESOURCES.map(({ name, href, description }) => (
           <li key={href}>
