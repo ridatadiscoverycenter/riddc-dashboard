@@ -23,7 +23,7 @@ type Params = {
   buoys: string[];
   start?: Date;
   end?: Date;
-  region: RiOrMa;
+  dataset: 'ri' | 'ma' | 'real-time';
 };
 
 type DownloadDataProps<T extends RiOrMa> = T extends 'ri'
@@ -37,7 +37,7 @@ export function DownloadBuoyData<T extends RiOrMa>({
   buoys,
   start = undefined,
   end = undefined,
-  region,
+  dataset,
 }: DownloadDataProps<T>) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -50,7 +50,7 @@ export function DownloadBuoyData<T extends RiOrMa>({
           buoys,
           start,
           end,
-          region,
+          dataset,
         } as DownloadDataFormProps<T>)}
         <h4>
           Or, download the data directly from{' '}

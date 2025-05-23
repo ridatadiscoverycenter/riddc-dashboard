@@ -5,6 +5,7 @@ import {
   RI_BUOY_VIEWER_VARIABLES,
   RiBuoyCoordinate,
   MA_BUOY_VIEWER_VARIABLES,
+  REAL_TIME_BUOY_VIEWER_VARIABLES,
 } from '@/utils/data/api/buoy';
 import { Multiselect, Label, Input, Form } from '@/components';
 
@@ -20,7 +21,7 @@ type dateBound = {
 
 type ExploreFormProps = {
   buoys: RiBuoyCoordinate[];
-  location: 'ri' | 'ma';
+  dataset: 'ri' | 'ma' | 'real-time';
   dateBounds: dateBound;
   init?: InitialFormData;
 };
@@ -32,7 +33,7 @@ const DEFAULT_INITIAL_DATA: InitialFormData = {
 
 export function ExploreForm({
   buoys,
-  location,
+  dataset,
   dateBounds,
   init = DEFAULT_INITIAL_DATA,
 }: ExploreFormProps) {
@@ -49,12 +50,14 @@ export function ExploreForm({
       const start = `start=${startDate.toISOString().split('T')[0]}`;
       const end = `end=${endDate.toISOString().split('T')[0]}`;
       window.location.replace(
-        location === 'ri'
+        dataset === 'ri'
           ? `/datasets/rhode-island-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
-          : `/datasets/massachusetts-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+          : dataset === 'ma'
+            ? `/datasets/massachusetts-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+            : `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
       );
     },
-    [selectedBuoys, selectedVars, startDate, endDate, location]
+    [selectedBuoys, selectedVars, startDate, endDate, dataset]
   );
 
   return (
@@ -67,7 +70,13 @@ export function ExploreForm({
       />
       <Multiselect
         label="Variables (up to four)"
-        options={location === 'ri' ? [...RI_BUOY_VIEWER_VARIABLES] : [...MA_BUOY_VIEWER_VARIABLES]}
+        options={
+          dataset === 'ri'
+            ? [...RI_BUOY_VIEWER_VARIABLES]
+            : dataset === 'ma'
+              ? [...MA_BUOY_VIEWER_VARIABLES]
+              : [...REAL_TIME_BUOY_VIEWER_VARIABLES]
+        }
         onChange={setSelectedVars}
         init={init.vars}
       />
