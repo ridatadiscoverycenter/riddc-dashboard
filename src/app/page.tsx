@@ -2,14 +2,16 @@ import Image from 'next/image';
 
 import NarBay from '@/components/Image/NarBay';
 import { Card, Link, ExternalLink, FullBleedColumn } from '@/components';
-import ridemImage from '@/assets/ridem.svg';
-import urigsolight from '@/assets/urigso-light.svg';
-import urigsodark from '@/assets/urigso-dark.svg';
-import narrabay from '@/assets/narrabay-logo.svg';
-import nbnerr from '@/assets/nbnerr.svg';
-import rwuDark from '@/assets/RWUSeal_Light_Blue.svg';
-import rwuLight from '@/assets/RWUSeal_Blue.svg';
-import nbep from '@/assets/nbep.svg';
+import {
+  nbnerr,
+  nbep,
+  narrabay,
+  ridemImage,
+  urigsolight,
+  urigsodark,
+  rwuDark,
+  rwuLight,
+} from '@/assets';
 
 // TODO: figure out what's meant by "(look under Citation for Data users)" and "For more information about the RI DEM Fixed-Site Monitoring Stations please refer to RI DEM Fixed-Site Monitoring Stations and Data in Narragansett Bay"
 
