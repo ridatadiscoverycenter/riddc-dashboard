@@ -3,12 +3,12 @@ import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
 import { Loading } from '@/components';
-import type { RiBuoyData, MaBuoyData } from '@/utils/data/api/buoy';
+import type { RiBuoyData, MaBuoyData, RealTimeBuoyData } from '@/utils/data/api/buoy';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { PlanktonData } from '@/utils/data/api/buoy/plankton';
 
 type BuoyVariablesProps = {
-  data: RiBuoyData[] | MaBuoyData[] | PlanktonData[];
+  data: RiBuoyData[] | MaBuoyData[] | PlanktonData[] | RealTimeBuoyData[];
   height?: number;
   colors?: string[];
 };

@@ -71,7 +71,7 @@ async function PageWrapper({
           buoyDataFetcher={(ids, vars, start, end) =>
             fetchPlanktonData(ids, vars as PlanktonVariable[], start, end)
           }
-          region="plankton"
+          dataset="plankton"
           weatherDataFetcher={fetchWeatherData}
           description={
             typeof paramsOrError === 'string' ? undefined : (
@@ -94,7 +94,7 @@ async function PageWrapper({
       form={
         <ExploreForm
           buoys={buoyData}
-          location="plankton"
+          dataset="plankton"
           dateBounds={{
             startDate: new Date('2003-05-22'),
             endDate: new Date('2019-12-31'),
