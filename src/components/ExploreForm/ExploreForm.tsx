@@ -40,7 +40,9 @@ export function ExploreForm({
   dateBounds,
   init = DEFAULT_INITIAL_DATA,
 }: ExploreFormProps) {
-  const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(init.buoys);
+  const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(
+    buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys
+  );
   const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
   const [startDate, setStartDate] = React.useState(dateBounds.startDate);
   const [endDate, setEndDate] = React.useState(dateBounds.endDate);
@@ -67,12 +69,14 @@ export function ExploreForm({
 
   return (
     <Form onSubmit={onSubmit} className="flex flex-col gap-2 justify-center">
-      <Multiselect
-        label="Buoys"
-        options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
-        onChange={setSelectedBuoys}
-        init={init.buoys}
-      />
+      {buoys.length > 1 ? (
+        <Multiselect
+          label="Buoys"
+          options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
+          onChange={setSelectedBuoys}
+          init={init.buoys}
+        />
+      ) : undefined}
       <Multiselect
         label="Variables (up to four)"
         options={
