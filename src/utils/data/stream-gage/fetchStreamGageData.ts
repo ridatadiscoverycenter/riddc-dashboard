@@ -84,4 +84,4 @@ function formatFetchedStreamGageData(
   });
 }
 
-export type StreamGageData = ReturnType<typeof formatFetchedStreamGageData>;
+export type StreamGageData = ReturnType<typeof formatFetchedStreamGageData>[number];
