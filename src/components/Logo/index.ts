@@ -2,6 +2,7 @@ export * from './BrownLogo';
 export * from './BuoyIcon';
 export * from './CloseIcon';
 export * from './GithubLogo';
+export * from './LeftIcon';
 export * from './NsfLogo';
 export * from './RicaimLogo';
 export * from './RiddcLogo';
