@@ -46,7 +46,7 @@ export function DefaultBuoyPage({ description }: { description: React.ReactNode 
       form={
         <ExploreForm
           buoys={[]}
-          location={'ri'}
+          dataset={'ri'}
           dateBounds={{
             startDate: new Date(),
             endDate: new Date(),
