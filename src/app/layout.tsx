@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { Inter } from 'next/font/google';
 import '@/styles/tailwind.css';
 import { Footer, Nav } from '@/components';
+
+const ScrollButton = dynamic(() => import('@/components/ScrollButton'), {
+  ssr: false,
+});
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,9 +28,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Nav />
         <main className="flex-1 relative overflow-clip flex flex-col items-center content-center gap-4">
           <Beam via="via-teal-400 dark:via-teal-600" top="-top-[500px]" right="right-[800px]" />
-          <Beam via="via-amber-400 dark:via-amber-800" top="-top-[600px]" right="right-[1000px]" />
+          <Beam via="via-amber-400 dark:via-amber-600" top="-top-[600px]" right="right-[1000px]" />
           {children}
         </main>
+        <ScrollButton />
         <Footer />
       </body>
     </html>

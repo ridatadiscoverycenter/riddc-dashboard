@@ -8,9 +8,7 @@ import {
   Modal,
   type DownloadDataFormProps,
 } from '@/components';
-import { type RiBuoyViewerVariable, type MaBuoyViewerVariable } from '@/utils/data/api/buoy';
 import { ERDDAP_DATASET_LINK_RI_BUOY } from '@/utils/data/erddap';
-import { PlanktonVariable } from '@/utils/data/api/buoy/plankton';
 import type { Dataset, downloadDataHelper } from '@/utils/types';
 
 type Params = {
