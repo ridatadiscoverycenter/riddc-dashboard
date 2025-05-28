@@ -127,7 +127,7 @@ export function MapGraph({
     }
   }, [selectedDateIndex, loaded, map]);
 
-  console.log({ selectedDate});
+  console.log({ selectedDate });
 
   return (
     <>
