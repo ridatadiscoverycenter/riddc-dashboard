@@ -6,10 +6,10 @@ import {
   RiBuoyCoordinate,
   MA_BUOY_VIEWER_VARIABLES,
   REAL_TIME_BUOY_VIEWER_VARIABLES,
+  PLANKTON_VARIABLES,
 } from '@/utils/data/api/buoy';
 import { Multiselect, Label, Input, Form } from '@/components';
-import { PLANKTON_VARIABLES } from '@/utils/data/api/buoy/plankton';
-
+import type { Dataset } from '@/utils/types';
 type InitialFormData = {
   buoys: string[];
   vars: string[];
@@ -22,7 +22,7 @@ type dateBound = {
 
 type ExploreFormProps = {
   buoys: RiBuoyCoordinate[];
-  dataset: 'ri' | 'ma' | 'real-time' | 'plankton';
+  dataset: Dataset;
   dateBounds: dateBound;
   init?: InitialFormData;
 };

@@ -6,6 +6,7 @@ import {
   type RiBuoyViewerVariable,
   type MaBuoyViewerVariable,
   type RealTimeBuoyViewerVariable,
+  PlanktonVariable,
 } from '@/utils/data/api/buoy';
 
 const BASE_URL = 'https://pricaimcit.services.brown.edu/erddap/tabledap';
@@ -56,6 +57,23 @@ export function createRiBuoyDownloadUrl(
   const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
   return createDownloadUrl(
     CONFIG['ri-buoy'].datasetId,
+    fileFormat,
+    `${vars}&station_name=~"(${stations})"${start}${end}`
+  );
+}
+
+export function createPlanktonDownloadUrl(
+  fileFormat: DF,
+  variables: PlanktonVariable[],
+  buoys: string[],
+  time: StartAndOrEndDate | undefined = undefined
+) {
+  const vars = [...variables, 'time', 'latitude', 'longitude', 'station_name'].join(',');
+  const stations = buoys.join('|');
+  const start = time && time.start ? `&time>=${time.start.toISOString().split('T')[0]}` : '';
+  const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
+  return createDownloadUrl(
+    CONFIG['plankton'].datasetId,
     fileFormat,
     `${vars}&station_name=~"(${stations})"${start}${end}`
   );

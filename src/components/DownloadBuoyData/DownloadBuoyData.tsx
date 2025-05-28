@@ -11,25 +11,16 @@ import {
 import { type RiBuoyViewerVariable, type MaBuoyViewerVariable } from '@/utils/data/api/buoy';
 import { ERDDAP_DATASET_LINK_RI_BUOY } from '@/utils/data/erddap';
 import { PlanktonVariable } from '@/utils/data/api/buoy/plankton';
-
-type Region = 'ri' | 'ma' | 'plankton';
-
-type downloadDataHelper<T extends Region> = T extends 'ri'
-  ? RiBuoyViewerVariable[]
-  : T extends 'ma'
-    ? MaBuoyViewerVariable[]
-    : T extends 'plankton'
-      ? PlanktonVariable[]
-      : never;
+import type { Dataset, downloadDataHelper } from '@/utils/types';
 
 type Params = {
   buoys: string[];
   start?: Date;
   end?: Date;
-  dataset: 'ri' | 'ma' | 'real-time' | 'plankton';
+  dataset: Dataset;
 };
 
-type DownloadDataProps<T extends Region> = T extends 'ri'
+type DownloadDataProps<T extends Dataset> = T extends 'ri'
   ? Params & { variables: downloadDataHelper<'ri'> }
   : T extends 'ma'
     ? Params & { variables: downloadDataHelper<'ma'> }
@@ -37,7 +28,7 @@ type DownloadDataProps<T extends Region> = T extends 'ri'
       ? Params & { variables: downloadDataHelper<'plankton'> }
       : never;
 
-export function DownloadBuoyData<T extends Region>({
+export function DownloadBuoyData<T extends Dataset>({
   variables,
   buoys,
   start = undefined,

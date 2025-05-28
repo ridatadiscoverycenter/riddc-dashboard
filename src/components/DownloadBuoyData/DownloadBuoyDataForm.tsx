@@ -2,6 +2,7 @@
 import React from 'react';
 import {
   MaBuoyViewerVariable,
+  PlanktonVariable,
   RealTimeBuoyViewerVariable,
   RiBuoyViewerVariable,
 } from '@/utils/data/api/buoy';
@@ -10,20 +11,11 @@ import {
   createMaBuoyDownloadUrl,
   createRealTimeDownloadUrl,
   createRiBuoyDownloadUrl,
+  createPlanktonDownloadUrl,
   DATA_FORMATS,
   DF,
 } from '@/utils/data/erddap';
-import { PlanktonVariable } from '@/utils/data/api/buoy/plankton';
-
-type Dataset = 'ri' | 'ma' | 'real-time' | 'plankton';
-
-type downloadDataHelper<T extends Dataset> = T extends 'ri'
-  ? RiBuoyViewerVariable[]
-  : T extends 'ma'
-    ? MaBuoyViewerVariable[]
-    : T extends 'plankton'
-      ? PlanktonVariable
-      : RealTimeBuoyViewerVariable[];
+import type { Dataset, downloadDataHelper } from '@/utils/types';
 
 type Params = {
   buoys: string[];
@@ -61,10 +53,20 @@ export function DownloadBuoyDataForm<T extends Dataset>({
                 start,
                 end,
               })
-            : createRealTimeDownloadUrl(format, variables as RealTimeBuoyViewerVariable[], buoys, {
-                start,
-                end,
-              }),
+            : dataset === 'plankton'
+              ? createPlanktonDownloadUrl(format, variables as PlanktonVariable[], buoys, {
+                  start,
+                  end,
+                })
+              : createRealTimeDownloadUrl(
+                  format,
+                  variables as RealTimeBuoyViewerVariable[],
+                  buoys,
+                  {
+                    start,
+                    end,
+                  }
+                ),
         '_blank'
       )
       ?.focus();

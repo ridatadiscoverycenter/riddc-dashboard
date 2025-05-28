@@ -15,7 +15,7 @@ import {
   fetchRiBuoyCoordinates,
   fetchRiBuoyData,
   fetchRiSummaryData,
-  RiBuoyViewerVariable,
+  type RiBuoyViewerVariable,
 } from '@/utils/data/api/buoy';
 import {
   ERROR_CODES,
