@@ -6,9 +6,10 @@ import {
   RiBuoyCoordinate,
   MA_BUOY_VIEWER_VARIABLES,
   REAL_TIME_BUOY_VIEWER_VARIABLES,
+  PLANKTON_VARIABLES,
 } from '@/utils/data/api/buoy';
 import { Multiselect, Label, Input, Form } from '@/components';
-
+import type { Dataset } from '@/utils/types';
 type InitialFormData = {
   buoys: string[];
   vars: string[];
@@ -21,7 +22,7 @@ type dateBound = {
 
 type ExploreFormProps = {
   buoys: RiBuoyCoordinate[];
-  dataset: 'ri' | 'ma' | 'real-time';
+  dataset: Dataset;
   dateBounds: dateBound;
   init?: InitialFormData;
 };
@@ -31,13 +32,17 @@ const DEFAULT_INITIAL_DATA: InitialFormData = {
   vars: [],
 };
 
+// TODO: make this take in the buoy viewer variable?
+// TODO: plankton only has one buoy -- how to handle?
 export function ExploreForm({
   buoys,
   dataset,
   dateBounds,
   init = DEFAULT_INITIAL_DATA,
 }: ExploreFormProps) {
-  const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(init.buoys);
+  const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(
+    buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys
+  );
   const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
   const [startDate, setStartDate] = React.useState(dateBounds.startDate);
   const [endDate, setEndDate] = React.useState(dateBounds.endDate);
@@ -54,7 +59,9 @@ export function ExploreForm({
           ? `/datasets/rhode-island-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
           : dataset === 'ma'
             ? `/datasets/massachusetts-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
-            : `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+            : dataset === 'plankton'
+              ? `/datasets/plankton?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+              : `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
       );
     },
     [selectedBuoys, selectedVars, startDate, endDate, dataset]
@@ -62,12 +69,14 @@ export function ExploreForm({
 
   return (
     <Form onSubmit={onSubmit} className="flex flex-col gap-2 justify-center">
-      <Multiselect
-        label="Buoys"
-        options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
-        onChange={setSelectedBuoys}
-        init={init.buoys}
-      />
+      {buoys.length > 1 ? (
+        <Multiselect
+          label="Buoys"
+          options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
+          onChange={setSelectedBuoys}
+          init={init.buoys}
+        />
+      ) : undefined}
       <Multiselect
         label="Variables (up to four)"
         options={
@@ -75,7 +84,9 @@ export function ExploreForm({
             ? [...RI_BUOY_VIEWER_VARIABLES]
             : dataset === 'ma'
               ? [...MA_BUOY_VIEWER_VARIABLES]
-              : [...REAL_TIME_BUOY_VIEWER_VARIABLES]
+              : dataset === 'plankton'
+                ? [...PLANKTON_VARIABLES]
+                : [...REAL_TIME_BUOY_VIEWER_VARIABLES]
         }
         onChange={setSelectedVars}
         init={init.vars}

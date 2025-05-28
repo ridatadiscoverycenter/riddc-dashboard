@@ -7,6 +7,7 @@ import {
   RI_BUOY_VIEWER_VARIABLES,
   RiBuoyViewerVariable,
 } from '../data/api/buoy';
+import { PLANKTON_VARIABLES, PlanktonVariable } from '../data/api/buoy/plankton';
 
 export type ParsedParam<T> = { error: string; value: undefined } | { error: undefined; value: T };
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
@@ -72,7 +73,7 @@ export function extractParams<T extends Record<string, ParsedParam<any>>>(
 export function parseParamBuoyIds(buoysParam: Param): ParsedParam<string[]> {
   if (buoysParam === undefined) return { error: ERROR_CODES.NO_BUOYS, value: undefined };
   if (buoysParam instanceof Array) return { error: ERROR_CODES.BAD_BUOYS, value: undefined };
-  
+
   return { error: undefined, value: buoysParam.split(',') };
 }
 
@@ -95,6 +96,17 @@ export function parseParamBuoyVariablesMA(
   const variables = variablesParam.split(',');
   if (variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
     return { error: undefined, value: variables as MaBuoyViewerVariable[] };
+  return { error: ERROR_CODES.INVALID_VARS, value: undefined };
+}
+
+export function parseParamBuoyVariablesPlankton(
+  variablesParam: Param
+): ParsedParam<PlanktonVariable[]> {
+  if (variablesParam === undefined) return { error: ERROR_CODES.NO_VARS, value: undefined };
+  if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
+  const variables = variablesParam.split(',');
+  if (variables.every((vari) => PLANKTON_VARIABLES.includes(vari as PlanktonVariable)))
+    return { error: undefined, value: variables as PlanktonVariable[] };
   return { error: ERROR_CODES.INVALID_VARS, value: undefined };
 }
 

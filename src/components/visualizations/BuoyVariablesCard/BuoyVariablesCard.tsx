@@ -11,17 +11,19 @@ import type {
   RiBuoyData,
 } from '@/utils/data/api/buoy';
 import { ERROR_CODES } from '@/utils/fns';
+import { PlanktonData } from '@/utils/data/api/buoy/plankton';
+import type { Dataset } from '@/utils/types';
 
 type BuoyVariablesProps = {
   params: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
-  dataset: 'ri' | 'ma' | 'real-time';
+  dataset: Dataset;
   errorLinks: { href: string; description: string }[];
   buoyDataFetcher: (
     buoys: string[],
     variables: string[],
     start: Date,
     end: Date
-  ) => Promise<RiBuoyData[] | MaBuoyData[] | RealTimeBuoyData[]>;
+  ) => Promise<RiBuoyData[] | MaBuoyData[] | RealTimeBuoyData[] | PlanktonData[]>;
   weatherDataFetcher: (start: Date, end: Date) => Promise<WeatherData[]>;
   description: React.ReactNode;
 };

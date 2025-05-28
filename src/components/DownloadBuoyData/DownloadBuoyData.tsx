@@ -8,31 +8,25 @@ import {
   Modal,
   type DownloadDataFormProps,
 } from '@/components';
-import { type RiBuoyViewerVariable, type MaBuoyViewerVariable } from '@/utils/data/api/buoy';
 import { ERDDAP_DATASET_LINK_RI_BUOY } from '@/utils/data/erddap';
-
-type RiOrMa = 'ri' | 'ma';
-
-type downloadDataHelper<T extends RiOrMa> = T extends 'ri'
-  ? RiBuoyViewerVariable[]
-  : T extends 'ma'
-    ? MaBuoyViewerVariable[]
-    : never;
+import type { Dataset, downloadDataHelper } from '@/utils/types';
 
 type Params = {
   buoys: string[];
   start?: Date;
   end?: Date;
-  dataset: 'ri' | 'ma' | 'real-time';
+  dataset: Dataset;
 };
 
-type DownloadDataProps<T extends RiOrMa> = T extends 'ri'
+type DownloadDataProps<T extends Dataset> = T extends 'ri'
   ? Params & { variables: downloadDataHelper<'ri'> }
   : T extends 'ma'
     ? Params & { variables: downloadDataHelper<'ma'> }
-    : never;
+    : T extends 'plankton'
+      ? Params & { variables: downloadDataHelper<'plankton'> }
+      : never;
 
-export function DownloadBuoyData<T extends RiOrMa>({
+export function DownloadBuoyData<T extends Dataset>({
   variables,
   buoys,
   start = undefined,

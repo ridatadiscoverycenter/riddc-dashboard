@@ -2,6 +2,7 @@
 import React from 'react';
 import {
   MaBuoyViewerVariable,
+  PlanktonVariable,
   RealTimeBuoyViewerVariable,
   RiBuoyViewerVariable,
 } from '@/utils/data/api/buoy';
@@ -10,17 +11,11 @@ import {
   createMaBuoyDownloadUrl,
   createRealTimeDownloadUrl,
   createRiBuoyDownloadUrl,
+  createPlanktonDownloadUrl,
   DATA_FORMATS,
   DF,
 } from '@/utils/data/erddap';
-
-type Dataset = 'ri' | 'ma' | 'real-time';
-
-type downloadDataHelper<T extends Dataset> = T extends 'ri'
-  ? RiBuoyViewerVariable[]
-  : T extends 'ma'
-    ? MaBuoyViewerVariable[]
-    : RealTimeBuoyViewerVariable[];
+import type { Dataset, downloadDataHelper } from '@/utils/types';
 
 type Params = {
   buoys: string[];
@@ -33,7 +28,9 @@ export type DownloadDataFormProps<T extends Dataset> = T extends 'ri'
   ? Params & { variables: downloadDataHelper<'ri'> }
   : T extends 'ma'
     ? Params & { variables: downloadDataHelper<'ma'> }
-    : Params & { variables: downloadDataHelper<'real-time'> };
+    : T extends 'plankton'
+      ? Params & { variables: downloadDataHelper<'plankton'> }
+      : Params & { variables: downloadDataHelper<'real-time'> };
 
 export function DownloadBuoyDataForm<T extends Dataset>({
   variables,
@@ -56,10 +53,20 @@ export function DownloadBuoyDataForm<T extends Dataset>({
                 start,
                 end,
               })
-            : createRealTimeDownloadUrl(format, variables as RealTimeBuoyViewerVariable[], buoys, {
-                start,
-                end,
-              }),
+            : dataset === 'plankton'
+              ? createPlanktonDownloadUrl(format, variables as PlanktonVariable[], buoys, {
+                  start,
+                  end,
+                })
+              : createRealTimeDownloadUrl(
+                  format,
+                  variables as RealTimeBuoyViewerVariable[],
+                  buoys,
+                  {
+                    start,
+                    end,
+                  }
+                ),
         '_blank'
       )
       ?.focus();
