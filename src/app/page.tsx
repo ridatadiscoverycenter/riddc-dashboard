@@ -14,13 +14,12 @@ export default function Home() {
   return (
     <FullBleedColumn className="flex flex-col text-lg gap-4 mb-8">
       <Hero className="full-bleed" />
-      <h2
-        className="w-full text-center text-4xl font-header font-bold text-header-primary"
+      <div
+        className="w-full text-center text-4xl font-header font-bold text-header-primary mt-2"
         id="about"
         style={{ scrollMarginTop: '5rem' }}
-      >
-        About RIDDC
-      </h2>
+      />
+
       <p>
         The National Science Foundation in 2017 awarded the University of Rhode Island with a grant
         to establish a statewide research consortium — the RI Consortium for Coastal Ecology
