@@ -27,11 +27,6 @@ export function Nav() {
           ERDDAP
         </ExternalLink>
       </h2>
-      <h2>
-        <Link className={LINK_COLORS} href="/datasets">
-          Datasets
-        </Link>
-      </h2>
     </nav>
   );
 }

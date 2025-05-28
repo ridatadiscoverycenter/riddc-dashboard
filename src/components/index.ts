@@ -6,6 +6,7 @@ export * from './ExploreForm';
 export * from './Footer';
 export * from './Form';
 export * from './GraphErrorPanel';
+export * from './Hero';
 export * from './Image';
 export * from './Input';
 export * from './Label';

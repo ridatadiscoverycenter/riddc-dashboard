@@ -13,6 +13,10 @@ module.exports = {
           dark: '#000F0F',
           DEFAULT: '#f0fffb',
         },
+        header: {
+          primary: '#598DAF',
+          secondary: '#F2E7DC',
+        },
         clear: {
           50: 'rgba(255,255,255,0.05)',
           100: 'rgba(255,255,255,0.1)',
