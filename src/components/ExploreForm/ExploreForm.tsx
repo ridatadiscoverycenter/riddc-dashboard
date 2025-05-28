@@ -36,7 +36,9 @@ export function ExploreForm({
   dateBounds,
   init = DEFAULT_INITIAL_DATA,
 }: ExploreFormProps) {
-  const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys);
+  const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(
+    buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys
+  );
   const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
   const [startDate, setStartDate] = React.useState(dateBounds.startDate);
   const [endDate, setEndDate] = React.useState(dateBounds.endDate);
