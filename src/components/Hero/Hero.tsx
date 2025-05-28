@@ -14,13 +14,13 @@ export function Hero({ className }: { className: string }) {
             <div className="mt-5 sm:mt-10 flex items-center gap-x-6">
               <Button
                 href="#about"
-                className="sm:px-[calc(theme(spacing.10)-1px)] sm:py-[calc(theme(spacing[5])-1px)] sm:text-lg"
+                className="sm:px-[calc(theme(spacing.10)-1px)] sm:py-[calc(theme(spacing[5])-1px)] sm:text-xl"
               >
                 About
               </Button>
               <Button
                 href="#datasets"
-                className="sm:px-[calc(theme(spacing.10)-1px)] sm:py-[calc(theme(spacing[5])-1px)] sm:text-lg"
+                className="sm:px-[calc(theme(spacing.10)-1px)] sm:py-[calc(theme(spacing[5])-1px)] sm:text-xl"
               >
                 Explore Data
               </Button>
