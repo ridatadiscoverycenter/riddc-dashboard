@@ -59,12 +59,14 @@ export function ExploreForm({
 
   return (
     <Form onSubmit={onSubmit} className="flex flex-col gap-2 justify-center">
-      <Multiselect
-        label="Buoys"
-        options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
-        onChange={setSelectedBuoys}
-        init={init.buoys}
-      />
+      {buoys.length > 1 ? (
+        <Multiselect
+          label="Buoys"
+          options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
+          onChange={setSelectedBuoys}
+          init={init.buoys}
+        />
+      ) : undefined}
       <Multiselect
         label="Variables (up to four)"
         options={location === 'ri' ? [...RI_BUOY_VIEWER_VARIABLES] : [...MA_BUOY_VIEWER_VARIABLES]}
