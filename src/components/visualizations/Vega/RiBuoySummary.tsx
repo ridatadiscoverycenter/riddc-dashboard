@@ -2,8 +2,8 @@
 import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
-import type { RiBuoySummaryData, RiBuoyViewerVariable } from '@/utils/data/api/buoy';
-import { RI_BUOY_VIEWER_VARIABLES } from '@/utils/data/api/buoy';
+import type { RiBuoySummaryData, RiBuoyVariable } from '@/utils/data/api/buoy';
+import { RI_BUOY_VARIABLES } from '@/utils/data/api/buoy';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading, Select } from '@/components';
 
@@ -21,7 +21,7 @@ function getGraphicWidth(size: Size | undefined) {
 
 export function RiBuoySummary({ data }: RiBuoySummaryProps) {
   const size = useScreenSize();
-  const [variable, setVariable] = React.useState<RiBuoyViewerVariable>('chlorophyll');
+  const [variable, setVariable] = React.useState<RiBuoyVariable>('ChlorophyllSurface');
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -135,8 +135,8 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
           forceLight
           label="Data:"
           value={variable}
-          onChange={(e) => setVariable(e.target.value as RiBuoyViewerVariable)}
-          options={RI_BUOY_VIEWER_VARIABLES.map((key) => ({
+          onChange={(e) => setVariable(e.target.value as RiBuoyVariable)}
+          options={RI_BUOY_VARIABLES.map((key) => ({
             label: key
               .replace(/([a-z])([A-Z])/g, '$1 $2')
               .split(' ')

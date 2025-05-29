@@ -3,7 +3,7 @@ import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
 import type { MaBuoySummaryData, MaBuoyViewerVariable } from '@/utils/data/api/buoy';
-import { MA_BUOY_VIEWER_VARIABLES } from '@/utils/data/api/buoy';
+import { MA_BUOY_VARIABLES } from '@/utils/data/api/buoy';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading, Select } from '@/components';
 
@@ -135,7 +135,7 @@ export function MaBuoySummary({ data }: MaBuoySummaryProps) {
           label="Data:"
           value={variable}
           onChange={(e) => setVariable(e.target.value as MaBuoyViewerVariable)}
-          options={MA_BUOY_VIEWER_VARIABLES.map((key) => ({
+          options={MA_BUOY_VARIABLES.map((key) => ({
             label: key
               .replace(/([a-z])([A-Z])/g, '$1 $2')
               .split(' ')

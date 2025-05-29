@@ -1,11 +1,11 @@
 import { PageProps } from '@/types';
 import {
-  MA_BUOY_VIEWER_VARIABLES,
-  MaBuoyViewerVariable,
+  MA_BUOY_VARIABLES,
+  MaBuoyVariable,
   REAL_TIME_BUOY_VIEWER_VARIABLES,
   RealTimeBuoyViewerVariable,
-  RI_BUOY_VIEWER_VARIABLES,
-  RiBuoyViewerVariable,
+  RI_BUOY_VARIABLES,
+  RiBuoyVariable,
 } from '../data/api/buoy';
 import { PLANKTON_VARIABLES, PlanktonVariable } from '../data/api/buoy/plankton';
 
@@ -77,25 +77,21 @@ export function parseParamBuoyIds(buoysParam: Param): ParsedParam<string[]> {
   return { error: undefined, value: buoysParam.split(',') };
 }
 
-export function parseParamBuoyVariablesRI(
-  variablesParam: Param
-): ParsedParam<RiBuoyViewerVariable[]> {
+export function parseParamBuoyVariablesRI(variablesParam: Param): ParsedParam<RiBuoyVariable[]> {
   if (variablesParam === undefined) return { error: ERROR_CODES.NO_VARS, value: undefined };
   if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
   const variables = variablesParam.split(',');
-  if (variables.every((vari) => RI_BUOY_VIEWER_VARIABLES.includes(vari as RiBuoyViewerVariable)))
-    return { error: undefined, value: variables as RiBuoyViewerVariable[] };
+  if (variables.every((vari) => RI_BUOY_VARIABLES.includes(vari as RiBuoyVariable)))
+    return { error: undefined, value: variables as RiBuoyVariable[] };
   return { error: ERROR_CODES.INVALID_VARS, value: undefined };
 }
 
-export function parseParamBuoyVariablesMA(
-  variablesParam: Param
-): ParsedParam<MaBuoyViewerVariable[]> {
+export function parseParamBuoyVariablesMA(variablesParam: Param): ParsedParam<MaBuoyVariable[]> {
   if (variablesParam === undefined) return { error: ERROR_CODES.NO_VARS, value: undefined };
   if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
   const variables = variablesParam.split(',');
-  if (variables.every((vari) => MA_BUOY_VIEWER_VARIABLES.includes(vari as MaBuoyViewerVariable)))
-    return { error: undefined, value: variables as MaBuoyViewerVariable[] };
+  if (variables.every((vari) => MA_BUOY_VARIABLES.includes(vari as MaBuoyVariable)))
+    return { error: undefined, value: variables as MaBuoyVariable[] };
   return { error: ERROR_CODES.INVALID_VARS, value: undefined };
 }
 

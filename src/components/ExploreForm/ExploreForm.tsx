@@ -2,14 +2,14 @@
 import React from 'react';
 
 import {
-  RI_BUOY_VIEWER_VARIABLES,
+  RI_BUOY_VARIABLES,
   RiBuoyCoordinate,
-  MA_BUOY_VIEWER_VARIABLES,
+  MA_BUOY_VARIABLES,
   REAL_TIME_BUOY_VIEWER_VARIABLES,
   PLANKTON_VARIABLES,
 } from '@/utils/data/api/buoy';
+import { type Dataset } from '@/utils/data/api/buoy/types';
 import { Multiselect, Label, Input, Form } from '@/components';
-import type { Dataset } from '@/utils/types';
 type InitialFormData = {
   buoys: string[];
   vars: string[];
@@ -81,9 +81,9 @@ export function ExploreForm({
         label="Variables (up to four)"
         options={
           dataset === 'ri'
-            ? [...RI_BUOY_VIEWER_VARIABLES]
+            ? [...RI_BUOY_VARIABLES]
             : dataset === 'ma'
-              ? [...MA_BUOY_VIEWER_VARIABLES]
+              ? [...MA_BUOY_VARIABLES]
               : dataset === 'plankton'
                 ? [...PLANKTON_VARIABLES]
                 : [...REAL_TIME_BUOY_VIEWER_VARIABLES]

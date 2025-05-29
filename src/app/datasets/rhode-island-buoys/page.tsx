@@ -15,7 +15,7 @@ import {
   fetchRiBuoyCoordinates,
   fetchRiBuoyData,
   fetchRiSummaryData,
-  type RiBuoyViewerVariable,
+  type RiBuoyVariable,
 } from '@/utils/data/api/buoy';
 import {
   ERROR_CODES,
@@ -69,7 +69,7 @@ async function PageWrapper({
           params={paramsOrError}
           errorLinks={errorLinks}
           buoyDataFetcher={(ids, vars, start, end) =>
-            fetchRiBuoyData(ids, vars as RiBuoyViewerVariable[], start, end)
+            fetchRiBuoyData(ids, vars as RiBuoyVariable[], start, end)
           }
           dataset="ri"
           weatherDataFetcher={fetchWeatherData}
@@ -111,11 +111,11 @@ async function PageWrapper({
 
 const RI_BUOY_ERROR_LINKS = [
   {
-    href: '/datasets/rhode-island-buoys?buoys=bid2,bid3&vars=temperatureBottom,temperatureSurface&start=2010-01-22&end=2011-01-22',
+    href: '/datasets/rhode-island-buoys?buoys=bid2,bid3&vars=WaterTempBottom,WaterTempSurface&start=2010-01-22&end=2011-01-22',
     description: 'Changes in Water Temperature at N. Prudence and Conimicut Pt. from 2010 - 2011',
   },
   {
-    href: '/datasets/rhode-island-buoys?buoys=bid15,bid17&vars=depthBottom,depthSurface&start=2008-01-22&end=2009-01-22',
+    href: '/datasets/rhode-island-buoys?buoys=bid15,bid17&vars=DepthBottom,depth&start=2008-01-22&end=2009-01-22',
     description: 'Changes in Depth at Greenwich Bay and GSO Dock from 2008 - 2009',
   },
 ];
