@@ -29,7 +29,7 @@ export function Select({
     // Casting because typescript doesn't like type checking like this.
     if (typeof options[0] === 'string')
       return (options as string[]).map((opt) => ({
-        label: variableToLabel(dataset, opt),
+        label: opt,
         value: opt,
       }));
     return options as Exclude<typeof options, string[]>;

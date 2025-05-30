@@ -59,7 +59,7 @@ export function Multiselect({ label, options, onChange, init = [], dataset }: Mu
   return (
     <>
       <Select
-        options={options}
+        options={formatted}
         label={label}
         value={undefined}
         onChange={addNew}

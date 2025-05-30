@@ -112,9 +112,7 @@ export function parseParamBuoyVariablesRT(
   if (variablesParam === undefined) return { error: ERROR_CODES.NO_VARS, value: undefined };
   if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
   const variables = variablesParam.split(',');
-  if (
-    variables.every((vari) => REAL_TIME_BUOY_VARIABLES.includes(vari as RealTimeBuoyVariable))
-  )
+  if (variables.every((vari) => REAL_TIME_BUOY_VARIABLES.includes(vari as RealTimeBuoyVariable)))
     return { error: undefined, value: variables as RealTimeBuoyVariable[] };
   return { error: ERROR_CODES.INVALID_VARS, value: undefined };
 }
