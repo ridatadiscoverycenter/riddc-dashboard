@@ -12,7 +12,7 @@ import rwuLight from '@/assets/RWUSeal_Blue.svg';
 
 export default function Home() {
   return (
-    <FullBleedColumn className="flex flex-col text-lg gap-4 mb-8">
+    <FullBleedColumn className="gap-4 mb-8">
       <Hero className="full-bleed" />
       <div
         className="w-full text-center text-4xl font-header font-bold text-header-primary mt-2"
