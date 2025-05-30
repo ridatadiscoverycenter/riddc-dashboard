@@ -50,7 +50,7 @@ export const MA_BUOY_VARIABLES = [
   'WaterTempSurface',
 ] as const;
 
-export type MaQualifiers = (typeof MA_QUALIFIERS)[number];
+type MaQualifiers = (typeof MA_QUALIFIERS)[number];
 export type MaBuoyVariable = (typeof MA_BUOY_VARIABLES)[number];
 
 const QUALIFIER_PAIRS: { variable: MaBuoyVariable; qualifier: MaQualifiers }[] = [
@@ -80,8 +80,6 @@ function variableToQualifier(v: MaBuoyVariable) {
 }
 
 export const MA_VARIABLE_CONVERTER = {
-  // erddapToViewer,
-  // viewerToErddap,
   variableToQualifier,
 };
 
