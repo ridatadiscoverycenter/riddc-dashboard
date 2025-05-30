@@ -2,7 +2,7 @@
 import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
-import type { RealTimeBuoyViewerVariable, RealTimeSummaryData } from '@/utils/data/api/buoy';
+import type { RealTimeBuoyVariable, RealTimeSummaryData } from '@/utils/data/api/buoy';
 import { REAL_TIME_BUOY_VARIABLES } from '@/utils/data/api/buoy';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading, Select } from '@/components';
@@ -22,7 +22,7 @@ function getGraphicWidth(size: Size | undefined) {
 
 export function RealTimeBuoySummary({ data }: RealTimeBuoySummaryProps) {
   const size = useScreenSize();
-  const [variable, setVariable] = React.useState<RealTimeBuoyViewerVariable>('airPressure');
+  const [variable, setVariable] = React.useState<RealTimeBuoyVariable>('AirPressure');
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -135,7 +135,7 @@ export function RealTimeBuoySummary({ data }: RealTimeBuoySummaryProps) {
           forceLight
           label="Data:"
           value={variable}
-          onChange={(e) => setVariable(e.target.value as RealTimeBuoyViewerVariable)}
+          onChange={(e) => setVariable(e.target.value as RealTimeBuoyVariable)}
           options={REAL_TIME_BUOY_VARIABLES.map((key) => ({
             label: variableToLabel('real-time', key),
             value: key,

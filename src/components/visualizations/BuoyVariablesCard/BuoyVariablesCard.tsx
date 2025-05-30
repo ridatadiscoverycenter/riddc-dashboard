@@ -6,13 +6,13 @@ import { BuoyVariables, DataGraph, DownloadBuoyData, GraphErrorPanel } from '@/c
 import type { WeatherData } from '@/utils/data';
 import type {
   MaBuoyData,
-  MaBuoyViewerVariable,
+  MaBuoyVariable,
   RealTimeBuoyData,
   RiBuoyData,
+  PlanktonData,
 } from '@/utils/data/api/buoy';
 import { ERROR_CODES } from '@/utils/fns';
-import { PlanktonData } from '@/utils/data/api/buoy/plankton';
-import type { Dataset } from '@/utils/types';
+import type { Dataset } from '@/utils/data/api/buoy/types';
 
 type BuoyVariablesProps = {
   params: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
@@ -67,7 +67,7 @@ export async function BuoyVariablesCard({
       weather={weatherData}
       download={
         <DownloadBuoyData
-          variables={params.vars as MaBuoyViewerVariable[]}
+          variables={params.vars as MaBuoyVariable[]}
           dataset={dataset}
           buoys={params.buoys}
           start={params.start}

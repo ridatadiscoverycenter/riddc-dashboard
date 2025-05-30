@@ -50,10 +50,10 @@ export const RI_BUOY_VARIABLES = [
 //   'totalFluorescence',
 // ] as const;
 
-// export type RiBuoyViewerVariable = (typeof RI_BUOY_VIEWER_VARIABLES)[number];
+// export type RiBuoyVariable = (typeof RI_BUOY_VIEWER_VARIABLES)[number];
 export type RiBuoyVariable = (typeof RI_BUOY_VARIABLES)[number];
 
-// const VARIABLE_PAIRS: { viewer: RiBuoyViewerVariable; erddap: RiBuoyVariable }[] = [
+// const VARIABLE_PAIRS: { viewer: RiBuoyVariable; erddap: RiBuoyVariable }[] = [
 //   { viewer: 'oxygenPercentSurface', erddap: 'O2PercentSurface' },
 //   { viewer: 'oxygenPercentBottom', erddap: 'O2PercentBottom' },
 //   { viewer: 'depthBottom', erddap: 'DepthBottom' },
@@ -81,7 +81,7 @@ export type RiBuoyVariable = (typeof RI_BUOY_VARIABLES)[number];
 //   throw new Error(`No viewer variable for erddap variable "${v}"`);
 // }
 
-// function viewerToErddap(v: RiBuoyViewerVariable) {
+// function viewerToErddap(v: RiBuoyVariable) {
 //   const foundPair = VARIABLE_PAIRS.find((pair) => pair.viewer === v);
 //   if (foundPair !== undefined) return foundPair.erddap;
 //   throw new Error(`No viewer variable for erddap variable "${v}"`);

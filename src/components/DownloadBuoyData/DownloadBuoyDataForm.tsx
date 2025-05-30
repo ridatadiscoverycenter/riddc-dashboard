@@ -1,10 +1,10 @@
 'use client';
 import React from 'react';
 import {
-  MaBuoyViewerVariable,
+  MaBuoyVariable,
   PlanktonVariable,
-  RealTimeBuoyViewerVariable,
-  RiBuoyViewerVariable,
+  RealTimeBuoyVariable,
+  RiBuoyVariable,
 } from '@/utils/data/api/buoy';
 import { Input, Select, Form } from '@/components';
 import {
@@ -15,7 +15,7 @@ import {
   DATA_FORMATS,
   DF,
 } from '@/utils/data/erddap';
-import type { Dataset, downloadDataHelper } from '@/utils/types';
+import type { Dataset, downloadDataHelper } from '@/utils/data/api/buoy/types';
 
 type Params = {
   buoys: string[];
@@ -44,12 +44,12 @@ export function DownloadBuoyDataForm<T extends Dataset>({
     window
       .open(
         dataset === 'ri'
-          ? createRiBuoyDownloadUrl(format, variables as RiBuoyViewerVariable[], buoys, {
+          ? createRiBuoyDownloadUrl(format, variables as RiBuoyVariable[], buoys, {
               start,
               end,
             })
           : dataset === 'ma'
-            ? createMaBuoyDownloadUrl(format, variables as MaBuoyViewerVariable[], buoys, {
+            ? createMaBuoyDownloadUrl(format, variables as MaBuoyVariable[], buoys, {
                 start,
                 end,
               })
@@ -58,15 +58,10 @@ export function DownloadBuoyDataForm<T extends Dataset>({
                   start,
                   end,
                 })
-              : createRealTimeDownloadUrl(
-                  format,
-                  variables as RealTimeBuoyViewerVariable[],
-                  buoys,
-                  {
-                    start,
-                    end,
-                  }
-                ),
+              : createRealTimeDownloadUrl(format, variables as RealTimeBuoyVariable[], buoys, {
+                  start,
+                  end,
+                }),
         '_blank'
       )
       ?.focus();
@@ -82,6 +77,7 @@ export function DownloadBuoyDataForm<T extends Dataset>({
         label="Data Format"
         options={[...DATA_FORMATS]}
         onChange={(e) => setFormat(e.target.value as DF)}
+        dataset={dataset}
       />
       <Input
         type="submit"
