@@ -49,54 +49,9 @@ export const MA_BUOY_VARIABLES = [
   'WaterTempBottom',
   'WaterTempSurface',
 ] as const;
-// export const MA_BUOY_VARIABLES = [
-//   'ChlorophyllBottom',
-//   'ChlorophyllSurface',
-//   'depth',
-//   'DepthBottom',
-//   'DepthSurface',
-//   'NitrateNSurface',
-//   'O2Bottom',
-//   'O2PercentBottom',
-//   'O2PercentSurface',
-//   'O2Surface',
-//   'pHBottom',
-//   'pHSurface',
-//   'PhycoerythrinBottom',
-//   'PhycoerythrinSurface',
-//   'SalinityBottom',
-//   'SalinitySurface',
-//   'SpCondBottom',
-//   'SpCondSurface',
-//   'WaterTempBottom',
-//   'WaterTempSurface',
-// ] as const;
 
 export type MaQualifiers = (typeof MA_QUALIFIERS)[number];
-// export type MaBuoyViewerVariable = (typeof MA_BUOY_VARIABLES)[number];
 export type MaBuoyVariable = (typeof MA_BUOY_VARIABLES)[number];
-
-// const VARIABLE_PAIRS: { viewer: MaBuoyViewerVariable; erddap: MaBuoyVariable }[] = [
-//   { viewer: 'depth', erddap: 'depth' },
-//   { viewer: 'DepthSurface', erddap: 'DepthSurface' },
-//   { viewer: 'pHBottom', erddap: 'pHBottom' },
-//   { viewer: 'ChlorophyllBottom', erddap: 'ChlorophyllBottom' },
-//   { viewer: 'ChlorophyllSurface', erddap: 'ChlorophyllSurface' },
-//   { viewer: 'NitrateNSurface', erddap: 'NitrateNSurface' },
-//   { viewer: 'O2Bottom', erddap: 'O2Bottom' },
-//   { viewer: 'O2PercentBottom', erddap: 'O2PercentBottom' },
-//   { viewer: 'O2PercentSurface', erddap: 'O2PercentSurface' },
-//   { viewer: 'O2Surface', erddap: 'O2Surface' },
-//   { viewer: 'pHSurface', erddap: 'pHSurface' },
-//   { viewer: 'PhycoerythrinBottom', erddap: 'PhycoerythrinBottom' },
-//   { viewer: 'PhycoerythrinSurface', erddap: 'PhycoerythrinSurface' },
-//   { viewer: 'SalinityBottom', erddap: 'SalinityBottom' },
-//   { viewer: 'SalinitySurface', erddap: 'SalinitySurface' },
-//   { viewer: 'SpCondBottom', erddap: 'SpCondBottom' },
-//   { viewer: 'SpCondSurface', erddap: 'SpCondSurface' },
-//   { viewer: 'WaterTempBottom', erddap: 'WaterTempBottom' },
-//   { viewer: 'WaterTempSurface', erddap: 'WaterTempSurface' },
-// ] as const;
 
 const QUALIFIER_PAIRS: { variable: MaBuoyVariable; qualifier: MaQualifiers }[] = [
   { variable: 'ChlorophyllBottom', qualifier: 'ChlorophyllQualifiersBottom' },
@@ -118,18 +73,6 @@ const QUALIFIER_PAIRS: { variable: MaBuoyVariable; qualifier: MaQualifiers }[] =
   { variable: 'WaterTempBottom', qualifier: 'WaterTempQualifiersBottom' },
   { variable: 'WaterTempSurface', qualifier: 'WaterTempQualifiersSurface' },
 ];
-
-// function erddapToViewer(v: MaBuoyVariable) {
-//   const foundPair = VARIABLE_PAIRS.find((pair) => pair.erddap === v);
-//   if (foundPair !== undefined) return foundPair.viewer;
-//   throw new Error(`No viewer variable for erddap variable "${v}"`);
-// }
-
-// function viewerToErddap(v: MaBuoyViewerVariable) {
-//   const foundPair = VARIABLE_PAIRS.find((pair) => pair.viewer === v);
-//   if (foundPair !== undefined) return foundPair.erddap;
-//   throw new Error(`No viewer variable for erddap variable "${v}"`);
-// }
 
 function variableToQualifier(v: MaBuoyVariable) {
   const foundPair = QUALIFIER_PAIRS.find((pair) => pair.variable === v);

@@ -1,6 +1,8 @@
 'use client';
 import React, { DetailedHTMLProps, SelectHTMLAttributes } from 'react';
 import { Label } from '@/components';
+import { variableToLabel } from '@/utils/data/shared/variableConverter';
+import { Dataset } from '@/utils/data/api/buoy/types';
 
 const BASE_STYLES = 'p-2 rounded-md shadow-sm ';
 const LIGHT_STYLES = 'bg-slate-200 text-black';
@@ -11,16 +13,27 @@ type SelectProps = DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HT
   label: string;
   options: string[] | { label: string; value: string }[];
   forceLight?: boolean;
+  dataset: Dataset;
 };
 
-export function Select({ label, options, forceLight = false, className, ...props }: SelectProps) {
+export function Select({
+  label,
+  options,
+  forceLight = false,
+  className,
+  dataset = 'ma',
+  ...props
+}: SelectProps) {
   const formatted = React.useMemo(() => {
     if (options.length === 0) return [];
     // Casting because typescript doesn't like type checking like this.
     if (typeof options[0] === 'string')
-      return (options as string[]).map((opt) => ({ label: opt, value: opt }));
+      return (options as string[]).map((opt) => ({
+        label: variableToLabel(dataset, opt),
+        value: opt,
+      }));
     return options as Exclude<typeof options, string[]>;
-  }, [options]);
+  }, [options, dataset]);
   return (
     <Label label={label} forceLight={forceLight}>
       <select

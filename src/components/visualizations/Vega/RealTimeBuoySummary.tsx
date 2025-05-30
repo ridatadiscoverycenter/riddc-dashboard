@@ -3,9 +3,10 @@ import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
 import type { RealTimeBuoyViewerVariable, RealTimeSummaryData } from '@/utils/data/api/buoy';
-import { REAL_TIME_BUOY_VIEWER_VARIABLES } from '@/utils/data/api/buoy';
+import { REAL_TIME_BUOY_VARIABLES } from '@/utils/data/api/buoy';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading, Select } from '@/components';
+import { variableToLabel } from '@/utils/data/shared/variableConverter';
 
 type RealTimeBuoySummaryProps = {
   data: RealTimeSummaryData[];
@@ -135,17 +136,11 @@ export function RealTimeBuoySummary({ data }: RealTimeBuoySummaryProps) {
           label="Data:"
           value={variable}
           onChange={(e) => setVariable(e.target.value as RealTimeBuoyViewerVariable)}
-          options={REAL_TIME_BUOY_VIEWER_VARIABLES.map((key) => ({
-            label: key
-              .replace(/([a-z])([A-Z])/g, '$1 $2')
-              .split(' ')
-              .map(
-                (word, index, total) =>
-                  `${index === total.length - 1 && total.length > 1 ? '(' : ''}${word[0].toLocaleUpperCase()}${word.slice(1)}${index === total.length - 1 && total.length > 1 ? ')' : ''}`
-              )
-              .join(' '),
+          options={REAL_TIME_BUOY_VARIABLES.map((key) => ({
+            label: variableToLabel('real-time', key),
             value: key,
           }))}
+          dataset="real-time"
         />
       </form>
       {size === undefined ? (

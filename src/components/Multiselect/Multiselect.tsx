@@ -1,6 +1,8 @@
 'use client';
 import React, { SetStateAction } from 'react';
 import { CloseIcon, Select } from '@/components';
+import { Dataset } from '@/utils/data/api/buoy/types';
+import { variableToLabel } from '@/utils/data/shared/variableConverter';
 
 type KeyValueArray = { label: string; value: string }[];
 type StringOrKeyValueArray = string[] | KeyValueArray;
@@ -10,13 +12,14 @@ type MultiselectProps = {
   options: StringOrKeyValueArray;
   onChange: React.Dispatch<SetStateAction<string[]>>;
   init?: string[];
+  dataset: Dataset;
 };
 
-function formatOptionsArray(arr: StringOrKeyValueArray) {
+function formatOptionsArray(dataset: Dataset, arr: StringOrKeyValueArray) {
   if (arr.length === 0) return [];
   // Casting because typescript doesn't like type checking like this.
   if (typeof arr[0] === 'string')
-    return (arr as string[]).map((opt) => ({ label: opt, value: opt }));
+    return (arr as string[]).map((opt) => ({ label: variableToLabel(dataset, opt), value: opt }));
   return arr as KeyValueArray;
 }
 
@@ -29,8 +32,8 @@ function formatInitialSelected(formattedOpts: KeyValueArray, init: string[]) {
     .filter((value) => value !== undefined);
 }
 
-export function Multiselect({ label, options, onChange, init = [] }: MultiselectProps) {
-  const formatted = formatOptionsArray(options); //React.useMemo(() => formatOptionsArray(options), [options]);
+export function Multiselect({ label, options, onChange, init = [], dataset }: MultiselectProps) {
+  const formatted = formatOptionsArray(dataset, options); //React.useMemo(() => formatOptionsArray(options), [options]);
   const [selected, setSelected] = React.useState<KeyValueArray>(
     formatInitialSelected(formatted, init)
   );
@@ -55,7 +58,13 @@ export function Multiselect({ label, options, onChange, init = [] }: Multiselect
   );
   return (
     <>
-      <Select options={options} label={label} value={undefined} onChange={addNew} />
+      <Select
+        options={options}
+        label={label}
+        value={undefined}
+        onChange={addNew}
+        dataset={dataset}
+      />
       {selected.length > 0 && (
         <ul className="flex flex-col items-stretch px-2 gap-1">
           {selected.map(({ label: selLabel, value }) => (

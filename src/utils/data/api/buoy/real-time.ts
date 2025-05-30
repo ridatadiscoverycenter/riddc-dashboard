@@ -5,7 +5,7 @@ import { fetchSummaryData, fetchBuoyData, fetchBuoyCoordinates } from './buoy';
  * Types
  */
 
-const REAL_TIME_BUOY_ERDDAP_VARIABLES = [
+export const REAL_TIME_BUOY_VARIABLES = [
   'FluorescenceCounts',
   'FDOM',
   'FDOMDespike',
@@ -92,211 +92,8 @@ const REAL_TIME_BUOY_ERDDAP_VARIABLES = [
   'SolarIrradianceInstrumentRangeQC',
   'SolarIrradianceStuckValueQC',
 ] as const;
-export const REAL_TIME_BUOY_VIEWER_VARIABLES = [
-  'fluorescenceCounts',
-  'fdom',
-  'fdomDespike',
-  'fdmonGlobalRangeQC',
-  'fdomStuckValueQC',
-  'waterTemperature',
-  'waterTemperatureDespike',
-  'waterTemperatureGlobalRangeQC',
-  'waterTemperatureSeasonalNBRangeQC',
-  'waterTemperatureStuckValueQC',
-  'temperatureSurfaceGlobalRangeQC',
-  'temperatureSurfaceSeasonalNBRangeQC',
-  'temperatureSurfaceStuckValueQC',
-  'specificConductance',
-  'oxygen',
-  'oxygenDespike',
-  'oxygenGlobalRangeQC',
-  'oxygenStuckValueQC',
-  'salinity',
-  'salinityDespike',
-  'salinityGlobalRangeQC',
-  'salinitySeasonalNBRangeQC',
-  'salinityStuckValueQC',
-  'chlorophyll',
-  'chlorophyllDespike',
-  'chlorophyllSeasonalNBRangeQC',
-  'chlorophyllStuckValueQC',
-  'turbidity',
-  'turbidityDespike',
-  'turbidityStuckValueQC',
-  'pH',
-  'pHDespike',
-  'pHGlobalRangeQC',
-  'pHStuckValueQC',
-  'phosphate',
-  'phosphateQCFlag',
-  'phosphateBubbleFlag',
-  'phosphateCoVFlag',
-  'phosphateLowSigFlag',
-  'phosphateOoRFlag',
-  'phosphateMixingFlag',
-  'hydrocycleCalibrationFlag',
-  'phosphateDespike',
-  'phosphateSeasonalNBRangeQC',
-  'phosphateStuckValueQC',
-  'nitrate',
-  'nitrateDespike',
-  'nitrateGlobalRangeQC',
-  'nitrateSeasonalNBRangeQC',
-  'nitrateStuckValueQC',
-  'par',
-  'parDespike',
-  'parInstrumentRangeQC',
-  'parStuckValueQC',
-  'windSpeedAverage',
-  'windSpeedAverageDespike',
-  'windSpeedAverageInstrumentRangeQC',
-  'windSpeedAverageStuckValueQC',
-  'windDirectionFrom',
-  'windDirectionFromInstrumentRangeQC',
-  'windDirectionFromStuckValueQC',
-  'windSpeedGust',
-  'windSpeedGustDespike',
-  'windSpeedGustInstrumentRangeQC',
-  'windSpeedGustStuckValueQC',
-  'windGustDirectionFrom',
-  'windGustDirectionFromInstrumentRangeQC',
-  'windGustDirectionFromStuckValueQC',
-  'airTemperature',
-  'airTemperatureDespike',
-  'airTemperatureInstrumentRangeQC',
-  'airTemperatureStuckValueQC',
-  'airPressure',
-  'airPressureDespike',
-  'airPressureInstrumentRangeQC',
-  'airPressureStuckValueQC',
-  'humiditySurface',
-  'humiditySurfaceDespike',
-  'humiditySurfaceInstrumentRangeQC',
-  'humiditySurfaceStuckValueQC',
-  'precipitation',
-  'precipitationDespike',
-  'precipitationInstrumentRangeQC',
-  'precipitationStuckValueQC',
-  'solarIrradiance',
-  'solarIrradianceDespike',
-  'solarIrradianceInstrumentRangeQC',
-  'solarIrradianceStuckValueQC',
-] as const;
 
-export type RealTimeBuoyViewerVariable = (typeof REAL_TIME_BUOY_VIEWER_VARIABLES)[number];
-export type RealTimeBuoyErddapVariable = (typeof REAL_TIME_BUOY_ERDDAP_VARIABLES)[number];
-
-const VARIABLE_PAIRS: { viewer: RealTimeBuoyViewerVariable; erddap: RealTimeBuoyErddapVariable }[] =
-  [
-    { viewer: 'fluorescenceCounts', erddap: 'FluorescenceCounts' },
-    { viewer: 'fdom', erddap: 'FDOM' },
-    { viewer: 'fdomDespike', erddap: 'FDOMDespike' },
-    { viewer: 'fdmonGlobalRangeQC', erddap: 'FDOMGlobalRangeQC' },
-    { viewer: 'fdomStuckValueQC', erddap: 'FDOMStuckValueQC' },
-    { viewer: 'waterTemperature', erddap: 'WaterTempSurface' },
-    { viewer: 'waterTemperatureDespike', erddap: 'WaterTempSurfaceDespike' },
-    { viewer: 'waterTemperatureGlobalRangeQC', erddap: 'WaterTempSurfaceGlobalRangeQC' },
-    { viewer: 'waterTemperatureSeasonalNBRangeQC', erddap: 'WaterTempSurfaceSeasonalNBRangeQC' },
-    { viewer: 'waterTemperatureStuckValueQC', erddap: 'WaterTempSurfaceStuckValueQC' },
-    { viewer: 'temperatureSurfaceGlobalRangeQC', erddap: 'WaterTempSurfaceGlobalRangeQC' },
-    { viewer: 'temperatureSurfaceSeasonalNBRangeQC', erddap: 'WaterTempSurfaceSeasonalNBRangeQC' },
-    { viewer: 'temperatureSurfaceStuckValueQC', erddap: 'WaterTempSurfaceStuckValueQC' },
-    { viewer: 'specificConductance', erddap: 'SpCondSurface' },
-    { viewer: 'oxygen', erddap: 'O2Surface' },
-    { viewer: 'oxygenDespike', erddap: 'O2SurfaceDespike' },
-    { viewer: 'oxygenGlobalRangeQC', erddap: 'O2SurfaceGlobalRangeQC' },
-    { viewer: 'oxygenStuckValueQC', erddap: 'O2SurfaceStuckValueQC' },
-    { viewer: 'salinity', erddap: 'SalinitySurface' },
-    { viewer: 'salinityDespike', erddap: 'SalinitySurfaceDespike' },
-    { viewer: 'salinityGlobalRangeQC', erddap: 'SalinitySurfaceGlobalRangeQC' },
-    { viewer: 'salinitySeasonalNBRangeQC', erddap: 'SalinitySurfaceSeasonalNBRangeQC' },
-    { viewer: 'salinityStuckValueQC', erddap: 'SalinitySurfaceStuckValueQC' },
-    { viewer: 'chlorophyll', erddap: 'ChlorophyllSurface' },
-    { viewer: 'chlorophyllDespike', erddap: 'ChlorophyllSurfaceDespike' },
-    { viewer: 'chlorophyllSeasonalNBRangeQC', erddap: 'ChlorophyllSurfaceSeasonalNBRangeQC' },
-    { viewer: 'chlorophyllStuckValueQC', erddap: 'ChlorophyllSurfaceStuckValueQC' },
-    { viewer: 'turbidity', erddap: 'TurbiditySurface' },
-    { viewer: 'turbidityDespike', erddap: 'TurbiditySurfaceDespike' },
-    { viewer: 'turbidityStuckValueQC', erddap: 'TurbiditySurfaceStuckValueQC' },
-    { viewer: 'pH', erddap: 'pHSurface' },
-    { viewer: 'pHDespike', erddap: 'pHSurfaceDespike' },
-    { viewer: 'pHGlobalRangeQC', erddap: 'pHSurfaceGlobalRangeQC' },
-    { viewer: 'pHStuckValueQC', erddap: 'pHSurfaceStuckValueQC' },
-    { viewer: 'phosphate', erddap: 'PhosphateSurface' },
-    { viewer: 'phosphateQCFlag', erddap: 'PhosphateSurfaceQCFlag' },
-    { viewer: 'phosphateBubbleFlag', erddap: 'PhosphateSurfaceBubbleFlag' },
-    { viewer: 'phosphateCoVFlag', erddap: 'PhosphateSurfaceCoVFlag' },
-    { viewer: 'phosphateLowSigFlag', erddap: 'PhosphateSurfaceLowSigFlag' },
-    { viewer: 'phosphateOoRFlag', erddap: 'PhosphateSurfaceOoRFlag' },
-    { viewer: 'phosphateMixingFlag', erddap: 'PhosphateSurfaceMixingFlag' },
-    { viewer: 'hydrocycleCalibrationFlag', erddap: 'HydrocycleCalibrationFlag' },
-    { viewer: 'phosphateDespike', erddap: 'PhosphateSurfaceDespike' },
-    { viewer: 'phosphateSeasonalNBRangeQC', erddap: 'PhosphateSurfaceSeasonalNBRangeQC' },
-    { viewer: 'phosphateStuckValueQC', erddap: 'PhosphateSurfaceStuckValueQC' },
-    { viewer: 'nitrate', erddap: 'NitrateNSurface' },
-    { viewer: 'nitrateDespike', erddap: 'NitrateNSurfaceDespike' },
-    { viewer: 'nitrateGlobalRangeQC', erddap: 'NitrateNSurfaceGlobalRangeQC' },
-    { viewer: 'nitrateSeasonalNBRangeQC', erddap: 'NitrateNSurfaceSeasonalNBRangeQC' },
-    { viewer: 'nitrateStuckValueQC', erddap: 'NitrateNSurfaceStuckValueQC' },
-    { viewer: 'par', erddap: 'PARSurface' },
-    { viewer: 'parDespike', erddap: 'PARSurfaceDespike' },
-    { viewer: 'parInstrumentRangeQC', erddap: 'PARSurfaceInstrumentRangeQC' },
-    { viewer: 'parStuckValueQC', erddap: 'PARSurfaceStuckValueQC' },
-    { viewer: 'windSpeedAverage', erddap: 'WindSpeedAverage' },
-    { viewer: 'windSpeedAverageDespike', erddap: 'WindSpeedAverageDespike' },
-    { viewer: 'windSpeedAverageInstrumentRangeQC', erddap: 'WindSpeedAverageInstrumentRangeQC' },
-    { viewer: 'windSpeedAverageStuckValueQC', erddap: 'WindSpeedAverageStuckValueQC' },
-    { viewer: 'windDirectionFrom', erddap: 'WindDirectionFrom' },
-    { viewer: 'windDirectionFromInstrumentRangeQC', erddap: 'WindDirectionFromInstrumentRangeQC' },
-    { viewer: 'windDirectionFromStuckValueQC', erddap: 'WindDirectionFromStuckValueQC' },
-    { viewer: 'windSpeedGust', erddap: 'WindSpeedGust' },
-    { viewer: 'windSpeedGustDespike', erddap: 'WindSpeedGustDespike' },
-    { viewer: 'windSpeedGustInstrumentRangeQC', erddap: 'WindSpeedGustInstrumentRangeQC' },
-    { viewer: 'windSpeedGustStuckValueQC', erddap: 'WindSpeedGustStuckValueQC' },
-    { viewer: 'windGustDirectionFrom', erddap: 'WindGustDirectionFrom' },
-    {
-      viewer: 'windGustDirectionFromInstrumentRangeQC',
-      erddap: 'WindGustDirectionFromInstrumentRangeQC',
-    },
-    { viewer: 'windGustDirectionFromStuckValueQC', erddap: 'WindGustDirectionFromStuckValueQC' },
-    { viewer: 'airTemperature', erddap: 'AirTemp' },
-    { viewer: 'airTemperatureDespike', erddap: 'AirTempDespike' },
-    { viewer: 'airTemperatureInstrumentRangeQC', erddap: 'AirTempInstrumentRangeQC' },
-    { viewer: 'airTemperatureStuckValueQC', erddap: 'AirTempStuckValueQC' },
-    { viewer: 'airPressure', erddap: 'AirPressure' },
-    { viewer: 'airPressureDespike', erddap: 'AirPressureDespike' },
-    { viewer: 'airPressureInstrumentRangeQC', erddap: 'AirPressureInstrumentRangeQC' },
-    { viewer: 'airPressureStuckValueQC', erddap: 'AirPressureStuckValueQC' },
-    { viewer: 'humiditySurface', erddap: 'HumiditySurface' },
-    { viewer: 'humiditySurfaceDespike', erddap: 'HumiditySurfaceDespike' },
-    { viewer: 'humiditySurfaceInstrumentRangeQC', erddap: 'HumiditySurfaceInstrumentRangeQC' },
-    { viewer: 'humiditySurfaceStuckValueQC', erddap: 'HumiditySurfaceStuckValueQC' },
-    { viewer: 'precipitation', erddap: 'Precipitation' },
-    { viewer: 'precipitationDespike', erddap: 'PrecipitationDespike' },
-    { viewer: 'precipitationInstrumentRangeQC', erddap: 'PrecipitationInstrumentRangeQC' },
-    { viewer: 'precipitationStuckValueQC', erddap: 'PrecipitationStuckValueQC' },
-    { viewer: 'solarIrradiance', erddap: 'SolarIrradiance' },
-    { viewer: 'solarIrradianceDespike', erddap: 'SolarIrradianceDespike' },
-    { viewer: 'solarIrradianceInstrumentRangeQC', erddap: 'SolarIrradianceInstrumentRangeQC' },
-    { viewer: 'solarIrradianceStuckValueQC', erddap: 'SolarIrradianceStuckValueQC' },
-  ];
-
-function erddapToViewer(v: RealTimeBuoyErddapVariable) {
-  const foundPair = VARIABLE_PAIRS.find((pair) => pair.erddap === v);
-  if (foundPair !== undefined) return foundPair.viewer;
-  throw new Error(`No viewer variable for erddap variable "${v}"`);
-}
-
-function viewerToErddap(v: RealTimeBuoyViewerVariable) {
-  const foundPair = VARIABLE_PAIRS.find((pair) => pair.viewer === v);
-  if (foundPair !== undefined) return foundPair.erddap;
-  throw new Error(`No viewer variable for erddap variable "${v}"`);
-}
-
-export const REAL_TIME_VARIABLE_CONVERTER = {
-  erddapToViewer,
-  viewerToErddap,
-};
+export type RealTimeBuoyVariable = (typeof REAL_TIME_BUOY_VARIABLES)[number];
 
 /**
  * Buoy Summary
@@ -561,7 +358,7 @@ export type RealTimeBuoyCoordinate = ReturnType<typeof formatRealTimeBuoyCoordin
 const ZodFetchedRealTimeBuoyData = z.object({
   data: z.array(
     z.object({
-      variable: z.enum(REAL_TIME_BUOY_ERDDAP_VARIABLES),
+      variable: z.enum(REAL_TIME_BUOY_VARIABLES),
       value: z.union([z.number(), z.null()]),
       station_name: z.string(),
       time: z.union([z.string().datetime(), z.number()]),
@@ -574,14 +371,14 @@ type FetchedRealTimeBuoyData = z.infer<typeof ZodFetchedRealTimeBuoyData>['data'
 
 export async function fetchRealTimeBuoyData(
   ids: string[],
-  vars: RealTimeBuoyViewerVariable[],
+  vars: RealTimeBuoyVariable[],
   startDate: Date,
   endDate: Date
 ) {
   const fetchedRealTimeBuoyData = await fetchBuoyData(
     'buoy-telemetry',
     ids,
-    vars.map(viewerToErddap),
+    vars,
     startDate,
     endDate
   );
@@ -605,7 +402,7 @@ function validateFetchedRealTimeBuoyData(
 
 function formatRealTimeBuoyData(buoyData: FetchedRealTimeBuoyData) {
   return {
-    variable: REAL_TIME_VARIABLE_CONVERTER.erddapToViewer(buoyData.variable),
+    variable: buoyData.variable,
     value: buoyData.value || undefined,
     stationName: buoyData.station_name,
     time: new Date(buoyData.time),

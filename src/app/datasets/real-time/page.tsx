@@ -3,7 +3,7 @@ import {
   fetchRealTimeBuoyCoordinates,
   fetchRealTimeBuoyData,
   fetchRealTimeSummaryData,
-  RealTimeBuoyViewerVariable,
+  type RealTimeBuoyVariable,
 } from '@/utils/data/api/buoy';
 import {
   ERROR_CODES,
@@ -61,20 +61,20 @@ export default async function RealTime({ searchParams }: PageProps) {
             errorLinks={[
               {
                 description: 'Changes in Phosphate and Nitrate levels over the last month',
-                href: `/datasets/real-time?buoys=Buoy-620,Buoy-720&vars=phosphate,nitrate&end=${new Date().toISOString().split('T')[0]}&start=${subMonths(new Date(), 1).toISOString().split('T')[0]}`,
+                href: `/datasets/real-time?buoys=Buoy-620,Buoy-720&vars=PhosphateSurface,NitrateNSurface&end=${new Date().toISOString().split('T')[0]}&start=${subMonths(new Date(), 1).toISOString().split('T')[0]}`,
               },
               {
                 description: 'Changes in dissolved oxygen and salinity levels over the two months',
-                href: `/datasets/real-time?buoys=Buoy-620,Buoy-720&vars=oxygen,salinity&end=${new Date().toISOString().split('T')[0]}&start=${subMonths(new Date(), 2).toISOString().split('T')[0]}`,
+                href: `/datasets/real-time?buoys=Buoy-620,Buoy-720&vars=O2Surface,SalinitySurface&end=${new Date().toISOString().split('T')[0]}&start=${subMonths(new Date(), 2).toISOString().split('T')[0]}`,
               },
               {
                 description:
                   'Changes in dissolved oxygen and nitrate levels over the last three months',
-                href: `/datasets/real-time?buoys=Buoy-620,Buoy-720&vars=oxygen,nitrate&end=${new Date().toISOString().split('T')[0]}&start=${subMonths(new Date(), 3).toISOString().split('T')[0]}`,
+                href: `/datasets/real-time?buoys=Buoy-620,Buoy-720&vars=O2Surface,NitrateNSurface&end=${new Date().toISOString().split('T')[0]}&start=${subMonths(new Date(), 3).toISOString().split('T')[0]}`,
               },
             ]}
             buoyDataFetcher={(ids, vars, start, end) =>
-              fetchRealTimeBuoyData(ids, vars as RealTimeBuoyViewerVariable[], start, end)
+              fetchRealTimeBuoyData(ids, vars as RealTimeBuoyVariable[], start, end)
             }
             weatherDataFetcher={fetchWeatherData}
             description={undefined}

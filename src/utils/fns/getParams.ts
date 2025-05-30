@@ -2,7 +2,7 @@ import { PageProps } from '@/types';
 import {
   MA_BUOY_VARIABLES,
   MaBuoyVariable,
-  REAL_TIME_BUOY_VIEWER_VARIABLES,
+  REAL_TIME_BUOY_VARIABLES,
   RealTimeBuoyViewerVariable,
   RI_BUOY_VARIABLES,
   RiBuoyVariable,
@@ -113,9 +113,7 @@ export function parseParamBuoyVariablesRT(
   if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
   const variables = variablesParam.split(',');
   if (
-    variables.every((vari) =>
-      REAL_TIME_BUOY_VIEWER_VARIABLES.includes(vari as RealTimeBuoyViewerVariable)
-    )
+    variables.every((vari) => REAL_TIME_BUOY_VARIABLES.includes(vari as RealTimeBuoyViewerVariable))
   )
     return { error: undefined, value: variables as RealTimeBuoyViewerVariable[] };
   return { error: ERROR_CODES.INVALID_VARS, value: undefined };
