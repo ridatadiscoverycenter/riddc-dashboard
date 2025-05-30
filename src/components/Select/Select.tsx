@@ -1,7 +1,6 @@
 'use client';
 import React, { DetailedHTMLProps, SelectHTMLAttributes } from 'react';
 import { Label } from '@/components';
-import { variableToLabel } from '@/utils/data/shared/variableConverter';
 import { Dataset } from '@/utils/data/api/buoy/types';
 
 const BASE_STYLES = 'p-2 rounded-md shadow-sm ';
@@ -33,7 +32,7 @@ export function Select({
         value: opt,
       }));
     return options as Exclude<typeof options, string[]>;
-  }, [options, dataset]);
+  }, [options]);
   return (
     <Label label={label} forceLight={forceLight}>
       <select

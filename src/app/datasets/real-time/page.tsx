@@ -50,7 +50,7 @@ export default async function RealTime({ searchParams }: PageProps) {
   return (
     <>
       <p className="mt-6">
-        The real time buoys are currently undergoing maintenence, and have not reported data since
+        The real time buoys are currently undergoing maintenance, and have not reported data since
         December 2024. Data will appear here as soon as they are re-deployed.
       </p>
       <BuoyPageSkeleton
