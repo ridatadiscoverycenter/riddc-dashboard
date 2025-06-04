@@ -134,7 +134,7 @@ export function MaBuoySummary({ data }: MaBuoySummaryProps) {
           forceLight
           label="Data:"
           value={variable}
-          onChange={(e) => setVariable(e.target.value as MaBuoyViewerVariable)}
+          onChange={(newValue) => setVariable((newValue as { value: MaBuoyViewerVariable }).value)}
           options={MA_BUOY_VIEWER_VARIABLES.map((key) => ({
             label: key
               .replace(/([a-z])([A-Z])/g, '$1 $2')

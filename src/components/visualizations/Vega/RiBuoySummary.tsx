@@ -134,8 +134,8 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
         <Select
           forceLight
           label="Data:"
-          value={variable}
-          onChange={(e) => setVariable(e.target.value as RiBuoyViewerVariable)}
+          defaultValue={variable}
+          onChange={(newValue) => setVariable((newValue as { value: RiBuoyViewerVariable }).value)}
           options={RI_BUOY_VIEWER_VARIABLES.map((key) => ({
             label: key
               .replace(/([a-z])([A-Z])/g, '$1 $2')

@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 
+import { Label, Input, Form, Select } from '@/components';
 import {
   RI_BUOY_VIEWER_VARIABLES,
   RiBuoyCoordinate,
@@ -8,8 +9,8 @@ import {
   REAL_TIME_BUOY_VIEWER_VARIABLES,
   PLANKTON_VARIABLES,
 } from '@/utils/data/api/buoy';
-import { Multiselect, Label, Input, Form } from '@/components';
 import type { Dataset } from '@/utils/types';
+
 type InitialFormData = {
   buoys: string[];
   vars: string[];
@@ -69,15 +70,18 @@ export function ExploreForm({
 
   return (
     <Form onSubmit={onSubmit} className="flex flex-col gap-2 justify-center">
-      {buoys.length > 1 ? (
-        <Multiselect
-          label="Buoys"
-          options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
-          onChange={setSelectedBuoys}
-          init={init.buoys}
-        />
-      ) : undefined}
-      <Multiselect
+      <Select
+        isMulti
+        label="Buoys"
+        options={buoys.map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
+        onChange={(newBuoys) =>
+          setSelectedBuoys(
+            (newBuoys as { label: string; value: string }[]).map((selected) => selected.value)
+          )
+        }
+      />
+      <Select
+        isMulti
         label="Variables (up to four)"
         options={
           dataset === 'ri'
@@ -88,8 +92,11 @@ export function ExploreForm({
                 ? [...PLANKTON_VARIABLES]
                 : [...REAL_TIME_BUOY_VIEWER_VARIABLES]
         }
-        onChange={setSelectedVars}
-        init={init.vars}
+        onChange={(newVars) =>
+          setSelectedVars(
+            (newVars as { label: string; value: string }[]).map((selected) => selected.value)
+          )
+        }
       />
       <div className="w-full flex lg:flex-row flex-col gap-2 [&>label]:flex-1">
         <Label label="Start">
