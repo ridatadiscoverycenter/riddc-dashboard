@@ -134,7 +134,9 @@ export function RealTimeBuoySummary({ data }: RealTimeBuoySummaryProps) {
           forceLight
           label="Data:"
           value={variable}
-          onChange={(newValue) => setVariable((newValue as { value: RealTimeBuoyViewerVariable }).value)}
+          onChange={(newValue) =>
+            setVariable((newValue as { value: RealTimeBuoyViewerVariable }).value)
+          }
           options={REAL_TIME_BUOY_VIEWER_VARIABLES.map((key) => ({
             label: key
               .replace(/([a-z])([A-Z])/g, '$1 $2')
