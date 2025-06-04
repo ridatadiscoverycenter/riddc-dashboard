@@ -22,7 +22,6 @@ function getGraphicWidth(size: Size | undefined) {
 export function RiBuoySummary({ data }: RiBuoySummaryProps) {
   const size = useScreenSize();
   const [variable, setVariable] = React.useState<RiBuoyViewerVariable>('chlorophyll');
-  console.log(variable);
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
