@@ -28,7 +28,7 @@ export function Select({ label, options, forceLight = false, ...props }: SelectP
         unstyled
         classNames={{
           control: ({ isFocused }) =>
-            `p-2 rounded-md shadow-sm bg-slate-100/80 text-black ${isFocused ? 'border-teal-400' : ''} ${!forceLight ? 'dark:bg-slate-800 dark:border-slate-600 dark:text-white' : ''}`,
+            `p-2 rounded-md shadow-sm hover:shadow-md duration-300 transition-shadow bg-slate-100/80 text-black ${isFocused ? 'border-teal-400 border-solid border-2' : ''} ${!forceLight ? 'dark:bg-slate-800 dark:border-slate-600 dark:text-white' : ''}`,
           placeholder: () => 'text-slate-500 dark:text-slate-400',
           menu: () =>
             `mt-2 rounded-md p-2 bg-slate-100/90 ${!forceLight ? 'dark:bg-slate-900/90' : 'text-black'}`,
