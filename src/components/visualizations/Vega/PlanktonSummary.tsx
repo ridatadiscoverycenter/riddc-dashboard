@@ -137,7 +137,7 @@ export function PlanktonSummary({ data }: PlanktonBuoySummaryProps) {
           forceLight
           label="Data:"
           value={variable}
-          onChange={(e) => setVariable(e.target.value as PlanktonVariable)}
+          onChange={(newValue) => setVariable((newValue as { value: PlanktonVariable }).value)}
           options={PLANKTON_VARIABLES.map((key) => ({
             label: key
               .replace(/([a-z])([A-Z])/g, '$1 $2')
