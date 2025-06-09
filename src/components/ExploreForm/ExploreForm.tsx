@@ -3,13 +3,14 @@ import React from 'react';
 
 import { Label, Input, Form, Select } from '@/components';
 import {
-  RI_BUOY_VIEWER_VARIABLES,
+  RI_BUOY_VARIABLES,
   RiBuoyCoordinate,
-  MA_BUOY_VIEWER_VARIABLES,
-  REAL_TIME_BUOY_VIEWER_VARIABLES,
+  MA_BUOY_VARIABLES,
+  REAL_TIME_BUOY_VARIABLES,
   PLANKTON_VARIABLES,
 } from '@/utils/data/api/buoy';
-import type { Dataset } from '@/utils/types';
+
+import { type Dataset } from '@/utils/data/api/buoy/types';
 
 type InitialFormData = {
   buoys: string[];
@@ -79,24 +80,26 @@ export function ExploreForm({
             (newBuoys as { label: string; value: string }[]).map((selected) => selected.value)
           )
         }
+        dataset={dataset}
       />
       <Select
         isMulti
         label="Variables (up to four)"
         options={
           dataset === 'ri'
-            ? [...RI_BUOY_VIEWER_VARIABLES]
+            ? [...RI_BUOY_VARIABLES]
             : dataset === 'ma'
-              ? [...MA_BUOY_VIEWER_VARIABLES]
+              ? [...MA_BUOY_VARIABLES]
               : dataset === 'plankton'
                 ? [...PLANKTON_VARIABLES]
-                : [...REAL_TIME_BUOY_VIEWER_VARIABLES]
+                : [...REAL_TIME_BUOY_VARIABLES]
         }
         onChange={(newVars) =>
           setSelectedVars(
             (newVars as { label: string; value: string }[]).map((selected) => selected.value)
           )
         }
+        dataset={dataset}
       />
       <div className="w-full flex lg:flex-row flex-col gap-2 [&>label]:flex-1">
         <Label label="Start">

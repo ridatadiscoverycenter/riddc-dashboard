@@ -2,8 +2,12 @@
 import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
-import type { RiBuoySummaryData, RiBuoyViewerVariable } from '@/utils/data/api/buoy';
-import { RI_BUOY_VIEWER_VARIABLES } from '@/utils/data/api/buoy';
+import {
+  type RiBuoySummaryData,
+  type RiBuoyVariable,
+  RI_BUOY_VARIABLES,
+} from '@/utils/data/api/buoy';
+import { variableToLabel } from '@/utils/data/shared/variableConverter';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading, Select } from '@/components';
 
@@ -21,7 +25,7 @@ function getGraphicWidth(size: Size | undefined) {
 
 export function RiBuoySummary({ data }: RiBuoySummaryProps) {
   const size = useScreenSize();
-  const [variable, setVariable] = React.useState<RiBuoyViewerVariable>('chlorophyll');
+  const [variable, setVariable] = React.useState<RiBuoyVariable>('ChlorophyllSurface');
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -135,18 +139,12 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
           forceLight
           label="Data:"
           defaultValue={variable}
-          onChange={(newValue) => setVariable((newValue as { value: RiBuoyViewerVariable }).value)}
-          options={RI_BUOY_VIEWER_VARIABLES.map((key) => ({
-            label: key
-              .replace(/([a-z])([A-Z])/g, '$1 $2')
-              .split(' ')
-              .map(
-                (word, index, total) =>
-                  `${index === total.length - 1 && total.length > 1 ? '(' : ''}${word[0].toLocaleUpperCase()}${word.slice(1)}${index === total.length - 1 && total.length > 1 ? ')' : ''}`
-              )
-              .join(' '),
+          onChange={(newValue) => setVariable((newValue as { value: RiBuoyVariable }).value)}
+          options={RI_BUOY_VARIABLES.map((key) => ({
+            label: variableToLabel('ri', key),
             value: key,
           }))}
+          dataset="ri"
         />
       </form>
       {size === undefined ? (

@@ -14,7 +14,7 @@ import {
   fetchMaBuoyCoordinates,
   fetchMaBuoyData,
   fetchMaSummaryData,
-  MaBuoyViewerVariable,
+  MaBuoyVariable,
 } from '@/utils/data/api/buoy';
 import {
   ERROR_CODES,
@@ -70,7 +70,7 @@ async function PageWrapper({
           params={paramsOrError}
           errorLinks={errorLinks}
           buoyDataFetcher={(ids, vars, start, end) =>
-            fetchMaBuoyData(ids, vars as MaBuoyViewerVariable[], start, end)
+            fetchMaBuoyData(ids, vars as MaBuoyVariable[], start, end)
           }
           dataset="ma"
           weatherDataFetcher={fetchWeatherData}

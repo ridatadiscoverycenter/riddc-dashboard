@@ -27,29 +27,7 @@ export const MA_QUALIFIERS = [
   'WaterTempQualifiersBottom',
   'WaterTempQualifiersSurface',
 ];
-export const MA_BUOY_ERDDAP_VARIABLES = [
-  'ChlorophyllBottom',
-  'ChlorophyllSurface',
-  'depth',
-  'DepthBottom',
-  'DepthSurface',
-  'NitrateNSurface',
-  'O2Bottom',
-  'O2PercentBottom',
-  'O2PercentSurface',
-  'O2Surface',
-  'pHBottom',
-  'pHSurface',
-  'PhycoerythrinBottom',
-  'PhycoerythrinSurface',
-  'SalinityBottom',
-  'SalinitySurface',
-  'SpCondBottom',
-  'SpCondSurface',
-  'WaterTempBottom',
-  'WaterTempSurface',
-] as const;
-export const MA_BUOY_VIEWER_VARIABLES = [
+export const MA_BUOY_VARIABLES = [
   'ChlorophyllBottom',
   'ChlorophyllSurface',
   'depth',
@@ -72,33 +50,10 @@ export const MA_BUOY_VIEWER_VARIABLES = [
   'WaterTempSurface',
 ] as const;
 
-export type MaQualifiers = (typeof MA_QUALIFIERS)[number];
-export type MaBuoyViewerVariable = (typeof MA_BUOY_VIEWER_VARIABLES)[number];
-export type MaBuoyErddapVariable = (typeof MA_BUOY_ERDDAP_VARIABLES)[number];
+type MaQualifiers = (typeof MA_QUALIFIERS)[number];
+export type MaBuoyVariable = (typeof MA_BUOY_VARIABLES)[number];
 
-const VARIABLE_PAIRS: { viewer: MaBuoyViewerVariable; erddap: MaBuoyErddapVariable }[] = [
-  { viewer: 'depth', erddap: 'depth' },
-  { viewer: 'DepthSurface', erddap: 'DepthSurface' },
-  { viewer: 'pHBottom', erddap: 'pHBottom' },
-  { viewer: 'ChlorophyllBottom', erddap: 'ChlorophyllBottom' },
-  { viewer: 'ChlorophyllSurface', erddap: 'ChlorophyllSurface' },
-  { viewer: 'NitrateNSurface', erddap: 'NitrateNSurface' },
-  { viewer: 'O2Bottom', erddap: 'O2Bottom' },
-  { viewer: 'O2PercentBottom', erddap: 'O2PercentBottom' },
-  { viewer: 'O2PercentSurface', erddap: 'O2PercentSurface' },
-  { viewer: 'O2Surface', erddap: 'O2Surface' },
-  { viewer: 'pHSurface', erddap: 'pHSurface' },
-  { viewer: 'PhycoerythrinBottom', erddap: 'PhycoerythrinBottom' },
-  { viewer: 'PhycoerythrinSurface', erddap: 'PhycoerythrinSurface' },
-  { viewer: 'SalinityBottom', erddap: 'SalinityBottom' },
-  { viewer: 'SalinitySurface', erddap: 'SalinitySurface' },
-  { viewer: 'SpCondBottom', erddap: 'SpCondBottom' },
-  { viewer: 'SpCondSurface', erddap: 'SpCondSurface' },
-  { viewer: 'WaterTempBottom', erddap: 'WaterTempBottom' },
-  { viewer: 'WaterTempSurface', erddap: 'WaterTempSurface' },
-] as const;
-
-const QUALIFIER_PAIRS: { variable: MaBuoyErddapVariable; qualifier: MaQualifiers }[] = [
+const QUALIFIER_PAIRS: { variable: MaBuoyVariable; qualifier: MaQualifiers }[] = [
   { variable: 'ChlorophyllBottom', qualifier: 'ChlorophyllQualifiersBottom' },
   { variable: 'ChlorophyllSurface', qualifier: 'ChlorophyllQualifiersSurface' },
   { variable: 'DepthSurface', qualifier: 'DepthQualifiersSurface' },
@@ -119,26 +74,12 @@ const QUALIFIER_PAIRS: { variable: MaBuoyErddapVariable; qualifier: MaQualifiers
   { variable: 'WaterTempSurface', qualifier: 'WaterTempQualifiersSurface' },
 ];
 
-function erddapToViewer(v: MaBuoyErddapVariable) {
-  const foundPair = VARIABLE_PAIRS.find((pair) => pair.erddap === v);
-  if (foundPair !== undefined) return foundPair.viewer;
-  throw new Error(`No viewer variable for erddap variable "${v}"`);
-}
-
-function viewerToErddap(v: MaBuoyViewerVariable) {
-  const foundPair = VARIABLE_PAIRS.find((pair) => pair.viewer === v);
-  if (foundPair !== undefined) return foundPair.erddap;
-  throw new Error(`No viewer variable for erddap variable "${v}"`);
-}
-
-function variableToQualifier(v: MaBuoyErddapVariable) {
+function variableToQualifier(v: MaBuoyVariable) {
   const foundPair = QUALIFIER_PAIRS.find((pair) => pair.variable === v);
   if (foundPair !== undefined) return foundPair.qualifier;
 }
 
 export const MA_VARIABLE_CONVERTER = {
-  erddapToViewer,
-  viewerToErddap,
   variableToQualifier,
 };
 
@@ -147,7 +88,7 @@ export const MA_VARIABLE_CONVERTER = {
  */
 
 type FetchedMaBuoyData = {
-  variable: MaBuoyErddapVariable;
+  variable: MaBuoyVariable;
   value: number | null;
   station_name: string;
   time: string;
@@ -157,7 +98,7 @@ type FetchedMaBuoyData = {
 const ZodFetchedMaBuoyData = z.object({
   data: z.array(
     z.object({
-      variable: z.enum(MA_BUOY_ERDDAP_VARIABLES),
+      variable: z.enum(MA_BUOY_VARIABLES),
       value: z.union([z.number(), z.null()]),
       station_name: z.string(),
       time: z.string().datetime(),
@@ -177,7 +118,7 @@ function validateFetchedMaBuoyData(buoyData: unknown): buoyData is { data: Fetch
 
 function formatMaBuoyData(buoyData: FetchedMaBuoyData) {
   return {
-    variable: MA_VARIABLE_CONVERTER.erddapToViewer(buoyData.variable),
+    variable: buoyData.variable,
     value: buoyData.value || undefined,
     stationName: buoyData.station_name,
     time: new Date(buoyData.time),
@@ -189,17 +130,11 @@ export type MaBuoyData = ReturnType<typeof formatMaBuoyData>;
 
 export async function fetchMaBuoyData(
   ids: string[],
-  vars: MaBuoyViewerVariable[],
+  vars: MaBuoyVariable[],
   startDate: Date,
   endDate: Date
 ) {
-  const fetchedMaBuoyData = await fetchBuoyData(
-    'ma-buoy',
-    ids,
-    vars.map(viewerToErddap),
-    startDate,
-    endDate
-  );
+  const fetchedMaBuoyData = await fetchBuoyData('ma-buoy', ids, vars, startDate, endDate);
   if (validateFetchedMaBuoyData(fetchedMaBuoyData)) {
     return fetchedMaBuoyData.data.map(formatMaBuoyData);
   } else {

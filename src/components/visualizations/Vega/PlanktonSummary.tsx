@@ -9,6 +9,7 @@ import {
 } from '@/utils/data/api/buoy/plankton';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading, Select } from '@/components';
+import { variableToLabel } from '@/utils/data/shared/variableConverter';
 
 type PlanktonBuoySummaryProps = {
   data: PlanktonSummaryData[];
@@ -139,16 +140,10 @@ export function PlanktonSummary({ data }: PlanktonBuoySummaryProps) {
           value={variable}
           onChange={(newValue) => setVariable((newValue as { value: PlanktonVariable }).value)}
           options={PLANKTON_VARIABLES.map((key) => ({
-            label: key
-              .replace(/([a-z])([A-Z])/g, '$1 $2')
-              .split(' ')
-              .map(
-                (word, index, total) =>
-                  `${index === total.length - 1 && total.length > 1 ? '(' : ''}${word[0].toLocaleUpperCase()}${word.slice(1)}${index === total.length - 1 && total.length > 1 ? ')' : ''}`
-              )
-              .join(' '),
+            label: variableToLabel('plankton', key),
             value: key,
           }))}
+          dataset="plankton"
         />
       </form>
       {size === undefined ? (

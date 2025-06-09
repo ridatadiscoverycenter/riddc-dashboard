@@ -9,7 +9,7 @@ import {
   type DownloadDataFormProps,
 } from '@/components';
 import { ERDDAP_DATASET_LINK_RI_BUOY } from '@/utils/data/erddap';
-import type { Dataset, downloadDataHelper } from '@/utils/types';
+import type { Dataset, downloadDataHelper } from '@/utils/data/api/buoy/types';
 
 type Params = {
   buoys: string[];

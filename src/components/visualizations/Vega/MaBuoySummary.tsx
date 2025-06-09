@@ -2,10 +2,11 @@
 import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
-import type { MaBuoySummaryData, MaBuoyViewerVariable } from '@/utils/data/api/buoy';
-import { MA_BUOY_VIEWER_VARIABLES } from '@/utils/data/api/buoy';
+import type { MaBuoySummaryData, MaBuoyVariable } from '@/utils/data/api/buoy';
+import { MA_BUOY_VARIABLES } from '@/utils/data/api/buoy';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading, Select } from '@/components';
+import { variableToLabel } from '@/utils/data/shared/variableConverter';
 
 type MaBuoySummaryProps = {
   data: MaBuoySummaryData[];
@@ -21,7 +22,7 @@ function getGraphicWidth(size: Size | undefined) {
 
 export function MaBuoySummary({ data }: MaBuoySummaryProps) {
   const size = useScreenSize();
-  const [variable, setVariable] = React.useState<MaBuoyViewerVariable>('ChlorophyllBottom');
+  const [variable, setVariable] = React.useState<MaBuoyVariable>('ChlorophyllBottom');
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -134,18 +135,12 @@ export function MaBuoySummary({ data }: MaBuoySummaryProps) {
           forceLight
           label="Data:"
           value={variable}
-          onChange={(newValue) => setVariable((newValue as { value: MaBuoyViewerVariable }).value)}
-          options={MA_BUOY_VIEWER_VARIABLES.map((key) => ({
-            label: key
-              .replace(/([a-z])([A-Z])/g, '$1 $2')
-              .split(' ')
-              .map(
-                (word, index, total) =>
-                  `${index === total.length - 1 && total.length > 1 ? '(' : ''}${word[0].toLocaleUpperCase()}${word.slice(1)}${index === total.length - 1 && total.length > 1 ? ')' : ''}`
-              )
-              .join(' '),
+          onChange={(newValue) => setVariable((newValue as { value: MaBuoyVariable }).value)}
+          options={MA_BUOY_VARIABLES.map((key) => ({
+            label: variableToLabel('ma', key),
             value: key,
           }))}
+          dataset="ma"
         />
       </form>
       {size === undefined ? (

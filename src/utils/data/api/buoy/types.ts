@@ -1,3 +1,5 @@
+import type { RiBuoyVariable, MaBuoyVariable, PlanktonVariable } from '../buoy';
+
 export type BuoyCoordinateBase = {
   buoyId: string;
   latitude: number;
@@ -71,3 +73,12 @@ export type BuoyDataset = {
   data: BuoyData[];
   downsampled: boolean;
 };
+
+export type Dataset = 'ri' | 'ma' | 'real-time' | 'plankton';
+export type downloadDataHelper<T extends Dataset> = T extends 'ri'
+  ? RiBuoyVariable[]
+  : T extends 'ma'
+    ? MaBuoyVariable[]
+    : T extends 'plankton'
+      ? PlanktonVariable[]
+      : never;

@@ -1,11 +1,10 @@
 import {
   CONFIG,
-  RI_VARIABLE_CONVERTER,
   MA_VARIABLE_CONVERTER,
   REAL_TIME_VARIABLE_CONVERTER,
-  type RiBuoyViewerVariable,
-  type MaBuoyViewerVariable,
-  type RealTimeBuoyViewerVariable,
+  type RiBuoyVariable,
+  type MaBuoyVariable,
+  type RealTimeBuoyVariable,
   PlanktonVariable,
 } from '@/utils/data/api/buoy';
 
@@ -41,17 +40,11 @@ export const ERDDAP_DATASET_LINK_RI_BUOY =
 
 export function createRiBuoyDownloadUrl(
   fileFormat: DF,
-  variables: RiBuoyViewerVariable[],
+  variables: RiBuoyVariable[],
   buoys: string[],
   time: StartAndOrEndDate | undefined = undefined
 ) {
-  const vars = [
-    ...variables.map(RI_VARIABLE_CONVERTER.viewerToErddap),
-    'time',
-    'latitude',
-    'longitude',
-    'station_name',
-  ].join(',');
+  const vars = [...variables, 'time', 'latitude', 'longitude', 'station_name'].join(',');
   const stations = buoys.join('|');
   const start = time && time.start ? `&time>=${time.start.toISOString().split('T')[0]}` : '';
   const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
@@ -81,12 +74,12 @@ export function createPlanktonDownloadUrl(
 
 export function createMaBuoyDownloadUrl(
   fileFormat: DF,
-  variables: MaBuoyViewerVariable[],
+  variables: MaBuoyVariable[],
   buoys: string[],
   time: StartAndOrEndDate | undefined = undefined
 ) {
   const vars = [
-    ...variables.map(MA_VARIABLE_CONVERTER.viewerToErddap),
+    ...variables,
     ...variables
       .map(MA_VARIABLE_CONVERTER.variableToQualifier)
       .filter((element) => element !== undefined),
@@ -107,12 +100,15 @@ export function createMaBuoyDownloadUrl(
 
 export function createRealTimeDownloadUrl(
   fileFormat: DF,
-  variables: RealTimeBuoyViewerVariable[],
+  variables: RealTimeBuoyVariable[],
   buoys: string[],
   time: StartAndOrEndDate | undefined = undefined
 ) {
   const vars = [
-    ...variables.map(REAL_TIME_VARIABLE_CONVERTER.viewerToErddap),
+    ...variables,
+    ...variables
+      .map(REAL_TIME_VARIABLE_CONVERTER.variableToQualifier)
+      .filter((element) => element !== undefined),
     'time',
     'latitude',
     'longitude',

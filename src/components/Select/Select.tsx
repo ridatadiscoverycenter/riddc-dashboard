@@ -3,6 +3,8 @@ import React from 'react';
 import ReactSelect from 'react-select';
 
 import { Label } from '@/components';
+import { Dataset } from '@/utils/data/api/buoy/types';
+import { variableToLabel } from '@/utils/data/shared/variableConverter';
 
 type ReactSelectProps = Parameters<typeof ReactSelect>[0];
 
@@ -10,16 +12,26 @@ type SelectProps = ReactSelectProps & {
   label: string;
   options: string[] | { label: string; value: string }[];
   forceLight?: boolean;
+  dataset: Dataset;
 };
 
-export function Select({ label, options, forceLight = false, ...props }: SelectProps) {
+export function Select({
+  label,
+  options,
+  forceLight = false,
+  dataset = 'ma',
+  ...props
+}: SelectProps) {
   const formatted = React.useMemo(() => {
     if (options.length === 0) return [];
     // Casting because typescript doesn't like type checking like this.
     if (typeof options[0] === 'string')
-      return (options as string[]).map((opt) => ({ label: opt, value: opt }));
+      return (options as string[]).map((opt) => ({
+        label: variableToLabel(dataset, opt),
+        value: opt,
+      }));
     return options as Exclude<typeof options, string[]>;
-  }, [options]);
+  }, [options, dataset]);
   return (
     <Label label={label} forceLight={forceLight}>
       <ReactSelect

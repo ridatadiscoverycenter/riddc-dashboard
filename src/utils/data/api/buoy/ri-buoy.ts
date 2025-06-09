@@ -7,7 +7,7 @@ import {
   fetchBuoyTimeRange,
 } from './buoy';
 
-export const RI_BUOY_ERDDAP_VARIABLES = [
+export const RI_BUOY_VARIABLES = [
   'O2PercentSurface',
   'O2PercentBottom',
   'DepthBottom',
@@ -28,76 +28,11 @@ export const RI_BUOY_ERDDAP_VARIABLES = [
   'ChlorophyllSurface',
   'FSpercentSurface',
 ] as const;
-export const RI_BUOY_VIEWER_VARIABLES = [
-  'oxygenPercentSurface',
-  'oxygenPercentBottom',
-  'depthBottom',
-  'depthSurface',
-  'pHBottom',
-  'pHSurface',
-  'specificConductanceSurface',
-  'specificConductanceBottom',
-  'temperatureBottom',
-  'temperatureSurface',
-  'oxygenSurface',
-  'oxygenBottom',
-  'salinityBottom',
-  'salinitySurface',
-  'densitySurface',
-  'densityBottom',
-  'turbidity',
-  'chlorophyll',
-  'totalFluorescence',
-] as const;
 
-export type RiBuoyViewerVariable = (typeof RI_BUOY_VIEWER_VARIABLES)[number];
-export type RiBuoyErddapVariable = (typeof RI_BUOY_ERDDAP_VARIABLES)[number];
-
-const VARIABLE_PAIRS: { viewer: RiBuoyViewerVariable; erddap: RiBuoyErddapVariable }[] = [
-  { viewer: 'oxygenPercentSurface', erddap: 'O2PercentSurface' },
-  { viewer: 'oxygenPercentBottom', erddap: 'O2PercentBottom' },
-  { viewer: 'depthBottom', erddap: 'DepthBottom' },
-  { viewer: 'depthSurface', erddap: 'depth' },
-  { viewer: 'pHBottom', erddap: 'pHBottom' },
-  { viewer: 'pHSurface', erddap: 'pHSurface' },
-  { viewer: 'specificConductanceSurface', erddap: 'SpCondSurface' },
-  { viewer: 'specificConductanceBottom', erddap: 'SpCondBottom' },
-  { viewer: 'temperatureBottom', erddap: 'WaterTempBottom' },
-  { viewer: 'temperatureSurface', erddap: 'WaterTempSurface' },
-  { viewer: 'oxygenSurface', erddap: 'O2Surface' },
-  { viewer: 'oxygenBottom', erddap: 'O2Bottom' },
-  { viewer: 'salinityBottom', erddap: 'SalinityBottom' },
-  { viewer: 'salinitySurface', erddap: 'SalinitySurface' },
-  { viewer: 'densitySurface', erddap: 'DensitySurface' },
-  { viewer: 'densityBottom', erddap: 'DensityBottom' },
-  { viewer: 'turbidity', erddap: 'TurbidityBottom' },
-  { viewer: 'chlorophyll', erddap: 'ChlorophyllSurface' },
-  { viewer: 'totalFluorescence', erddap: 'FSpercentSurface' },
-] as const;
-
-function erddapToViewer(v: RiBuoyErddapVariable) {
-  const foundPair = VARIABLE_PAIRS.find((pair) => pair.erddap === v);
-  if (foundPair !== undefined) return foundPair.viewer;
-  throw new Error(`No viewer variable for erddap variable "${v}"`);
-}
-
-function viewerToErddap(v: RiBuoyViewerVariable) {
-  const foundPair = VARIABLE_PAIRS.find((pair) => pair.viewer === v);
-  if (foundPair !== undefined) return foundPair.erddap;
-  throw new Error(`No viewer variable for erddap variable "${v}"`);
-}
-
-export const RI_VARIABLE_CONVERTER = {
-  erddapToViewer,
-  viewerToErddap,
-};
-
-/**
- * Buoy Data
- */
+export type RiBuoyVariable = (typeof RI_BUOY_VARIABLES)[number];
 
 type FetchedRiBuoyData = {
-  variable: RiBuoyErddapVariable;
+  variable: RiBuoyVariable;
   value: number | null;
   station_name: string;
   time: string;
@@ -107,7 +42,7 @@ type FetchedRiBuoyData = {
 const ZodFetchedRiBuoyData = z.object({
   data: z.array(
     z.object({
-      variable: z.enum(RI_BUOY_ERDDAP_VARIABLES),
+      variable: z.enum(RI_BUOY_VARIABLES),
       value: z.union([z.number(), z.null()]),
       station_name: z.string(),
       time: z.string().datetime(),
@@ -127,7 +62,7 @@ function validateFetchedRiBuoyData(buoyData: unknown): buoyData is { data: Fetch
 
 function formatRiBuoyData(buoyData: FetchedRiBuoyData) {
   return {
-    variable: RI_VARIABLE_CONVERTER.erddapToViewer(buoyData.variable),
+    variable: buoyData.variable,
     value: buoyData.value || undefined,
     stationName: buoyData.station_name,
     time: new Date(buoyData.time),
@@ -139,17 +74,11 @@ export type RiBuoyData = ReturnType<typeof formatRiBuoyData>;
 
 export async function fetchRiBuoyData(
   ids: string[],
-  vars: RiBuoyViewerVariable[],
+  vars: RiBuoyVariable[],
   startDate: Date,
   endDate: Date
 ) {
-  const fetchedRiBuoyData = await fetchBuoyData(
-    'ri-buoy',
-    ids,
-    vars.map(viewerToErddap),
-    startDate,
-    endDate
-  );
+  const fetchedRiBuoyData = await fetchBuoyData('ri-buoy', ids, vars, startDate, endDate);
   if (validateFetchedRiBuoyData(fetchedRiBuoyData)) {
     return fetchedRiBuoyData.data.map(formatRiBuoyData);
   } else {
@@ -225,25 +154,25 @@ function formatRiSummaryData(fetchedData: FetchedRiSummaryData) {
     stationName: fetchedData.station_name,
     time: new Date(fetchedData.time),
     buoyId: fetchedData.buoyId,
-    oxygenPercentSurface: fetchedData.O2PercentSurface,
-    oxygenPercentBottom: fetchedData.O2PercentBottom,
-    depthBottom: fetchedData.DepthBottom,
-    depthSurface: fetchedData.depth,
+    O2PercentSurface: fetchedData.O2PercentSurface,
+    O2PercentBottom: fetchedData.O2PercentBottom,
+    DepthBottom: fetchedData.DepthBottom,
+    depth: fetchedData.depth,
     pHBottom: fetchedData.pHBottom,
     pHSurface: fetchedData.pHSurface,
-    specificConductanceSurface: fetchedData.SpCondSurface,
-    specificConductanceBottom: fetchedData.SpCondBottom,
-    temperatureBottom: fetchedData.WaterTempBottom,
-    temperatureSurface: fetchedData.WaterTempSurface,
-    oxygenSurface: fetchedData.O2Surface,
-    oxygenBottom: fetchedData.O2Bottom,
-    salinityBottom: fetchedData.SalinityBottom,
-    salinitySurface: fetchedData.SalinitySurface,
-    densitySurface: fetchedData.DensitySurface,
-    densityBottom: fetchedData.DensityBottom,
-    turbidity: fetchedData.TurbidityBottom,
-    chlorophyll: fetchedData.ChlorophyllSurface,
-    totalFluorescence: fetchedData.FSpercentSurface,
+    SpCondSurface: fetchedData.SpCondSurface,
+    SpCondBottom: fetchedData.SpCondBottom,
+    WaterTempBottom: fetchedData.WaterTempBottom,
+    WaterTempSurface: fetchedData.WaterTempSurface,
+    O2Surface: fetchedData.O2Surface,
+    O2Bottom: fetchedData.O2Bottom,
+    SalinityBottom: fetchedData.SalinityBottom,
+    SalinitySurface: fetchedData.SalinitySurface,
+    DensitySurface: fetchedData.DensitySurface,
+    DensityBottom: fetchedData.DensityBottom,
+    TurbidityBottom: fetchedData.TurbidityBottom,
+    ChlorophyllSurface: fetchedData.ChlorophyllSurface,
+    FSpercentSurface: fetchedData.FSpercentSurface,
   };
 }
 
