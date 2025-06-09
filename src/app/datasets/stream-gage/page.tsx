@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Loading, MapGraph } from '@/components';
-import { fetchStreamGageData } from '@/utils/data';
+import { downsampleStreamGageData, fetchStreamGageData } from '@/utils/data';
 
 export default async function StreamGage() {
   return (
@@ -12,6 +12,8 @@ export default async function StreamGage() {
 }
 
 async function PageWrapper() {
-  const streamData = await fetchStreamGageData(10, 'Gage height');
-  return <MapGraph className="h-[75vh]" streamData={streamData} />;
+  const streamData = await fetchStreamGageData(14, 'Gage height');
+  const downsampledData = downsampleStreamGageData(streamData);
+
+  return <MapGraph className="h-[75vh]" streamData={downsampledData} />;
 }

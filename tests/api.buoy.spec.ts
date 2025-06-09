@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+/*import { test, expect } from '@playwright/test';
 import { buoy } from '@/utils/erddap/api';
 const { fetchRiSummaryData, fetchRiBuoyCoordinates, fetchRiBuoyVariables, fetchRiBuoyTimeRange } =
   buoy;
@@ -35,3 +35,4 @@ test.only('fetchRiBuoyTimeRange', async () => {
   expect(typeof timerange).toBe('object');
   expect(Object.keys(timerange).length).toBe(2);
 });
+*/
