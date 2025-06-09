@@ -14,7 +14,6 @@ export * from './Link';
 export * from './Loading';
 export * from './Logo';
 export * from './Modal';
-export * from './Multiselect';
 export * from './Nav';
 export * from './PageSkeletons';
 export * from './Select';

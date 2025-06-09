@@ -135,7 +135,7 @@ export function MaBuoySummary({ data }: MaBuoySummaryProps) {
           forceLight
           label="Data:"
           value={variable}
-          onChange={(e) => setVariable(e.target.value as MaBuoyVariable)}
+          onChange={(newValue) => setVariable((newValue as { value: MaBuoyVariable }).value)}
           options={MA_BUOY_VARIABLES.map((key) => ({
             label: variableToLabel('ma', key),
             value: key,

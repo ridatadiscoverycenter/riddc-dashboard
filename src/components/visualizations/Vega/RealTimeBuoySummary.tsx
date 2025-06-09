@@ -135,7 +135,7 @@ export function RealTimeBuoySummary({ data }: RealTimeBuoySummaryProps) {
           forceLight
           label="Data:"
           value={variable}
-          onChange={(e) => setVariable(e.target.value as RealTimeBuoyVariable)}
+          onChange={(newValue) => setVariable((newValue as { value: RealTimeBuoyVariable }).value)}
           options={REAL_TIME_BUOY_VARIABLES.map((key) => ({
             label: variableToLabel('real-time', key),
             value: key,
