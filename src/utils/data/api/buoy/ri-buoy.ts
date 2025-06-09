@@ -28,73 +28,8 @@ export const RI_BUOY_VARIABLES = [
   'ChlorophyllSurface',
   'FSpercentSurface',
 ] as const;
-// export const RI_BUOY_VIEWER_VARIABLES = [
-//   'oxygenPercentSurface',
-//   'oxygenPercentBottom',
-//   'depthBottom',
-//   'depthSurface',
-//   'pHBottom',
-//   'pHSurface',
-//   'specificConductanceSurface',
-//   'specificConductanceBottom',
-//   'temperatureBottom',
-//   'temperatureSurface',
-//   'oxygenSurface',
-//   'oxygenBottom',
-//   'salinityBottom',
-//   'salinitySurface',
-//   'densitySurface',
-//   'densityBottom',
-//   'turbidity',
-//   'chlorophyll',
-//   'totalFluorescence',
-// ] as const;
 
-// export type RiBuoyVariable = (typeof RI_BUOY_VIEWER_VARIABLES)[number];
 export type RiBuoyVariable = (typeof RI_BUOY_VARIABLES)[number];
-
-// const VARIABLE_PAIRS: { viewer: RiBuoyVariable; erddap: RiBuoyVariable }[] = [
-//   { viewer: 'oxygenPercentSurface', erddap: 'O2PercentSurface' },
-//   { viewer: 'oxygenPercentBottom', erddap: 'O2PercentBottom' },
-//   { viewer: 'depthBottom', erddap: 'DepthBottom' },
-//   { viewer: 'depthSurface', erddap: 'depth' },
-//   { viewer: 'pHBottom', erddap: 'pHBottom' },
-//   { viewer: 'pHSurface', erddap: 'pHSurface' },
-//   { viewer: 'specificConductanceSurface', erddap: 'SpCondSurface' },
-//   { viewer: 'specificConductanceBottom', erddap: 'SpCondBottom' },
-//   { viewer: 'temperatureBottom', erddap: 'WaterTempBottom' },
-//   { viewer: 'temperatureSurface', erddap: 'WaterTempSurface' },
-//   { viewer: 'oxygenSurface', erddap: 'O2Surface' },
-//   { viewer: 'oxygenBottom', erddap: 'O2Bottom' },
-//   { viewer: 'salinityBottom', erddap: 'SalinityBottom' },
-//   { viewer: 'salinitySurface', erddap: 'SalinitySurface' },
-//   { viewer: 'densitySurface', erddap: 'DensitySurface' },
-//   { viewer: 'densityBottom', erddap: 'DensityBottom' },
-//   { viewer: 'turbidity', erddap: 'TurbidityBottom' },
-//   { viewer: 'chlorophyll', erddap: 'ChlorophyllSurface' },
-//   { viewer: 'totalFluorescence', erddap: 'FSpercentSurface' },
-// ] as const;
-
-// function erddapToViewer(v: RiBuoyVariable) {
-//   const foundPair = VARIABLE_PAIRS.find((pair) => pair.erddap === v);
-//   if (foundPair !== undefined) return foundPair.viewer;
-//   throw new Error(`No viewer variable for erddap variable "${v}"`);
-// }
-
-// function viewerToErddap(v: RiBuoyVariable) {
-//   const foundPair = VARIABLE_PAIRS.find((pair) => pair.viewer === v);
-//   if (foundPair !== undefined) return foundPair.erddap;
-//   throw new Error(`No viewer variable for erddap variable "${v}"`);
-// }
-
-// export const RI_VARIABLE_CONVERTER = {
-//   erddapToViewer,
-//   viewerToErddap,
-// };
-
-/**
- * Buoy Data
- */
 
 type FetchedRiBuoyData = {
   variable: RiBuoyVariable;
