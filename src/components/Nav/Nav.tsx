@@ -10,11 +10,6 @@ export function Nav() {
       <HomeLink className={LINK_COLORS + ' transition duration-500'} />
       <div className="flex-1" aria-hidden />
       <h2 className="hidden sm:flex">
-        <Link href="/about" className={LINK_COLORS}>
-          About
-        </Link>
-      </h2>
-      <h2 className="hidden sm:flex">
         <Link href="/glossary" className={LINK_COLORS}>
           Glossary
         </Link>

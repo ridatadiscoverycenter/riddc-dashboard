@@ -28,18 +28,12 @@ export function Footer() {
             <Link href="/">Home</Link>
           </li>
           <li>
-            <Link href="/about">About</Link>
-          </li>
-          <li>
             <Link href="/glossary">Glossary</Link>
           </li>
           <li>
             <ExternalLink href="https://pricaimcit.services.brown.edu/erddap/index.html">
               ERDDAP
             </ExternalLink>
-          </li>
-          <li>
-            <Link href="/datasets">Datasets</Link>
           </li>
           <li className="flex flex-row items-center gap-1">
             <ExternalLink href="https://github.com/brown-ccv/buoy-dashboard">
