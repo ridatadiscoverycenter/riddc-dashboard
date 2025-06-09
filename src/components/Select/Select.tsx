@@ -45,7 +45,7 @@ export function Select({
           menu: () =>
             `mt-2 rounded-md p-2 bg-slate-100/90 border-slate-400 border-solid border-2 ${!forceLight ? 'dark:bg-slate-900/90' : 'text-black'}`,
           option: ({ isSelected, isFocused }) =>
-            `m-1 ${isSelected ? "before:content-['✔_']" : ''} ${isFocused ? 'bg-slate-200 dark:bg-slate-800' : ''}`,
+            `p-1 rounded-md ${isSelected ? "before:content-['✔_']" : ''} ${isFocused ? 'bg-slate-200 dark:bg-slate-800' : ''}`,
           multiValue: () => 'm-1 px-2 gap-2 rounded-md border border-solid border-slate-500',
         }}
       />
