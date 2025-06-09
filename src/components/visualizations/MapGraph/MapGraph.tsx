@@ -1,17 +1,18 @@
 'use client';
 
 import React from 'react';
-import { LeftIcon } from '@/components';
+import { compareAsc, formatDate } from 'date-fns';
 
+import { LeftIcon } from '@/components';
 import { type StreamGageData } from '@/utils/data';
 
 import { useMap } from '../Maps/useMap';
 
 const COMPONENT_TRANSITION_STYLES = 'transition-[width] duration-500 ease-in-out';
 const MAP_SIZE_STYLES = (opened: boolean) =>
-  `${COMPONENT_TRANSITION_STYLES} ${opened ? 'md:w-[50%] w-0' : 'w-full'}`;
+  `${COMPONENT_TRANSITION_STYLES} ${opened ? 'md:w-[50%] w-0' : 'w-[100%]'}`;
 const GRAPH_SIZE_STYLES = (opened: boolean) =>
-  `${COMPONENT_TRANSITION_STYLES} ${opened ? 'md:w-[50%] w-full' : 'w-0'}`;
+  `${COMPONENT_TRANSITION_STYLES} ${opened ? 'md:w-[50%] w-[100%]' : 'w-0'}`;
 
 export function MapGraph({
   streamData,
@@ -24,11 +25,16 @@ export function MapGraph({
     () =>
       Array.from(
         new Set(
-          streamData.map(({ values }) => values.map(({ dateTime }) => dateTime).flat()).flat()
+          streamData
+            .map(({ values }) => values.map(({ dateTime }) => dateTime.valueOf()).flat())
+            .flat()
         )
-      ).sort((a, b) => b.valueOf() - a.valueOf()),
+      )
+        .map((dateValue) => new Date(dateValue))
+        .sort((a, b) => compareAsc(a, b)),
     [streamData]
   );
+
   const values = React.useMemo(
     () =>
       Array.from(
@@ -87,6 +93,7 @@ export function MapGraph({
       max,
     };
   }, [values]);
+  console.log({ ...dataRange });
 
   React.useEffect(() => {
     if (loaded) {
@@ -102,11 +109,9 @@ export function MapGraph({
             ['linear'],
             ['get', 'value'],
             min,
-            '#00c951',
-            mid,
-            '#fd9a00',
-            max * 0.66,
-            '#c287bc',
+            '#4f14da',
+            max,
+            '#99fee8',
           ],
           'circle-opacity': 0.75,
           'circle-radius': ['interpolate', ['linear'], ['get', 'value'], min, 10, mid, 25, max, 40],
@@ -127,30 +132,58 @@ export function MapGraph({
     }
   }, [selectedDateIndex, loaded, map]);
 
-  console.log({ selectedDate });
-
   return (
-    <>
-      <div className={`flex flex-row w-full items-stretch ${className}`}>
-        <div ref={containerRef} className={`relative ${MAP_SIZE_STYLES(opened)}`}>
-          <button
-            className={`z-50 bg-slate-100 rounded-md absolute right-2 top-2 transform-rotate duration-300 ease-in-out ${opened ? 'rotate-180' : 'rotate-0'}`}
-            onClick={() => setOpened((v) => !v)}
-          >
-            <LeftIcon size={1.5} />
-            <span className="sr-only">See Graph</span>
-          </button>
-          <input
-            type="range"
-            min={0}
-            max={dates.length - 1}
-            value={selectedDateIndex}
-            onChange={(e) => setSelectedDateIndex(Number(e.target.value))}
-            className="z-50 absolute bottom-2 left-4"
-          />
+    <div className={`flex flex-row w-full text-base items-stretch ${className}`}>
+      <div ref={containerRef} className={`relative ${MAP_SIZE_STYLES(opened)}`}>
+        <button
+          className={`z-50 bg-slate-100 rounded-md absolute right-2 top-2 transform-rotate duration-300 ease-in-out ${opened ? 'rotate-180' : 'rotate-0'}`}
+          onClick={() => setOpened((v) => !v)}
+        >
+          <LeftIcon size={1.5} />
+          <span className="sr-only">{opened ? 'Hide Graph' : 'Show Graph'}</span>
+        </button>
+        <div className="z-50 absolute top-6 left-2 bg-slate-100/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-56">
+          <div className="flex flex-col gap-2 w-full">
+            <h1 className="text-xl">Stream Gage Height</h1>
+            <h2 className="text-lg">{formatDate(selectedDate, "p 'at' P")}</h2>
+            <p>
+              Use the Date Slider to view hourly Stream Gage data across Rhode Island. Data is
+              displayed in feet.
+            </p>
+          </div>
+          <div className="flex flex-col gap-1 w-full">
+            <input
+              type="range"
+              min={0}
+              max={dates.length - 1}
+              value={selectedDateIndex}
+              onChange={(e) => setSelectedDateIndex(Number(e.target.value))}
+              className={``}
+            />
+            <div className="w-full flex flex-row justify-between text-sm">
+              <span>Two Weeks Ago</span>
+              <span>Today</span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-1 w-full">
+            <h3 className="text-base">Legend:</h3>
+            <div className={`w-full h-4 bg-gradient-to-r from-[#4f14da] to-[#99fee8]`} />
+            <div className="w-full flex flex-row justify-between text-sm">
+              <span>{dataRange.min} ft.</span>
+              <span>{dataRange.max} ft.</span>
+            </div>
+          </div>
         </div>
-        <div className={`bg-amber-300 relative ${GRAPH_SIZE_STYLES(opened)}`}>Graph</div>
       </div>
-    </>
+      <div className={`bg-slate-400 relative ${GRAPH_SIZE_STYLES(opened)}`}>
+        <button
+          className={`z-50 md:hidden bg-slate-100 rounded-md absolute left-2 top-2 transform-rotate duration-300 ease-in-out ${opened ? 'rotate-180' : 'rotate-0'}`}
+          onClick={() => setOpened((v) => !v)}
+        >
+          <LeftIcon size={1.5} />
+          <span className="sr-only">{opened ? 'Hide Graph' : 'Show Graph'}</span>
+        </button>
+      </div>
+    </div>
   );
 }

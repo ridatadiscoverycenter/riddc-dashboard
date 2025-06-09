@@ -1,3 +1,4 @@
+import { compareAsc } from 'date-fns';
 import { z } from 'zod';
 
 export const StreamGageDataSchema = z.object({
@@ -73,7 +74,8 @@ function formatFetchedStreamGageData(
       .flat()
       .map(({ value }) => value)
       .flat()
-      .map(({ value, dateTime }) => ({ value: Number(value), dateTime: new Date(dateTime) }));
+      .map(({ value, dateTime }) => ({ value: Number(value), dateTime: new Date(dateTime) }))
+      .sort((a, b) => compareAsc(a.dateTime, b.dateTime));
     return {
       siteName,
       longitude,

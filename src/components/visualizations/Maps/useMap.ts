@@ -26,7 +26,7 @@ export function useMap() {
       maxZoom: 10,
       minZoom: 8,
     });
-    map.current.scrollZoom.disable();
+    //map.current.scrollZoom.disable();
     map.current.on('load', () => {
       setLoaded(true);
     });
