@@ -7,6 +7,7 @@ import { LeftIcon } from '@/components';
 import { type StreamGageData } from '@/utils/data';
 
 import { useMap } from '../Maps/useMap';
+import { StreamGageTimeSeries } from '../StreamGageTimeSeries';
 
 const COMPONENT_TRANSITION_STYLES = 'transition-[width] duration-500 ease-in-out';
 const MAP_SIZE_STYLES = (opened: boolean) =>
@@ -42,6 +43,13 @@ export function MapGraph({
       ),
     [streamData]
   );
+  console.log(streamData.map(({ siteName }) => siteName));
+  const [selectedBuoyNames, setSelectedBuoys] = React.useState<string[]>([]);
+  const selectedBuoys = React.useMemo(
+    () => streamData.filter(({ siteName }) => selectedBuoyNames.includes(siteName)),
+    [streamData, selectedBuoyNames]
+  );
+  React.useMemo(() => console.log({ selectedBuoys }), [selectedBuoys]);
   const { map, loaded, containerRef } = useMap();
   const [opened, setOpened] = React.useState(false);
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
@@ -93,7 +101,38 @@ export function MapGraph({
       max,
     };
   }, [values]);
-  console.log({ ...dataRange });
+
+  const setPointer = React.useCallback(() => {
+    if (loaded) {
+      map.current.getCanvas().style.cursor = 'pointer';
+    }
+  }, [loaded, map]);
+
+  const unsetPointer = React.useCallback(() => {
+    if (loaded) {
+      map.current.getCanvas().style.cursor = '';
+    }
+  }, [loaded, map]);
+
+  const circleClickHandler = React.useCallback(
+    (event: any) => {
+      if (loaded) {
+        const features = event['features'] as { properties: { site: string } }[];
+        if (features && features.length > 0) {
+          const site = features[0]['properties']['site'];
+          setSelectedBuoys((currentNames) => {
+            if (currentNames.includes(site))
+              return currentNames.filter((siteName) => siteName !== site);
+            return [...currentNames, site];
+          });
+          // On small screen sizes, the automatic slide in looks bad. So, this is commented out for now.
+          // Ideally, it would only slide open *if* you're on a MD screen or bigger.
+          // if (!opened) setOpened(true);
+        }
+      }
+    },
+    [loaded, setSelectedBuoys /*, opened, setOpened*/]
+  );
 
   React.useEffect(() => {
     if (loaded) {
@@ -118,31 +157,48 @@ export function MapGraph({
         },
       });
 
+      map.current.on('mouseenter', 'stream-gage-circles', setPointer);
+      map.current.on('mouseleave', 'stream-gage-circles', unsetPointer);
+      map.current.on('click', 'stream-gage-circles', circleClickHandler);
+
+      map.current.setFilter('stream-gage-circles', ['==', 'date', selectedDateIndex]);
+
       return () => {
+        map.current.off('mouseenter', 'stream-gage-circles', setPointer);
+        map.current.off('mouseleave', 'stream-gage-circles', unsetPointer);
+        map.current.off('click', 'stream-gage-circles', circleClickHandler);
+
         map.current.removeLayer('stream-gage-circles');
         // eslint-disable-next-line react-hooks/exhaustive-deps
         map.current.removeSource('stream-data');
       };
     }
-  }, [map, loaded, streamDataGeoJson, dataRange]);
-
-  React.useEffect(() => {
-    if (loaded) {
-      map.current.setFilter('stream-gage-circles', ['==', 'date', selectedDateIndex]);
-    }
-  }, [selectedDateIndex, loaded, map]);
+  }, [
+    map,
+    loaded,
+    streamDataGeoJson,
+    dataRange,
+    streamData,
+    selectedDateIndex,
+    setSelectedBuoys,
+    setPointer,
+    unsetPointer,
+    circleClickHandler,
+  ]);
 
   return (
     <div className={`flex flex-row w-full text-base items-stretch ${className}`}>
       <div ref={containerRef} className={`relative ${MAP_SIZE_STYLES(opened)}`}>
         <button
-          className={`z-50 bg-slate-100 rounded-md absolute right-2 top-2 transform-rotate duration-300 ease-in-out ${opened ? 'rotate-180' : 'rotate-0'}`}
+          className={`z-50 bg-slate-100 rounded-md absolute right-2 top-2 transform-rotate duration-500 ease-in-out ${opened ? 'rotate-180' : 'rotate-0'}`}
           onClick={() => setOpened((v) => !v)}
         >
           <LeftIcon size={1.5} />
           <span className="sr-only">{opened ? 'Hide Graph' : 'Show Graph'}</span>
         </button>
-        <div className="z-50 absolute top-6 left-2 bg-slate-100/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-56">
+        <div
+          className={`z-50 absolute top-6 left-2 bg-slate-100/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
+        >
           <div className="flex flex-col gap-2 w-full">
             <h1 className="text-xl">Stream Gage Height</h1>
             <h2 className="text-lg">{formatDate(selectedDate, "p 'at' P")}</h2>
@@ -175,7 +231,7 @@ export function MapGraph({
           </div>
         </div>
       </div>
-      <div className={`bg-slate-400 relative ${GRAPH_SIZE_STYLES(opened)}`}>
+      <div className={`bg-white relative ${GRAPH_SIZE_STYLES(opened)}`}>
         <button
           className={`z-50 md:hidden bg-slate-100 rounded-md absolute left-2 top-2 transform-rotate duration-300 ease-in-out ${opened ? 'rotate-180' : 'rotate-0'}`}
           onClick={() => setOpened((v) => !v)}
@@ -183,6 +239,7 @@ export function MapGraph({
           <LeftIcon size={1.5} />
           <span className="sr-only">{opened ? 'Hide Graph' : 'Show Graph'}</span>
         </button>
+        <StreamGageTimeSeries dates={dates} data={selectedBuoys} />
       </div>
     </div>
   );
