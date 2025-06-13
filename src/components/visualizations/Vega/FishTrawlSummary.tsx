@@ -1,8 +1,17 @@
 'use client';
 
-import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import React from 'react';
+import ReactSelect from 'react-select';
 import { Vega, VisualizationSpec } from 'react-vega';
+
+import { Label } from '@/components/Label';
+import { Loading } from '@/components/Loading';
+import { Size, useScreenSize } from '@/hooks/useScreenSize';
+import type { Sample } from '@/types';
+
+type FishTrawlSummaryProps = {
+  data: Sample[];
+};
 
 function getGraphicWidth(size: Size | undefined) {
   if (size === 'sm' || size === 'xs') return 200;
@@ -12,7 +21,8 @@ function getGraphicWidth(size: Size | undefined) {
   return 2000;
 }
 
-export function FishTrawl({ data }) {
+export function FishTrawlSummary({ data }: FishTrawlSummaryProps) {
+  const forceLight = false;
   const size = useScreenSize();
   const [station, setStation] = React.useState('Fox Island');
   const fishTrawlSpec = React.useMemo<VisualizationSpec>(
@@ -20,28 +30,27 @@ export function FishTrawl({ data }) {
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       description: 'Fish Trawl Summary Chart',
       background: 'transparent',
-      height: 1000,
       width: getGraphicWidth(size),
+      height: 1000,
       autosize: 'fit',
       data: [
         {
           name: 'rawData',
           values: data,
         },
-        // {
-        //   name: 'data',
-        //   source: 'rawData',
-        //   transform: [
-        //     {
-        //       type: 'filter',
-        //       expr: `datum.station == "${station}"`,
-        //       //   expr: `datum.${station} > 1`,
-        //     },
-        //   ],
-        // },
         {
           name: 'data',
           source: 'rawData',
+          transform: [
+            {
+              type: 'filter',
+              expr: `datum.station == "${station}"`,
+            },
+          ],
+        },
+        {
+          name: 'dataNoZeros',
+          source: 'data',
           transform: [
             {
               type: 'filter',
@@ -49,26 +58,6 @@ export function FishTrawl({ data }) {
             },
           ],
         },
-      ],
-      signals: [
-        {
-          name: 'width',
-          init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 1000',
-          on: [
-            {
-              update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 1000',
-              events: 'window:resize',
-            },
-          ],
-        },
-        // {
-        //   name: 'tooltip',
-        //   value: {},
-        //   on: [
-        //     { events: 'rect:mouseover', update: 'datum' },
-        //     { events: 'rect:mouseout', update: '{}' },
-        //   ],
-        // },
       ],
       scales: [
         {
@@ -88,7 +77,7 @@ export function FishTrawl({ data }) {
           name: 'color',
           type: 'log',
           range: { scheme: 'tealblues' },
-          domain: { data: 'data', field: 'abun' },
+          domain: { data: 'dataNoZeros', field: 'abun' },
           reverse: false,
           zero: false,
           nice: true,
@@ -97,7 +86,7 @@ export function FishTrawl({ data }) {
         {
           name: 'size',
           type: 'log',
-          domain: { data: 'data', field: 'abun' },
+          domain: { data: 'dataNoZeros', field: 'abun' },
           range: [0.15, 1],
           clamp: true,
         },
@@ -184,5 +173,37 @@ export function FishTrawl({ data }) {
     }),
     [data, station, size]
   );
-  return <Vega spec={fishTrawlSpec} />;
+  return (
+    <>
+      <form className="self-stretch">
+        <Label label="Station:" forceLight={forceLight}>
+          <ReactSelect
+            options={[
+              { label: 'Fox Island', value: 'Fox Island' },
+              { label: 'Whale Rock', value: 'Whale Rock' },
+            ]}
+            onChange={(newValue) => setStation((newValue as { value: string }).value)}
+            unstyled
+            classNames={{
+              control: ({ isFocused }) =>
+                `p-2 rounded-md shadow-sm hover:shadow-md duration-300 transition-shadow bg-slate-100/80 text-black ${isFocused ? 'border-teal-400 border-solid border-2' : ''} ${!forceLight ? 'dark:bg-slate-800 dark:border-slate-600 dark:text-white' : ''}`,
+              placeholder: () => 'text-slate-500 dark:text-slate-400',
+              menu: () =>
+                `mt-2 rounded-md p-2 bg-slate-100/90 border-slate-400 border-solid border-2 ${!forceLight ? 'dark:bg-slate-900/90' : 'text-black'}`,
+              option: ({ isSelected, isFocused }) =>
+                `p-1 rounded-md ${isSelected ? "before:content-['✔_']" : ''} ${isFocused ? 'bg-slate-200 dark:bg-slate-800' : ''}`,
+              multiValue: () => 'm-1 px-2 gap-2 rounded-md border border-solid border-slate-500',
+            }}
+          />
+        </Label>
+      </form>
+      {size === undefined ? (
+        <div className={`w-[1000px] h-[1000px] flex justify-center items-center`}>
+          <Loading />
+        </div>
+      ) : (
+        <Vega spec={fishTrawlSpec} actions={false} />
+      )}
+    </>
+  );
 }

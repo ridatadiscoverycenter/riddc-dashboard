@@ -1,4 +1,5 @@
-import { FishGrid } from '@/components/visualizations/Fish/FishGrid';
+import { Card } from '@/components';
+import { FishTrawlSummary } from '@/components/visualizations/Vega/';
 import { fetchCoordinates, fetchSamples } from '@/utils/data/api/fish';
 import { fetchMulti } from '@/utils/fns';
 
@@ -45,8 +46,10 @@ export default async function FishTrawl() {
     fishSamples: fetchSamples(),
   });
   return (
-    <FishGrid
-      fishSamples={fishSamples.filter((sample) => sample.station === 'Whale Rock')}
-    ></FishGrid>
+    <div>
+      <Card className="bg-clear-900 md:col-span-2 col-span-3 flex flex-col items-center justify-around gap-3">
+        <FishTrawlSummary data={fishSamples}></FishTrawlSummary>
+      </Card>
+    </div>
   );
 }
