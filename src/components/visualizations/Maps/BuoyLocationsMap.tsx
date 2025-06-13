@@ -14,6 +14,7 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
   const { map, loaded, containerRef } = useMap();
   React.useEffect(() => {
     if (loaded) {
+      console.log('loaded');
       locations.forEach(({ stationName, /*buoyId,*/ longitude, latitude }) => {
         const popup = new maplibregl.Popup().setHTML(`<p class="text-black">${stationName}</p>`);
         new maplibregl.Marker({ scale: 0.7, color: '#00008b' })
@@ -23,5 +24,6 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
       });
     }
   }, [map, loaded, locations]);
+  console.log(containerRef.current);
   return <div ref={containerRef} className="h-full w-full rounded-md" />;
 }
