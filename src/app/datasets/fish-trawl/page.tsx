@@ -36,6 +36,7 @@ import { fetchMulti } from '@/utils/fns';
 //     abun: 0.2625,
 //     animal: 'fish'
 //   },
+//   ...,
 // ]
 
 export default async function FishTrawl() {
