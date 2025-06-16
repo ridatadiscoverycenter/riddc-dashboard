@@ -1,4 +1,7 @@
 import { closestIndexTo, compareAsc, eachDayOfInterval, eachHourOfInterval } from 'date-fns';
+
+import { groupBy } from '@/utils/fns';
+
 import { StreamGageData } from './fetchStreamGageData';
 
 type TimeSeriesData = StreamGageData['values'];
@@ -19,7 +22,7 @@ export function downsampleStreamGageData(data: StreamGageData[], interval: Inter
       ...bouy,
       values: Object.entries(
         // Group data based on proximity to each time interval entry
-        Object.groupBy(
+        groupBy(
           bouy.values,
           (dataPoint: TimeSeriesDataPoint) => closestIndexTo(dataPoint.dateTime, binIntervals) || -1
         )
