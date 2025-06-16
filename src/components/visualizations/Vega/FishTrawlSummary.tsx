@@ -123,6 +123,7 @@ export function FishTrawlSummary({ data }: FishTrawlSummaryProps) {
           ticks: false,
           labelFontSize: 15,
           titleFontSize: 20,
+          labelPadding: 10,
         },
       ],
       legends: [

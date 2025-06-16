@@ -20,10 +20,11 @@ export default async function FishTrawl() {
         <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
         <BuoyLocationsMap locations={fishCoordinates} />
       </div>
-      <Card className="bg-clear-900 col-span-2 flex flex-col items-center justify-around gap-3">
+      <Card className="text-black bg-clear-900 col-span-2 flex flex-col items-center justify-around gap-3">
         <AboutSpecies fishSpecies={fishSpecies}></AboutSpecies>
       </Card>
-      <Card className="bg-clear-900 col-span-2 flex flex-col items-center justify-around gap-3">
+      <Card className="text-black bg-clear-900 col-span-2 flex flex-col items-center justify-around gap-3">
+        obviously something else needs to go here
         <AboutSpecies fishSpecies={fishSpecies}></AboutSpecies>
       </Card>
     </div>
