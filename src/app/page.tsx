@@ -261,6 +261,17 @@ const DATASETS = [
     href: '/datasets/fish-trawl',
     description: () => <>Coming Soon!</>,
   },
+  {
+    name: 'Stream Gage Data',
+    href: '/datasets/stream-gage',
+    description: () => (
+      <>
+        A map of water levels across streams and waterways in Rhode Island over the last 2 weeks.
+        Data from the{' '}
+        <ExternalLink href="https://waterservices.usgs.gov/">US Geological Survey</ExternalLink>.
+      </>
+    ),
+  },
 ];
 
 const EXTERNAL_RESOURCES = [

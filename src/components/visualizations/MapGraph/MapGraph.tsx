@@ -43,13 +43,12 @@ export function MapGraph({
       ),
     [streamData]
   );
-  console.log(streamData.map(({ siteName }) => siteName));
+
   const [selectedBuoyNames, setSelectedBuoys] = React.useState<string[]>([]);
   const selectedBuoys = React.useMemo(
     () => streamData.filter(({ siteName }) => selectedBuoyNames.includes(siteName)),
     [streamData, selectedBuoyNames]
   );
-  React.useMemo(() => console.log({ selectedBuoys }), [selectedBuoys]);
   const { map, loaded, containerRef } = useMap();
   const [opened, setOpened] = React.useState(false);
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
@@ -90,6 +89,19 @@ export function MapGraph({
       },
     }),
     [flattenedStreamData, dates]
+  );
+
+  const selectedStreamDataGeoJson = React.useMemo(
+    () => ({
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: streamDataGeoJson.data.features.filter(({ properties }) =>
+          selectedBuoyNames.includes(properties.site)
+        ),
+      },
+    }),
+    [streamDataGeoJson, selectedBuoyNames]
   );
 
   const dataRange = React.useMemo(() => {
@@ -137,7 +149,23 @@ export function MapGraph({
   React.useEffect(() => {
     if (loaded) {
       const { min, mid, max } = dataRange;
+      selectedStreamDataGeoJson;
       map.current.addSource('stream-data', streamDataGeoJson);
+      map.current.addSource('selected-stream-data', selectedStreamDataGeoJson);
+      // Pink border around selected gages
+      map.current.addLayer({
+        id: 'stream-gage-selected',
+        type: 'circle',
+        source: 'selected-stream-data',
+        paint: {
+          'circle-stroke-color': '#FF1DCE',
+          'circle-stroke-width': 3,
+          'circle-radius': ['interpolate', ['linear'], ['get', 'value'], min, 12, mid, 27, max, 42],
+          'circle-opacity': 0,
+        },
+        filter: ['==', 'date', selectedDateIndex],
+      });
+      // Circle to indicate stream gage height
       map.current.addLayer({
         id: 'stream-gage-circles',
         type: 'circle',
@@ -152,16 +180,26 @@ export function MapGraph({
             max,
             '#99fee8',
           ],
-          'circle-opacity': 0.75,
           'circle-radius': ['interpolate', ['linear'], ['get', 'value'], min, 10, mid, 25, max, 40],
+          'circle-opacity': 0.75,
         },
+        filter: ['==', 'date', selectedDateIndex],
+      });
+      // Identifier text for each gage
+      map.current.addLayer({
+        id: 'stream-gage-ids',
+        type: 'symbol',
+        source: 'stream-data',
+        layout: {
+          'text-field': ['get', 'site'],
+          'text-size': 11,
+        },
+        filter: ['==', 'date', selectedDateIndex],
       });
 
       map.current.on('mouseenter', 'stream-gage-circles', setPointer);
       map.current.on('mouseleave', 'stream-gage-circles', unsetPointer);
       map.current.on('click', 'stream-gage-circles', circleClickHandler);
-
-      map.current.setFilter('stream-gage-circles', ['==', 'date', selectedDateIndex]);
 
       return () => {
         map.current.off('mouseenter', 'stream-gage-circles', setPointer);
@@ -169,6 +207,9 @@ export function MapGraph({
         map.current.off('click', 'stream-gage-circles', circleClickHandler);
 
         map.current.removeLayer('stream-gage-circles');
+        map.current.removeLayer('stream-gage-ids');
+        map.current.removeLayer('stream-gage-selected');
+        map.current.removeSource('selected-stream-data');
         // eslint-disable-next-line react-hooks/exhaustive-deps
         map.current.removeSource('stream-data');
       };
@@ -184,6 +225,7 @@ export function MapGraph({
     setPointer,
     unsetPointer,
     circleClickHandler,
+    selectedStreamDataGeoJson,
   ]);
 
   return (
@@ -197,7 +239,7 @@ export function MapGraph({
           <span className="sr-only">{opened ? 'Hide Graph' : 'Show Graph'}</span>
         </button>
         <div
-          className={`z-50 absolute top-6 left-2 bg-slate-100/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
+          className={`z-50 absolute top-6 left-2 bg-slate-100/90 dark:bg-slate-800/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
         >
           <div className="flex flex-col gap-2 w-full">
             <h1 className="text-xl">Stream Gage Height</h1>
@@ -225,13 +267,13 @@ export function MapGraph({
             <h3 className="text-base">Legend:</h3>
             <div className={`w-full h-4 bg-gradient-to-r from-[#4f14da] to-[#99fee8]`} />
             <div className="w-full flex flex-row justify-between text-sm">
-              <span>{dataRange.min} ft.</span>
-              <span>{dataRange.max} ft.</span>
+              <span>{dataRange.min.toFixed(2)} ft.</span>
+              <span>{dataRange.max.toFixed(2)} ft.</span>
             </div>
           </div>
         </div>
       </div>
-      <div className={`bg-white relative ${GRAPH_SIZE_STYLES(opened)}`}>
+      <div className={`bg-white dark:bg-black relative ${GRAPH_SIZE_STYLES(opened)}`}>
         <button
           className={`z-50 md:hidden bg-slate-100 rounded-md absolute left-2 top-2 transform-rotate duration-300 ease-in-out ${opened ? 'rotate-180' : 'rotate-0'}`}
           onClick={() => setOpened((v) => !v)}

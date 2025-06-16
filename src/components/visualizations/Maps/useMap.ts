@@ -23,7 +23,7 @@ export function useMap() {
       ],
       center: [-71.4128, 41.584],
       zoom: 8.5,
-      maxZoom: 10,
+      maxZoom: 11,
       minZoom: 8,
     });
     //map.current.scrollZoom.disable();
