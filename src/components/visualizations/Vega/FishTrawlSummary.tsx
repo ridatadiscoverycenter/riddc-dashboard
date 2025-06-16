@@ -11,12 +11,13 @@ type FishTrawlSummaryProps = {
   data: Sample[];
 };
 
+//TODO: none of these really work, gotta figure out sizing (and maybe 2xl vs 3xl?)
 function getGraphicWidth(size: Size | undefined) {
-  if (size === 'sm' || size === 'xs') return 200;
-  if (size === 'md') return 450;
-  if (size === 'lg') return 350;
-  if (size === 'xl') return 500;
-  return 2000;
+  if (size === 'sm' || size === 'xs') return 250;
+  if (size === 'md') return 520;
+  if (size === 'lg') return 370;
+  if (size === 'xl') return 600;
+  return 1100;
 }
 
 export function FishTrawlSummary({ data }: FishTrawlSummaryProps) {
@@ -29,8 +30,8 @@ export function FishTrawlSummary({ data }: FishTrawlSummaryProps) {
       description: 'Fish Trawl Summary Chart',
       background: 'transparent',
       width: getGraphicWidth(size),
-      height: 1000,
-      autosize: 'fit',
+      height: 800,
+      autosize: 'pad',
       data: [
         {
           name: 'rawData',

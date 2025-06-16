@@ -40,5 +40,6 @@ export function useScreenSize() {
       return () => window.removeEventListener('resize', handleResizeEvent);
     }
   }, [handleResizeEvent, w]);
+  console.log(size);
   return size;
 }

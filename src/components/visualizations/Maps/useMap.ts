@@ -17,9 +17,10 @@ export function useMap() {
       container: containerRef.current as any,
       style: `https://api.maptiler.com/maps/basic/style.json?key=${API_KEY}`,
       // More things can be set here, but I'll ignore them for now.
+      // TODO: flexible bounds to work with fish trawl locations? Or just expand?
       bounds: [
         [-71.5, 41.92],
-        [-71.16, 41.42],
+        [-71.16, 41.32],
       ],
       center: [-71.4128, 41.584],
       zoom: 8.5,
