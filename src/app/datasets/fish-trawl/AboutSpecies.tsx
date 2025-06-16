@@ -2,15 +2,24 @@
 import React from 'react';
 
 import { Button, Select } from '@/components';
+type AboutSpeciesProps = {
+  fishSpecies: { label: string; value: string }[];
+};
 
-export function AboutSpecies({ fishSpecies }) {
-  console.log(fishSpecies);
+export function AboutSpecies({ fishSpecies }: AboutSpeciesProps) {
   const [species, setSpecies] = React.useState();
   return (
     <>
-      <h2 className="text-xl font-header font-bold">Learn more</h2>
+      <h2 className="text-2xl font-header font-bold">Explore</h2>
+      <p>Learn more about a species from the Fish Trawl!</p>
       <form className="self-stretch relative">
-        <Select forceLight options={fishSpecies} label="Select a species:" dataset="na"></Select>
+        <Select
+          forceLight
+          options={fishSpecies}
+          label="Select a species:"
+          dataset="na"
+          onChange={(e) => setSpecies(e.value)}
+        ></Select>
       </form>
       <Button
         href={`/species/${species}`}

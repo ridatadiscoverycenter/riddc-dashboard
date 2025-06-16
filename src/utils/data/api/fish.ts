@@ -5,10 +5,9 @@ import type {
   Info,
   Sample,
   SampleBase,
-  StationName,
   Temperature,
 } from '@/types';
-import { getAnimalFromSpecies } from '../shared';
+import { getAnimalFromSpecies, getTitleFromSpecies } from '../shared';
 import { erddapAPIGet } from './erddap';
 
 /**
@@ -18,7 +17,12 @@ import { erddapAPIGet } from './erddap';
 export async function fetchCoordinates() {
   const coordinates = await erddapAPIGet<FetchedFishCoordinate[]>('fish/coordinates');
   return coordinates.map(
-    (coordinate) => ({ ...coordinate, stationName: coordinate.station_name }) as FishCoordinate
+    (coordinate) =>
+      ({
+        ...coordinate,
+        stationName: coordinate.station_name,
+        buoyId: coordinate.station_name,
+      }) as FishCoordinate
   );
 }
 
@@ -86,10 +90,10 @@ export async function fetchBaseData() {
  * Fetch coordinate information and returns a list of unique stations in alphabetic order.
  * @returns {Promise<StationName[]>}
  */
-export async function fetchStations() {
-  const coordinates = await fetchCoordinates();
-  return Array.from(new Set<StationName>(coordinates.map(({ stationName }) => stationName))).sort();
-}
+// export async function fetchStations() {
+//   const coordinates = await fetchCoordinates();
+//   return Array.from(new Set<StationName>(coordinates.map(({ stationName }) => stationName))).sort();
+// }
 
 /**
  * Fetch sample data and return a list of unique species in alphabetic order.
@@ -97,5 +101,7 @@ export async function fetchStations() {
  */
 export async function fetchSpecies() {
   const samples = await fetchSamples();
-  return Array.from(new Set(samples.map(({ title }) => title))).sort();
+  return Array.from(new Set(samples.map(({ species }) => species)))
+    .sort()
+    .map((species) => ({ value: species, label: getTitleFromSpecies(species) }));
 }
