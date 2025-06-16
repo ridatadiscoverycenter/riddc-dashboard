@@ -1,9 +1,9 @@
-import { fetchInfo } from '@/utils/data/api/fish';
+// import { fetchInfo } from '@/utils/data/api/fish';
 
 type InfoProps = { params: { species: string } };
 
 export default async function SpeciesInfo({ params }: InfoProps) {
   // const info = await fetchInfo(params.species);
   // return <p>{params.species}</p>;
-  return <p>Fish info coming soon!</p>;
+  return <p>Fish info for {params.species} coming soon!</p>;
 }
