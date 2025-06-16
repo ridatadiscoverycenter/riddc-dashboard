@@ -18,12 +18,12 @@ export function AboutSpecies({ fishSpecies }: AboutSpeciesProps) {
           options={fishSpecies}
           label="Select a species:"
           dataset="na"
-          onChange={(e) => setSpecies(e.value)}
+          onChange={(e) => setSpecies(e.label)}
         ></Select>
       </form>
       <Button
-        href={`/species/${species}`}
-        className="sm:px-[calc(theme(spacing.10)-1px)] sm:py-[calc(theme(spacing[5])-1px)] sm:text-xl"
+        href={`fish-trawl/${species}`}
+        className={`sm:px-[calc(theme(spacing.10)-1px)] sm:py-[calc(theme(spacing[5])-1px)] sm:text-xl ${species === undefined ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         About
       </Button>
