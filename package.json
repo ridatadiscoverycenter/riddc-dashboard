@@ -1,5 +1,5 @@
 {
-  "name": "buoy-viewer",
+  "name": "buoy-dashboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -18,12 +18,14 @@
   "dependencies": {
     "@headlessui/react": "^2.1.10",
     "@heroicons/react": "^2.1.5",
+    "chart.js": "^4.4.9",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.11.9",
     "maplibre-gl": "^4.7.1",
     "next": "^14.2.16",
     "react": "^18",
+    "react-chartjs-2": "^5.3.0",
     "react-dom": "^18",
     "react-select": "^5.10.1",
     "react-vega": "^7.6.0",

@@ -12,7 +12,7 @@ export * from './Input';
 export * from './Label';
 export * from './Link';
 export * from './Loading';
-export * from './Logo';
+export * from './Icon';
 export * from './Modal';
 export * from './Nav';
 export * from './PageSkeletons';
