@@ -3,7 +3,5 @@
 type InfoProps = { params: { species: string } };
 
 export default async function SpeciesInfo({ params }: InfoProps) {
-  // const info = await fetchInfo(params.species);
-  // return <p>{params.species}</p>;
-  return <p>Fish info for {params.species} coming soon!</p>;
+  return <p>Fish info for {params.species.replaceAll('%20', ' ')} coming soon!</p>;
 }

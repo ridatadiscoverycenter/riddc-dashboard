@@ -26,7 +26,7 @@ export function AboutSpecies({ fishSpecies }: AboutSpeciesProps) {
         href={`fish-trawl/${species}`}
         className={`sm:px-[calc(theme(spacing.10)-1px)] sm:py-[calc(theme(spacing[5])-1px)] sm:text-xl ${species === '' ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
-        About
+        Explore!
       </Button>
     </>
   );

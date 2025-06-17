@@ -22,7 +22,6 @@ function getGraphicWidth(size: Size | undefined) {
 }
 
 export function FishTrawlSummary({ data, options }: FishTrawlSummaryProps) {
-  const forceLight = false;
   const size = useScreenSize();
   const [station, setStation] = React.useState(options[0]);
   const fishTrawlSpec = React.useMemo<VisualizationSpec>(
