@@ -1,11 +1,11 @@
 //import { FullBleedColumn } from '@/components';
 
-import { Link } from "@/components";
+import { Link } from '@/components';
 
 const IDS = {
-  AGENCIES: "agencies-and-organizations",
-  VARIABLES: "data-variables",
-  OTHER: "other",
+  AGENCIES: 'agencies-and-organizations',
+  VARIABLES: 'data-variables',
+  OTHER: 'other',
 };
 
 export default function Glossary() {
@@ -21,11 +21,17 @@ export default function Glossary() {
       </aside>
       <section className="overflow-scroll flex flex-col gap-4 mx-8 my-4">
         <h1 className="text-4xl font-extralight md:hidden block">Glossary</h1>
-        <h2 id={IDS.AGENCIES} className="text-2xl">Agencies and Organizations</h2>
+        <h2 id={IDS.AGENCIES} className="text-2xl">
+          Agencies and Organizations
+        </h2>
         <List items={AGENCIES_AND_ORGANIZATIONS} />
-        <h2 id={IDS.AGENCIES} className="text-2xl">Data Variables</h2>
+        <h2 id={IDS.AGENCIES} className="text-2xl">
+          Data Variables
+        </h2>
         <List items={VARIABLES} />
-        <h2 id={IDS.OTHER} className="text-2xl">Other Acronyms</h2>
+        <h2 id={IDS.OTHER} className="text-2xl">
+          Other Acronyms
+        </h2>
         <List items={OTHER} />
       </section>
     </div>
@@ -115,4 +121,3 @@ const VARIABLES = [
   },
   { label: 'WaterTemp (°C)', value: 'Sea water temperature in degrees Celsius' },
 ];
-
