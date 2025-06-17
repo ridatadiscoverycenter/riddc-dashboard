@@ -29,13 +29,15 @@ export function downsampleStreamGageData(data: StreamGageData[], interval: Inter
 
         // Attach a date to each of the data subsets.
       )
-        .map(([dateIndex, dataOrUndefined]) => {
-          if (dataOrUndefined === undefined || Number(dateIndex) === -1) return undefined;
+        .map(([dateIndexString, data]) => {
+          // Object.entries parses Record keys as strings, despite them being
+          // set as numberes in the callback passed to groupBy. Checking isNaN 
+          // guards against invalid inputs.
+          const dateIndex = Number(dateIndexString);
+          if (isNaN(dateIndex) || dateIndex === -1) return undefined;
           return {
-            // This should be a string version of a number,
-            // so Number(Number.toString()) returns the original number.
-            date: binIntervals[Number(dateIndex)],
-            data: dataOrUndefined,
+            date: binIntervals[dateIndex],
+            data,
           };
           // Filter undefined entries (a consequence of chaining groupBy into entries)
         })
