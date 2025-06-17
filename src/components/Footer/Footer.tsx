@@ -1,5 +1,5 @@
 import { Waves, Link, ExternalLink } from '@/components';
-import { BrownLogo, GithubLogo, NsfLogo, RicaimLogo, ThreeCrsLogo, UriLogo } from '../Logo';
+import { BrownLogo, GithubLogo, NsfLogo, RicaimLogo, ThreeCrsLogo, UriLogo } from '../Icon';
 
 const LOGO_SIZE = 5;
 
