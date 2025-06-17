@@ -26,7 +26,6 @@ export function useMap() {
       maxZoom: 11,
       minZoom: 8,
     });
-    
     map.current.on('load', () => {
       setLoaded(true);
     });
