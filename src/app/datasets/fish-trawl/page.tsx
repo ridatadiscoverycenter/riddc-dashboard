@@ -31,7 +31,13 @@ export default async function FishTrawl() {
         </p>
       </Card>
       <Card className="bg-clear-900 md:col-span-3 col-span-3 flex flex-col items-center justify-around gap-3">
-        <FishTrawlSummary data={fishSamples}></FishTrawlSummary>
+        <FishTrawlSummary
+          data={fishSamples}
+          options={[
+            { label: 'Fox Island', value: 'Fox Island' },
+            { label: 'Whale Rock', value: 'Whale Rock' },
+          ]}
+        ></FishTrawlSummary>
       </Card>
       <div className="flex flex-col items-center justify-around col-span-1">
         <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>

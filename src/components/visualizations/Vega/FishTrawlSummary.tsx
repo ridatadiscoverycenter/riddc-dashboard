@@ -9,6 +9,7 @@ import type { Sample } from '@/types';
 
 type FishTrawlSummaryProps = {
   data: Sample[];
+  options: { label: string; value: string }[];
 };
 
 //TODO: none of these really work, gotta figure out sizing (and maybe 2xl vs 3xl?)
@@ -20,10 +21,10 @@ function getGraphicWidth(size: Size | undefined) {
   return 1100;
 }
 
-export function FishTrawlSummary({ data }: FishTrawlSummaryProps) {
+export function FishTrawlSummary({ data, options }: FishTrawlSummaryProps) {
   const forceLight = false;
   const size = useScreenSize();
-  const [station, setStation] = React.useState('Fox Island');
+  const [station, setStation] = React.useState(options[0]);
   const fishTrawlSpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -43,7 +44,7 @@ export function FishTrawlSummary({ data }: FishTrawlSummaryProps) {
           transform: [
             {
               type: 'filter',
-              expr: `datum.station == "${station}"`,
+              expr: `datum.station == "${station.value}"`,
             },
           ],
         },
@@ -181,21 +182,10 @@ export function FishTrawlSummary({ data }: FishTrawlSummaryProps) {
           label="Select a station:"
           value={station}
           dataset="na"
-          options={[
-            { label: 'Fox Island', value: 'Fox Island' },
-            { label: 'Whale Rock', value: 'Whale Rock' },
-          ]}
-          onChange={(newValue) => setStation((newValue as { value: string }).value)}
-          unstyled
-          classNames={{
-            control: ({ isFocused }) =>
-              `p-2 rounded-md shadow-sm hover:shadow-md duration-300 transition-shadow bg-slate-100/80 text-black ${isFocused ? 'border-teal-400 border-solid border-2' : ''} ${!forceLight ? 'dark:bg-slate-800 dark:border-slate-600 dark:text-white' : ''}`,
-            placeholder: () => 'text-slate-500 dark:text-slate-400',
-            menu: () =>
-              `mt-2 rounded-md p-2 bg-slate-100/90 border-slate-400 border-solid border-2 ${!forceLight ? 'dark:bg-slate-900/90' : 'text-black'}`,
-            option: ({ isSelected, isFocused }) =>
-              `p-1 rounded-md ${isSelected ? "before:content-['✔_']" : ''} ${isFocused ? 'bg-slate-200 dark:bg-slate-800' : ''}`,
-            multiValue: () => 'm-1 px-2 gap-2 rounded-md border border-solid border-slate-500',
+          options={options}
+          defaultValue={options[0]}
+          onChange={(newValue) => {
+            setStation(newValue as { value: string; label: string });
           }}
         />
       </form>
