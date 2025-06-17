@@ -31,7 +31,7 @@ export function downsampleStreamGageData(data: StreamGageData[], interval: Inter
       )
         .map(([dateIndexString, data]) => {
           // Object.entries parses Record keys as strings, despite them being
-          // set as numberes in the callback passed to groupBy. Checking isNaN 
+          // set as numberes in the callback passed to groupBy. Checking isNaN
           // guards against invalid inputs.
           const dateIndex = Number(dateIndexString);
           if (isNaN(dateIndex) || dateIndex === -1) return undefined;
