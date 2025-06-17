@@ -8,7 +8,7 @@ type AboutSpeciesProps = {
 };
 
 export function AboutSpecies({ fishSpecies }: AboutSpeciesProps) {
-  const [species, setSpecies] = React.useState('');
+  const [species, setSpecies] = React.useState(fishSpecies[0]);
   return (
     <>
       <h2 className="text-2xl font-header font-bold">Explore</h2>
@@ -16,15 +16,16 @@ export function AboutSpecies({ fishSpecies }: AboutSpeciesProps) {
       <form className="self-stretch relative">
         <Select
           forceLight
+          defaultValue={fishSpecies[0]}
           options={fishSpecies}
           label="Select a species:"
           dataset="na"
-          onChange={(e) => setSpecies((e as { label: string; value: string }).label)}
+          onChange={(e) => setSpecies(e as { label: string; value: string })}
         ></Select>
       </form>
       <Button
-        href={`fish-trawl/${species}`}
-        className={`sm:px-[calc(theme(spacing.10)-1px)] sm:py-[calc(theme(spacing[5])-1px)] sm:text-xl ${species === '' ? 'opacity-50 cursor-not-allowed' : ''}`}
+        href={`fish-trawl/${species.label}`}
+        className={`sm:px-[calc(theme(spacing.10)-1px)] sm:py-[calc(theme(spacing[5])-1px)] sm:text-xl`}
       >
         Explore!
       </Button>

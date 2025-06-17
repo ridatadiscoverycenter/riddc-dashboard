@@ -43,7 +43,7 @@ export default async function FishTrawl() {
         <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
         <BuoyLocationsMap locations={fishCoordinates} />
       </div>
-      <div id="species-about" className="col-span-2">
+      <div id="species-about" className="col-span-2" style={{ scrollMarginTop: '5rem' }}>
         <Card className="text-black bg-clear-900 flex flex-col items-center justify-around gap-3 h-80">
           <AboutSpecies fishSpecies={fishSpecies}></AboutSpecies>
         </Card>
