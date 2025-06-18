@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Card, Link, ExternalLink, FullBleedColumn, Hero } from '@/components';
+import { Card, Link, ExternalLink, FullBleedColumn, Hero, Header } from '@/components';
 import nbnerr from '@/assets/nbnerr.svg';
 import nbep from '@/assets/nbep.svg';
 import narrabay from '@/assets/narrabay-logo.svg';
@@ -42,14 +42,14 @@ export default function Home() {
         land-use managers, relevant industries, citizen scientists and students can find data on the
         Narragansett Bay ecosystem.
       </p>
-      <h3 className="w-full text-center text-2xl font-header font-bold text-header-light dark:text-header-dark">
+      <Header size="lg" variant="impact" className="w-full text-center">
         Leadership
-      </h3>
+      </Header>
       <div className="px-4 mx-6">
         <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4">
           {LEADERSHIP.map(({ name, affiliations }) => (
             <li key={name}>
-              <Card className="bg-clear-300 hover:bg-clear-800 dark:bg-clear-100 hover:dark:bg-clear-300">
+              <Card className="bg-white/30 hover:bg-white/80 dark:bg-white/10 hover:dark:bg-white/30">
                 <h3 className="text-xl font-header">{name}</h3>
                 {affiliations.map((affiliation) => (
                   <p className="pb-4" key={affiliation}>
@@ -61,9 +61,9 @@ export default function Home() {
           ))}
         </ul>
       </div>
-      <h3 className="w-full text-center text-2xl font-header font-bold mt-2 text-header-light dark:text-header-dark">
+      <Header size="lg" variant="impact" className="w-full text-center">
         Credits
-      </h3>
+      </Header>
       <p>
         The historical data available for lookup on this site has been compiled from quality
         controlled data from Narragansett Bay Fixed Site Monitoring Network (NBFSMN). The RI DEM
@@ -92,24 +92,20 @@ export default function Home() {
         For more information about the RI DEM Fixed-Site Monitoring Stations please refer to RI DEM
         Fixed-Site Monitoring Stations and Data in Narragansett Bay
       </p>
-      <h3 className="w-full text-center text-2xl font-header font-bold mt-2">
+      <Header size="lg" variant="impact" className="w-full text-center">
         Data Acceptance Guidelines
-      </h3>
+      </Header>
       <p>
         Contact us if you want us to host your Narragansett Bay related data! See our data
         acceptance guidelines <Link href="/riddc_data_guidelines.pdf">here</Link>.
       </p>
-      <h2
-        className="w-full text-center text-4xl font-header mt-4 -mb-2 font-bold text-header-primary"
-        id="datasets"
-        style={{ scrollMarginTop: '5rem' }}
-      >
+      <Header id="datasets" size="xl" variant="accent" className="w-full text-center scroll-mt-20">
         Explore our collection of present and historical data from Narragansett Bay
-      </h2>
+      </Header>
       <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4">
         {DATASETS.map(({ name, href, description }) => (
           <li key={href}>
-            <Card className="bg-clear-900 dark:bg-clear-100">
+            <Card className="bg-white/90 dark:bg-white/10">
               <h3 className="text-lg font-bold font-header">
                 <Link href={href}>{name}</Link>
               </h3>
@@ -118,13 +114,13 @@ export default function Home() {
           </li>
         ))}
       </ul>
-      <h2 className="w-full text-center text-4xl font-header text-header-primary font-bold">
+      <Header size="xl" variant="accent" className="w-full text-center">
         External Resources
-      </h2>
+      </Header>
       <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4 mb-4">
         {EXTERNAL_RESOURCES.map(({ name, href, description }) => (
           <li key={href}>
-            <Card className="bg-clear-900 dark:bg-clear-100">
+            <Card className="bg-white/90 dark:bg-white/10">
               <h3 className="text-lg font-bold font-header">
                 <Link href={href}>{name}</Link>
               </h3>

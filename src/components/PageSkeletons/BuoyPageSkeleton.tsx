@@ -18,7 +18,7 @@ export function BuoyPageSkeleton({
 }: BuoyPageSkeletonProps) {
   return (
     <div className="m-4 grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-4">
-      <Card className="bg-clear-900 md:col-span-2 col-span-3 flex flex-col items-center justify-around gap-3">
+      <Card className="bg-white/90 md:col-span-2 col-span-3 flex flex-col items-center justify-around gap-3">
         {graph}
       </Card>
       {form}
@@ -26,7 +26,7 @@ export function BuoyPageSkeleton({
         <h2 className="text-xl font-header font-extralight">Where are these buoys?</h2>
         {map}
       </div>
-      <Card className="bg-clear-900 col-span-2 items-center">{summary}</Card>
+      <Card className="bg-white/90 col-span-2 items-center">{summary}</Card>
       <div className="col-span-3 flex flex-col items-center justify-center">
         <h2 className="font-header font-bold text-lg">About this dataset</h2>
         {description}
