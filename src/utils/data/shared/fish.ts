@@ -15,7 +15,8 @@ export function getAnimalFromSpecies(species: string) {
 
 export function getTitleFromSpecies(species: string) {
   const title = species
-    .replace(/[A-Z]/g, (letter) => ` ${letter.toLowerCase()}`)
+    .replace('_', ' ')
+    .replace(/[A-Z]/g, (letter) => `${letter.toLowerCase()}`)
     .split(' ')
     .map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
     .join(' ');

@@ -12,22 +12,16 @@ type SelectProps = ReactSelectProps & {
   label: string;
   options: string[] | { label: string; value: string }[];
   forceLight?: boolean;
-  dataset: Dataset;
+  dataset?: Dataset;
 };
 
-export function Select({
-  label,
-  options,
-  forceLight = false,
-  dataset = 'ma',
-  ...props
-}: SelectProps) {
+export function Select({ label, options, forceLight = false, dataset, ...props }: SelectProps) {
   const formatted = React.useMemo(() => {
     if (options.length === 0) return [];
     // Casting because typescript doesn't like type checking like this.
     if (typeof options[0] === 'string')
       return (options as string[]).map((opt) => ({
-        label: variableToLabel(dataset, opt),
+        label: variableToLabel(opt, dataset),
         value: opt,
       }));
     return options as Exclude<typeof options, string[]>;
@@ -48,6 +42,8 @@ export function Select({
             `p-1 rounded-md ${isSelected ? "before:content-['✔_']" : ''} ${isFocused ? 'bg-slate-200 dark:bg-slate-800' : ''}`,
           multiValue: () => 'm-1 px-2 gap-2 rounded-md border border-solid border-slate-500',
         }}
+        menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
+        styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
       />
     </Label>
   );

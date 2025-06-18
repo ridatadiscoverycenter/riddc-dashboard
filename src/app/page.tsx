@@ -259,7 +259,12 @@ const DATASETS = [
   {
     name: 'Fish Trawl Survey',
     href: '/datasets/fish-trawl',
-    description: () => <>Coming Soon!</>,
+    description: () => (
+      <>
+        Survey of seasonal invertebrate and migratory fish populations in the Narragansett Bay,
+        collected by the University of Rhode Island Graduate School of Oceanography.
+      </>
+    ),
   },
   {
     name: 'Stream Gage Data',

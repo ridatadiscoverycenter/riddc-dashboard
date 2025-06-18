@@ -137,7 +137,7 @@ export function MaBuoySummary({ data }: MaBuoySummaryProps) {
           value={variable}
           onChange={(newValue) => setVariable((newValue as { value: MaBuoyVariable }).value)}
           options={MA_BUOY_VARIABLES.map((key) => ({
-            label: variableToLabel('ma', key),
+            label: variableToLabel(key, 'ma'),
             value: key,
           }))}
           dataset="ma"
