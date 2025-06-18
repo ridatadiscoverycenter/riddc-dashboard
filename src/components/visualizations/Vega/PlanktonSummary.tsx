@@ -25,7 +25,11 @@ function getGraphicWidth(size: Size | undefined) {
 
 export function PlanktonSummary({ data }: PlanktonBuoySummaryProps) {
   const size = useScreenSize();
-  const [variable, setVariable] = React.useState<PlanktonVariable>('SilicaBottom');
+  const options = PLANKTON_VARIABLES.map((key) => ({
+    label: variableToLabel(key, 'plankton'),
+    value: key,
+  }));
+  const [variable, setVariable] = React.useState<{ value: PlanktonVariable }>(options[0]);
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -48,7 +52,7 @@ export function PlanktonSummary({ data }: PlanktonBuoySummaryProps) {
         {
           name: 'data',
           source: 'rawData',
-          transform: [{ type: 'filter', expr: `datum.${variable} > 1` }],
+          transform: [{ type: 'filter', expr: `datum.${variable.value} > 1` }],
         },
       ],
       scales: [
@@ -73,7 +77,7 @@ export function PlanktonSummary({ data }: PlanktonBuoySummaryProps) {
           name: 'color',
           type: 'linear',
           range: { scheme: 'tealblues' },
-          domain: { data: 'data', field: variable },
+          domain: { data: 'data', field: variable.value },
           reverse: false,
           zero: false,
           nice: true,
@@ -121,10 +125,10 @@ export function PlanktonSummary({ data }: PlanktonBuoySummaryProps) {
               },
               height: { scale: 'y', band: 1 },
               tooltip: {
-                signal: `{'Date': utcFormat(toDate(datum.date), '%B %Y'), 'Buoy': datum.stationName, 'Count': datum.${variable}}`,
+                signal: `{'Date': utcFormat(toDate(datum.date), '%B %Y'), 'Buoy': datum.stationName, 'Count': datum.${variable.value}}`,
               },
             },
-            update: { fill: { scale: 'color', field: variable } },
+            update: { fill: { scale: 'color', field: variable.value } },
           },
         },
       ],
@@ -138,11 +142,11 @@ export function PlanktonSummary({ data }: PlanktonBuoySummaryProps) {
           forceLight
           label="Data:"
           value={variable}
-          onChange={(newValue) => setVariable((newValue as { value: PlanktonVariable }).value)}
-          options={PLANKTON_VARIABLES.map((key) => ({
-            label: variableToLabel(key, 'plankton'),
-            value: key,
-          }))}
+          defaultValue={options[0]}
+          onChange={(newValue) =>
+            setVariable(newValue as { value: PlanktonVariable; label: string })
+          }
+          options={options}
           dataset="plankton"
         />
       </form>

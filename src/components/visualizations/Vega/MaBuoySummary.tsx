@@ -22,7 +22,11 @@ function getGraphicWidth(size: Size | undefined) {
 
 export function MaBuoySummary({ data }: MaBuoySummaryProps) {
   const size = useScreenSize();
-  const [variable, setVariable] = React.useState<MaBuoyVariable>('ChlorophyllBottom');
+  const options = MA_BUOY_VARIABLES.map((key) => ({
+    label: variableToLabel(key, 'ma'),
+    value: key,
+  }));
+  const [variable, setVariable] = React.useState<{ value: MaBuoyVariable }>(options[0]);
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -45,7 +49,7 @@ export function MaBuoySummary({ data }: MaBuoySummaryProps) {
         {
           name: 'data',
           source: 'rawData',
-          transform: [{ type: 'filter', expr: `datum.${variable} > 1` }],
+          transform: [{ type: 'filter', expr: `datum.${variable.value} > 1` }],
         },
       ],
       scales: [
@@ -70,7 +74,7 @@ export function MaBuoySummary({ data }: MaBuoySummaryProps) {
           name: 'color',
           type: 'linear',
           range: { scheme: 'tealblues' },
-          domain: { data: 'data', field: variable },
+          domain: { data: 'data', field: variable.value },
           reverse: false,
           zero: false,
           nice: true,
@@ -118,10 +122,10 @@ export function MaBuoySummary({ data }: MaBuoySummaryProps) {
               },
               height: { scale: 'y', band: 1 },
               tooltip: {
-                signal: `{'Date': utcFormat(toDate(datum.date), '%B %Y'), 'Buoy': datum.stationName, 'Count': datum.${variable}}`,
+                signal: `{'Date': utcFormat(toDate(datum.date), '%B %Y'), 'Buoy': datum.stationName, 'Count': datum.${variable.value}}`,
               },
             },
-            update: { fill: { scale: 'color', field: variable } },
+            update: { fill: { scale: 'color', field: variable.value } },
           },
         },
       ],
@@ -135,11 +139,9 @@ export function MaBuoySummary({ data }: MaBuoySummaryProps) {
           forceLight
           label="Data:"
           value={variable}
-          onChange={(newValue) => setVariable((newValue as { value: MaBuoyVariable }).value)}
-          options={MA_BUOY_VARIABLES.map((key) => ({
-            label: variableToLabel(key, 'ma'),
-            value: key,
-          }))}
+          defaultValue={options[0]}
+          onChange={(newValue) => setVariable(newValue as { value: MaBuoyVariable; label: string })}
+          options={options}
           dataset="ma"
         />
       </form>
