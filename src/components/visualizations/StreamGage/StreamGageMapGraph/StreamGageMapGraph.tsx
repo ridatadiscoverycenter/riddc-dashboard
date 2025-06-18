@@ -182,19 +182,17 @@ export function StreamGageMapGraph({
     [streamDataGeoJson, dataRange, selectedDateIndex, setSelectedBuoys, selectedStreamDataGeoJson]
   );
 
-  // Note (AM): During the abstraction process, the ability to reference this
-  // value was lost, This is a stand in until I can figure out how to get this
-  //  functionality back.
-  const [dummy] = React.useState(false);
+  const [opened, setOpen] = React.useState(false);
 
   return (
     <MapGraph
       onLoad={onLoad}
       graph={<StreamGageTimeSeries dates={dates} data={selectedBuoys} />}
+      syncOpenState={(isMapOpen) => setOpen(isMapOpen)}
       className={className}
     >
       <div
-        className={`z-50 absolute top-6 left-2 bg-slate-100/90 dark:bg-slate-800/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-56 ${dummy ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
+        className={`z-50 absolute top-6 left-2 bg-slate-100/90 dark:bg-slate-800/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
       >
         <div className="flex flex-col gap-2 w-full">
           <h1 className="text-xl">Stream Gage Height</h1>

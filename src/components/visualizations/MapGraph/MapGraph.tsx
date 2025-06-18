@@ -13,11 +13,13 @@ const GRAPH_SIZE_STYLES = (opened: boolean) =>
 export function MapGraph({
   onLoad,
   graph,
-  className = '',
   children,
+  syncOpenState,
+  className = '',
 }: React.PropsWithChildren<{
   onLoad: (map: React.MutableRefObject<any>, loaded: boolean) => (() => void) | void;
   graph: React.ReactNode;
+  syncOpenState?: (open: boolean) => void;
   className?: string;
 }>) {
   const [opened, setOpened] = React.useState(false);
@@ -31,6 +33,12 @@ export function MapGraph({
       }
     }
   }, [loaded, onLoad, map]);
+
+  React.useEffect(() => {
+    if (syncOpenState) {
+      syncOpenState(opened);
+    }
+  }, [syncOpenState, opened]);
 
   return (
     <div className={`flex flex-row w-full text-base items-stretch ${className}`}>
