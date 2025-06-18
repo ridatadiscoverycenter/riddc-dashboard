@@ -42,8 +42,6 @@ export function StreamGageMapGraph({
     () => streamData.filter(({ siteName }) => selectedBuoyNames.includes(siteName)),
     [streamData, selectedBuoyNames]
   );
-  //const { map, loaded, containerRef } = useMap();
-  //const [opened, setOpened] = React.useState(false);
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
   const selectedDate = React.useMemo(() => dates[selectedDateIndex], [dates, selectedDateIndex]);
   const flattenedStreamData = React.useMemo(
@@ -160,16 +158,26 @@ export function StreamGageMapGraph({
         filter: ['==', 'date', selectedDateIndex],
       });
 
-      map.current.on('mouseenter', 'stream-gage-circles', () => setPointer(map, loaded));
-      map.current.on('mouseleave', 'stream-gage-circles', () => unsetPointer(map, loaded));
-      map.current.on('click', 'stream-gage-circles', (event: any) =>
-        circleClickHandler(event, loaded, setSelectedBuoys)
-      );
+      function doSetPointer() {
+        return setPointer(map, loaded);
+      }
+      
+      function doUnsetPointer() {
+        return unsetPointer(map, loaded);
+      }
+
+      function doHandleCircleClick(event: any) {
+        return circleClickHandler(event, loaded, setSelectedBuoys);
+      }
+
+      map.current.on('mouseenter', 'stream-gage-circles', doSetPointer);
+      map.current.on('mouseleave', 'stream-gage-circles', doUnsetPointer);
+      map.current.on('click', 'stream-gage-circles', doHandleCircleClick);
 
       return () => {
-        map.current.off('mouseenter', 'stream-gage-circles', setPointer);
-        map.current.off('mouseleave', 'stream-gage-circles', unsetPointer);
-        map.current.off('click', 'stream-gage-circles', circleClickHandler);
+        map.current.off('mouseenter', 'stream-gage-circles', doSetPointer);
+        map.current.off('mouseleave', 'stream-gage-circles', doUnsetPointer);
+        map.current.off('click', 'stream-gage-circles', doHandleCircleClick);
 
         map.current.removeLayer('stream-gage-circles');
         map.current.removeLayer('stream-gage-ids');
@@ -209,7 +217,6 @@ export function StreamGageMapGraph({
             max={dates.length - 1}
             value={selectedDateIndex}
             onChange={(e) => setSelectedDateIndex(Number(e.target.value))}
-            className={``}
           />
           <div className="w-full flex flex-row justify-between text-sm">
             <span>Two Weeks Ago</span>
