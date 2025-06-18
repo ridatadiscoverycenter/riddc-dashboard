@@ -4,11 +4,14 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { useMap } from '@/components/visualizations/Maps/useMap';
-import { RiBuoyCoordinate as BuoyCoordinate } from '@/utils/data/api/buoy';
-import { type FishCoordinate } from '@/types';
+// import { RiBuoyCoordinate as BuoyCoordinate } from '@/utils/data/api/buoy';
 
 type BuoyLocationsProps = {
-  locations: BuoyCoordinate[] | FishCoordinate[];
+  locations: {
+    longitude: number;
+    latitude: number;
+    stationName: string;
+  }[];
 };
 
 export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {

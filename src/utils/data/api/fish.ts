@@ -87,15 +87,6 @@ export async function fetchBaseData() {
 }
 
 /**
- * Fetch coordinate information and returns a list of unique stations in alphabetic order.
- * @returns {Promise<StationName[]>}
- */
-// export async function fetchStations() {
-//   const coordinates = await fetchCoordinates();
-//   return Array.from(new Set<StationName>(coordinates.map(({ stationName }) => stationName))).sort();
-// }
-
-/**
  * Fetch sample data and return a list of unique species in alphabetic order.
  * @returns {Promise<string[]>}
  */

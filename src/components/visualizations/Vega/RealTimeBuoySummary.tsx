@@ -137,7 +137,7 @@ export function RealTimeBuoySummary({ data }: RealTimeBuoySummaryProps) {
           value={variable}
           onChange={(newValue) => setVariable((newValue as { value: RealTimeBuoyVariable }).value)}
           options={REAL_TIME_BUOY_VARIABLES.map((key) => ({
-            label: variableToLabel('real-time', key),
+            label: variableToLabel(key, 'real-time'),
             value: key,
           }))}
           dataset="real-time"

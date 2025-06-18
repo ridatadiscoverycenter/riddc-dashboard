@@ -141,7 +141,7 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
           defaultValue={variable}
           onChange={(newValue) => setVariable((newValue as { value: RiBuoyVariable }).value)}
           options={RI_BUOY_VARIABLES.map((key) => ({
-            label: variableToLabel('ri', key),
+            label: variableToLabel(key, 'ri'),
             value: key,
           }))}
           dataset="ri"

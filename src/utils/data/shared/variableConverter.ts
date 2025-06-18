@@ -270,8 +270,8 @@ const REAL_TIME_PAIRS: {
   { viewer: 'Solar Irradiance (Despike)', erddap: 'SolarIrradianceDespike' },
 ];
 
-export function variableToLabel(dataset: Dataset, v: string) {
-  if (dataset === 'na') return v;
+export function variableToLabel(v: string, dataset?: Dataset) {
+  if (dataset === undefined) return v;
   const foundPair =
     dataset === 'ri'
       ? RI_PAIRS.find((pair) => pair.erddap === v)

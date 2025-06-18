@@ -180,7 +180,6 @@ export function FishTrawlSummary({ data, options }: FishTrawlSummaryProps) {
           forceLight
           label="Select a station:"
           value={station}
-          dataset="na"
           options={options}
           defaultValue={options[0]}
           onChange={(newValue) => {
