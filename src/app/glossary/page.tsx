@@ -1,6 +1,6 @@
 //import { FullBleedColumn } from '@/components';
 
-import { Link } from '@/components';
+import { Header, Link } from '@/components';
 
 const IDS = {
   AGENCIES: 'agencies-and-organizations',
@@ -21,17 +21,17 @@ export default function Glossary() {
       </aside>
       <section className="overflow-scroll flex flex-col gap-4 mx-8 my-4">
         <h1 className="text-4xl font-extralight md:hidden block">Glossary</h1>
-        <h2 id={IDS.AGENCIES} className="text-2xl">
+        <Header id={IDS.AGENCIES} size="xl" variant="accent" className="scroll-mt-20">
           Agencies and Organizations
-        </h2>
+        </Header>
         <List items={AGENCIES_AND_ORGANIZATIONS} />
-        <h2 id={IDS.AGENCIES} className="text-2xl">
+        <Header id={IDS.VARIABLES} size="xl" variant="accent" className="scroll-mt-20">
           Data Variables
-        </h2>
+        </Header>
         <List items={VARIABLES} />
-        <h2 id={IDS.OTHER} className="text-2xl">
+        <Header id={IDS.OTHER} size="xl" variant="accent" className="scroll-mt-20">
           Other Acronyms
-        </h2>
+        </Header>
         <List items={OTHER} />
       </section>
     </div>

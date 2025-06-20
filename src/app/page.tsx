@@ -45,22 +45,22 @@ export default function Home() {
       <Header size="lg" variant="impact" className="w-full text-center">
         Leadership
       </Header>
-      <div className="px-4 mx-6">
-        <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4">
-          {LEADERSHIP.map(({ name, affiliations }) => (
-            <li key={name}>
-              <Card className="bg-white/30 hover:bg-white/80 dark:bg-white/10 hover:dark:bg-white/30">
-                <h3 className="text-xl font-header">{name}</h3>
-                {affiliations.map((affiliation) => (
-                  <p className="pb-4" key={affiliation}>
-                    {affiliation}
-                  </p>
-                ))}
-              </Card>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 md:gap-8 gap-4">
+        {LEADERSHIP.map(({ name, affiliations }) => (
+          <li key={name}>
+            <Card className="bg-white/30 hover:bg-white/80 dark:bg-white/10 hover:dark:bg-white/30 flex flex-col py-5">
+              <Header size="sm" variant="accent">
+                {name}
+              </Header>
+              {/*<h3 className="text-xl font-header">{name}</h3>*/}
+              {affiliations.map((affiliation) => (
+                <p key={affiliation}>{affiliation}</p>
+              ))}
+            </Card>
+          </li>
+        ))}
+      </ul>
+      <div className="px-4 mx-6"></div>
       <Header size="lg" variant="impact" className="w-full text-center">
         Credits
       </Header>
@@ -102,7 +102,7 @@ export default function Home() {
       <Header id="datasets" size="xl" variant="accent" className="w-full text-center scroll-mt-20">
         Explore our collection of present and historical data from Narragansett Bay
       </Header>
-      <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4">
+      <ul className="w-full grid sm:grid-cols-2 md:grid-cols-3 md:gap-8 gap-4">
         {DATASETS.map(({ name, href, description }) => (
           <li key={href}>
             <Card className="bg-white/90 dark:bg-white/10">
@@ -117,7 +117,7 @@ export default function Home() {
       <Header size="xl" variant="accent" className="w-full text-center">
         External Resources
       </Header>
-      <ul className="max-w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 gap-8 p-4 mb-4">
+      <ul className="grid sm:grid-cols-2 md:grid-cols-3 md:gap-8 gap-4 mb-4">
         {EXTERNAL_RESOURCES.map(({ name, href, description }) => (
           <li key={href}>
             <Card className="bg-white/90 dark:bg-white/10">

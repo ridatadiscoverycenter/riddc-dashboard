@@ -1,10 +1,11 @@
 type Size = 'sm' | 'md' | 'lg' | 'xl' | 'hero';
 type Variant = 'normal' | 'impact' | 'accent';
 type ColorMode = 'light' | 'dark';
+type Tag = `h${1 | 2 | 3 | 4 | 5}`;
 type HeaderProps = {
   size: Size;
   variant?: Variant;
-  tag?: `h${1 | 2 | 3 | 4 | 5}`;
+  tag?: Tag;
   className?: string;
   colorMode?: ColorMode;
   id?: string;
@@ -19,36 +20,12 @@ export function Header({
   colorMode,
   id,
 }: React.PropsWithChildren<HeaderProps>) {
+  const HeaderTag = tag;
   const classString = `${className} ${sizeTailwindClass(size)} ${variantTailwindClass(variant, colorMode)}`;
-  if (tag === 'h1')
-    return (
-      <h1 className={classString} id={id}>
-        {children}
-      </h1>
-    );
-  if (tag === 'h3')
-    return (
-      <h3 className={classString} id={id}>
-        {children}
-      </h3>
-    );
-  if (tag === 'h4')
-    return (
-      <h4 className={classString} id={id}>
-        {children}
-      </h4>
-    );
-  if (tag === 'h5')
-    return (
-      <h5 className={classString} id={id}>
-        {children}
-      </h5>
-    );
-  // tag === "h2"
   return (
-    <h2 className={classString} id={id}>
+    <HeaderTag className={classString} id={id}>
       {children}
-    </h2>
+    </HeaderTag>
   );
 }
 
