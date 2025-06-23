@@ -52,7 +52,6 @@ export default function Home() {
               <Header size="sm" variant="accent">
                 {name}
               </Header>
-              {/*<h3 className="text-xl font-header">{name}</h3>*/}
               {affiliations.map((affiliation) => (
                 <p key={affiliation}>{affiliation}</p>
               ))}
@@ -73,13 +72,9 @@ export default function Home() {
       </p>
       <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4 my-4">
         {CREDITS.map(({ title, logoDark, logoLight }) => (
-          <li key={title} className="place-content-center place-items-center">
-            <div className="dark:hidden">
-              <Image src={logoLight} height="100" alt={title} title={title} />
-            </div>
-            <div className="hidden dark:block">
-              <Image src={logoDark} height="100" alt={title} title={title} />
-            </div>
+          <li key={title} className="flex items-center justify-center">
+            <Image src={logoLight} height="100" alt={title} title={title} className='dark:hidden' />
+            <Image src={logoDark} height="100" alt={title} title={title} className='hidden dark:block'/>
           </li>
         ))}
       </ul>
