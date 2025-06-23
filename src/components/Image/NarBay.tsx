@@ -8,10 +8,10 @@ export default function NarBay({ className = '' }: { className?: string }) {
       xmlnsXlink="http://www.w3.org/1999/xlink"
       x="0px"
       y="0px"
-      //viewBox="0 0 1396.4 762.4"
+      // Originally viewBox="0 0 1396.4 762.4"
+      // This was constrained to make a better Hero image.
       viewBox="0 200 1396.4 552.4"
       xmlSpace="preserve"
-      //style={{ marginTop: '-20%' }}
       className={className}
     >
       <defs>
