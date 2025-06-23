@@ -106,9 +106,9 @@ export default function Home() {
         {DATASETS.map(({ name, href, description }) => (
           <li key={href}>
             <Card className="bg-white/90 dark:bg-white/10">
-              <h3 className="text-lg font-bold font-header">
+              <Header size="sm" tag="h3">
                 <Link href={href}>{name}</Link>
-              </h3>
+              </Header>
               <p className="text-sm">{description()}</p>
             </Card>
           </li>
@@ -121,9 +121,9 @@ export default function Home() {
         {EXTERNAL_RESOURCES.map(({ name, href, description }) => (
           <li key={href}>
             <Card className="bg-white/90 dark:bg-white/10">
-              <h3 className="text-lg font-bold font-header">
+              <Header size="sm" tag="h3">
                 <Link href={href}>{name}</Link>
-              </h3>
+              </Header>
               <p className="text-sm">{description}</p>
             </Card>
           </li>
