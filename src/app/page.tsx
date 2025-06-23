@@ -73,8 +73,14 @@ export default function Home() {
       <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 gap-4 my-4">
         {CREDITS.map(({ title, logoDark, logoLight }) => (
           <li key={title} className="flex items-center justify-center">
-            <Image src={logoLight} height="100" alt={title} title={title} className='dark:hidden' />
-            <Image src={logoDark} height="100" alt={title} title={title} className='hidden dark:block'/>
+            <Image src={logoLight} height="100" alt={title} title={title} className="dark:hidden" />
+            <Image
+              src={logoDark}
+              height="100"
+              alt={title}
+              title={title}
+              className="hidden dark:block"
+            />
           </li>
         ))}
       </ul>
