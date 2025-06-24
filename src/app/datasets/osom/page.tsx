@@ -8,6 +8,7 @@ import {
   BuoyVariablesCard,
   BuoyLocationsMap,
   Loading,
+  OsomBuoySummary,
 } from '@/components';
 import { fetchWeatherData } from '@/utils/data';
 import {
@@ -105,7 +106,7 @@ async function PageWrapper({
         />
       }
       map={<BuoyLocationsMap locations={buoyData} />}
-      summary={/*<OsomBuoySummary data={summaryData} />*/ <Loading />}
+      summary={<OsomBuoySummary data={summaryData} />}
       description={DESCRIPTION}
     />
   );
