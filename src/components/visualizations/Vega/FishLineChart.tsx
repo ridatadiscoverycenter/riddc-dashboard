@@ -26,7 +26,6 @@ export function FishLineChart({ data }: LineChartProps) {
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       description: 'Fish trawl survey line chart, with value labels shown upon mouse hover.',
       height: 400,
-      padding: 5,
       width: getGraphicWidth(size),
       data: [
         {
@@ -40,7 +39,6 @@ export function FishLineChart({ data }: LineChartProps) {
           type: 'point',
           domain: { data: 'fish', field: 'year' },
           range: 'width',
-          padding: 0.05,
         },
         {
           name: 'yfish',

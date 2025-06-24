@@ -51,7 +51,13 @@ export async function FishVariablesCard({
     <>
       <FishLineChart data={fishData} />
       <WaterTempChart
-        data={weatherData.filter((sample) => sample.year >= startYear && sample.year <= endYear)}
+        data={weatherData.filter(
+          (sample) =>
+            sample.year >= startYear &&
+            sample.year <= endYear &&
+            sample.level === 'Surface' &&
+            params.buoys.includes(sample.station)
+        )}
       />
     </>
   );

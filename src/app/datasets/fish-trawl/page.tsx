@@ -8,7 +8,7 @@ import {
   FullBleedColumn,
   Link,
 } from '@/components';
-import { FishTrawlSummary } from '@/components/visualizations/Vega/';
+import { FishTrawlSummary, WaterTempChart } from '@/components/visualizations/Vega/';
 import { fetchCoordinates, fetchSamples, fetchTemperatures } from '@/utils/data/api/fish';
 import {
   ERROR_CODES,
@@ -76,37 +76,39 @@ async function PageWrapper({
           <Link href="#species-about">Explore Panel</Link>.
         </p>
       </div>
-      <div className="full-bleed m-4 grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-4">
-        <Card className="bg-clear-900 md:col-span-2 row-span-2 col-span-3 flex flex-col items-center justify-around gap-3">
-          <FishVariablesCard
-            params={paramsOrError}
-            data={summaryData}
-            errorLinks={[]}
-            weatherData={temperatures}
+      <div className="full-bleed ">
+        <div className="grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-4 m-4">
+          <Card className="bg-clear-900 md:col-span-2 row-span-2 col-span-3 flex flex-col items-center justify-around gap-3">
+            <FishVariablesCard
+              params={paramsOrError}
+              data={summaryData}
+              errorLinks={[]}
+              weatherData={temperatures}
+            />
+          </Card>
+          <ExploreForm
+            buoys={buoyData}
+            dataset="fish"
+            dateBounds={{
+              startDate: new Date('1959-01-01'),
+              endDate: new Date('2018-12-31'),
+            }}
+            init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
           />
-        </Card>
-        <ExploreForm
-          buoys={buoyData}
-          dataset="fish"
-          dateBounds={{
-            startDate: new Date('1959-01-01'),
-            endDate: new Date('2018-12-31'),
-          }}
-          init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
-        />
-        <div className="flex flex-col items-center justify-around col-span-1">
-          <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
-          <BuoyLocationsMap locations={buoyData} />
+          <div className="flex flex-col items-center justify-around col-span-1">
+            <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
+            <BuoyLocationsMap locations={buoyData} />
+          </div>
+          <Card className="bg-clear-900 col-span-3 items-center">
+            <FishTrawlSummary
+              data={summaryData}
+              options={[
+                { label: 'Fox Island', value: 'Fox Island' },
+                { label: 'Whale Rock', value: 'Whale Rock' },
+              ]}
+            />
+          </Card>
         </div>
-        <Card className="bg-clear-900 col-span-3 items-center">
-          <FishTrawlSummary
-            data={summaryData}
-            options={[
-              { label: 'Fox Island', value: 'Fox Island' },
-              { label: 'Whale Rock', value: 'Whale Rock' },
-            ]}
-          />
-        </Card>
       </div>
     </FullBleedColumn>
   );

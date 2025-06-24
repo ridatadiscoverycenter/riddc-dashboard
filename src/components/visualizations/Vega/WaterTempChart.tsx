@@ -62,6 +62,7 @@ export function WaterTempChart({ data }: WaterTemperatureChartProps) {
           type: 'linear',
           range: 'height',
           domain: { data: 'data', field: 'delta' },
+          nice: true,
         },
         {
           name: 'color',
