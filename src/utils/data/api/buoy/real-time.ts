@@ -194,7 +194,6 @@ const REQUIRED_QUALIFIERS: RealTimeQualifiers[] = [
 
 function variableToQualifier(v: RealTimeBuoyVariable) {
   const foundPair = QUALIFIER_PAIRS.filter((pair) => pair.variable === v);
-  console.log(foundPair.map((pair) => pair.qualifier));
   if (foundPair !== undefined)
     return [...foundPair.map((pair) => pair.qualifier), ...REQUIRED_QUALIFIERS];
 }
