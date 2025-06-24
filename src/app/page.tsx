@@ -14,11 +14,48 @@ export default function Home() {
   return (
     <FullBleedColumn className="gap-4 mb-8">
       <Hero className="full-bleed" />
-      <div
-        className="w-full text-center text-4xl font-header font-bold text-header-primary mt-2 scroll-mt-20"
-        id="about"
-      />
-
+      <p className="my-5">
+        The Rhode Island Data Discovery Center is a platform and Webtool that hosts datasets and
+        visualizations relating to the waterways of Rhode Island and the South Coast of New England.
+        This project is maintained by the{' '}
+        <ExternalLink href="https://ccv.brown.edu">
+          Center for Computation and Visualization
+        </ExternalLink>{' '}
+        at Brown University.
+      </p>
+      <Header id="datasets" size="xl" variant="accent" className="w-full text-center scroll-mt-20">
+        Explore our collection of present and historical data from Narragansett Bay
+      </Header>
+      <ul className="w-full grid sm:grid-cols-2 md:grid-cols-3 md:gap-8 gap-4">
+        {DATASETS.map(({ name, href, description }) => (
+          <li key={href}>
+            <Card className="bg-white/90 dark:bg-white/10">
+              <Header size="sm" tag="h3">
+                <Link href={href}>{name}</Link>
+              </Header>
+              <p className="text-sm">{description()}</p>
+            </Card>
+          </li>
+        ))}
+      </ul>
+      <Header size="xl" variant="accent" className="w-full text-center">
+        External Resources
+      </Header>
+      <ul className="grid sm:grid-cols-2 md:grid-cols-3 md:gap-8 gap-4 mb-4">
+        {EXTERNAL_RESOURCES.map(({ name, href, description }) => (
+          <li key={href}>
+            <Card className="bg-white/90 dark:bg-white/10">
+              <Header size="sm" tag="h3">
+                <Link href={href}>{name}</Link>
+              </Header>
+              <p className="text-sm">{description}</p>
+            </Card>
+          </li>
+        ))}
+      </ul>
+      <Header id="about" size="lg" variant="impact" className="w-full text-center scroll-mt-20">
+        About
+      </Header>
       <p>
         The National Science Foundation in 2017 awarded the University of Rhode Island with a grant
         to establish a statewide research consortium — the RI Consortium for Coastal Ecology
@@ -99,36 +136,6 @@ export default function Home() {
         Contact us if you want us to host your Narragansett Bay related data! See our data
         acceptance guidelines <Link href="/riddc_data_guidelines.pdf">here</Link>.
       </p>
-      <Header id="datasets" size="xl" variant="accent" className="w-full text-center scroll-mt-20">
-        Explore our collection of present and historical data from Narragansett Bay
-      </Header>
-      <ul className="w-full grid sm:grid-cols-2 md:grid-cols-3 md:gap-8 gap-4">
-        {DATASETS.map(({ name, href, description }) => (
-          <li key={href}>
-            <Card className="bg-white/90 dark:bg-white/10">
-              <Header size="sm" tag="h3">
-                <Link href={href}>{name}</Link>
-              </Header>
-              <p className="text-sm">{description()}</p>
-            </Card>
-          </li>
-        ))}
-      </ul>
-      <Header size="xl" variant="accent" className="w-full text-center">
-        External Resources
-      </Header>
-      <ul className="grid sm:grid-cols-2 md:grid-cols-3 md:gap-8 gap-4 mb-4">
-        {EXTERNAL_RESOURCES.map(({ name, href, description }) => (
-          <li key={href}>
-            <Card className="bg-white/90 dark:bg-white/10">
-              <Header size="sm" tag="h3">
-                <Link href={href}>{name}</Link>
-              </Header>
-              <p className="text-sm">{description}</p>
-            </Card>
-          </li>
-        ))}
-      </ul>
     </FullBleedColumn>
   );
 }
