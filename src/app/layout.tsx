@@ -23,7 +23,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${inter.variable}`}>
       <body
-        className={`min-h-[100vh] flex flex-col bg-c-background-light dark:bg-c-background-dark text-black dark:text-white font-main`}
+        className={`min-h-[100vh] flex flex-col bg-c-background-light dark:bg-c-background-dark text-black dark:text-white font-light text-lg`}
       >
         <Nav />
         <main className="flex-1 relative overflow-clip flex flex-col items-center content-center gap-4">

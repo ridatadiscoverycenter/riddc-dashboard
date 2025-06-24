@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, ExploreForm, Loading } from '@/components';
+import { Card, ExploreForm, Header, Loading } from '@/components';
 
 type BuoyPageSkeletonProps = {
   graph: React.ReactNode;
@@ -18,17 +18,24 @@ export function BuoyPageSkeleton({
 }: BuoyPageSkeletonProps) {
   return (
     <div className="m-4 grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-4">
-      <Card className="bg-clear-900 md:col-span-2 col-span-3 flex flex-col items-center justify-around gap-3">
+      <Card className="bg-white/90 md:col-span-2 col-span-3 flex flex-col items-center justify-around gap-3">
         {graph}
       </Card>
       {form}
-      <div className="flex flex-col items-center justify-around col-span-1">
-        <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
+      <div className="col-span-1 relative">
         {map}
+        <Header
+          size="sm"
+          variant="normal"
+          className="absolute top-2 left-0 w-full text-center"
+          colorMode="light"
+        >
+          Where are these buoys?
+        </Header>
       </div>
-      <Card className="bg-clear-900 col-span-2 items-center">{summary}</Card>
+      <Card className="bg-white/90 col-span-2 items-center">{summary}</Card>
       <div className="col-span-3 flex flex-col items-center justify-center">
-        <h2 className="font-header font-bold text-lg">About this dataset</h2>
+        <Header size="lg">About this Dataset</Header>
         {description}
       </div>
     </div>
