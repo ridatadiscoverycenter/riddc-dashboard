@@ -161,7 +161,7 @@ export function StreamGageMapGraph({
       function doSetPointer() {
         return setPointer(map, loaded);
       }
-      
+
       function doUnsetPointer() {
         return unsetPointer(map, loaded);
       }

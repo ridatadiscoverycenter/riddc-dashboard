@@ -25,7 +25,11 @@ function getGraphicWidth(size: Size | undefined) {
 
 export function RiBuoySummary({ data }: RiBuoySummaryProps) {
   const size = useScreenSize();
-  const [variable, setVariable] = React.useState<RiBuoyVariable>('ChlorophyllSurface');
+  const options = RI_BUOY_VARIABLES.map((key) => ({
+    label: variableToLabel(key, 'ri'),
+    value: key,
+  }));
+  const [variable, setVariable] = React.useState<{ value: RiBuoyVariable }>(options[0]);
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -48,7 +52,7 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
         {
           name: 'data',
           source: 'rawData',
-          transform: [{ type: 'filter', expr: `datum.${variable} > 1` }],
+          transform: [{ type: 'filter', expr: `datum.${variable.value} > 1` }],
         },
       ],
       scales: [
@@ -72,7 +76,7 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
           name: 'color',
           type: 'linear',
           range: { scheme: 'tealblues' },
-          domain: { data: 'data', field: variable },
+          domain: { data: 'data', field: variable.value },
           reverse: false,
           zero: false,
           nice: true,
@@ -122,10 +126,10 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
               },
               height: { scale: 'y', band: 1 },
               tooltip: {
-                signal: `{'Date': utcFormat(toDate(datum.date), '%B %Y'), 'Buoy': datum.stationName, 'Count': datum.${variable}}`,
+                signal: `{'Date': utcFormat(toDate(datum.date), '%B %Y'), 'Buoy': datum.stationName, 'Count': datum.${variable.value}}`,
               },
             },
-            update: { fill: { scale: 'color', field: variable } },
+            update: { fill: { scale: 'color', field: variable.value } },
           },
         },
       ],
@@ -139,11 +143,8 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
           forceLight
           label="Data:"
           defaultValue={variable}
-          onChange={(newValue) => setVariable((newValue as { value: RiBuoyVariable }).value)}
-          options={RI_BUOY_VARIABLES.map((key) => ({
-            label: variableToLabel(key, 'ri'),
-            value: key,
-          }))}
+          onChange={(newValue) => setVariable(newValue as { value: RiBuoyVariable; label: string })}
+          options={options}
           dataset="ri"
         />
       </form>
