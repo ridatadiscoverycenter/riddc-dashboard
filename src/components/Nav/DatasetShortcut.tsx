@@ -20,12 +20,16 @@ export function DatasetShortcut({ className = '' }: DatasetShortcutProps) {
           </PopoverButton>
           <PopoverPanel
             anchor="bottom"
-            className={`mt-2 rounded-md p-2 bg-white/80 dark:bg-black/60 z-50`}
+            className="mt-6 rounded-md p-4 bg-white/80 dark:bg-gray-800/80 z-50"
           >
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col gap-4">
               {DATASETS.map(({ name, href }) => (
-                <li key={href} className="text-lg font-light">
-                  <Link href={href} onClick={() => close()}>
+                <li key={href} className="w-full flex">
+                  <Link
+                    href={href}
+                    onClick={() => close()}
+                    className="text-lg font-light w-full py-1 px-2 rounded-md bg-cyan-300 hover:bg-cyan-400      focus:bg-cyan-400 dark:bg-cyan-800 dark:hover:bg-cyan-500 dark:focus:bg-cyan-500"
+                  >
                     {name}
                   </Link>
                 </li>
