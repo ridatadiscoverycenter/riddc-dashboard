@@ -301,5 +301,7 @@ export function variableToLabel(v: string, dataset?: Dataset) {
               : undefined;
   if (foundPair !== undefined) return foundPair.viewer;
   // Note (AM): Would it be better to log this and just return `v`?
-  throw new Error(`No viewer variable for erddap variable "${v}" in dataset "${dataset}"`);
+  // throw new Error(`No viewer variable for erddap variable "${v}" in dataset "${dataset}"`);
+  console.error(`No viewer variable for erddap variable "${v}" in dataset "${dataset}"`);
+  return v;
 }

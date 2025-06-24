@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { fetchSummaryData, fetchBuoyData, fetchBuoyCoordinates } from './buoy';
 
-const OSOM_VARIABLES = [
+export const OSOM_VARIABLES = [
   'SalinityBottom',
   'WaterTempBottom',
   'SalinitySurface',
@@ -115,7 +115,7 @@ function formatOsomBuoyData({ station_name, value, variable, units }: FetchedOso
   };
 }
 
-export type OsomBuoyData = ReturnType<typeof formatOsomSummaryData>;
+export type OsomBuoyData = ReturnType<typeof formatOsomBuoyData>;
 
 /**
  * OSOM Buoy Coordinates

@@ -10,6 +10,7 @@ import type {
   RealTimeBuoyData,
   RiBuoyData,
   PlanktonData,
+  OsomBuoyData,
 } from '@/utils/data/api/buoy';
 import { ERROR_CODES } from '@/utils/fns';
 import type { Dataset } from '@/utils/data/api/buoy/types';
@@ -23,7 +24,7 @@ type BuoyVariablesProps = {
     variables: string[],
     start: Date,
     end: Date
-  ) => Promise<RiBuoyData[] | MaBuoyData[] | RealTimeBuoyData[] | PlanktonData[]>;
+  ) => Promise<RiBuoyData[] | MaBuoyData[] | RealTimeBuoyData[] | PlanktonData[] | OsomBuoyData[]>;
   weatherDataFetcher: (start: Date, end: Date) => Promise<WeatherData[]>;
   description: React.ReactNode;
 };

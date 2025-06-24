@@ -1,4 +1,10 @@
-import type { RiBuoyVariable, MaBuoyVariable, PlanktonVariable, OsomBuoyVariable } from '../buoy';
+import type {
+  RiBuoyVariable,
+  MaBuoyVariable,
+  PlanktonVariable,
+  OsomBuoyVariable,
+  RealTimeBuoyVariable,
+} from '../buoy';
 
 export type BuoyCoordinateBase = {
   buoyId: string;
@@ -81,6 +87,8 @@ export type downloadDataHelper<T extends Dataset> = T extends 'ri'
     ? MaBuoyVariable[]
     : T extends 'plankton'
       ? PlanktonVariable[]
-      : T extends 'osom'
-        ? OsomBuoyVariable[]
-        : never;
+      : T extends 'real-time'
+        ? RealTimeBuoyVariable[]
+        : T extends 'osom'
+          ? OsomBuoyVariable[]
+          : never;
