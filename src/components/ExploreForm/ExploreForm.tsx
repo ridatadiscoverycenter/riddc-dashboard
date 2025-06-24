@@ -11,6 +11,7 @@ import {
 } from '@/utils/data/api/buoy';
 
 import { type Dataset } from '@/utils/data/api/buoy/types';
+import { fetchSpecies, FISH_SPECIES } from '@/utils/data/api/fish';
 
 type InitialFormData = {
   buoys: string[];
@@ -63,7 +64,9 @@ export function ExploreForm({
             ? `/datasets/massachusetts-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
             : dataset === 'plankton'
               ? `/datasets/plankton?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
-              : `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+              : dataset === 'fish'
+                ? `/datasets/fish-trawl?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+                : `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
       );
     },
     [selectedBuoys, selectedVars, startDate, endDate, dataset]
@@ -92,7 +95,9 @@ export function ExploreForm({
               ? [...MA_BUOY_VARIABLES]
               : dataset === 'plankton'
                 ? [...PLANKTON_VARIABLES]
-                : [...REAL_TIME_BUOY_VARIABLES]
+                : dataset === 'fish'
+                  ? [...FISH_SPECIES]
+                  : [...REAL_TIME_BUOY_VARIABLES]
         }
         onChange={(newVars) =>
           setSelectedVars(

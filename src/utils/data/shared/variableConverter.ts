@@ -5,6 +5,7 @@ import {
   RealTimeBuoyVariable,
 } from '../api/buoy';
 import { Dataset } from '../api/buoy/types';
+import { getTitleFromSpecies } from './fish';
 
 // Rhode Island Buoys
 const RI_VAR_LABELS = [
@@ -272,6 +273,7 @@ const REAL_TIME_PAIRS: {
 
 export function variableToLabel(v: string, dataset?: Dataset) {
   if (dataset === undefined) return v;
+  if (dataset === 'fish') return getTitleFromSpecies(v);
   const foundPair =
     dataset === 'ri'
       ? RI_PAIRS.find((pair) => pair.erddap === v)
