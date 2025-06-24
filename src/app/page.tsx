@@ -15,9 +15,8 @@ export default function Home() {
     <FullBleedColumn className="gap-4 mb-8">
       <Hero className="full-bleed" />
       <div
-        className="w-full text-center text-4xl font-header font-bold text-header-primary mt-2"
+        className="w-full text-center text-4xl font-header font-bold text-header-primary mt-2 scroll-mt-20"
         id="about"
-        style={{ scrollMarginTop: '5rem' }}
       />
 
       <p>
