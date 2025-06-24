@@ -24,7 +24,7 @@ export function HomeLink({ className = '' }: HomeLinkProps) {
 
 function LinkContents() {
   return (
-    <h1 className="flex flex-row items-center gap-4 font-bold">
+    <h1 className="flex flex-row items-center gap-4 text-2xl">
       <RiddcLogo size={3} />
       <span className="sm:flex hidden">Rhode Island Data Discovery Center</span>
       <span className="sm:hidden">RIDDC</span>
