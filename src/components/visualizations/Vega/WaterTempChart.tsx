@@ -104,7 +104,7 @@ export function WaterTempChart({ data }: WaterTemperatureChartProps) {
             {
               orient: 'left',
               scale: 'y',
-              title: 'Water Temp',
+              title: 'Surface °C Δ from Seasonally-Adjusted Mean',
               grid: false,
             },
           ],
@@ -123,7 +123,7 @@ export function WaterTempChart({ data }: WaterTemperatureChartProps) {
                   y: { scale: 'y', field: 'delta' },
                   tooltip: {
                     signal:
-                      "{ 'Temp': format(datum.delta, ',.3f'), 'Month': datum.month, 'Station': datum.station }",
+                      "{ 'Δ Temp (°C)': format(datum.delta, ',.3f'), 'Month': utcFormat(datum.month, '%B %Y'), 'Station': datum.station }",
                   },
                   defined: {
                     signal: 'isNumber(datum.delta)',
@@ -153,7 +153,7 @@ export function WaterTempChart({ data }: WaterTemperatureChartProps) {
                   fill: { value: 'transparent' },
                   tooltip: {
                     signal:
-                      "{ 'Temp': format(datum.datum.delta, ',.3f'), 'Month': datum.datum.month, 'Station': datum.datum.station }",
+                      "{ 'Month': utcFormat(datum.datum.month, '%B %Y'), 'Station': datum.datum.station, 'Δ Temp': format(datum.datum.delta, ',.3f') + '°C' }",
                   },
                 },
               },
