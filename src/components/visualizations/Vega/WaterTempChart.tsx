@@ -8,6 +8,7 @@ import { Temperature } from '@/types';
 
 type WaterTemperatureChartProps = {
   data: Temperature[];
+  colors?: string[];
 };
 
 function getGraphicWidth(size: Size | undefined) {

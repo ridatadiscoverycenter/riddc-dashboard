@@ -8,7 +8,7 @@ import {
   FullBleedColumn,
   Link,
 } from '@/components';
-import { FishTrawlSummary, WaterTempChart } from '@/components/visualizations/Vega/';
+import { FishTrawlSummary } from '@/components/visualizations/Vega/';
 import { fetchCoordinates, fetchSamples, fetchTemperatures } from '@/utils/data/api/fish';
 import {
   ERROR_CODES,
@@ -82,7 +82,7 @@ async function PageWrapper({
             <FishVariablesCard
               params={paramsOrError}
               data={summaryData}
-              errorLinks={[]}
+              errorLinks={errorLinks}
               weatherData={temperatures}
             />
           </Card>

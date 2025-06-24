@@ -9,9 +9,9 @@ import {
   REAL_TIME_BUOY_VARIABLES,
   PLANKTON_VARIABLES,
 } from '@/utils/data/api/buoy';
+import { FISH_SPECIES } from '@/utils/data/api/fish';
 
 import { type Dataset } from '@/utils/data/api/buoy/types';
-import { fetchSpecies, FISH_SPECIES } from '@/utils/data/api/fish';
 
 type InitialFormData = {
   buoys: string[];

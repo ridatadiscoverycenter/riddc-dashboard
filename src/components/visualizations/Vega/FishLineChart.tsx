@@ -8,6 +8,7 @@ import { Sample } from '@/types';
 
 type LineChartProps = {
   data: Sample[];
+  colors?: string[];
 };
 
 function getGraphicWidth(size: Size | undefined) {
@@ -19,8 +20,19 @@ function getGraphicWidth(size: Size | undefined) {
   return 750;
 }
 
-export function FishLineChart({ data }: LineChartProps) {
+const BASE_COLORS = ['#2e0d93', '#fd5925'];
+
+export function FishLineChart({ data, colors = BASE_COLORS }: LineChartProps) {
   const size = useScreenSize();
+  const stations = React.useMemo(
+    () => Array.from(new Set(data.map((value) => value.station))),
+    [data]
+  );
+  const variables = React.useMemo(
+    () => Array.from(new Set(data.map((value) => value.title))),
+    [data]
+  );
+
   const fishChartSpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -45,14 +57,25 @@ export function FishLineChart({ data }: LineChartProps) {
           type: 'linear',
           domain: { data: 'fish', field: 'abun' },
           nice: true,
-          zero: true,
-          range: [{ signal: 'height' }, 0],
+          zero: false,
+          range: 'height',
         },
         {
           name: 'color',
           type: 'ordinal',
-          range: { scheme: 'tealblues' },
+          range: { scheme: 'tableau10' },
           domain: { data: 'fish', field: 'station' },
+        },
+        {
+          name: 'variableScale',
+          type: 'ordinal',
+          range: [
+            [1, 0],
+            [1, 1],
+            [3, 1],
+            [5, 2],
+          ].slice(0, variables.length),
+          domain: variables,
         },
         {
           name: 'shape',
@@ -110,9 +133,16 @@ export function FishLineChart({ data }: LineChartProps) {
 
           legends: [
             {
+              title: 'Station',
               type: 'symbol',
               orient: 'top-right',
               fill: 'color',
+            },
+            {
+              title: 'Species',
+              strokeDash: 'variableScale',
+              orient: 'top-right',
+              symbolType: 'stroke',
             },
           ],
 
@@ -172,7 +202,7 @@ export function FishLineChart({ data }: LineChartProps) {
                 facet: {
                   name: 'series',
                   data: 'fish',
-                  groupby: ['station'],
+                  groupby: ['station', 'title'],
                 },
               },
               marks: [
@@ -184,7 +214,10 @@ export function FishLineChart({ data }: LineChartProps) {
                       x: { scale: 'xscale', field: 'year' },
                       y: { scale: 'yfish', field: 'abun' },
                       stroke: { scale: 'color', field: 'station' },
-                      opacity: { value: 0.3 },
+                      strokeDash: {
+                        scale: 'variableScale',
+                        field: 'title',
+                      },
                     },
                   },
                 },
