@@ -8,7 +8,7 @@ import { Sample, Temperature } from '@/types';
 import { FishLineChart } from '../Vega/FishLineChart';
 
 type FishVariablesProps = {
-  params: string | { buoys: string[]; species: string[]; start: Date; end: Date };
+  params: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
   errorLinks: { href: string; description: string }[];
   data: Sample[];
   weatherData: Temperature[];
@@ -20,6 +20,7 @@ export async function FishVariablesCard({
   errorLinks,
   data,
   weatherData,
+  description,
 }: FishVariablesProps) {
   if (typeof params === 'string') {
     return (
@@ -35,7 +36,7 @@ export async function FishVariablesCard({
     (sample) =>
       sample.year >= startYear &&
       sample.year <= endYear &&
-      params.species.includes(sample.title) &&
+      params.vars.includes(sample.title) &&
       params.buoys.includes(sample.station)
   );
   if (fishData.length === 0) {
@@ -46,19 +47,33 @@ export async function FishVariablesCard({
       />
     );
   }
+  // console.log(
+  //   weatherData.filter(
+  //     (sample) =>
+  //       sample.year >= startYear &&
+  //       sample.year <= endYear &&
+  //       sample.level === 'Surface' &&
+  //       params.buoys.includes(sample.station)
+  //   )[168]
+  // );
+  console.log(fishData[239]);
+  console.log(weatherData[2823]);
 
   return (
     <>
-      <FishLineChart data={fishData} />
-      <WaterTempChart
-        data={weatherData.filter(
-          (sample) =>
-            sample.year >= startYear &&
-            sample.year <= endYear &&
-            sample.level === 'Surface' &&
-            params.buoys.includes(sample.station)
-        )}
-      />
+      <p className="text-black">{description}</p>
+      <div className="flex-1 flex flex-col justify-start items-start">
+        <FishLineChart data={fishData} />
+        <WaterTempChart
+          data={weatherData.filter(
+            (sample) =>
+              sample.year >= startYear &&
+              sample.year <= endYear &&
+              sample.level === 'Surface' &&
+              params.buoys.includes(sample.station)
+          )}
+        />
+      </div>
     </>
   );
 }

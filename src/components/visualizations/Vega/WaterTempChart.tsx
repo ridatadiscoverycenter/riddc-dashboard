@@ -24,6 +24,7 @@ function getGraphicWidth(size: Size | undefined) {
 
 export function WaterTempChart({ data }: WaterTemperatureChartProps) {
   const size = useScreenSize();
+  console.log(data[1411]);
 
   const waterTempSpec = React.useMemo<VisualizationSpec>(
     () => ({
@@ -46,9 +47,9 @@ export function WaterTempChart({ data }: WaterTemperatureChartProps) {
         {
           name: 'data',
           values: data,
-          transform: [
-            { type: 'formula', as: 'month', expr: `utcOffset("month", datum.timestamp)` },
-          ],
+          // transform: [
+          //   { type: 'formula', as: 'month', expr: `utcOffset("month", datum.timestamp)` },
+          // ],
         },
         {
           name: 'filtered',
@@ -57,7 +58,7 @@ export function WaterTempChart({ data }: WaterTemperatureChartProps) {
         },
       ],
       scales: [
-        { name: 'x', type: 'utc', range: 'width', domain: { data: 'data', field: 'month' } },
+        { name: 'x', type: 'utc', range: 'width', domain: { data: 'data', field: 'timestamp' } },
         {
           name: 'y',
           type: 'linear',
@@ -120,11 +121,11 @@ export function WaterTempChart({ data }: WaterTemperatureChartProps) {
                 enter: {
                   strokeWidth: { value: 4 },
                   fill: { scale: 'color', field: 'station' },
-                  x: { scale: 'x', field: 'month' },
+                  x: { scale: 'x', field: 'timestamp' },
                   y: { scale: 'y', field: 'delta' },
                   tooltip: {
                     signal:
-                      "{ 'Δ Temp (°C)': format(datum.delta, ',.3f'), 'Month': utcFormat(datum.month, '%B %Y'), 'Station': datum.station }",
+                      "{ 'Δ Temp (°C)': format(datum.delta, ',.3f'), 'Month': utcFormat(datum.timestamp, '%B %Y'), 'Station': datum.station }",
                   },
                   defined: {
                     signal: 'isNumber(datum.delta)',
@@ -154,7 +155,7 @@ export function WaterTempChart({ data }: WaterTemperatureChartProps) {
                   fill: { value: 'transparent' },
                   tooltip: {
                     signal:
-                      "{ 'Month': utcFormat(datum.datum.month, '%B %Y'), 'Station': datum.datum.station, 'Δ Temp': format(datum.datum.delta, ',.3f') + '°C' }",
+                      "{ 'Month': utcFormat(datum.datum.timestamp, '%B %Y'), 'Station': datum.datum.station, 'Δ Temp': format(datum.datum.delta, ',.3f') + '°C' }",
                   },
                 },
               },
@@ -183,7 +184,7 @@ export function WaterTempChart({ data }: WaterTemperatureChartProps) {
                   encode: {
                     enter: {
                       strokeWidth: { value: 2 },
-                      x: { scale: 'x', field: 'month' },
+                      x: { scale: 'x', field: 'timestamp' },
                       y: { scale: 'y', field: 'delta' },
                       stroke: { scale: 'color', field: 'station' },
                       opacity: { value: 0.8 },

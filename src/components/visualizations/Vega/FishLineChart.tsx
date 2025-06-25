@@ -135,13 +135,13 @@ export function FishLineChart({ data, colors = BASE_COLORS }: LineChartProps) {
             {
               title: 'Station',
               type: 'symbol',
-              orient: 'top-right',
+              orient: 'top',
               fill: 'color',
             },
             {
               title: 'Species',
               strokeDash: 'variableScale',
-              orient: 'top-right',
+              orient: 'top',
               symbolType: 'stroke',
             },
           ],
