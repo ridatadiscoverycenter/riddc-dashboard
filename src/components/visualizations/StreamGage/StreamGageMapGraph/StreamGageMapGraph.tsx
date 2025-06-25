@@ -224,7 +224,8 @@ export function StreamGageMapGraph({
           </div>
         </div>
         <p>
-          Add stream gages to a time-series plot by clicking on the circle. Open the time series panel by clicking the arrow on the top right of the map.
+          Add stream gages to a time-series plot by clicking on the circle. Open the time series
+          panel by clicking the arrow on the top right of the map.
         </p>
         <div className="flex flex-col gap-1 w-full">
           <h3 className="text-base">Legend:</h3>
