@@ -15,13 +15,9 @@ export default function Home() {
     <FullBleedColumn className="gap-4 mb-8">
       <Hero className="full-bleed" />
       <p className="my-5">
-        The Rhode Island Data Discovery Center is a platform and Webtool that hosts datasets and
-        visualizations relating to the waterways of Rhode Island and the South Coast of New England.
-        This project is maintained by the{' '}
-        <ExternalLink href="https://ccv.brown.edu">
-          Center for Computation and Visualization
-        </ExternalLink>{' '}
-        at Brown University.
+        This webtool hosts datasets and visualizations relating to the waterways of Rhode Island and
+        the South Coast of New England. This project is maintained by the Rhode Island Data
+        Discovery Center.
       </p>
       <Header id="datasets" size="xl" variant="accent" className="w-full text-center scroll-mt-20">
         Explore our collection of present and historical data from Narragansett Bay
@@ -38,7 +34,7 @@ export default function Home() {
           </li>
         ))}
       </ul>
-      <Header size="xl" variant="accent" className="w-full text-center">
+      <Header size="lg" variant="impact" className="w-full text-center my-4">
         External Resources
       </Header>
       <ul className="grid sm:grid-cols-2 md:grid-cols-3 md:gap-8 gap-4 mb-4">
@@ -53,7 +49,7 @@ export default function Home() {
           </li>
         ))}
       </ul>
-      <Header id="about" size="lg" variant="impact" className="w-full text-center scroll-mt-20">
+      <Header id="about" size="xl" variant="accent" className="w-full text-center scroll-mt-20">
         About
       </Header>
       <p>
@@ -85,9 +81,7 @@ export default function Home() {
         {LEADERSHIP.map(({ name, affiliations }) => (
           <li key={name}>
             <Card className="bg-white/30 hover:bg-white/80 dark:bg-white/10 hover:dark:bg-white/30 flex flex-col py-5">
-              <Header size="sm" variant="accent">
-                {name}
-              </Header>
+              <Header size="sm">{name}</Header>
               {affiliations.map((affiliation) => (
                 <p key={affiliation}>{affiliation}</p>
               ))}
