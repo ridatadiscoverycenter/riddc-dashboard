@@ -77,7 +77,6 @@ export function DownloadBuoyDataForm<T extends Dataset>({
         label="Data Format"
         options={[...DATA_FORMATS]}
         onChange={(e) => setFormat((e as { value: DF }).value)}
-        dataset={dataset}
       />
       <Input
         type="submit"
