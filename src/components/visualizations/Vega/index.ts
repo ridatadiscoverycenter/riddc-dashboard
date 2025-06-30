@@ -6,3 +6,4 @@ export * from './MaBuoySummary';
 export * from './PlanktonSummary';
 export * from './RealTimeBuoySummary';
 export * from './FishTrawlSummary';
+export * from './OsomBuoySummary';

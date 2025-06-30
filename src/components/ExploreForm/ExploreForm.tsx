@@ -8,6 +8,7 @@ import {
   MA_BUOY_VARIABLES,
   REAL_TIME_BUOY_VARIABLES,
   PLANKTON_VARIABLES,
+  OSOM_VARIABLES,
 } from '@/utils/data/api/buoy';
 
 import { type Dataset } from '@/utils/data/api/buoy/types';
@@ -63,7 +64,11 @@ export function ExploreForm({
             ? `/datasets/massachusetts-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
             : dataset === 'plankton'
               ? `/datasets/plankton?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
-              : `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+              : dataset === 'real-time'
+                ? `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+                : dataset === 'osom'
+                  ? `/datasets/osom?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+                  : ''
       );
     },
     [selectedBuoys, selectedVars, startDate, endDate, dataset]
@@ -92,7 +97,11 @@ export function ExploreForm({
               ? [...MA_BUOY_VARIABLES]
               : dataset === 'plankton'
                 ? [...PLANKTON_VARIABLES]
-                : [...REAL_TIME_BUOY_VARIABLES]
+                : dataset === 'real-time'
+                  ? [...REAL_TIME_BUOY_VARIABLES]
+                  : dataset === 'osom'
+                    ? [...OSOM_VARIABLES]
+                    : ['~~None Found~~']
         }
         onChange={(newVars) =>
           setSelectedVars(
