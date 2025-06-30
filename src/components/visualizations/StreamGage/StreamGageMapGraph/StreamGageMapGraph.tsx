@@ -106,6 +106,7 @@ export function StreamGageMapGraph({
   }, [values]);
 
   const onLoad = React.useCallback<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (map: React.MutableRefObject<any>, loaded: boolean) => () => void
   >(
     (map, loaded) => {
@@ -166,6 +167,7 @@ export function StreamGageMapGraph({
         return unsetPointer(map, loaded);
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       function doHandleCircleClick(event: any) {
         return circleClickHandler(event, loaded, setSelectedBuoys);
       }
@@ -236,12 +238,14 @@ export function StreamGageMapGraph({
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setPointer(map: React.MutableRefObject<any>, loaded: boolean) {
   if (loaded) {
     map.current.getCanvas().style.cursor = 'pointer';
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function unsetPointer(map: React.MutableRefObject<any>, loaded: boolean) {
   if (loaded) {
     map.current.getCanvas().style.cursor = '';
@@ -249,6 +253,7 @@ function unsetPointer(map: React.MutableRefObject<any>, loaded: boolean) {
 }
 
 function circleClickHandler(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   event: any,
   loaded: boolean,
   setSelectedBuoys: React.Dispatch<React.SetStateAction<string[]>>
