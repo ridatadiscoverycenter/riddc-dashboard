@@ -67,7 +67,7 @@ export function ExploreForm({
               : dataset === 'real-time'
                 ? `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
                 : dataset === 'osom'
-                  ? `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+                  ? `/datasets/osom?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
                   : ''
       );
     },

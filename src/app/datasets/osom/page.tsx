@@ -7,7 +7,6 @@ import {
   ExternalLink,
   BuoyVariablesCard,
   BuoyLocationsMap,
-  Loading,
   OsomBuoySummary,
 } from '@/components';
 import { fetchWeatherData } from '@/utils/data';
@@ -99,8 +98,8 @@ async function PageWrapper({
           dataset="osom"
           dateBounds={{
             /* Subject to change? */
-            startDate: new Date('2017-05-26'),
-            endDate: new Date('2018-1-09'),
+            startDate: new Date('2006-01-01'),
+            endDate: new Date('2020-01-02'),
           }}
           init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
         />
@@ -114,28 +113,23 @@ async function PageWrapper({
 
 const OSOM_BUOY_ERROR_LINKS = [
   {
-    href: '/datasets/osom?example=oopsies',
-    description: 'Example Link 2!',
+    href: '/datasets/osom?buoys=bid102,bid13&vars=SalinitySurface&start=2019-12-25&end=2020-01-01',
+    description:
+      'Predicted surface salinity in Taunton and Phillipsdale between late 2019 and early 2020',
   },
   {
-    href: '/datasets/osom?example2=oopsies',
-    description: 'Example Link 2!',
+    href: '/datasets/osom?buoys=bid3&vars=WaterTempBottom,WaterTempSurface&start=2006-01-01&end=2007-01-01',
+    description: 'Predicted temperature in Conimicut Pt. during 2006',
   },
 ];
 
-/*
-const LINKS = {
-  NBFSMN: () => (
-    <ExternalLink href="https://dem.ri.gov/environmental-protection-bureau/water-resources/research-monitoring/narraganset-bay-assessment-fixed-site-monitoring">
-      Narragansett Bay Fixed Station Monitoring Network (NBFSMN)
-    </ExternalLink>
-  ),
-  MassDEP: () => (
-    <ExternalLink href="https://www.mass.gov/orgs/massachusetts-department-of-environmental-protections">
-      RIDEM-OWR
-    </ExternalLink>
-  ),
-};
-*/
-
-const DESCRIPTION = <p>Put a description here!</p>;
+const DESCRIPTION = (
+  <p>
+    The Ocean State Ocean Model (OSOM), developed in a collaboration between the University of Rhode
+    Island and Brown University, is an application of the Regional Ocean Modeling System (ROMS). The
+    model spans Rhode Island&apos;s major waterways: Narragansett Bay, Mt. Hope Bay, larger rivers, and
+    the Block Island Shelf circulation from Long Island to Nantucket. Data is available by the year
+    at 1.5 hour increments. As the model covers the entire Narragansett Bay, data is always
+    available at all buoy locations.
+  </p>
+);

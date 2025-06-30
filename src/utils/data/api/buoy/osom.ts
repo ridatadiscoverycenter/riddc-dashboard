@@ -106,11 +106,12 @@ function validateFetchedOsomBuoyData(
   }
 }
 
-function formatOsomBuoyData({ station_name, value, variable, units }: FetchedOsomBuoyData) {
+function formatOsomBuoyData({ station_name, value, variable, units, time }: FetchedOsomBuoyData) {
   return {
     units,
     variable,
     value,
+    time: new Date(time),
     stationName: station_name,
   };
 }
