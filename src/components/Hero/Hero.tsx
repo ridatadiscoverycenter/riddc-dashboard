@@ -12,20 +12,20 @@ export function Hero({ className }: { className: string }) {
         <ul className="flex flex-row justify-center gap-8 mt-4 sm:mt-8">
           <li>
             <Button
-              href="#about"
-              className="w-40 sm:px-[calc(theme(spacing.10)-1px)] sm:py-[calc(theme(spacing[5])-1px)] sm:text-xl"
-              color="cyan"
-            >
-              About
-            </Button>
-          </li>
-          <li>
-            <Button
               href="#datasets"
               className="w-40 sm:px-[calc(theme(spacing.10)-1px)] sm:py-[calc(theme(spacing[5])-1px)] sm:text-xl"
               color="cyan"
             >
               Explore Data
+            </Button>
+          </li>
+          <li>
+            <Button
+              href="#about"
+              className="w-40 sm:px-[calc(theme(spacing.10)-1px)] sm:py-[calc(theme(spacing[5])-1px)] sm:text-xl"
+              color="cyan"
+            >
+              About
             </Button>
           </li>
         </ul>

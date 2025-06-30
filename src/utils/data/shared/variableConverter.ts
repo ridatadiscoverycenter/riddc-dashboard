@@ -3,6 +3,7 @@ import {
   MaBuoyVariable,
   PlanktonVariable,
   RealTimeBuoyVariable,
+  OsomBuoyVariable,
 } from '../api/buoy';
 import { Dataset } from '../api/buoy/types';
 import { getTitleFromSpecies } from './fish';
@@ -271,6 +272,20 @@ const REAL_TIME_PAIRS: {
   { viewer: 'Solar Irradiance (Despike)', erddap: 'SolarIrradianceDespike' },
 ];
 
+const OSOM_VAR_LABELS = [
+  'Salinity (Bottom) (PSU)',
+  'Salinity (Surface) (PSU)',
+  'Temperature (Bottom) (°C)',
+  'Temperature (Surface) (°C)',
+] as const;
+
+const OSOM_PAIRS: { viewer: (typeof OSOM_VAR_LABELS)[number]; erddap: OsomBuoyVariable }[] = [
+  { viewer: 'Salinity (Bottom) (PSU)', erddap: 'SalinityBottom' },
+  { viewer: 'Salinity (Surface) (PSU)', erddap: 'SalinitySurface' },
+  { viewer: 'Temperature (Bottom) (°C)', erddap: 'WaterTempBottom' },
+  { viewer: 'Temperature (Surface) (°C)', erddap: 'WaterTempSurface' },
+];
+
 export function variableToLabel(v: string, dataset?: Dataset) {
   if (dataset === undefined) return v;
   if (dataset === 'fish') return getTitleFromSpecies(v);
@@ -283,7 +298,12 @@ export function variableToLabel(v: string, dataset?: Dataset) {
           ? PLANKTON_PAIRS.find((pair) => pair.erddap === v)
           : dataset === 'real-time'
             ? REAL_TIME_PAIRS.find((pair) => pair.erddap === v)
-            : undefined;
+            : dataset === 'osom'
+              ? OSOM_PAIRS.find((pair) => pair.erddap === v)
+              : undefined;
   if (foundPair !== undefined) return foundPair.viewer;
-  throw new Error(`No viewer variable for erddap variable "${v}" in dataset "${dataset}"`);
+  // Note (AM): Would it be better to log this and just return `v`?
+  // throw new Error(`No viewer variable for erddap variable "${v}" in dataset "${dataset}"`);
+  console.error(`No viewer variable for erddap variable "${v}" in dataset "${dataset}"`);
+  return v;
 }

@@ -2,6 +2,8 @@ import { PageProps } from '@/types';
 import {
   MA_BUOY_VARIABLES,
   MaBuoyVariable,
+  OSOM_VARIABLES,
+  OsomBuoyVariable,
   REAL_TIME_BUOY_VARIABLES,
   RealTimeBuoyVariable,
   RI_BUOY_VARIABLES,
@@ -123,6 +125,17 @@ export function parseParamSamples(variablesParam: Param): ParsedParam<string[]> 
   const variables = variablesParam.split(',');
   if (variables.every((vari) => FISH_SPECIES.includes(vari as RealTimeBuoyVariable)))
     return { error: undefined, value: variables };
+  return { error: ERROR_CODES.INVALID_VARS, value: undefined };
+}
+
+export function parseParamBuoyVariablesOsom(
+  variablesParam: Param
+): ParsedParam<OsomBuoyVariable[]> {
+  if (variablesParam === undefined) return { error: ERROR_CODES.NO_VARS, value: undefined };
+  if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
+  const variables = variablesParam.split(',');
+  if (variables.every((vari) => OSOM_VARIABLES.includes(vari as OsomBuoyVariable)))
+    return { error: undefined, value: variables as OsomBuoyVariable[] };
   return { error: ERROR_CODES.INVALID_VARS, value: undefined };
 }
 
