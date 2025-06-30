@@ -1,17 +1,15 @@
 import { Link } from '@/components';
+import { fetchInfo } from '@/utils/data/api/fish';
 
 type FishInfoProps = {
-  species: string;
-  info: {
-    sciName?: string;
-    href?: string;
-    sectionData?: { IUCN?: string; Classification?: { Classification: string } };
-    photoUrl?: string;
-  };
+  species: string | undefined;
 };
-export function FishInfoPanel({ species, info }: FishInfoProps) {
+
+export async function FishInfoPanel({ species }: FishInfoProps) {
+  if (species === undefined) throw new Error('No species defined');
+  const info = await fetchInfo(species);
   return (
-    <>
+    <div className="text-black">
       <h1 className="text-2xl font-header font-bold">{species}</h1>
       <div className="rounded-md border border-solid border-black">
         <div className="grid grid-cols-2 bg-blue-500 px-6 py-4">
@@ -50,6 +48,6 @@ export function FishInfoPanel({ species, info }: FishInfoProps) {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

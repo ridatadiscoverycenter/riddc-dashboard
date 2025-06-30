@@ -22,6 +22,7 @@ import {
 } from '@/utils/fns';
 import { PageProps } from '@/types';
 import { FishVariablesCard } from '@/components/visualizations/FishVariablesCard/FishVariablesCard';
+import { SpeciesList } from './SpeciesList';
 
 export default async function FishTrawl({ searchParams }: PageProps) {
   return (
@@ -92,7 +93,7 @@ async function PageWrapper({
               description={
                 typeof paramsOrError === 'string' ? undefined : (
                   <>
-                    This plot compares {makeCommaSepList(paramsOrError.vars)} between{' '}
+                    This plot compares <SpeciesList list={paramsOrError.vars}></SpeciesList> between{' '}
                     {paramsOrError.start.toLocaleDateString()} and{' '}
                     {paramsOrError.end.toLocaleDateString()} at{' '}
                     {makeCommaSepList(
@@ -100,8 +101,9 @@ async function PageWrapper({
                         (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
                       )
                     )}
-                    . You can hover over the lines to see more specific data. The weather data below
-                    is sourced from{' '}
+                    {/* . You can hover over the lines to see more specific data. The weather data below
+                    is sourced from{' '} */}
+                    {/* <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>. */}
                   </>
                 )
               }
