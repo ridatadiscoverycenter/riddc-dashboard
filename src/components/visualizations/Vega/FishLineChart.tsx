@@ -8,7 +8,6 @@ import { Sample } from '@/types';
 
 type LineChartProps = {
   data: Sample[];
-  colors?: string[];
 };
 
 function getGraphicWidth(size: Size | undefined) {
@@ -20,14 +19,8 @@ function getGraphicWidth(size: Size | undefined) {
   return 750;
 }
 
-const BASE_COLORS = ['#2e0d93', '#fd5925'];
-
-export function FishLineChart({ data, colors = BASE_COLORS }: LineChartProps) {
+export function FishLineChart({ data }: LineChartProps) {
   const size = useScreenSize();
-  const stations = React.useMemo(
-    () => Array.from(new Set(data.map((value) => value.station))),
-    [data]
-  );
   const variables = React.useMemo(
     () => Array.from(new Set(data.map((value) => value.title))),
     [data]
@@ -227,7 +220,7 @@ export function FishLineChart({ data, colors = BASE_COLORS }: LineChartProps) {
         },
       ],
     }),
-    [data, size]
+    [data, size, variables]
   );
   return (
     <>

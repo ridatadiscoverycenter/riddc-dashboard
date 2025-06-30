@@ -47,17 +47,6 @@ export async function FishVariablesCard({
       />
     );
   }
-  // console.log(
-  //   weatherData.filter(
-  //     (sample) =>
-  //       sample.year >= startYear &&
-  //       sample.year <= endYear &&
-  //       sample.level === 'Surface' &&
-  //       params.buoys.includes(sample.station)
-  //   )[168]
-  // );
-  console.log(fishData[239]);
-  console.log(weatherData[2823]);
 
   return (
     <>

@@ -6,6 +6,7 @@ import {
   DefaultBuoyPage,
   ExploreForm,
   FullBleedColumn,
+  Header,
   Link,
 } from '@/components';
 import { FishTrawlSummary } from '@/components/visualizations/Vega/';
@@ -14,6 +15,7 @@ import {
   ERROR_CODES,
   extractParams,
   fetchMulti,
+  makeCommaSepList,
   parseParamBuoyIds,
   parseParamDate,
   parseParamSamples,
@@ -60,7 +62,10 @@ async function PageWrapper({
   return (
     <FullBleedColumn>
       <div className="flex col-span-3 flex-col items-center justify-center">
-        <h2 className="font-header font-bold text-lg">Narragansett Bay Fish Trawl</h2>
+        <Header size="xl" variant="normal" className="mt-4">
+          Narragansett Bay Fish Trawl
+        </Header>
+        {/* <h2 className="font-header font-bold text-lg">Narragansett Bay Fish Trawl</h2> */}
         <p className="my-5">
           The University of Rhode Island Graduate School of Oceanography Fish Trawl Survey is a
           state funded survey of the bottom fish and invertebrate community in Narragansett Bay,
@@ -78,7 +83,7 @@ async function PageWrapper({
       </div>
       <div className="full-bleed ">
         <div className="grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-4 m-4">
-          <Card className="bg-clear-900 md:col-span-2 row-span-2 col-span-3 flex flex-col items-center justify-around gap-3">
+          <Card className="bg-white/90 md:col-span-2 col-span-3 row-span-2 flex flex-col items-center justify-around gap-3">
             <FishVariablesCard
               params={paramsOrError}
               data={summaryData}
@@ -97,7 +102,6 @@ async function PageWrapper({
                     )}
                     . You can hover over the lines to see more specific data. The weather data below
                     is sourced from{' '}
-                    <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
                   </>
                 )
               }
@@ -116,7 +120,7 @@ async function PageWrapper({
             <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
             <BuoyLocationsMap locations={buoyData} />
           </div>
-          <Card className="bg-clear-900 col-span-3 items-center">
+          <Card className="bg-white/90 col-span-3">
             <FishTrawlSummary
               data={summaryData}
               options={[
