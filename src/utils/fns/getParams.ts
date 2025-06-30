@@ -1,4 +1,4 @@
-import { PageProps, Sample } from '@/types';
+import { PageProps } from '@/types';
 import {
   MA_BUOY_VARIABLES,
   MaBuoyVariable,
