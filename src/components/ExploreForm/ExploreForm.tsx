@@ -10,6 +10,7 @@ import {
   PLANKTON_VARIABLES,
   OSOM_VARIABLES,
 } from '@/utils/data/api/buoy';
+import { FISH_SPECIES } from '@/utils/data/api/fish';
 
 import { type Dataset } from '@/utils/data/api/buoy/types';
 
@@ -68,7 +69,9 @@ export function ExploreForm({
                 ? `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
                 : dataset === 'osom'
                   ? `/datasets/osom?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
-                  : ''
+                  : dataset === 'fish'
+                    ? `/datasets/fish-trawl?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+                    : ''
       );
     },
     [selectedBuoys, selectedVars, startDate, endDate, dataset]
@@ -97,11 +100,13 @@ export function ExploreForm({
               ? [...MA_BUOY_VARIABLES]
               : dataset === 'plankton'
                 ? [...PLANKTON_VARIABLES]
-                : dataset === 'real-time'
-                  ? [...REAL_TIME_BUOY_VARIABLES]
-                  : dataset === 'osom'
-                    ? [...OSOM_VARIABLES]
-                    : ['~~None Found~~']
+                : dataset === 'fish'
+                  ? [...FISH_SPECIES]
+                  : dataset === 'real-time'
+                    ? [...REAL_TIME_BUOY_VARIABLES]
+                    : dataset === 'osom'
+                      ? [...OSOM_VARIABLES]
+                      : ['None Found']
         }
         onChange={(newVars) =>
           setSelectedVars(

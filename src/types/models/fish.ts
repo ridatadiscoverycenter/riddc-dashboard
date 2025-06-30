@@ -11,6 +11,7 @@ export type FetchedFishCoordinate = FishCoordinateBase & {
 
 export type FishCoordinate = FishCoordinateBase & {
   stationName: StationName;
+  buoyId: string;
 };
 
 export type TemperatureBase = {

@@ -6,6 +6,7 @@ import {
   OsomBuoyVariable,
 } from '../api/buoy';
 import { Dataset } from '../api/buoy/types';
+import { getTitleFromSpecies } from './fish';
 
 // Rhode Island Buoys
 const RI_VAR_LABELS = [
@@ -287,6 +288,7 @@ const OSOM_PAIRS: { viewer: (typeof OSOM_VAR_LABELS)[number]; erddap: OsomBuoyVa
 
 export function variableToLabel(v: string, dataset?: Dataset) {
   if (dataset === undefined) return v;
+  if (dataset === 'fish') return getTitleFromSpecies(v);
   const foundPair =
     dataset === 'ri'
       ? RI_PAIRS.find((pair) => pair.erddap === v)

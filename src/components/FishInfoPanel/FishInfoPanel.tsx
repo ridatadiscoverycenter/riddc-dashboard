@@ -9,7 +9,7 @@ type FishInfoProps = {
     photoUrl?: string;
   };
 };
-export default function FishInfoPanel({ species, info }: FishInfoProps) {
+export function FishInfoPanel({ species, info }: FishInfoProps) {
   return (
     <>
       <h1 className="text-2xl font-header font-bold">{species}</h1>
