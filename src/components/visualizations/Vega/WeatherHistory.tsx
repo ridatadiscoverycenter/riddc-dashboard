@@ -20,7 +20,7 @@ function getGraphicWidth(size: Size | undefined) {
   return 750;
 }
 
-export function WeatherHistory({ data, height = 150 }: WeatherHistoryProps) {
+export function OldWeatherHistory({ data, height = 150 }: WeatherHistoryProps) {
   const size = useScreenSize();
   const weatherHistorySpec = React.useMemo<VisualizationSpec>(
     () => ({
