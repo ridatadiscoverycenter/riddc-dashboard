@@ -65,12 +65,12 @@ export function ExploreForm({
             ? `/datasets/massachusetts-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
             : dataset === 'plankton'
               ? `/datasets/plankton?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
-              : dataset === 'real-time'
-                ? `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
-                : dataset === 'osom'
-                  ? `/datasets/osom?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
-                  : dataset === 'fish'
-                    ? `/datasets/fish-trawl?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+              : dataset === 'fish'
+                ? `/datasets/fish-trawl?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+                : dataset === 'real-time'
+                  ? `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+                  : dataset === 'osom'
+                    ? `/datasets/osom?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
                     : ''
       );
     },
@@ -106,7 +106,7 @@ export function ExploreForm({
                     ? [...REAL_TIME_BUOY_VARIABLES]
                     : dataset === 'osom'
                       ? [...OSOM_VARIABLES]
-                      : ['None Found']
+                      : ['~~None Found~~']
         }
         onChange={(newVars) =>
           setSelectedVars(
