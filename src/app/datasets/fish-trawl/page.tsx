@@ -21,7 +21,7 @@ import {
 import { PageProps } from '@/types';
 import { FishVariablesCard } from '@/components/visualizations/FishVariablesCard/FishVariablesCard';
 
-export default async function FishTrawl({ searchParams }) {
+export default async function FishTrawl({ searchParams }: PageProps) {
   return (
     <React.Suspense fallback={<DefaultBuoyPage description={DESCRIPTION} />}>
       <PageWrapper params={searchParams} errorLinks={[]} />
@@ -45,7 +45,7 @@ async function PageWrapper({
   const paramsOrError = extractParams(
     {
       buoys: parseParamBuoyIds(params ? params['buoys'] : undefined),
-      species: parseParamSamples(params ? params['vars'] : undefined),
+      vars: parseParamSamples(params ? params['vars'] : undefined),
       start: parseParamDate(params ? params['start'] : undefined, 'start'),
       end: parseParamDate(params ? params['end'] : undefined, 'end'),
     },
@@ -84,6 +84,23 @@ async function PageWrapper({
               data={summaryData}
               errorLinks={errorLinks}
               weatherData={temperatures}
+              description={
+                typeof paramsOrError === 'string' ? undefined : (
+                  <>
+                    This plot compares {makeCommaSepList(paramsOrError.vars)} between{' '}
+                    {paramsOrError.start.toLocaleDateString()} and{' '}
+                    {paramsOrError.end.toLocaleDateString()} at{' '}
+                    {makeCommaSepList(
+                      paramsOrError.buoys.map(
+                        (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
+                      )
+                    )}
+                    . You can hover over the lines to see more specific data. The weather data below
+                    is sourced from{' '}
+                    <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>.
+                  </>
+                )
+              }
             />
           </Card>
           <ExploreForm
