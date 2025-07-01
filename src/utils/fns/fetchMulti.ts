@@ -4,6 +4,7 @@
  * @param promises A map of promises that return any data type.
  * @returns A map with keys matched to resolved promises.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function fetchMulti<T extends Record<string, Promise<any>>>(
   promises: T
 ): Promise<{ [K in keyof T]: Awaited<T[K]> }> {
