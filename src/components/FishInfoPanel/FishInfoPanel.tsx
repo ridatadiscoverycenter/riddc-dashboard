@@ -1,4 +1,4 @@
-import { Link } from '@/components';
+import { Header, Link } from '@/components';
 
 type FishInfoProps = {
   species: string;
@@ -13,7 +13,7 @@ type FishInfoProps = {
 export function FishInfoPanel({ species, info }: FishInfoProps) {
   return (
     <>
-      <h1 className="text-2xl font-header font-bold">{species}</h1>
+      <Header size="lg">{species}</Header>
       <div className="rounded-md border border-solid border-black">
         <div className="grid grid-cols-2 bg-blue-500 px-6 py-4">
           <p className="justify-self-start">Species Info</p>
@@ -46,9 +46,7 @@ export function FishInfoPanel({ species, info }: FishInfoProps) {
               src={info.photoUrl}
               alt={`Picture of ${species}`}
             />
-          ) : (
-            ''
-          )}
+          ) : undefined}
         </div>
       </div>
     </>

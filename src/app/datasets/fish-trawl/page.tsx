@@ -5,6 +5,7 @@ import {
   Card,
   DefaultBuoyPage,
   ExploreForm,
+  ExternalLink,
   FullBleedColumn,
   Header,
   Link,
@@ -130,11 +131,33 @@ async function PageWrapper({
           </Card>
         </div>
       </div>
+      <div className="col-span-3 flex flex-col items-center justify-center">
+        <Header size="lg">About this Dataset</Header>
+        {DESCRIPTION}
+      </div>
     </FullBleedColumn>
   );
 }
 
-const DESCRIPTION = <p>desc</p>;
+const LINKS = {
+  URI: () => (
+    <ExternalLink href="https://web.uri.edu/gso/research/fish-trawl/">
+      University of Rhode Island Graduate School of Oceanography Fish Trawl Survey
+    </ExternalLink>
+  ),
+  fishTrawl: () => (
+    <ExternalLink href="https://web.uri.edu/gso/research/fish-trawl/data/">
+      Fish Trawl Data Page
+    </ExternalLink>
+  ),
+};
+
+const DESCRIPTION = (
+  <p>
+    The data available on this site has been compiled from the <LINKS.URI />. To cite this data, see{' '}
+    <LINKS.fishTrawl />
+  </p>
+);
 
 const ERROR_LINKS = [
   {
