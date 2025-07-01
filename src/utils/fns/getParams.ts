@@ -44,6 +44,7 @@ export const ERROR_CODES = {
  * @param missingDataErrorCodes A list of all "missing param" error codes for the required parameters.
  * @returns A map of correctly typed param data.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function extractParams<T extends Record<string, ParsedParam<any>>>(
   params: T,
   missingDataErrorCodes: string[]

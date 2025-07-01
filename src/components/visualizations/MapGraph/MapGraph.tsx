@@ -17,6 +17,7 @@ export function MapGraph({
   syncOpenState,
   className = '',
 }: React.PropsWithChildren<{
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onLoad: (map: React.MutableRefObject<any>, loaded: boolean) => (() => void) | void;
   graph: React.ReactNode;
   syncOpenState?: (open: boolean) => void;
