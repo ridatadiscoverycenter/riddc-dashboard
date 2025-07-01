@@ -91,29 +91,33 @@ export function WeatherHistory({ data }: WeatherHistoryProps) {
     [dates, avgTemp, maxTemp, minTemp, precipitation]
   );
   return (
-    <Line
-      // Note (AM): TS Check doesn't like this, but it's fine actually, don't let the computer fool you.
-      data={datasets}
-      options={{
-        //spanGaps: false,
-        plugins: {
-          filler: {
-            propagate: true,
+    <div className="h-80 w-full">
+      <Line
+        // Note (AM): TS Check doesn't like this, but it's fine actually, don't let the computer fool you.
+        data={datasets}
+        options={{
+          //spanGaps: false,
+          plugins: {
+            filler: {
+              propagate: true,
+            },
           },
-        },
-        scales: {
-          yTemp: {
-            type: 'linear',
-            display: true,
-            position: 'left',
+          scales: {
+            yTemp: {
+              type: 'linear',
+              display: true,
+              position: 'left',
+            },
+            yPrecip: {
+              type: 'linear',
+              display: true,
+              position: 'right',
+            },
           },
-          yPrecip: {
-            type: 'linear',
-            display: true,
-            position: 'right',
-          },
-        },
-      }}
-    />
+          responsive: true,
+          maintainAspectRatio: false,
+        }}
+      />
+    </div>
   );
 }
