@@ -2,12 +2,7 @@
 import React from 'react';
 import { Vega, VisualizationSpec } from 'react-vega';
 
-import type {
-  MaBuoySummaryData,
-  MaBuoyVariable,
-  OsomBuoyVariable,
-  OsomSummary,
-} from '@/utils/data/api/buoy';
+import type { OsomBuoyVariable, OsomSummary } from '@/utils/data/api/buoy';
 import { OSOM_VARIABLES } from '@/utils/data/api/buoy';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading, Select } from '@/components';

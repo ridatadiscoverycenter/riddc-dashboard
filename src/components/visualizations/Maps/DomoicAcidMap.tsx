@@ -140,6 +140,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
         map.current.on('click', () => {
           popup.remove();
         });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         map.current.on('click', 'da-buoys', (e: any) => {
           const station = stations.find((station) => {
             const { lng, lat } = e.lngLat;
