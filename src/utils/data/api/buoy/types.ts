@@ -80,7 +80,8 @@ export type BuoyDataset = {
   downsampled: boolean;
 };
 
-export type Dataset = 'ri' | 'ma' | 'real-time' | 'plankton' | 'osom';
+export type Dataset = 'ri' | 'ma' | 'real-time' | 'plankton' | 'fish' | 'osom';
+
 export type downloadDataHelper<T extends Dataset> = T extends 'ri'
   ? RiBuoyVariable[]
   : T extends 'ma'

@@ -30,7 +30,7 @@ export function FishTrawlSummary({ data, options }: FishTrawlSummaryProps) {
       description: 'Fish Trawl Summary Chart',
       background: 'transparent',
       width: getGraphicWidth(size),
-      height: 800,
+      height: 600,
       autosize: 'pad',
       data: [
         {

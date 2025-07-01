@@ -94,5 +94,34 @@ export async function fetchSpecies() {
   const samples = await fetchSamples();
   return Array.from(new Set(samples.map(({ species }) => species)))
     .sort()
+    .map((species) => getTitleFromSpecies(species))
     .map((species) => ({ value: species, label: getTitleFromSpecies(species) }));
 }
+
+export const FISH_SPECIES = [
+  'Alewife',
+  'Atlantic Herring',
+  'Bluefish',
+  'Butterfish',
+  'Cancer Crab',
+  'Cunner',
+  'Fourspot Flounder',
+  'Horseshoe Crab',
+  'Lady Crab',
+  'Little Skate',
+  'Lobster',
+  'Long Finned_squid',
+  'Longhorn Sculpin',
+  'Northern Searobin',
+  'Red Hake',
+  'Scup',
+  'Starfish',
+  'Silver Hake',
+  'Spider Crabs',
+  'Striped Searobin',
+  'Summer Flounder',
+  'Tautog',
+  'Weakfish',
+  'Windowpane Flounder',
+  'Winter Flounder',
+];
