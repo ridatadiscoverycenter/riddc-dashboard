@@ -68,8 +68,6 @@ export function FishVariables({ data }: FishDataProps) {
     });
   }, [datasets, varsInPlot, buoysInPlot, dates]);
 
-  console.log(dataGroups);
-
   return (
     <div className="h-80 w-full">
       <Line
