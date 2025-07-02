@@ -1,5 +1,5 @@
-import { Link } from '@/components';
 import { Info } from '@/types';
+import { Header, Link } from '@/components';
 
 type FishInfoProps = {
   species: Info | undefined;
@@ -9,7 +9,9 @@ export function FishInfoPanel({ species }: FishInfoProps) {
   if (species === undefined) throw new Error('No species defined');
   return (
     <div className="text-black">
-      <h1 className="text-2xl font-header font-bold">{species.name}</h1>
+      <Header size="lg" colorMode="light">
+        {species.name}
+      </Header>
       <div className="rounded-md border border-solid border-black">
         <div className="grid grid-cols-2 bg-blue-500 px-6 py-4">
           <p className="justify-self-start">Species Info</p>
@@ -42,9 +44,7 @@ export function FishInfoPanel({ species }: FishInfoProps) {
               src={species.photoUrl}
               alt={`Picture of ${species.name}`}
             />
-          ) : (
-            ''
-          )}
+          ) : undefined}
         </div>
       </div>
     </div>
