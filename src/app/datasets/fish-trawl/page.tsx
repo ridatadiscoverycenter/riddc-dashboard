@@ -5,6 +5,7 @@ import {
   Card,
   DefaultBuoyPage,
   ExploreForm,
+  ExternalLink,
   FullBleedColumn,
   Header,
   Link,
@@ -71,25 +72,23 @@ async function PageWrapper({
   console.log(fishInfo);
   return (
     <FullBleedColumn>
-      <div className="flex col-span-3 flex-col items-center justify-center">
-        <Header size="xl" variant="normal" className="mt-4">
-          Narragansett Bay Fish Trawl
-        </Header>
-        <p className="my-5">
-          The University of Rhode Island Graduate School of Oceanography Fish Trawl Survey is a
-          state funded survey of the bottom fish and invertebrate community in Narragansett Bay,
-          Rhode Island. The survey was initiated in 1959 by Charles J. Fish, founder and director of
-          the Narragansett Marine Laboratory, the precursor to the Graduate School of Oceanography.
-          The Fish Trawl Survey was developed to quantify the seasonal occurrences of migratory fish
-          populations, whereas scientists had previously relied on anecdotal information.
-        </p>
-        <p>
-          The heatmap below shows the abundance by year of the most commonly found fish in the
-          University of Rhode Island Graduate School of Oceanography Fish Trawl Survey. The icons
-          are sized and colored by abundance. To learn more about a species, select one from the{' '}
-          <Link href="#species-about">Explore Panel</Link>.
-        </p>
-      </div>
+      <Header size="xl" variant="normal" className="mt-4">
+        Narragansett Bay Fish Trawl
+      </Header>
+      <p className="my-5">
+        The University of Rhode Island Graduate School of Oceanography Fish Trawl Survey is a state
+        funded survey of the bottom fish and invertebrate community in Narragansett Bay, Rhode
+        Island. The survey was initiated in 1959 by Charles J. Fish, founder and director of the
+        Narragansett Marine Laboratory, the precursor to the Graduate School of Oceanography. The
+        Fish Trawl Survey was developed to quantify the seasonal occurrences of migratory fish
+        populations, whereas scientists had previously relied on anecdotal information.
+      </p>
+      <p>
+        The heatmap below shows the abundance by year of the most commonly found fish in the
+        University of Rhode Island Graduate School of Oceanography Fish Trawl Survey. The icons are
+        sized and colored by abundance. To learn more about a species, select one from the{' '}
+        <Link href="#species-about">Explore Panel</Link>.
+      </p>
       <div className="full-bleed ">
         <div className="grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-4 m-4">
           <Card className="bg-white/90 md:col-span-2 col-span-3 row-span-2 flex flex-col items-center justify-around gap-3">
@@ -140,11 +139,33 @@ async function PageWrapper({
           </Card>
         </div>
       </div>
+      <div className="col-span-3 flex flex-col items-center justify-center">
+        <Header size="lg">About this Dataset</Header>
+        {DESCRIPTION}
+      </div>
     </FullBleedColumn>
   );
 }
 
-const DESCRIPTION = <p>desc</p>;
+const LINKS = {
+  URI: () => (
+    <ExternalLink href="https://web.uri.edu/gso/research/fish-trawl/">
+      University of Rhode Island Graduate School of Oceanography Fish Trawl Survey
+    </ExternalLink>
+  ),
+  fishTrawl: () => (
+    <ExternalLink href="https://web.uri.edu/gso/research/fish-trawl/data/">
+      Fish Trawl Data Page
+    </ExternalLink>
+  ),
+};
+
+const DESCRIPTION = (
+  <p>
+    The data available on this site has been compiled from the <LINKS.URI />. To cite this data, see{' '}
+    <LINKS.fishTrawl />
+  </p>
+);
 
 const ERROR_LINKS = [
   {
