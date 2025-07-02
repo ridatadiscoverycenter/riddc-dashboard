@@ -5,7 +5,6 @@ import React from 'react';
 import { GraphErrorPanel, WaterTempChart } from '@/components';
 import { ERROR_CODES } from '@/utils/fns';
 import { Sample, Temperature } from '@/types';
-import { FishLineChart } from '../Vega/FishLineChart';
 import { FishVariables } from '../FishVariables';
 
 type FishVariablesProps = {
@@ -53,7 +52,6 @@ export async function FishVariablesCard({
     <>
       <p className="text-black">{description}</p>
       <div className="flex-1 flex flex-col justify-start items-start">
-        <FishLineChart data={fishData} />
         <FishVariables data={fishData} />
         <WaterTempChart
           data={weatherData.filter(

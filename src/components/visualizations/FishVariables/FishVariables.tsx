@@ -1,33 +1,20 @@
 'use client';
 import React from 'react';
-import { compareAsc, formatDate } from 'date-fns';
+
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
-  CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
   Title,
   Tooltip,
-  BarElement,
   Legend,
-  TimeScale,
 } from 'chart.js';
 
 import { groupBy } from '@/utils/fns';
 
-ChartJS.register(
-  //   TimeScale,
-  //   CategoryScale,
-  //   BarElement,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const LINE_DASH_OPTIONS = [[], [1, 2], [2, 2], [4, 1]];
 
@@ -37,10 +24,10 @@ const LINE_COLOR_OPTIONS = [
 ];
 
 type FishDataAbstract = {
-  value: number | undefined;
   station: string;
-  year: string;
-  variable: string;
+  year: number;
+  species: string;
+  abun: number;
 };
 
 type FishDataProps = {
@@ -51,18 +38,42 @@ export function FishVariables({ data }: FishDataProps) {
   const { dates, datasets } = React.useMemo(() => {
     return {
       dates: Array.from(new Set(data.map(({ year }) => year))),
-      datasets: groupBy(data, ({ variable, station }) => `${station}~${variable}`),
+      datasets: groupBy(data, ({ species, station }) => `${station}~${species}`),
     };
-  }, []);
-  console.log(dates, datasets);
+  }, [data]);
+
+  const buoysInPlot = React.useMemo(() => getBuoysFromDatasetList(datasets), [datasets]);
+  const varsInPlot = React.useMemo(() => getVariablesFromDatasetList(datasets), [datasets]);
+
+  const dataGroups = React.useMemo(() => {
+    const group = Object.entries(datasets);
+    return group.map(([key, data]) => {
+      const { color, dash } = getStylesForGroup(
+        varsInPlot,
+        buoysInPlot,
+        key as `${string}~${string}`
+      );
+      const dataWithBlanks = Array.from(Array(dates.length), (_, i) => dates[i]).map(
+        (date) => data.find(({ year }) => year === date)?.abun
+      );
+      return {
+        label: key,
+        data: dataWithBlanks,
+        borderColor: color.border,
+        backgroundColor: color.background,
+        cubicInterpolationMode: 'monotone',
+        borderDash: dash,
+        pointStyle: false,
+      };
+    });
+  }, [datasets, varsInPlot, buoysInPlot, dates]);
+
+  console.log(dataGroups);
 
   return (
     <div className="h-80 w-full">
       <Line
-        data={{
-          labels: dates.map((date) => formatDate(date, 'P')),
-          datasets: datasets as any,
-        }}
+        data={{ labels: dates, datasets: dataGroups }}
         options={{
           responsive: true,
           maintainAspectRatio: false,
@@ -70,4 +81,34 @@ export function FishVariables({ data }: FishDataProps) {
       />
     </div>
   );
+}
+
+function getBuoysFromDatasetList(datasets: Record<string | number, FishDataAbstract[]>) {
+  const stations = Object.keys(datasets).map((key) => key.split('~')[0]);
+  return stations;
+}
+
+function getVariablesFromDatasetList(datasets: Record<string | number, FishDataAbstract[]>) {
+  const species = Object.keys(datasets).map((key) => key.split('~')[1]);
+  return species;
+}
+
+function getStylesForGroup(
+  variables: string[],
+  stationNames: string[],
+  key: `${string}~${string}`
+) {
+  const [stationNameInKey, variableInKey] = key.split('~');
+  const stationNameIndex = stationNames.findIndex((name) => name === (stationNameInKey || ''));
+  const variableIndex = variables.findIndex((variable) => variable === (variableInKey || ''));
+  return {
+    color:
+      stationNameIndex < 0 || stationNameIndex >= LINE_COLOR_OPTIONS.length
+        ? { border: 'rgba(0, 0, 0, 0.5)', background: 'rgba(0, 0, 0, 0.2)' }
+        : LINE_COLOR_OPTIONS[stationNameIndex],
+    dash:
+      variableIndex < 0 || variableIndex >= LINE_DASH_OPTIONS.length
+        ? []
+        : LINE_DASH_OPTIONS[variableIndex],
+  };
 }
