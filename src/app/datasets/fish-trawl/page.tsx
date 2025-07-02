@@ -45,6 +45,14 @@ async function PageWrapper({
     temperatures: fetchTemperatures(),
   });
 
+  // TODO: should probably add a daterange to the api
+  const minYear = summaryData.reduce((previous, current) => {
+    return current.year < previous.year ? current : previous;
+  }).year;
+  const maxYear = summaryData.reduce((previous, current) => {
+    return current.year > previous.year ? current : previous;
+  }).year;
+
   const paramsOrError = extractParams(
     {
       buoys: parseParamBuoyIds(params ? params['buoys'] : undefined),
@@ -109,8 +117,8 @@ async function PageWrapper({
             buoys={buoyData}
             dataset="fish"
             dateBounds={{
-              startDate: '1950',
-              endDate: '2018',
+              startDate: minYear.toString(),
+              endDate: maxYear.toString(),
             }}
             init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
           />
