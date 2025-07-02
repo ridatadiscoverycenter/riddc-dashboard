@@ -20,8 +20,8 @@ type InitialFormData = {
 };
 
 type dateBound = {
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | string;
+  endDate: Date | string;
 };
 
 type ExploreFormProps = {
@@ -31,13 +31,22 @@ type ExploreFormProps = {
   init?: InitialFormData;
 };
 
+type DateInputProps = {
+  date: Date | string;
+  dateBounds: dateBound;
+  setDate: React.Dispatch<React.SetStateAction<Date | string>>;
+};
+
 const DEFAULT_INITIAL_DATA: InitialFormData = {
   buoys: [],
   vars: [],
 };
 
-// TODO: make this take in the buoy viewer variable?
-// TODO: plankton only has one buoy -- how to handle?
+function handleDate(date: Date | string) {
+  if (typeof date === 'string') return date;
+  return date.toISOString().split('T')[0];
+}
+
 export function ExploreForm({
   buoys,
   dataset,
@@ -56,8 +65,8 @@ export function ExploreForm({
       event.preventDefault();
       const buoys = selectedBuoys.length === 0 ? '' : `buoys=${selectedBuoys.join(',')}`;
       const vars = selectedVars.length === 0 ? '' : `vars=${selectedVars.join(',')}`;
-      const start = `start=${startDate.toISOString().split('T')[0]}`;
-      const end = `end=${endDate.toISOString().split('T')[0]}`;
+      const start = `start=${handleDate(startDate)}`;
+      const end = `end=${handleDate(endDate)}`;
       window.location.replace(
         dataset === 'ri'
           ? `/datasets/rhode-island-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
@@ -117,22 +126,10 @@ export function ExploreForm({
       />
       <div className="w-full flex lg:flex-row flex-col gap-2 [&>label]:flex-1">
         <Label label="Start">
-          <Input
-            value={startDate.toISOString().split('T')[0]}
-            min={dateBounds.startDate.toISOString().split('T')[0]}
-            max={dateBounds.endDate.toISOString().split('T')[0]}
-            onChange={(e) => setStartDate(new Date(e.target.value))}
-            type="date"
-          />
+          <DateInput date={startDate} dateBounds={dateBounds} setDate={setStartDate} />
         </Label>
         <Label label="End">
-          <Input
-            value={endDate.toISOString().split('T')[0]}
-            min={dateBounds.startDate.toISOString().split('T')[0]}
-            max={dateBounds.endDate.toISOString().split('T')[0]}
-            onChange={(e) => setEndDate(new Date(e.target.value))}
-            type="date"
-          />
+          <DateInput date={endDate} dateBounds={dateBounds} setDate={setEndDate} />
         </Label>
       </div>
       <Input
@@ -141,5 +138,29 @@ export function ExploreForm({
         className="bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 drop-shadow-md hover:drop-shadow-lg focus:drop-shadow-lg transition duration-500"
       />
     </Form>
+  );
+}
+
+function DateInput({ date, dateBounds, setDate }: DateInputProps) {
+  if (typeof date === 'string') {
+    return (
+      <Input
+        value={handleDate(date)}
+        min={handleDate(dateBounds.startDate)}
+        max={handleDate(dateBounds.endDate)}
+        onChange={(e) => setDate(e.target.value)}
+        type="number"
+        step="1"
+      />
+    );
+  }
+  return (
+    <Input
+      value={handleDate(date)}
+      min={handleDate(dateBounds.startDate)}
+      max={handleDate(dateBounds.endDate)}
+      onChange={(e) => setDate(new Date(e.target.value))}
+      type="date"
+    />
   );
 }
