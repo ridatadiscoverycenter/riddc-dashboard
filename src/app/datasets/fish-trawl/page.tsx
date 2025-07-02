@@ -10,7 +10,12 @@ import {
   Link,
 } from '@/components';
 import { FishTrawlSummary } from '@/components/visualizations/Vega/';
-import { fetchCoordinates, fetchSamples, fetchTemperatures } from '@/utils/data/api/fish';
+import {
+  fetchCoordinates,
+  fetchInfo,
+  fetchSamples,
+  fetchTemperatures,
+} from '@/utils/data/api/fish';
 import {
   ERROR_CODES,
   extractParams,
@@ -59,7 +64,11 @@ async function PageWrapper({
       ERROR_CODES.MISSING_END_DATE,
     ]
   );
-
+  const fishInfo =
+    typeof paramsOrError !== 'string'
+      ? await Promise.all(paramsOrError.vars.map(async (v) => await fetchInfo(v)))
+      : [];
+  console.log(fishInfo);
   return (
     <FullBleedColumn>
       <div className="flex col-span-3 flex-col items-center justify-center">
@@ -92,7 +101,7 @@ async function PageWrapper({
               description={
                 typeof paramsOrError === 'string' ? undefined : (
                   <>
-                    This plot compares <SpeciesList list={paramsOrError.vars}></SpeciesList> between{' '}
+                    The upper plot compares <SpeciesList list={fishInfo}></SpeciesList> between{' '}
                     {paramsOrError.start.toLocaleDateString()} and{' '}
                     {paramsOrError.end.toLocaleDateString()} at{' '}
                     {makeCommaSepList(
@@ -100,9 +109,8 @@ async function PageWrapper({
                         (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
                       )
                     )}
-                    {/* . You can hover over the lines to see more specific data. The weather data below
-                    is sourced from{' '} */}
-                    {/* <ExternalLink href="https://www.rcc-acis.org/">NOAA</ExternalLink>. */}
+                    . The lower plot shows surface water temperature deviations from the
+                    seasonally-adjusted mean.
                   </>
                 )
               }

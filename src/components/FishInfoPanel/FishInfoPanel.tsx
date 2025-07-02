@@ -1,22 +1,21 @@
 import { Link } from '@/components';
-import { fetchInfo } from '@/utils/data/api/fish';
+import { Info } from '@/types';
 
 type FishInfoProps = {
-  species: string | undefined;
+  species: Info | undefined;
 };
 
-export async function FishInfoPanel({ species }: FishInfoProps) {
+export function FishInfoPanel({ species }: FishInfoProps) {
   if (species === undefined) throw new Error('No species defined');
-  const info = await fetchInfo(species);
   return (
     <div className="text-black">
-      <h1 className="text-2xl font-header font-bold">{species}</h1>
+      <h1 className="text-2xl font-header font-bold">{species.name}</h1>
       <div className="rounded-md border border-solid border-black">
         <div className="grid grid-cols-2 bg-blue-500 px-6 py-4">
           <p className="justify-self-start">Species Info</p>
           <p className="justify-self-end">
-            {info.href ? (
-              <Link href={info.href.replace('Summary', 'summary')}>Source: FishBase</Link>
+            {species.href ? (
+              <Link href={species.href.replace('Summary', 'summary')}>Source: FishBase</Link>
             ) : (
               'Source: FishBase'
             )}
@@ -26,22 +25,22 @@ export async function FishInfoPanel({ species }: FishInfoProps) {
           <div className="col-span-2 space-y-2">
             <p>
               <strong>Scientific Name: </strong>
-              <em>{info.sciName || 'Unknown'}</em>
+              <em>{species.sciName || 'Unknown'}</em>
             </p>
             <p>
               <strong>IUCN Status: </strong>
-              {info.sectionData?.IUCN || 'Unknown'}
+              {species.sectionData?.IUCN || 'Unknown'}
             </p>
             <p>
               <strong>Classification: </strong>
-              {info.sectionData?.Classification?.Classification || 'Unknown'}
+              {species.sectionData?.Classification?.Classification || 'Unknown'}
             </p>
           </div>
-          {info.photoUrl ? (
+          {species.photoUrl ? (
             <img
               className="col-span-1 rounded-md self-center justify-self-end"
-              src={info.photoUrl}
-              alt={`Picture of ${species}`}
+              src={species.photoUrl}
+              alt={`Picture of ${species.name}`}
             />
           ) : (
             ''

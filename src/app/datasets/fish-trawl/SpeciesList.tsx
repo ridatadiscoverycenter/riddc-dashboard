@@ -2,18 +2,21 @@
 import React from 'react';
 import { Modal } from '@/components';
 import { FishInfoPanel } from '@/components/FishInfoPanel';
+import { Info } from '@/types';
 
 type ModalLaunchProps = {
-  item: string | undefined;
+  item: Info;
+};
+
+type SpeciesListProps = {
+  list: Info[];
 };
 
 function ModalLauncher({ item }: ModalLaunchProps) {
-  console.log(item);
   const [open, setOpen] = React.useState(false);
-
   return (
     <>
-      <button onClick={() => setOpen(true)}>{item}</button>
+      <button onClick={() => setOpen(true)}>{item.name}</button>
       <Modal open={open} setOpen={setOpen}>
         <FishInfoPanel species={item} />
       </Modal>
@@ -22,7 +25,7 @@ function ModalLauncher({ item }: ModalLaunchProps) {
 }
 
 //right now acting like this is a list of species labels
-export function SpeciesList({ list }: { list: string[] }) {
+export function SpeciesList({ list }: SpeciesListProps) {
   if (list.length === 0) return '';
   if (list.length === 1) return <ModalLauncher item={list[0]} />;
   if (list.length === 2)
@@ -33,6 +36,8 @@ export function SpeciesList({ list }: { list: string[] }) {
     );
   const listCopy = [...list];
   const last = listCopy.pop();
+
+  if (last === undefined) throw new Error('Invalid fish');
 
   return (
     <>
