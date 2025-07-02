@@ -16,7 +16,9 @@ function ModalLauncher({ item }: ModalLaunchProps) {
   const [open, setOpen] = React.useState(false);
   return (
     <>
-      <button onClick={() => setOpen(true)}>{item.name}</button>
+      <button className="underline text-teal-800 hover:text-teal-500" onClick={() => setOpen(true)}>
+        {item.name}
+      </button>
       <Modal open={open} setOpen={setOpen}>
         <FishInfoPanel species={item} />
       </Modal>
