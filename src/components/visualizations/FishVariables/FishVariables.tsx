@@ -73,6 +73,7 @@ export function FishVariables({ data }: FishDataProps) {
   return (
     <div className="h-80 w-full">
       <Line
+        // @ts-expect-error cubicInterpolationMode gives a ts check error here even when correct
         data={{ labels: dates, datasets: dataGroups }}
         options={{
           responsive: true,
