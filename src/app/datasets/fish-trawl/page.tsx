@@ -109,8 +109,8 @@ async function PageWrapper({
             buoys={buoyData}
             dataset="fish"
             dateBounds={{
-              startDate: new Date('1959-01-01'),
-              endDate: new Date('2018-12-31'),
+              startDate: '1950',
+              endDate: '2018',
             }}
             init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
           />
