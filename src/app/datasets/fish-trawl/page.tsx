@@ -69,7 +69,7 @@ async function PageWrapper({
     typeof paramsOrError !== 'string'
       ? await Promise.all(paramsOrError.vars.map(async (v) => await fetchInfo(v)))
       : [];
-  console.log(fishInfo);
+
   return (
     <FullBleedColumn>
       <Header size="xl" variant="normal" className="mt-4">
