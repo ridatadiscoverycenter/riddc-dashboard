@@ -112,7 +112,7 @@ export function WeatherHistory({ data }: WeatherHistoryProps) {
               type: 'linear',
               display: true,
               position: 'right',
-              title: { display: true, text: "Preciptiation in Units", },
+              title: { display: true, text: 'Preciptiation in Units' },
             },
           },
           responsive: true,

@@ -78,7 +78,7 @@ export function BuoyVariables({ data, dataset }: BuoyVariablesProps) {
       const dataWithBlanks = Array.from(Array(dates.length), (_, i) => dates[i]).map(
         (date) => data.find(({ time }) => time.valueOf() === date.valueOf())?.value
       );
-      const [stationName, variable] = key.split("~");
+      const [stationName, variable] = key.split('~');
       return {
         label: `${stationName} ~ ${variableToLabel(variable, dataset)}`,
         data: dataWithBlanks,
