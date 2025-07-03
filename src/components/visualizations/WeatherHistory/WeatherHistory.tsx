@@ -94,7 +94,8 @@ export function WeatherHistory({ data }: WeatherHistoryProps) {
     <div className="h-80 w-full">
       <Line
         // Note (AM): TS Check doesn't like this, but it's fine actually, don't let the computer fool you.
-        data={datasets}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        data={datasets as any}
         options={{
           //spanGaps: false,
           plugins: {
