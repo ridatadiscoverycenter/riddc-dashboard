@@ -97,7 +97,6 @@ export function WeatherHistory({ data }: WeatherHistoryProps) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         data={datasets as any}
         options={{
-          //spanGaps: false,
           plugins: {
             filler: {
               propagate: true,
