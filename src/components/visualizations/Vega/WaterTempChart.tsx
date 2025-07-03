@@ -5,6 +5,7 @@ import { Vega, VisualizationSpec } from 'react-vega';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading } from '@/components';
 import { Temperature } from '@/types';
+import { movingAvg } from '@/utils/data/api/fish/downSample';
 
 type WaterTemperatureChartProps = {
   data: Temperature[];
@@ -24,6 +25,7 @@ function getGraphicWidth(size: Size | undefined) {
 
 export function WaterTempChart({ data }: WaterTemperatureChartProps) {
   const size = useScreenSize();
+  console.log(movingAvg(data, 10));
 
   const waterTempSpec = React.useMemo<VisualizationSpec>(
     () => ({
