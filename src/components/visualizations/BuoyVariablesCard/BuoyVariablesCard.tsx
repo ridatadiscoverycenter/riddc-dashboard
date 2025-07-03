@@ -14,7 +14,6 @@ import type {
 } from '@/utils/data/api/buoy';
 import { ERROR_CODES } from '@/utils/fns';
 import type { Dataset } from '@/utils/data/api/buoy/types';
-import { a } from 'framer-motion/client';
 
 type BuoyVariablesProps = {
   params: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
