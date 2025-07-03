@@ -31,14 +31,14 @@ import { Temperature } from '@/types';
 //   return results;
 //     }
 
-export function movingAvg(mArray, mRange) {
+export function movingAvg(mArray: Temperature[], mRange: number) {
   const k = 2 / (mRange + 1);
   // first item is just the same as the first item in the input
-  const emaArray = [mArray[0].delta];
+  const emaArray = [{...mArray[0], avg: mArray[0].delta}];
   // for the rest of the items, they are computed with the previous one
   for (let i = 1; i < mArray.length; i++) {
-    emaArray.push(mArray[i].delta * k + emaArray[i - 1] * (1 - k));
+    emaArray.push({...mArray[i], avg: mArray[i].delta * k + emaArray[i - 1].avg * (1 - k)});
   }
-  console.log(mArray.length, emaArray.length);
+
   return emaArray;
 }

@@ -25,7 +25,7 @@ function getGraphicWidth(size: Size | undefined) {
 
 export function WaterTempChart({ data }: WaterTemperatureChartProps) {
   const size = useScreenSize();
-  console.log(movingAvg(data, 10));
+  const avgDelta = movingAvg(data, 10);
 
   const waterTempSpec = React.useMemo<VisualizationSpec>(
     () => ({
