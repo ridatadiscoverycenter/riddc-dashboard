@@ -13,6 +13,7 @@ import {
 } from 'chart.js';
 
 import { groupBy } from '@/utils/fns';
+import { getTitleFromSpecies } from '@/utils/data/shared';
 
 ChartJS.register(LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -57,7 +58,7 @@ export function FishVariables({ data }: FishDataProps) {
         (date) => data.find(({ year }) => year === date)?.abun
       );
       return {
-        label: key,
+        label: `${getTitleFromSpecies(key.split('~')[1])} at ${key.split('~')[0]}`,
         data: dataWithBlanks,
         borderColor: color.border,
         backgroundColor: color.background,
