@@ -49,7 +49,6 @@ export async function BuoyVariablesCard({
   }
 
   const buoyData = await buoyDataFetcher(params.buoys, params.vars, params.start, params.end);
-  console.log({ buoyData });
 
   // If no data was found, display an error.
   if (buoyData.length === 0) {
@@ -77,7 +76,7 @@ export async function BuoyVariablesCard({
         />
       }
     >
-      <BuoyVariables data={buoyData} height={200} />
+      <BuoyVariables data={buoyData} dataset={dataset} />
     </DataGraph>
   );
 }
