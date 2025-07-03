@@ -12,15 +12,15 @@ import {
   Tooltip,
   BarElement,
   Legend,
-  Filler,
   TimeScale,
 } from 'chart.js';
 
 import { groupBy } from '@/utils/fns';
+import { variableToLabel } from '@/utils/data/shared/variableConverter';
+import { Dataset } from '@/utils/data/api/buoy/types';
 
 ChartJS.register(
   TimeScale,
-  Filler,
   CategoryScale,
   BarElement,
   LinearScale,
@@ -50,9 +50,10 @@ type BuoyDataAbstract = {
 
 type BuoyVariablesProps = {
   data: BuoyDataAbstract[];
+  dataset: Dataset;
 };
 
-export function BuoyVariables({ data }: BuoyVariablesProps) {
+export function BuoyVariables({ data, dataset }: BuoyVariablesProps) {
   const { dates, datasets } = React.useMemo(() => {
     const sortedData = data.sort(({ time: time1 }, { time: time2 }) => compareAsc(time1, time2));
     return {
@@ -77,8 +78,9 @@ export function BuoyVariables({ data }: BuoyVariablesProps) {
       const dataWithBlanks = Array.from(Array(dates.length), (_, i) => dates[i]).map(
         (date) => data.find(({ time }) => time.valueOf() === date.valueOf())?.value
       );
+      const [stationName, variable] = key.split("~");
       return {
-        label: key,
+        label: `${stationName} ~ ${variableToLabel(variable, dataset)}`,
         data: dataWithBlanks,
         borderColor: color.border,
         backgroundColor: color.background,

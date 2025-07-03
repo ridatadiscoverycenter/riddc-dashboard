@@ -76,7 +76,7 @@ export async function BuoyVariablesCard({
         />
       }
     >
-      <BuoyVariables data={buoyData} />
+      <BuoyVariables data={buoyData} dataset={dataset} />
     </DataGraph>
   );
 }
