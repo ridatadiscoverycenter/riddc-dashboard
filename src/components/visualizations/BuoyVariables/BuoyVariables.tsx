@@ -21,7 +21,7 @@ import { variableToLabel } from '@/utils/data/shared/variableConverter';
 import { Dataset } from '@/utils/data/api/buoy/types';
 
 ChartJS.register(
-  BarController, 
+  BarController,
   TimeScale,
   CategoryScale,
   BarElement,
