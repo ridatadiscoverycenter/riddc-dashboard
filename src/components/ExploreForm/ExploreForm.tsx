@@ -148,7 +148,7 @@ export function ExploreForm({
         <Label label="Start">
           <DatePicker
             selected={startDate}
-            onChange={(date) => date !== null && setEndDate(date)} // this seems bad but i keep getting a lint error that I want to think about later
+            onChange={(date) => date !== null && setStartDate(date)} // this seems bad but i keep getting a lint error that I want to think about later
             minDate={dateBounds.startDate}
             maxDate={dateBounds.endDate}
             showYearPicker={mode === 'year'}
