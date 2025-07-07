@@ -1,0 +1,31 @@
+.calendar-class {
+  .react-datepicker__year-wrapper {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    max-width: 200px;
+    /* gap: 12px;
+    row-gap: 3px; */
+  }
+  /* .react-datepicker__year-text {
+    width: 3rem;
+  } */
+}
+
+.react-datapicker-year {
+    align-items: center;
+    background: none;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    top: 16px;
+    padding: 0;
+    border: none;
+    z-index: 1;
+    height: 32px;
+    width: 32px;
+    text-indent: -999em;
+    overflow: hidden;
+    overflow-x: hidden;
+}
