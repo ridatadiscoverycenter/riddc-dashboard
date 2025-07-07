@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { Label, Input, Form, Select } from '@/components';
@@ -16,6 +15,7 @@ import { FISH_SPECIES } from '@/utils/data/api/fish';
 
 import { type Dataset } from '@/utils/data/api/buoy/types';
 import { variableToLabel } from '@/utils/data/shared/variableConverter';
+import { CustomDatePicker } from '../CustomDatePicker/CustomDatePicker';
 
 type InitialFormData = {
   buoys: string[];
@@ -146,26 +146,19 @@ export function ExploreForm({
       />
       <div className="w-full flex lg:flex-row flex-col gap-2 [&>label]:flex-1">
         <Label label="Start">
-          <DatePicker
+          <CustomDatePicker
             selected={startDate}
-            onChange={(date) => date !== null && setStartDate(date)} // this seems bad but i keep getting a lint error that I want to think about later
-            minDate={dateBounds.startDate}
-            maxDate={dateBounds.endDate}
-            showYearPicker={mode === 'year'}
-            dateFormat={mode === 'year' ? 'yyyy' : 'MM/dd/yyyy'}
-            showMonthYearDropdown
-            className="p-2 rounded-md shadow-sm border-none focus:outline-none focus:border-2 focus:border-solid g-slate-200 dark:bg-slate-800 border-teal-400 dark:border-slate-600 w-full"
+            setDate={setStartDate}
+            dateBounds={dateBounds}
+            mode={mode}
           />
         </Label>
         <Label label="End">
-          <DatePicker
+          <CustomDatePicker
             selected={endDate}
-            onChange={(date) => date !== null && setEndDate(date)}
-            minDate={dateBounds.startDate}
-            maxDate={dateBounds.endDate}
-            showYearPicker={mode === 'year'}
-            dateFormat={mode === 'year' ? 'yyyy' : 'MM/dd/yyyy'}
-            className="p-2 rounded-md shadow-sm border-none focus:outline-none focus:border-2 focus:border-solid g-slate-200 dark:bg-slate-800 border-teal-400 dark:border-slate-600 w-full"
+            setDate={setEndDate}
+            dateBounds={dateBounds}
+            mode={mode}
           />
         </Label>
       </div>
