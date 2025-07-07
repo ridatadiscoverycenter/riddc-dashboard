@@ -3,6 +3,7 @@ import React from 'react';
 import { compareAsc, formatDate } from 'date-fns';
 import { Line } from 'react-chartjs-2';
 import {
+  BarController,
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
@@ -20,6 +21,7 @@ import { variableToLabel } from '@/utils/data/shared/variableConverter';
 import { Dataset } from '@/utils/data/api/buoy/types';
 
 ChartJS.register(
+  BarController, 
   TimeScale,
   CategoryScale,
   BarElement,
@@ -89,7 +91,7 @@ export function BuoyVariables({ data, dataset }: BuoyVariablesProps) {
         pointStyle: false,
       };
     });
-  }, [datasets, varsInPlot, buoysInPlot, dates]);
+  }, [datasets, varsInPlot, buoysInPlot, dates, dataset]);
 
   return (
     <div className="h-80 w-full">
