@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import { GraphErrorPanel, WaterTempChart } from '@/components';
+import { GraphErrorPanel } from '@/components';
+import { WaterTempChart } from '@/components/visualizations/WaterTempChart';
 import { ERROR_CODES } from '@/utils/fns';
 import { Sample, Temperature } from '@/types';
 import { FishVariables } from '../FishVariables';
@@ -51,7 +52,7 @@ export async function FishVariablesCard({
   return (
     <>
       <p className="text-black">{description}</p>
-      <div className="flex-1 flex flex-col justify-start items-start">
+      <div className="flex-1 flex flex-col justify-start items-start w-10/12">
         <FishVariables data={fishData} />
         <WaterTempChart
           data={weatherData.filter(
