@@ -1,5 +1,7 @@
 'use client';
 import React from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import { Label, Input, Form, Select } from '@/components';
 import {
@@ -20,8 +22,8 @@ type InitialFormData = {
 };
 
 type dateBound = {
-  startDate: Date | string;
-  endDate: Date | string;
+  startDate: Date;
+  endDate: Date;
 };
 
 type ExploreFormProps = {
@@ -29,12 +31,7 @@ type ExploreFormProps = {
   dataset: Dataset;
   dateBounds: dateBound;
   init?: InitialFormData;
-};
-
-type DateInputProps = {
-  date: Date | string;
-  dateBounds: dateBound;
-  setDate: React.Dispatch<React.SetStateAction<Date | string>>;
+  mode?: 'date' | 'year';
 };
 
 const DEFAULT_INITIAL_DATA: InitialFormData = {
@@ -42,8 +39,15 @@ const DEFAULT_INITIAL_DATA: InitialFormData = {
   vars: [],
 };
 
-function handleDate(date: Date | string) {
-  if (typeof date === 'string') return date;
+function handleDate(date: Date | number, mode: 'date' | 'year' = 'date') {
+  if (mode === 'year') {
+    if (typeof date === 'number') {
+      return date;
+    } else {
+      return date.getFullYear();
+    }
+  }
+  if (typeof date === 'number') throw new Error("Type 'number' is incompatible with date");
   return date.toISOString().split('T')[0];
 }
 
@@ -52,12 +56,13 @@ export function ExploreForm({
   dataset,
   dateBounds,
   init = DEFAULT_INITIAL_DATA,
+  mode = 'date',
 }: ExploreFormProps) {
   const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(
     buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys
   );
   const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
-  const [startDate, setStartDate] = React.useState(dateBounds.startDate);
+  const [startDate, setStartDate] = React.useState(new Date(dateBounds.startDate));
   const [endDate, setEndDate] = React.useState(dateBounds.endDate);
 
   const onSubmit = React.useCallback(
@@ -126,10 +131,27 @@ export function ExploreForm({
       />
       <div className="w-full flex lg:flex-row flex-col gap-2 [&>label]:flex-1">
         <Label label="Start">
-          <DateInput date={startDate} dateBounds={dateBounds} setDate={setStartDate} />
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => date !== null && setEndDate(date)} // this seems bad but i keep getting a lint error that I want to think about later
+            minDate={dateBounds.startDate}
+            maxDate={dateBounds.endDate}
+            showYearPicker={mode === 'year'}
+            dateFormat={mode === 'year' ? 'yyyy' : 'MM/dd/yyyy'}
+            showMonthYearDropdown
+            className="p-2 rounded-md shadow-sm border-none focus:outline-none focus:border-2 focus:border-solid g-slate-200 dark:bg-slate-800 border-teal-400 dark:border-slate-600 w-full"
+          />
         </Label>
         <Label label="End">
-          <DateInput date={endDate} dateBounds={dateBounds} setDate={setEndDate} />
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => date !== null && setEndDate(date)}
+            minDate={dateBounds.startDate}
+            maxDate={dateBounds.endDate}
+            showYearPicker={mode === 'year'}
+            dateFormat={mode === 'year' ? 'yyyy' : 'MM/dd/yyyy'}
+            className="p-2 rounded-md shadow-sm border-none focus:outline-none focus:border-2 focus:border-solid g-slate-200 dark:bg-slate-800 border-teal-400 dark:border-slate-600 w-full"
+          />
         </Label>
       </div>
       <Input
@@ -138,29 +160,5 @@ export function ExploreForm({
         className="bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 drop-shadow-md hover:drop-shadow-lg focus:drop-shadow-lg transition duration-500"
       />
     </Form>
-  );
-}
-
-function DateInput({ date, dateBounds, setDate }: DateInputProps) {
-  if (typeof date === 'string') {
-    return (
-      <Input
-        value={handleDate(date)}
-        min={handleDate(dateBounds.startDate)}
-        max={handleDate(dateBounds.endDate)}
-        onChange={(e) => setDate(e.target.value)}
-        type="number"
-        step="1"
-      />
-    );
-  }
-  return (
-    <Input
-      value={handleDate(date)}
-      min={handleDate(dateBounds.startDate)}
-      max={handleDate(dateBounds.endDate)}
-      onChange={(e) => setDate(new Date(e.target.value))}
-      type="date"
-    />
   );
 }

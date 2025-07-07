@@ -117,10 +117,11 @@ async function PageWrapper({
             buoys={buoyData}
             dataset="fish"
             dateBounds={{
-              startDate: minYear.toString(),
-              endDate: maxYear.toString(),
+              startDate: new Date(minYear, 0),
+              endDate: new Date(maxYear, 0),
             }}
             init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
+            mode="year"
           />
           <div className="flex flex-col items-center justify-around col-span-1">
             <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
