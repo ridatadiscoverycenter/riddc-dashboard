@@ -11,21 +11,26 @@
   } */
 }
 
-.react-datapicker-year {
-    align-items: center;
-    background: none;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    cursor: pointer;
-    position: absolute;
-    top: 16px;
-    padding: 0;
-    border: none;
-    z-index: 1;
-    height: 32px;
-    width: 32px;
-    text-indent: -999em;
-    overflow: hidden;
-    overflow-x: hidden;
+.react-datepicker-year {
+  align-items: center;
+  background: none;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  padding: 0;
+  border: none;
+  z-index: 1;
+  height: 32px;
+  width: 32px;
+  text-indent: -999em;
+  overflow: hidden;
+  overflow-x: hidden;
+}
+
+.date-button {
+  border-style: outset;
+  box-sizing: borderbox;
 }
