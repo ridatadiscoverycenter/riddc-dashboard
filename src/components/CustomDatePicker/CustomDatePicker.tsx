@@ -40,7 +40,7 @@ type DatePickerProps = {
 export function CustomDatePicker({ selected, setDate, dateBounds, mode }: DatePickerProps) {
   return (
     <DatePicker
-      renderCustomHeader={customHeader}
+      renderCustomHeader={mode === 'date' ? customDateHeader : customYearHeader}
       selected={selected}
       onChange={(date) => date !== null && setDate(date)} // this seems bad but i keep getting a lint error that I want to think about later
       minDate={dateBounds.startDate}
@@ -55,9 +55,8 @@ export function CustomDatePicker({ selected, setDate, dateBounds, mode }: DatePi
   );
 }
 
-function customHeader({
+function customDateHeader({
   monthDate,
-  customHeaderCount,
   decreaseMonth,
   increaseMonth,
   decreaseYear,
@@ -176,6 +175,48 @@ function customHeader({
       >
         <ChevronRightIcon className="size-4" />
       </button>
+      <button
+        onClick={(event) => {
+          event.preventDefault();
+          increaseYear();
+        }}
+        disabled={nextYearButtonDisabled}
+        className="border-2 rounded-sm date-button"
+      >
+        <ChevronDoubleRightIcon className="size-4" />
+      </button>
+    </div>
+  );
+}
+
+function customYearHeader({
+  monthDate,
+  decreaseYear,
+  increaseYear,
+  prevYearButtonDisabled,
+  nextYearButtonDisabled,
+}: ReactDatePickerCustomHeaderProps) {
+  return (
+    <div
+      style={{
+        margin: 10,
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <button
+        onClick={(event) => {
+          event.preventDefault();
+          decreaseYear();
+        }}
+        disabled={prevYearButtonDisabled}
+        className="border-2 rounded-sm date-button"
+      >
+        <ChevronDoubleLeftIcon className="size-4" />
+      </button>
+      <div className="mx-4 border-2 rounded-sm border-solid px-4 date-button">
+        {monthDate.getFullYear()}
+      </div>
       <button
         onClick={(event) => {
           event.preventDefault();
