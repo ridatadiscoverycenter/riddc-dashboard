@@ -145,22 +145,24 @@ export function ExploreForm({
           .filter((variableOrUndefined) => variableOrUndefined !== undefined)}
       />
       <div className="w-full flex lg:flex-row flex-col gap-2 [&>label]:flex-1">
-        <Label label="Start">
+        <div>
+          <Label label="Start" />
           <CustomDatePicker
             selected={startDate}
             setDate={setStartDate}
             dateBounds={dateBounds}
             mode={mode}
           />
-        </Label>
-        <Label label="End">
+        </div>
+        <div>
+          <Label label="End" />
           <CustomDatePicker
             selected={endDate}
             setDate={setEndDate}
             dateBounds={dateBounds}
             mode={mode}
           />
-        </Label>
+        </div>
       </div>
       <Input
         type="submit"
