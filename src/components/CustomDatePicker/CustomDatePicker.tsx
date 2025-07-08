@@ -148,7 +148,7 @@ function customDateHeader({
           decreaseYear();
         }}
         disabled={prevYearButtonDisabled}
-        className="border-2 rounded-sm date-button"
+        className="border-2 rounded-sm date-button disabled:opacity-20"
       >
         <ChevronDoubleLeftIcon className="size-4" />
       </button>
@@ -158,7 +158,7 @@ function customDateHeader({
           decreaseMonth();
         }}
         disabled={prevMonthButtonDisabled}
-        className="border-2 rounded-sm date-button"
+        className="border-2 rounded-sm date-button disabled:opacity-20"
       >
         <ChevronLeftIcon className="size-4" />
       </button>
@@ -171,7 +171,7 @@ function customDateHeader({
           increaseMonth();
         }}
         disabled={nextMonthButtonDisabled}
-        className="border-2 rounded-sm date-button"
+        className="border-2 rounded-sm date-button disabled:opacity-20"
       >
         <ChevronRightIcon className="size-4" />
       </button>
@@ -181,7 +181,7 @@ function customDateHeader({
           increaseYear();
         }}
         disabled={nextYearButtonDisabled}
-        className="border-2 rounded-sm date-button"
+        className="border-2 rounded-sm date-button disabled:opacity-20"
       >
         <ChevronDoubleRightIcon className="size-4" />
       </button>
@@ -210,20 +210,18 @@ function customYearHeader({
           decreaseYear();
         }}
         disabled={prevYearButtonDisabled}
-        className="border-2 rounded-sm date-button"
+        className="border-2 rounded-sm date-button disabled:opacity-20"
       >
         <ChevronDoubleLeftIcon className="size-4" />
       </button>
-      <div className="mx-4 border-2 rounded-sm border-solid px-4 date-button">
-        {monthDate.getFullYear()}
-      </div>
+      <div className="mx-4 rounded-sm px-4 mt-1">{monthDate.getFullYear()}</div>
       <button
         onClick={(event) => {
           event.preventDefault();
           increaseYear();
         }}
         disabled={nextYearButtonDisabled}
-        className="border-2 rounded-sm date-button"
+        className="border-2 rounded-sm date-button disabled:opacity-20"
       >
         <ChevronDoubleRightIcon className="size-4" />
       </button>
