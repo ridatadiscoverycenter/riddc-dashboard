@@ -63,8 +63,6 @@ export function CustomDatePicker({ selected, setDate, dateBounds, mode }: DatePi
       maxDate={dateBounds.endDate}
       showYearPicker={mode === 'year'}
       dateFormat={mode === 'year' ? 'yyyy' : 'MM/dd/yyyy'}
-      showMonthYearDropdown
-      scrollableMonthYearDropdown
       calendarClassName="calendar-class"
       className="p-2 rounded-md shadow-sm border-none focus:outline-none focus:border-2 focus:border-solid g-slate-200 dark:bg-slate-800 border-teal-400 dark:border-slate-600 w-full"
     />
@@ -119,7 +117,6 @@ function customDateHeader({
           }}
           disabled={prevYearButtonDisabled}
           className="color-black font-bold disabled:opacity-20"
-          // className="border-2 rounded-sm date-button disabled:opacity-20"
         >
           <ChevronDoubleLeftIcon className="size-4 stroke-2" />
         </button>
@@ -129,7 +126,6 @@ function customDateHeader({
             decreaseMonth();
           }}
           disabled={prevMonthButtonDisabled}
-          // className="border-2 rounded-sm date-button disabled:opacity-20"
           className="color-black font-bold disabled:opacity-20 -ml-1"
         >
           <ChevronLeftIcon className="size-4 stroke-2" />
@@ -138,7 +134,7 @@ function customDateHeader({
       <select
         value={date.getFullYear()}
         onChange={({ target: { value } }) => changeYear(parseInt(value))}
-        // className="ms-6"
+        className="rounded-sm"
       >
         {years.map((option) => (
           <option key={option} value={option}>
@@ -149,6 +145,7 @@ function customDateHeader({
       <select
         value={months[date.getMonth()]}
         onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
+        className="rounded-sm"
       >
         {months.map((option) => (
           <option key={option} value={option}>
@@ -163,7 +160,6 @@ function customDateHeader({
             increaseMonth();
           }}
           disabled={nextMonthButtonDisabled}
-          // className="border-2 rounded-sm date-button disabled:opacity-20"
           className="color-black font-bold disabled:opacity-20 -mr-1"
         >
           <ChevronRightIcon className="size-4 stroke-2" />
@@ -175,8 +171,6 @@ function customDateHeader({
           }}
           disabled={nextYearButtonDisabled}
           className="color-black font-bold disabled:opacity-20"
-
-          //   className="border-2 rounded-sm date-button disabled:opacity-20"
         >
           <ChevronDoubleRightIcon className="size-4 stroke-2" />
         </button>
@@ -206,7 +200,6 @@ function customYearHeader({
         }}
         disabled={prevYearButtonDisabled}
         className="color-black font-bold disabled:opacity-20"
-        // className="border-2 rounded-sm date-button disabled:opacity-20"
       >
         <ChevronDoubleLeftIcon className="size-4" />
       </button>
@@ -218,7 +211,6 @@ function customYearHeader({
         }}
         disabled={nextYearButtonDisabled}
         className="color-black font-bold disabled:opacity-20"
-        // className="border-2 rounded-sm date-button disabled:opacity-20"
       >
         <ChevronDoubleRightIcon className="size-4" />
       </button>
