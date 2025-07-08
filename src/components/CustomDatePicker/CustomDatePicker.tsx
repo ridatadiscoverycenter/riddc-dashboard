@@ -11,9 +11,10 @@ import {
   ChevronDoubleLeftIcon,
 } from '@heroicons/react/24/outline';
 
-interface ReactDatePickerCustomHeaderProps {
+interface CustomHeaderProps {
   customHeaderCount: number;
   monthDate: Date;
+  date: Date;
   changeMonth: (month: number) => void;
   changeYear: (year: number) => void;
   decreaseMonth: VoidFunction;
@@ -24,11 +25,14 @@ interface ReactDatePickerCustomHeaderProps {
   nextMonthButtonDisabled: boolean;
   prevYearButtonDisabled: boolean;
   nextYearButtonDisabled: boolean;
-  visibleYearsRange?: {
+}
+
+type CustomHeaderDateProps = CustomHeaderProps & {
+  visibleYearsRange: {
     startYear: number;
     endYear: number;
   };
-}
+};
 
 type DatePickerProps = {
   selected: Date;
@@ -40,7 +44,19 @@ type DatePickerProps = {
 export function CustomDatePicker({ selected, setDate, dateBounds, mode }: DatePickerProps) {
   return (
     <DatePicker
-      renderCustomHeader={mode === 'date' ? customDateHeader : customYearHeader}
+      renderCustomHeader={
+        mode === 'date'
+          ? (DatePickerProps) => {
+              return customDateHeader({
+                ...DatePickerProps,
+                visibleYearsRange: {
+                  startYear: dateBounds.startDate.getFullYear(),
+                  endYear: dateBounds.endDate.getFullYear(),
+                },
+              });
+            }
+          : customYearHeader
+      }
       selected={selected}
       onChange={(date) => date !== null && setDate(date)} // this seems bad but i keep getting a lint error that I want to think about later
       minDate={dateBounds.startDate}
@@ -56,84 +72,37 @@ export function CustomDatePicker({ selected, setDate, dateBounds, mode }: DatePi
 }
 
 function customDateHeader({
-  monthDate,
+  date,
   decreaseMonth,
   increaseMonth,
   decreaseYear,
   increaseYear,
+  changeMonth,
+  changeYear,
   prevMonthButtonDisabled,
   prevYearButtonDisabled,
   nextMonthButtonDisabled,
   nextYearButtonDisabled,
-}: ReactDatePickerCustomHeaderProps) {
-  //   return (
-  //     <div className="mb-3">
-  //       <button
-  //         className={'react-datepicker__navigation react-datepicker__navigation--previous'}
-  //         onClick={(event) => {
-  //           event.preventDefault();
-  //           decreaseMonth();
-  //         }}
-  //         disabled={prevMonthButtonDisabled}
-  //         style={{
-  //           visibility: customHeaderCount === 0 ? 'visible' : 'hidden',
-  //           opacity: prevMonthButtonDisabled ? 0.1 : 1.0,
-  //         }}
-  //       >
-  //         <ChevronLeftIcon className="size-4" />
-  //       </button>
-  //       <button
-  //         className={'react-datepicker__navigation react-datepicker-year'}
-  //         onClick={(event) => {
-  //           event.preventDefault();
-  //           decreaseYear();
-  //         }}
-  //         style={{
-  //           visibility: customHeaderCount === 0 ? 'visible' : 'hidden',
-  //           opacity: prevYearButtonDisabled ? 0.1 : 1.0,
-  //         }}
-  //         disabled={prevYearButtonDisabled}
-  //       >
-  //         <ChevronDoubleLeftIcon className="size-4" />
-  //       </button>
-  //       <span className="react-datepicker__current-month">
-  //         {monthDate.toLocaleString('en-US', {
-  //           month: 'long',
-  //           year: 'numeric',
-  //         })}
-  //       </span>
-  //       <button
-  //         className={'react-datepicker__navigation react-datepicker__navigation--next'}
-  //         onClick={(event) => {
-  //           event.preventDefault();
-  //           increaseMonth();
-  //         }}
-  //         style={{
-  //           visibility: customHeaderCount === 0 ? 'visible' : 'hidden',
-  //           opacity: nextMonthButtonDisabled ? 0.1 : 1.0,
-  //         }}
-  //         disabled={nextMonthButtonDisabled}
-  //       >
-  //         <ChevronRightIcon className="size-4" />
-  //       </button>
-  //       <button
-  //         className={
-  //           'react-datepicker__navigation react-datepicker__navigation--next react-datepicker-year'
-  //         }
-  //         onClick={(event) => {
-  //           event.preventDefault();
-  //           increaseYear();
-  //         }}
-  //         style={{
-  //           visibility: customHeaderCount === 0 ? 'visible' : 'hidden',
-  //           opacity: nextYearButtonDisabled ? 0.1 : 1.0,
-  //         }}
-  //         disabled={nextYearButtonDisabled}
-  //       >
-  //         <ChevronDoubleRightIcon className="size-4" />
-  //       </button>
-  //     </div>
-  //   );
+  visibleYearsRange,
+}: CustomHeaderDateProps) {
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  const years = Array.from(
+    { length: visibleYearsRange.endYear - visibleYearsRange.startYear + 1 },
+    (_, i) => visibleYearsRange.startYear + i
+  );
   return (
     <div
       style={{
@@ -162,9 +131,23 @@ function customDateHeader({
       >
         <ChevronLeftIcon className="size-4" />
       </button>
-      <div className="mx-4 border-2 rounded-sm border-solid px-4 date-button">
-        {monthDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
-      </div>
+      <select value={date.getFullYear()} onChange={({ target: { value } }) => changeYear(value)}>
+        {years.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      <select
+        value={months[date.getMonth()]}
+        onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
+      >
+        {months.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
       <button
         onClick={(event) => {
           event.preventDefault();
