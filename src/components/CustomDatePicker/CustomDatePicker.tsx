@@ -1,3 +1,5 @@
+'use client';
+
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -65,69 +67,122 @@ function customHeader({
   nextMonthButtonDisabled,
   nextYearButtonDisabled,
 }: ReactDatePickerCustomHeaderProps) {
+  //   return (
+  //     <div className="mb-3">
+  //       <button
+  //         className={'react-datepicker__navigation react-datepicker__navigation--previous'}
+  //         onClick={(event) => {
+  //           event.preventDefault();
+  //           decreaseMonth();
+  //         }}
+  //         disabled={prevMonthButtonDisabled}
+  //         style={{
+  //           visibility: customHeaderCount === 0 ? 'visible' : 'hidden',
+  //           opacity: prevMonthButtonDisabled ? 0.1 : 1.0,
+  //         }}
+  //       >
+  //         <ChevronLeftIcon className="size-4" />
+  //       </button>
+  //       <button
+  //         className={'react-datepicker__navigation react-datepicker-year'}
+  //         onClick={(event) => {
+  //           event.preventDefault();
+  //           decreaseYear();
+  //         }}
+  //         style={{
+  //           visibility: customHeaderCount === 0 ? 'visible' : 'hidden',
+  //           opacity: prevYearButtonDisabled ? 0.1 : 1.0,
+  //         }}
+  //         disabled={prevYearButtonDisabled}
+  //       >
+  //         <ChevronDoubleLeftIcon className="size-4" />
+  //       </button>
+  //       <span className="react-datepicker__current-month">
+  //         {monthDate.toLocaleString('en-US', {
+  //           month: 'long',
+  //           year: 'numeric',
+  //         })}
+  //       </span>
+  //       <button
+  //         className={'react-datepicker__navigation react-datepicker__navigation--next'}
+  //         onClick={(event) => {
+  //           event.preventDefault();
+  //           increaseMonth();
+  //         }}
+  //         style={{
+  //           visibility: customHeaderCount === 0 ? 'visible' : 'hidden',
+  //           opacity: nextMonthButtonDisabled ? 0.1 : 1.0,
+  //         }}
+  //         disabled={nextMonthButtonDisabled}
+  //       >
+  //         <ChevronRightIcon className="size-4" />
+  //       </button>
+  //       <button
+  //         className={
+  //           'react-datepicker__navigation react-datepicker__navigation--next react-datepicker-year'
+  //         }
+  //         onClick={(event) => {
+  //           event.preventDefault();
+  //           increaseYear();
+  //         }}
+  //         style={{
+  //           visibility: customHeaderCount === 0 ? 'visible' : 'hidden',
+  //           opacity: nextYearButtonDisabled ? 0.1 : 1.0,
+  //         }}
+  //         disabled={nextYearButtonDisabled}
+  //       >
+  //         <ChevronDoubleRightIcon className="size-4" />
+  //       </button>
+  //     </div>
+  //   );
   return (
-    <div className="mb-3">
+    <div
+      style={{
+        margin: 10,
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
       <button
-        className={'react-datepicker__navigation react-datepicker__navigation--previous'}
+        onClick={(event) => {
+          event.preventDefault();
+          decreaseYear();
+        }}
+        disabled={prevYearButtonDisabled}
+        className="border-2 rounded-sm date-button"
+      >
+        <ChevronDoubleLeftIcon className="size-4" />
+      </button>
+      <button
         onClick={(event) => {
           event.preventDefault();
           decreaseMonth();
         }}
         disabled={prevMonthButtonDisabled}
-        style={{
-          visibility: customHeaderCount === 0 ? 'visible' : 'hidden',
-          opacity: prevMonthButtonDisabled ? 0.1 : 1.0,
-        }}
+        className="border-2 rounded-sm date-button"
       >
         <ChevronLeftIcon className="size-4" />
       </button>
+      <div className="mx-4 border-2 rounded-sm border-solid px-4 date-button">
+        {monthDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+      </div>
       <button
-        className={'react-datepicker__navigation react-datapicker-year'}
-        onClick={(event) => {
-          event.preventDefault();
-          decreaseYear();
-        }}
-        style={{
-          visibility: customHeaderCount === 0 ? 'visible' : 'hidden',
-          opacity: prevYearButtonDisabled ? 0.1 : 1.0,
-        }}
-        disabled={prevYearButtonDisabled}
-      >
-        <ChevronDoubleLeftIcon className="size-4" />
-      </button>
-      <span className="react-datepicker__current-month">
-        {monthDate.toLocaleString('en-US', {
-          month: 'long',
-          year: 'numeric',
-        })}
-      </span>
-      <button
-        className={'react-datepicker__navigation react-datepicker__navigation--next'}
         onClick={(event) => {
           event.preventDefault();
           increaseMonth();
         }}
-        style={{
-          visibility: customHeaderCount === 0 ? 'visible' : 'hidden',
-          opacity: nextMonthButtonDisabled ? 0.1 : 1.0,
-        }}
         disabled={nextMonthButtonDisabled}
+        className="border-2 rounded-sm date-button"
       >
         <ChevronRightIcon className="size-4" />
       </button>
       <button
-        className={
-          'react-datepicker__navigation react-datepicker__navigation--next react-datapicker-year'
-        }
         onClick={(event) => {
           event.preventDefault();
           increaseYear();
         }}
-        style={{
-          visibility: customHeaderCount === 0 ? 'visible' : 'hidden',
-          opacity: nextYearButtonDisabled ? 0.1 : 1.0,
-        }}
         disabled={nextYearButtonDisabled}
+        className="border-2 rounded-sm date-button"
       >
         <ChevronDoubleRightIcon className="size-4" />
       </button>
