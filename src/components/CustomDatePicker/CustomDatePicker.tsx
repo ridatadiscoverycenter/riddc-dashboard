@@ -106,32 +106,40 @@ function customDateHeader({
   return (
     <div
       style={{
-        margin: 10,
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
       }}
+      className="mx-1 mt-3 mb-2"
     >
-      <button
-        onClick={(event) => {
-          event.preventDefault();
-          decreaseYear();
-        }}
-        disabled={prevYearButtonDisabled}
-        className="border-2 rounded-sm date-button disabled:opacity-20"
+      <div>
+        <button
+          onClick={(event) => {
+            event.preventDefault();
+            decreaseYear();
+          }}
+          disabled={prevYearButtonDisabled}
+          className="color-black font-bold disabled:opacity-20"
+          // className="border-2 rounded-sm date-button disabled:opacity-20"
+        >
+          <ChevronDoubleLeftIcon className="size-4 stroke-2" />
+        </button>
+        <button
+          onClick={(event) => {
+            event.preventDefault();
+            decreaseMonth();
+          }}
+          disabled={prevMonthButtonDisabled}
+          // className="border-2 rounded-sm date-button disabled:opacity-20"
+          className="color-black font-bold disabled:opacity-20 -ml-1"
+        >
+          <ChevronLeftIcon className="size-4 stroke-2" />
+        </button>
+      </div>
+      <select
+        value={date.getFullYear()}
+        onChange={({ target: { value } }) => changeYear(parseInt(value))}
+        // className="ms-6"
       >
-        <ChevronDoubleLeftIcon className="size-4" />
-      </button>
-      <button
-        onClick={(event) => {
-          event.preventDefault();
-          decreaseMonth();
-        }}
-        disabled={prevMonthButtonDisabled}
-        className="border-2 rounded-sm date-button disabled:opacity-20"
-      >
-        <ChevronLeftIcon className="size-4" />
-      </button>
-      <select value={date.getFullYear()} onChange={({ target: { value } }) => changeYear(value)}>
         {years.map((option) => (
           <option key={option} value={option}>
             {option}
@@ -148,26 +156,31 @@ function customDateHeader({
           </option>
         ))}
       </select>
-      <button
-        onClick={(event) => {
-          event.preventDefault();
-          increaseMonth();
-        }}
-        disabled={nextMonthButtonDisabled}
-        className="border-2 rounded-sm date-button disabled:opacity-20"
-      >
-        <ChevronRightIcon className="size-4" />
-      </button>
-      <button
-        onClick={(event) => {
-          event.preventDefault();
-          increaseYear();
-        }}
-        disabled={nextYearButtonDisabled}
-        className="border-2 rounded-sm date-button disabled:opacity-20"
-      >
-        <ChevronDoubleRightIcon className="size-4" />
-      </button>
+      <div>
+        <button
+          onClick={(event) => {
+            event.preventDefault();
+            increaseMonth();
+          }}
+          disabled={nextMonthButtonDisabled}
+          // className="border-2 rounded-sm date-button disabled:opacity-20"
+          className="color-black font-bold disabled:opacity-20 -mr-1"
+        >
+          <ChevronRightIcon className="size-4 stroke-2" />
+        </button>
+        <button
+          onClick={(event) => {
+            event.preventDefault();
+            increaseYear();
+          }}
+          disabled={nextYearButtonDisabled}
+          className="color-black font-bold disabled:opacity-20"
+
+          //   className="border-2 rounded-sm date-button disabled:opacity-20"
+        >
+          <ChevronDoubleRightIcon className="size-4 stroke-2" />
+        </button>
+      </div>
     </div>
   );
 }
@@ -178,11 +191,10 @@ function customYearHeader({
   increaseYear,
   prevYearButtonDisabled,
   nextYearButtonDisabled,
-}: ReactDatePickerCustomHeaderProps) {
+}: CustomHeaderProps) {
   return (
     <div
       style={{
-        margin: 10,
         display: 'flex',
         justifyContent: 'center',
       }}
@@ -193,7 +205,8 @@ function customYearHeader({
           decreaseYear();
         }}
         disabled={prevYearButtonDisabled}
-        className="border-2 rounded-sm date-button disabled:opacity-20"
+        className="color-black font-bold disabled:opacity-20"
+        // className="border-2 rounded-sm date-button disabled:opacity-20"
       >
         <ChevronDoubleLeftIcon className="size-4" />
       </button>
@@ -204,7 +217,8 @@ function customYearHeader({
           increaseYear();
         }}
         disabled={nextYearButtonDisabled}
-        className="border-2 rounded-sm date-button disabled:opacity-20"
+        className="color-black font-bold disabled:opacity-20"
+        // className="border-2 rounded-sm date-button disabled:opacity-20"
       >
         <ChevronDoubleRightIcon className="size-4" />
       </button>
