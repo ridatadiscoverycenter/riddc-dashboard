@@ -2,42 +2,25 @@ import { groupBy } from '@/utils/fns';
 
 import { Temperature } from '@/types';
 
-// type TimeSeriesData = Temperature['delta'];
-
-// function formatData(data: Temperature[]){
-//     return data.map((v) => {
-//         const {station} = v
-
-//     })
-// }
-
-// export function downsampleWaterTemp(data: Temperature[]) {
-//     return data.map({v} => )
-// }
-
-// export function movingAvg(data: Temperature[], interval: number){
-//   let index = interval - 1;
-//   const length = data.length + 1;
-//   let results = [];
-
-//   while (index < length) {
-//     index = index + 1;
-//     const intervalSlice = data.slice(index - interval, index);
-//     const sum = intervalSlice.reduce((prev, curr) => prev + curr.delta, 0);
-//     results.push(sum / interval);
-//   }
-//   console.log(results.length)
-//   console.log(data.length)
-//   return results;
-//     }
-
 export function movingAvg(mArray: Temperature[], mRange: number) {
   const k = 2 / (mRange + 1);
-  // first item is just the same as the first item in the input
-  const emaArray = [{...mArray[0], avg: mArray[0].delta}];
-  // for the rest of the items, they are computed with the previous one
-  for (let i = 1; i < mArray.length; i++) {
-    emaArray.push({...mArray[i], avg: mArray[i].delta * k + emaArray[i - 1].avg * (1 - k)});
+
+  const grouped = groupBy(
+    mArray.map((temp) => ({ ...temp, avg: temp.delta })),
+    ({ station }) => station
+  );
+  const emaArray = Object.assign(
+    {},
+    ...Object.keys(grouped).map((group) => ({ [group]: [grouped[group][0]] }))
+  );
+
+  for (const group of Object.keys(grouped)) {
+    for (let i = 1; i < grouped[group].length; i++) {
+      emaArray[group].push({
+        ...grouped[group][i],
+        avg: grouped[group][i].delta * k + emaArray[group][i - 1].avg * (1 - k),
+      });
+    }
   }
 
   return emaArray;

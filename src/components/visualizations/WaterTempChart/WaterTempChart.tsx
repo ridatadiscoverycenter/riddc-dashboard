@@ -13,10 +13,9 @@ import {
   Legend,
 } from 'chart.js';
 
-import { groupBy } from '@/utils/fns';
+import { formatDate } from 'date-fns';
 import { movingAvg } from '@/utils/data/api/fish/downSample';
-import { compareAsc, formatDate } from 'date-fns';
-import { Temperature } from '@/types';
+import { type Temperature, AverageTemperature } from '@/types';
 
 ChartJS.register(LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -39,14 +38,15 @@ export function WaterTempChart({ data }: { data: Temperature[] }) {
   const avgData = movingAvg(data, 5);
 
   const { dates, datasets } = React.useMemo(() => {
-    const sortedData = avgData.sort(({ timestamp: time1 }, { timestamp: time2 }) =>
-      compareAsc(time1, time2)
-    );
     return {
-      dates: Array.from(new Set(sortedData.map(({ timestamp }) => timestamp))),
-      datasets: groupBy(sortedData, ({ station }) => `${station}`),
+      dates: Array.from(
+        new Set(
+          avgData[Object.keys(avgData)[0]].map(({ timestamp }: { timestamp: Date }) => timestamp)
+        )
+      ),
+      datasets: avgData,
     };
-  }, [data]);
+  }, [avgData]);
 
   const buoysInPlot = React.useMemo(() => getBuoysFromDatasetList(datasets), [datasets]);
 
@@ -54,9 +54,11 @@ export function WaterTempChart({ data }: { data: Temperature[] }) {
     const group = Object.entries(datasets);
     return group.map(([key, data]) => {
       const color = getStylesForGroup(buoysInPlot, key);
-      console.log(color);
       const dataWithBlanks = Array.from(Array(dates.length), (_, i) => dates[i]).map(
-        (date) => data.find(({ timestamp }) => timestamp.valueOf() === date.valueOf())?.avg
+        (date) =>
+          (data as AverageTemperature[]).find(
+            ({ timestamp }) => timestamp.valueOf() === (date as Date).valueOf()
+          )?.avg
       );
       return {
         label: `Moving Average (${key})`,
@@ -71,13 +73,15 @@ export function WaterTempChart({ data }: { data: Temperature[] }) {
     });
   }, [datasets, buoysInPlot, dates]);
   const scatterGroups = React.useMemo(() => {
-    const group = Object.entries(groupBy(avgData, ({ station }) => `${station}`));
-    return group.map(([key, data]) => {
+    // const group = Object.entries(groupBy(avgData, ({ station }) => `${station}`));
+    return Object.keys(avgData).map((key) => {
       const color = getStylesForGroup(buoysInPlot, key);
       const dataWithBlanks = Array.from(Array(dates.length), (_, i) => dates[i]).map((date) => {
         return {
           x: date,
-          y: data.find(({ timestamp }) => timestamp.valueOf() === date.valueOf())?.delta,
+          y: avgData[key].find(
+            ({ timestamp }: { timestamp: Date }) => timestamp.valueOf() === date.valueOf()
+          )?.delta,
           legend: false,
         };
       });
@@ -91,13 +95,13 @@ export function WaterTempChart({ data }: { data: Temperature[] }) {
         options: { plugins: { legend: { usePointStyle: true }, tooltip: { intersect: false } } },
       };
     });
-  }, [avgData]);
+  }, [avgData, buoysInPlot, dates]);
 
   return (
     <div className="h-80 w-full">
       <Line
         data={{
-          labels: dates.map((date) => formatDate(date, 'yyyy')),
+          labels: dates.map((date) => formatDate(date as Date, 'yyyy')),
           datasets: [...lineGroups, ...scatterGroups] as any,
         }}
         options={{
