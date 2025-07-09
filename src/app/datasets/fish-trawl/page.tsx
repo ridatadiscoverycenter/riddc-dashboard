@@ -91,15 +91,13 @@ async function PageWrapper({
                 typeof paramsOrError === 'string' ? undefined : (
                   <>
                     This plot compares {makeCommaSepList(paramsOrError.vars)} between{' '}
-                    {paramsOrError.start.toLocaleDateString()} and{' '}
-                    {paramsOrError.end.toLocaleDateString()} at{' '}
+                    {paramsOrError.start.getFullYear()} and {paramsOrError.end.getFullYear()} at{' '}
                     {makeCommaSepList(
                       paramsOrError.buoys.map(
                         (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
                       )
                     )}
-                    . You can hover over the lines to see more specific data. The weather data below
-                    is sourced from{' '}
+                    . You can hover over the lines to see more specific data.
                   </>
                 )
               }
