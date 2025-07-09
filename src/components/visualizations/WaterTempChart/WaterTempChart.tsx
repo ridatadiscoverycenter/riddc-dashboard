@@ -8,6 +8,7 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  ScatterController,
   Title,
   Tooltip,
   Legend,
@@ -17,7 +18,7 @@ import { formatDate } from 'date-fns';
 import { movingAvg } from '@/utils/data/api/fish/downSample';
 import { type Temperature, AverageTemperature } from '@/types';
 
-ChartJS.register(LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(LinearScale, PointElement, LineElement, ScatterController, Title, Tooltip, Legend);
 
 const LINE_COLOR_OPTIONS = [
   {
