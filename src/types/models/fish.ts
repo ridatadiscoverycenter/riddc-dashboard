@@ -37,7 +37,7 @@ export type Temperature = TemperatureBase & {
 
 export type AverageTemperature = Temperature & {
   avg: number;
-}
+};
 
 export type SampleBase = {
   species: string;

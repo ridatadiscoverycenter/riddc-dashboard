@@ -43,8 +43,8 @@ export function WaterTempChart({ data }: { data: Temperature[] }) {
         new Set(
           avgData[Object.keys(avgData)[0]].map(({ timestamp }: { timestamp: Date }) => timestamp)
         )
-      ),
-      datasets: avgData,
+      ) as Date[],
+      datasets: avgData as Record<string, AverageTemperature[]>,
     };
   }, [avgData]);
 
@@ -55,10 +55,7 @@ export function WaterTempChart({ data }: { data: Temperature[] }) {
     return group.map(([key, data]) => {
       const color = getStylesForGroup(buoysInPlot, key);
       const dataWithBlanks = Array.from(Array(dates.length), (_, i) => dates[i]).map(
-        (date) =>
-          (data as AverageTemperature[]).find(
-            ({ timestamp }) => timestamp.valueOf() === (date as Date).valueOf()
-          )?.avg
+        (date) => data.find(({ timestamp }) => timestamp.valueOf() === date.valueOf())?.avg
       );
       return {
         label: `Moving Average (${key})`,
@@ -73,8 +70,8 @@ export function WaterTempChart({ data }: { data: Temperature[] }) {
     });
   }, [datasets, buoysInPlot, dates]);
   const scatterGroups = React.useMemo(() => {
-    // const group = Object.entries(groupBy(avgData, ({ station }) => `${station}`));
-    return Object.keys(avgData).map((key) => {
+    const group = Object.entries(datasets);
+    return group.map(([key]) => {
       const color = getStylesForGroup(buoysInPlot, key);
       const dataWithBlanks = Array.from(Array(dates.length), (_, i) => dates[i]).map((date) => {
         return {
@@ -95,13 +92,13 @@ export function WaterTempChart({ data }: { data: Temperature[] }) {
         options: { plugins: { legend: { usePointStyle: true }, tooltip: { intersect: false } } },
       };
     });
-  }, [avgData, buoysInPlot, dates]);
+  }, [avgData, buoysInPlot, dates, datasets]);
 
   return (
     <div className="h-80 w-full">
       <Line
         data={{
-          labels: dates.map((date) => formatDate(date as Date, 'yyyy')),
+          labels: dates.map((date) => formatDate(date, 'yyyy')),
           datasets: [...lineGroups, ...scatterGroups] as any,
         }}
         options={{
