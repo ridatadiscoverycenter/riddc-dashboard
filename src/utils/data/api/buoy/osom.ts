@@ -86,7 +86,7 @@ const ZodFetchedOsomBuoyData = z.object({
   data: z.array(
     z.object({
       variable: z.enum(OSOM_VARIABLES),
-      value: z.union([z.number(), z.null()]),
+      value: z.union([z.number(), z.undefined()]),
       station_name: z.string(),
       time: z.union([z.string().datetime(), z.number()]),
       units: z.string(),
