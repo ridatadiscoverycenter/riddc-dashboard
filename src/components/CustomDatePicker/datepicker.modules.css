@@ -1,0 +1,33 @@
+.calendar-class {
+  .react-datepicker__year-wrapper {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    max-width: 200px;
+    /* gap: 12px;
+    row-gap: 3px; */
+  }
+  /* .react-datepicker__year-text {
+    width: 3rem;
+  } */
+}
+
+.react-datepicker__header {
+  /* background: rgb(8, 145, 178, 0.65); */
+  background: oklch(0.704 0.04 256.788);
+  font-weight: 400;
+}
+
+.react-datepicker__day {
+  font-weight: normal;
+}
+
+/* .react-datepicker__triangle {
+  fill: oklch(44.6% 0.043 257.281/0.5);
+  color: oklch(44.6% 0.043 257.281/0.5);
+} */
+
+.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle {
+  fill: oklch(0.704 0.04 256.788);
+  color: oklch(0.704 0.04 256.788);
+  /* stroke: oklch(44.6% 0.043 257.281/0.5); */
+}

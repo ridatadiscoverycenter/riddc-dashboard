@@ -91,7 +91,7 @@ async function PageWrapper({
       </p>
       <div className="full-bleed ">
         <div className="grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-4 m-4">
-          <Card className="bg-white/90 md:col-span-2 col-span-3 row-span-2 flex flex-col items-center justify-around gap-3">
+          <Card className="bg-white/90 md:col-span-2 col-span-3 row-span-2 flex flex-col items-center justify-around gap-3 max-h-fit pt-6 pb-10 place-self-center">
             <FishVariablesCard
               params={paramsOrError}
               data={summaryData}
