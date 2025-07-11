@@ -1,21 +1,20 @@
 'use client';
 import React from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
 
-import { Label, Input, Form, Select } from '@/components';
-import {
+import { Label, Input, Form, Select, CustomDatePicker } from '@/components';
+import { variableToLabel, erddapApi } from '@/utils/data';
+import { type Dataset } from '@/utils/data/api/buoy/types';
+import { type RiBuoyCoordinate } from '@/utils/data/api/buoy';
+
+const {
   RI_BUOY_VARIABLES,
-  RiBuoyCoordinate,
   MA_BUOY_VARIABLES,
   REAL_TIME_BUOY_VARIABLES,
   PLANKTON_VARIABLES,
   OSOM_VARIABLES,
-} from '@/utils/data/api/buoy';
-import { FISH_SPECIES } from '@/utils/data/api/fish';
+} = erddapApi.buoy;
 
-import { type Dataset } from '@/utils/data/api/buoy/types';
-import { variableToLabel } from '@/utils/data/shared/variableConverter';
-import { CustomDatePicker } from '../CustomDatePicker/CustomDatePicker';
+const { FISH_SPECIES } = erddapApi.fish;
 
 type InitialFormData = {
   buoys: string[];
@@ -69,6 +68,7 @@ export function ExploreForm({
   init = DEFAULT_INITIAL_DATA,
   mode = 'date',
 }: ExploreFormProps) {
+  console.log({ init });
   const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(
     buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys
   );
