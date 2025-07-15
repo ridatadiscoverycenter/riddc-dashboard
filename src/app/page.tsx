@@ -230,12 +230,24 @@ const DATASETS = [
   {
     name: 'Real Time Data',
     href: '/datasets/real-time',
-    description: () => <>Coming Soon!</>,
+    description: () => (
+      <>
+        Data collected from buoys across Narraganset Bay at 10 - 15 minute intervals, funded by{' '}
+        <ExternalLink href="https://seagrant.gso.uri.edu/">Rhode Island Sea Grant</ExternalLink> and
+        the <ExternalLink href="https://web.uri.edu/rinsfepscor/welcome/">RI C-AIM</ExternalLink>.
+        The buoys collecting this data are currently being repaired, and are not reporting data.
+      </>
+    ),
   },
   {
     name: 'Ocean State Ocean Model',
     href: '/datasets/osom',
-    description: () => <>Coming Soon!</>,
+    description: () => (
+      <>
+        An application of the Regional Ocean Modeling System that models data across all of Rhode
+        Island &apos;s major waterways, developed in collaboration between University of Rhode Island and Brown University.{' '}
+      </>
+    ),
   },
   {
     name: 'Plankton Time Series',
@@ -251,7 +263,15 @@ const DATASETS = [
   {
     name: 'Domoic Acid',
     href: '/datasets/domoic-acid',
-    description: () => <>Coming Soon!</>,
+    description: () => (
+      <>
+        A survey of Domoic Acid, a neurotoxin produced by{' '}
+        <span className="italic">Pseudo-nitzschia</span>, in Narragansett Bay between 2017 and 2019.
+        This research was funded by{' '}
+        <ExternalLink href="https://seagrant.gso.uri.edu/">Rhode Island Sea Grant</ExternalLink> and
+        the <ExternalLink href="https://web.uri.edu/rinsfepscor/welcome/">RI C-AIM</ExternalLink>.
+      </>
+    ),
   },
   {
     name: 'Fish Trawl Survey',
