@@ -245,7 +245,8 @@ const DATASETS = [
     description: () => (
       <>
         An application of the Regional Ocean Modeling System that models data across all of Rhode
-        Island &apos;s major waterways, developed in collaboration between University of Rhode Island and Brown University.{' '}
+        Island &apos;s major waterways, developed in collaboration between University of Rhode
+        Island and Brown University.{' '}
       </>
     ),
   },
