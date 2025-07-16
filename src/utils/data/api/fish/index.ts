@@ -1,2 +1,2 @@
 export * from './downSample';
-export * from './fish'
+export * from './fish';
