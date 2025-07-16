@@ -17,11 +17,11 @@ import { getTitleFromSpecies } from '@/utils/data/shared';
 
 ChartJS.register(LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const LINE_DASH_OPTIONS = [[], [1, 2], [1, 2], [4, 1]];
+const LINE_DASH_OPTIONS = [[], [1, 2], [4, 3], [4, 1]];
 
 const LINE_COLOR_OPTIONS = [
   { border: 'rgba(237, 40, 130, 0.7)', background: 'rgba(237, 40, 130, 0.2)' },
-  { border: 'rgba(121, 225, 100,0.7)', background: 'rgba(121, 225, 100, 0.2)' },
+  { border: 'rgba(72, 173, 105, 1.0)', background: 'rgba(72, 173, 105, 1.0)' },
 ];
 
 type FishDataAbstract = {
@@ -103,6 +103,7 @@ function getStylesForGroup(
   const [stationNameInKey, variableInKey] = key.split('~');
   const stationNameIndex = stationNames.findIndex((name) => name === (stationNameInKey || ''));
   const variableIndex = variables.findIndex((variable) => variable === (variableInKey || ''));
+
   return {
     color:
       stationNameIndex < 0 || stationNameIndex >= LINE_COLOR_OPTIONS.length

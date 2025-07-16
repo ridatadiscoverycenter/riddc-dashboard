@@ -28,10 +28,10 @@ const LINE_COLOR_OPTIONS = [
     backgroundLine: 'rgba(237, 40, 130, 0.8)',
   },
   {
-    border: 'rgba(121, 225, 100,0.2)',
-    background: 'rgba(121, 225, 100, 0.2)',
-    borderLine: 'rgba(121, 225, 100, 0.8)',
-    backgroundLine: 'rgba(121, 225, 100, 0.8)',
+    border: 'rgba(72, 173, 105, 0.2)',
+    background: 'rgba(72, 173, 105, 0.2)',
+    borderLine: 'rgba(72, 173, 105, 1.0)',
+    backgroundLine: 'rgba(72, 173, 105, 1.0)',
   },
 ];
 
