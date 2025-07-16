@@ -18,10 +18,7 @@ export function Nav() {
         </Link>
       </h2>
       <h2 className="hidden sm:flex">
-        <ExternalLink
-          className={LINK_COLORS}
-          href={`${ERDDAP_URL}/erddap/index.html`}
-        >
+        <ExternalLink className={LINK_COLORS} href={`${ERDDAP_URL}/erddap/index.html`}>
           ERDDAP
         </ExternalLink>
       </h2>

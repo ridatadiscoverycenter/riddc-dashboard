@@ -91,10 +91,8 @@ export default async function DomoicAcid() {
       <Header size="md">Learn More</Header>
       <p>
         The full dataset used to power this app is available{' '}
-        <Link href={`${ERDDAP_URL}/erddap/tabledap/da_4566_36f0_124a.html`}>
-          on ERDDAP
-        </Link>
-        . If using this data, please cite the ERDDAP dataset.
+        <Link href={`${ERDDAP_URL}/erddap/tabledap/da_4566_36f0_124a.html`}>on ERDDAP</Link>. If
+        using this data, please cite the ERDDAP dataset.
       </p>
     </FullBleedColumn>
   );

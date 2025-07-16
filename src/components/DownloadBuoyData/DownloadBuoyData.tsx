@@ -52,7 +52,8 @@ export function DownloadBuoyData<T extends Dataset>({
         } as DownloadDataFormProps<T>)}
         <h4>
           Or, download the data directly from{' '}
-          <ExternalLink href={ERDDAP_DATASET_LINK_RI_BUOY}>ERDDAP</ExternalLink>.{/* Note AM: This link should change based on the datset */}
+          <ExternalLink href={ERDDAP_DATASET_LINK_RI_BUOY}>ERDDAP</ExternalLink>.
+          {/* Note AM: This link should change based on the datset */}
         </h4>
       </Modal>
     </>

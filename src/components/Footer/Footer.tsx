@@ -32,9 +32,7 @@ export function Footer() {
             <Link href="/glossary">Glossary</Link>
           </li>
           <li>
-            <ExternalLink href={`${ERDDAP_URL}/erddap/index.html`}>
-              ERDDAP
-            </ExternalLink>
+            <ExternalLink href={`${ERDDAP_URL}/erddap/index.html`}>ERDDAP</ExternalLink>
           </li>
           <li className="flex flex-row items-center gap-1">
             <ExternalLink href="https://github.com/brown-ccv/buoy-dashboard">
