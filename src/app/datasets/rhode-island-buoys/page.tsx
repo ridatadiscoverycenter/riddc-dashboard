@@ -27,7 +27,7 @@ import {
   parseParamDate,
 } from '@/utils/fns';
 
-export default async function MassachusettsBuoyData({ searchParams }: PageProps) {
+export default async function RhodeIslandBuoyData({ searchParams }: PageProps) {
   return (
     <React.Suspense fallback={<DefaultBuoyPage description={DESCRIPTION} />}>
       <PageWrapper params={searchParams} errorLinks={RI_BUOY_ERROR_LINKS} />
