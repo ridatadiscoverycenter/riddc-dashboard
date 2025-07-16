@@ -1,5 +1,6 @@
 import { Waves, Link, ExternalLink } from '@/components';
 import { BrownLogo, GithubLogo, NsfLogo, RicaimLogo, ThreeCrsLogo, UriLogo } from '../Icon';
+import { ERDDAP_URL } from '@/static/urls';
 
 const LOGO_SIZE = 5;
 
@@ -31,7 +32,7 @@ export function Footer() {
             <Link href="/glossary">Glossary</Link>
           </li>
           <li>
-            <ExternalLink href="https://pricaimcit.services.brown.edu/erddap/index.html">
+            <ExternalLink href={`${ERDDAP_URL}/erddap/index.html`}>
               ERDDAP
             </ExternalLink>
           </li>

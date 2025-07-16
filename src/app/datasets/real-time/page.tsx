@@ -23,6 +23,7 @@ import {
 } from '@/components';
 import { fetchWeatherData } from '@/utils/data';
 import { PageProps } from '@/types';
+import { ERDDAP_URL } from '@/static/urls';
 
 export default async function RealTime({ searchParams }: PageProps) {
   const { summaryData, coordinates } = await fetchMulti({
@@ -103,14 +104,14 @@ export default async function RealTime({ searchParams }: PageProps) {
             </p>
             <p>
               The full dataset used to power this app is available on{' '}
-              <ExternalLink href="https://pricaimcit.services.brown.edu/erddap/search/index.html?page=1&itemsPerPage=1000&searchFor=Buoy+Telemetry">
+              <ExternalLink href={`${ERDDAP_URL}/erddap/search/index.html?page=1&itemsPerPage=1000&searchFor=Buoy+Telemetry`}>
                 ERDDAP
               </ExternalLink>
               .
             </p>
             <p>
               Additional information about the data variables and QC tests can be found in the{' '}
-              <ExternalLink href="https://pricaimcit.services.brown.edu/erddap/info/buoy_telemetry_0ffe_2dc0_916e/index.html">
+              <ExternalLink href={`${ERDDAP_URL}/erddap/info/buoy_telemetry_0ffe_2dc0_916e/index.html`}>
                 ERDDAP dataset info page
               </ExternalLink>
               .

@@ -1,6 +1,7 @@
 import { ExternalLink, Link } from '@/components';
 import { HomeLink } from './HomeLink';
 import { DatasetShortcut } from './DatasetShortcut';
+import { ERDDAP_URL } from '@/static/urls';
 
 const LINK_COLORS =
   'text-white dark:text-white hover:text-teal-400 dark:hover:text-teal-300 no-underline transition-colors duraiton-500';
@@ -19,7 +20,7 @@ export function Nav() {
       <h2 className="hidden sm:flex">
         <ExternalLink
           className={LINK_COLORS}
-          href="https://pricaimcit.services.brown.edu/erddap/index.html"
+          href={`${ERDDAP_URL}/erddap/index.html`}
         >
           ERDDAP
         </ExternalLink>
