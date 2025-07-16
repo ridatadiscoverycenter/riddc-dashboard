@@ -113,7 +113,7 @@ async function PageWrapper({
             init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
           />
           <div className="flex flex-col items-center justify-around col-span-1">
-            <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
+            <h2 className="text-xl font-header font-bold">Where are these trawls?</h2>
             <BuoyLocationsMap locations={buoyData} />
           </div>
           <Card className="bg-white/90 col-span-3">

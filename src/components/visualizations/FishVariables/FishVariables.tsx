@@ -62,6 +62,7 @@ export function FishVariables({ data }: FishDataProps) {
         data: dataWithBlanks,
         borderColor: color.border,
         backgroundColor: color.background,
+        borderWidth: 2,
         cubicInterpolationMode: 'monotone',
         borderDash: dash,
         pointStyle: 'line',

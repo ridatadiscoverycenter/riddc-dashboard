@@ -64,6 +64,7 @@ export function WaterTempChart({ data }: { data: Temperature[] }) {
         data: dataWithBlanks,
         borderColor: color.borderLine,
         backgroundColor: color.backgroundLine,
+        borderWidth: 2,
         cubicInterpolationMode: 'monotone',
         pointStyle: 'line',
         radius: 0,
