@@ -10,7 +10,7 @@ import {
   PLANKTON_VARIABLES,
   OSOM_VARIABLES,
 } from '@/utils/data/api/buoy';
-import { FISH_SPECIES } from '@/utils/data/api/fish';
+import { FISH_SPECIES } from '@/utils/data/api/fish/fish';
 
 import { type Dataset } from '@/utils/data/api/buoy/types';
 

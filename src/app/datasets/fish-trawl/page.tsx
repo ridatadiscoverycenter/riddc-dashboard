@@ -11,7 +11,7 @@ import {
   Link,
 } from '@/components';
 import { FishTrawlSummary } from '@/components/visualizations/Vega/';
-import { fetchCoordinates, fetchSamples, fetchTemperatures } from '@/utils/data/api/fish';
+import { fetchCoordinates, fetchSamples, fetchTemperatures } from '@/utils/data/api/fish/fish';
 import {
   ERROR_CODES,
   extractParams,
