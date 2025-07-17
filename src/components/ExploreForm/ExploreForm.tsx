@@ -9,7 +9,6 @@ import {
   REAL_TIME_BUOY_VARIABLES,
   PLANKTON_VARIABLES,
   OSOM_VARIABLES,
-  MA_VARIABLE_CONVERTER,
 } from '@/utils/data/api/buoy';
 import { FISH_SPECIES } from '@/utils/data/api/fish';
 
@@ -56,7 +55,6 @@ export function ExploreForm({
   dateBounds,
   init = DEFAULT_INITIAL_DATA,
 }: ExploreFormProps) {
-  console.log({ init });
   const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(
     buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys
   );
