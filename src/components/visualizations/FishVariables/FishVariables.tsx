@@ -17,7 +17,7 @@ import { getTitleFromSpecies } from '@/utils/data/shared';
 
 ChartJS.register(LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const LINE_DASH_OPTIONS = [[], [1, 2], [4, 3], [4, 1]];
+const LINE_DASH_OPTIONS = [[], [4, 3], [3, 1]];
 
 const LINE_COLOR_OPTIONS = [
   { border: 'rgba(237, 40, 130, 0.7)', background: 'rgba(237, 40, 130, 0.2)' },
