@@ -232,7 +232,7 @@ const DATASETS = [
     href: '/datasets/real-time',
     description: () => (
       <>
-        Data collected from buoys across Narraganset Bay at 10 - 15 minute intervals, funded by{' '}
+        Data collected from buoys across Narraganset Bay at 10-15 minute intervals, funded by{' '}
         <ExternalLink href="https://seagrant.gso.uri.edu/">Rhode Island Sea Grant</ExternalLink> and
         the <ExternalLink href="https://web.uri.edu/rinsfepscor/welcome/">RI C-AIM</ExternalLink>.
         The buoys collecting this data are currently being repaired, and are not reporting data.
@@ -245,8 +245,8 @@ const DATASETS = [
     description: () => (
       <>
         An application of the Regional Ocean Modeling System that models data across all of Rhode
-        Island &apos;s major waterways, developed in collaboration between University of Rhode
-        Island and Brown University.{' '}
+        {"Island's"} major waterways, developed in collaboration between University of Rhode Island
+        and Brown University.
       </>
     ),
   },
