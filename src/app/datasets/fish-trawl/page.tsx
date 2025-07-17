@@ -45,6 +45,14 @@ async function PageWrapper({
     temperatures: fetchTemperatures(),
   });
 
+  // TODO: should probably add a daterange to the api
+  const minYear = summaryData.reduce((previous, current) => {
+    return current.year < previous.year ? current : previous;
+  }).year;
+  const maxYear = summaryData.reduce((previous, current) => {
+    return current.year > previous.year ? current : previous;
+  }).year;
+
   const paramsOrError = extractParams(
     {
       buoys: parseParamBuoyIds(params ? params['buoys'] : undefined),
@@ -109,14 +117,17 @@ async function PageWrapper({
             buoys={buoyData}
             dataset="fish"
             dateBounds={{
-              startDate: new Date('1959-01-01'),
-              endDate: new Date('2018-12-31'),
+              startDate: new Date(minYear, 0),
+              endDate: new Date(maxYear, 0),
             }}
             init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
+            mode="year"
           />
           <div className="flex flex-col items-center justify-around col-span-1">
             <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
-            <BuoyLocationsMap locations={buoyData} />
+            <div className="h-96 w-96 max-w-full">
+              <BuoyLocationsMap locations={buoyData} />
+            </div>
           </div>
           <Card className="bg-white/90 col-span-3">
             <FishTrawlSummary

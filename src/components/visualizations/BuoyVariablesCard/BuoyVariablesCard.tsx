@@ -49,7 +49,6 @@ export async function BuoyVariablesCard({
   }
 
   const buoyData = await buoyDataFetcher(params.buoys, params.vars, params.start, params.end);
-
   // If no data was found, display an error.
   if (buoyData.length === 0) {
     return (

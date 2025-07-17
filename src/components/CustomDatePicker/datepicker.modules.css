@@ -1,0 +1,21 @@
+.calendar-class {
+  .react-datepicker__year-wrapper {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    max-width: 200px;
+  }
+}
+
+.react-datepicker__header {
+  background: oklch(0.704 0.04 256.788);
+  font-weight: 400;
+}
+
+.react-datepicker__day {
+  font-weight: normal;
+}
+
+.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle {
+  fill: oklch(0.704 0.04 256.788);
+  color: oklch(0.704 0.04 256.788);
+}

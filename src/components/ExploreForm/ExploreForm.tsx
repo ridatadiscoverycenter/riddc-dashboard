@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import { Label, Input, Form, Select } from '@/components';
 import {
@@ -13,6 +14,7 @@ import {
 import { FISH_SPECIES } from '@/utils/data/api/fish';
 
 import { type Dataset } from '@/utils/data/api/buoy/types';
+import { CustomDatePicker } from '../CustomDatePicker/CustomDatePicker';
 
 type InitialFormData = {
   buoys: string[];
@@ -29,6 +31,7 @@ type ExploreFormProps = {
   dataset: Dataset;
   dateBounds: dateBound;
   init?: InitialFormData;
+  mode?: 'date' | 'year';
 };
 
 const DEFAULT_INITIAL_DATA: InitialFormData = {
@@ -36,19 +39,30 @@ const DEFAULT_INITIAL_DATA: InitialFormData = {
   vars: [],
 };
 
-// TODO: make this take in the buoy viewer variable?
-// TODO: plankton only has one buoy -- how to handle?
+function handleDate(date: Date | number, mode: 'date' | 'year' = 'date') {
+  if (mode === 'year') {
+    if (typeof date === 'number') {
+      return date;
+    } else {
+      return date.getFullYear();
+    }
+  }
+  if (typeof date === 'number') throw new Error("Type 'number' is incompatible with date");
+  return date.toISOString().split('T')[0];
+}
+
 export function ExploreForm({
   buoys,
   dataset,
   dateBounds,
   init = DEFAULT_INITIAL_DATA,
+  mode = 'date',
 }: ExploreFormProps) {
   const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(
     buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys
   );
   const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
-  const [startDate, setStartDate] = React.useState(dateBounds.startDate);
+  const [startDate, setStartDate] = React.useState(new Date(dateBounds.startDate));
   const [endDate, setEndDate] = React.useState(dateBounds.endDate);
 
   const onSubmit = React.useCallback(
@@ -56,8 +70,8 @@ export function ExploreForm({
       event.preventDefault();
       const buoys = selectedBuoys.length === 0 ? '' : `buoys=${selectedBuoys.join(',')}`;
       const vars = selectedVars.length === 0 ? '' : `vars=${selectedVars.join(',')}`;
-      const start = `start=${startDate.toISOString().split('T')[0]}`;
-      const end = `end=${endDate.toISOString().split('T')[0]}`;
+      const start = `start=${handleDate(startDate)}`;
+      const end = `end=${handleDate(endDate)}`;
       window.location.replace(
         dataset === 'ri'
           ? `/datasets/rhode-island-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
@@ -116,24 +130,24 @@ export function ExploreForm({
         dataset={dataset}
       />
       <div className="w-full flex lg:flex-row flex-col gap-2 [&>label]:flex-1">
-        <Label label="Start">
-          <Input
-            value={startDate.toISOString().split('T')[0]}
-            min={dateBounds.startDate.toISOString().split('T')[0]}
-            max={dateBounds.endDate.toISOString().split('T')[0]}
-            onChange={(e) => setStartDate(new Date(e.target.value))}
-            type="date"
+        <div>
+          <Label label="Start" />
+          <CustomDatePicker
+            selected={startDate}
+            setDate={setStartDate}
+            dateBounds={dateBounds}
+            mode={mode}
           />
-        </Label>
-        <Label label="End">
-          <Input
-            value={endDate.toISOString().split('T')[0]}
-            min={dateBounds.startDate.toISOString().split('T')[0]}
-            max={dateBounds.endDate.toISOString().split('T')[0]}
-            onChange={(e) => setEndDate(new Date(e.target.value))}
-            type="date"
+        </div>
+        <div>
+          <Label label="End" />
+          <CustomDatePicker
+            selected={endDate}
+            setDate={setEndDate}
+            dateBounds={dateBounds}
+            mode={mode}
           />
-        </Label>
+        </div>
       </div>
       <Input
         type="submit"
