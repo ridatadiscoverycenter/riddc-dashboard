@@ -36,7 +36,7 @@ const LINE_COLOR_OPTIONS = [
 ];
 
 export function WaterTempChart({ data }: { data: Temperature[] }) {
-  const avgData = movingAvg(data, 5);
+  const avgData = movingAvg(data, 0.3);
 
   const { dates, datasets } = React.useMemo(() => {
     return {
