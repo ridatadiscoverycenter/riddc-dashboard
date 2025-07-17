@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import { Label, Input, Form, Select, CustomDatePicker } from '@/components';
 import { variableToLabel, erddapApi } from '@/utils/data';
