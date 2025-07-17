@@ -3,20 +3,25 @@ import { groupBy } from '@/utils/fns';
 import { Temperature } from '@/types';
 
 export function movingAvg(mArray: Temperature[], mRange: number) {
-  const k = 2 / (mRange + 1);
-
-  // group by location and add avg field
   const grouped = groupBy(
     mArray.map((temp) => ({ ...temp, avg: temp.delta })),
     ({ station }) => station
   );
+  const entries = Object.entries(grouped).map(([stationName, data]) => [
+    stationName,
+    average(data, mRange),
+  ]);
+  // console.log(Object.fromEntries(entries))
+  return Object.fromEntries(entries);
+}
 
-  // get exponential moving average
-  // see https://stackoverflow.com/questions/40057020/calculating-exponential-moving-average-ema-using-javascript/40057355#40057355
-  for (const group of Object.keys(grouped)) {
-    for (let i = 1; i < grouped[group].length; i++) {
-      grouped[group][i].avg = grouped[group][i].delta * k + grouped[group][i - 1].avg * (1 - k)
-  }}
-
-  return grouped;
+function average(mArray: Temperature[], mRange: number) {
+  const k = 2 / (mRange + 1);
+  // first item is just the same as the first item in the input
+  const emaArray = [{ ...mArray[0], avg: mArray[0].delta }];
+  // for the rest of the items, they are computed with the previous one
+  for (let i = 1; i < mArray.length; i++) {
+    emaArray.push({ ...mArray[i], avg: mArray[i].delta * k + emaArray[i - 1].avg * (1 - k) });
+  }
+  return emaArray;
 }
