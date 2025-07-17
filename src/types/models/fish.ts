@@ -33,6 +33,7 @@ export type Temperature = TemperatureBase & {
   year: number;
   meanTemp: number;
   monthlyMean: number;
+  avg?: number;
 };
 
 export type AverageTemperature = Temperature & {
