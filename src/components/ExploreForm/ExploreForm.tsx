@@ -2,19 +2,20 @@
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { Label, Input, Form, Select } from '@/components';
-import {
+import { Label, Input, Form, Select, CustomDatePicker } from '@/components';
+import { variableToLabel, erddapApi } from '@/utils/data';
+import { type Dataset } from '@/utils/data/api/buoy/types';
+import { type RiBuoyCoordinate } from '@/utils/data/api/buoy';
+
+const {
   RI_BUOY_VARIABLES,
-  RiBuoyCoordinate,
   MA_BUOY_VARIABLES,
   REAL_TIME_BUOY_VARIABLES,
   PLANKTON_VARIABLES,
   OSOM_VARIABLES,
-} from '@/utils/data/api/buoy';
-import { FISH_SPECIES } from '@/utils/data/api/fish';
+} = erddapApi.buoy;
 
-import { type Dataset } from '@/utils/data/api/buoy/types';
-import { CustomDatePicker } from '../CustomDatePicker/CustomDatePicker';
+const { FISH_SPECIES } = erddapApi.fish;
 
 type InitialFormData = {
   buoys: string[];
@@ -39,6 +40,16 @@ const DEFAULT_INITIAL_DATA: InitialFormData = {
   vars: [],
 };
 
+function selectVarOptions(dataset: Dataset) {
+  if (dataset === 'ri') return [...RI_BUOY_VARIABLES];
+  if (dataset === 'ma') return [...MA_BUOY_VARIABLES];
+  if (dataset === 'plankton') return [...PLANKTON_VARIABLES];
+  if (dataset === 'fish') return [...FISH_SPECIES];
+  if (dataset === 'real-time') return [...REAL_TIME_BUOY_VARIABLES];
+  if (dataset === 'osom') return [...OSOM_VARIABLES];
+  return ['~~None Found~~'];
+}
+
 function handleDate(date: Date | number, mode: 'date' | 'year' = 'date') {
   if (mode === 'year') {
     if (typeof date === 'number') {
@@ -58,12 +69,22 @@ export function ExploreForm({
   init = DEFAULT_INITIAL_DATA,
   mode = 'date',
 }: ExploreFormProps) {
+  console.log({ init });
   const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(
     buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys
   );
   const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
   const [startDate, setStartDate] = React.useState(new Date(dateBounds.startDate));
   const [endDate, setEndDate] = React.useState(dateBounds.endDate);
+
+  const varOptions = React.useMemo(
+    () =>
+      selectVarOptions(dataset).map((variable) => ({
+        label: variableToLabel(variable, dataset),
+        value: variable,
+      })),
+    [dataset]
+  );
 
   const onSubmit = React.useCallback(
     (event: React.FormEvent) => {
@@ -72,20 +93,22 @@ export function ExploreForm({
       const vars = selectedVars.length === 0 ? '' : `vars=${selectedVars.join(',')}`;
       const start = `start=${handleDate(startDate)}`;
       const end = `end=${handleDate(endDate)}`;
-      window.location.replace(
+      const datasetLink =
         dataset === 'ri'
-          ? `/datasets/rhode-island-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+          ? `rhode-island-buoys`
           : dataset === 'ma'
-            ? `/datasets/massachusetts-buoys?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+            ? `massachusetts-buoys`
             : dataset === 'plankton'
-              ? `/datasets/plankton?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+              ? `plankton`
               : dataset === 'fish'
-                ? `/datasets/fish-trawl?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+                ? `fish-trawl`
                 : dataset === 'real-time'
-                  ? `/datasets/real-time?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
+                  ? `real-time`
                   : dataset === 'osom'
-                    ? `/datasets/osom?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
-                    : ''
+                    ? `osom`
+                    : '';
+      window.location.replace(
+        `/datasets/${datasetLink}?${buoys ? `${buoys}&` : ''}${vars ? `${vars}&` : ''}${start}&${end}`
       );
     },
     [selectedBuoys, selectedVars, startDate, endDate, dataset]
@@ -103,31 +126,24 @@ export function ExploreForm({
           )
         }
         dataset={dataset}
+        value={selectedBuoys
+          .map((selectedBuoyId) => buoys.find(({ buoyId }) => selectedBuoyId === buoyId))
+          .filter((buoyOrUndefined) => buoyOrUndefined !== undefined)
+          .map(({ stationName, buoyId }) => ({ label: stationName, value: buoyId }))}
       />
       <Select
         isMulti
         label="Variables (up to four)"
-        options={
-          dataset === 'ri'
-            ? [...RI_BUOY_VARIABLES]
-            : dataset === 'ma'
-              ? [...MA_BUOY_VARIABLES]
-              : dataset === 'plankton'
-                ? [...PLANKTON_VARIABLES]
-                : dataset === 'fish'
-                  ? [...FISH_SPECIES]
-                  : dataset === 'real-time'
-                    ? [...REAL_TIME_BUOY_VARIABLES]
-                    : dataset === 'osom'
-                      ? [...OSOM_VARIABLES]
-                      : ['~~None Found~~']
-        }
+        options={varOptions}
         onChange={(newVars) =>
           setSelectedVars(
             (newVars as { label: string; value: string }[]).map((selected) => selected.value)
           )
         }
         dataset={dataset}
+        value={selectedVars
+          .map((selectedVar) => varOptions.find(({ value }) => value === selectedVar))
+          .filter((variableOrUndefined) => variableOrUndefined !== undefined)}
       />
       <div className="w-full flex lg:flex-row flex-col gap-2 [&>label]:flex-1">
         <div>
