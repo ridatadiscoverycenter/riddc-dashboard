@@ -8,10 +8,9 @@ import {
   ExternalLink,
   FullBleedColumn,
   Header,
-  Link,
 } from '@/components';
 import { FishTrawlSummary } from '@/components/visualizations/Vega/';
-import { fetchCoordinates, fetchSamples, fetchTemperatures } from '@/utils/data/api/fish';
+import { fetchCoordinates, fetchSamples, fetchTemperatures } from '@/utils/data/api/fish/fish';
 import {
   ERROR_CODES,
   extractParams,
@@ -82,10 +81,9 @@ async function PageWrapper({
         populations, whereas scientists had previously relied on anecdotal information.
       </p>
       <p>
-        The heatmap below shows the abundance by year of the most commonly found fish in the
-        University of Rhode Island Graduate School of Oceanography Fish Trawl Survey. The icons are
-        sized and colored by abundance. To learn more about a species, select one from the{' '}
-        <Link href="#species-about">Explore Panel</Link>.
+        The graphs below shows the abundance by year of the most commonly found fish in the
+        University of Rhode Island Graduate School of Oceanography Fish Trawl Survey, along with the
+        surface water temperature deviation from the seasonally-adjusted average.
       </p>
       <div className="full-bleed ">
         <div className="grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-4 m-4">
@@ -99,15 +97,13 @@ async function PageWrapper({
                 typeof paramsOrError === 'string' ? undefined : (
                   <>
                     This plot compares {makeCommaSepList(paramsOrError.vars)} between{' '}
-                    {paramsOrError.start.toLocaleDateString()} and{' '}
-                    {paramsOrError.end.toLocaleDateString()} at{' '}
+                    {paramsOrError.start.getFullYear()} and {paramsOrError.end.getFullYear()} at{' '}
                     {makeCommaSepList(
                       paramsOrError.buoys.map(
                         (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
                       )
                     )}
-                    . You can hover over the lines to see more specific data. The weather data below
-                    is sourced from{' '}
+                    . You can hover over the lines to see more specific data.
                   </>
                 )
               }
@@ -124,10 +120,8 @@ async function PageWrapper({
             mode="year"
           />
           <div className="flex flex-col items-center justify-around col-span-1">
-            <h2 className="text-xl font-header font-bold">Where are these buoys?</h2>
-            <div className="h-96 w-96 max-w-full">
-              <BuoyLocationsMap locations={buoyData} />
-            </div>
+            <h2 className="text-xl font-header font-bold">Where are these trawls?</h2>
+            <BuoyLocationsMap locations={buoyData} />
           </div>
           <Card className="bg-white/90 col-span-3">
             <FishTrawlSummary
