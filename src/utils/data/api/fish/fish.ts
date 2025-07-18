@@ -7,8 +7,8 @@ import type {
   SampleBase,
   Temperature,
 } from '@/types';
-import { getAnimalFromSpecies, getTitleFromSpecies } from '../shared';
-import { erddapAPIGet } from './erddap';
+import { getAnimalFromSpecies, getTitleFromSpecies } from '../../shared';
+import { erddapAPIGet } from '../erddap';
 
 /**
  * Fetches Coordinate information from ERDDAP.
