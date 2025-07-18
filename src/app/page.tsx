@@ -9,6 +9,7 @@ import urigsoDark from '@/assets/urigso-dark.svg';
 import urigsoLight from '@/assets/urigso-light.svg';
 import rwuDark from '@/assets/RWUSeal_Light_Blue.svg';
 import rwuLight from '@/assets/RWUSeal_Blue.svg';
+import { ERDDAP_URL } from '@/static/urls';
 
 export default function Home() {
   return (
@@ -301,7 +302,7 @@ const EXTERNAL_RESOURCES = [
   {
     name: 'ERDDAP',
     description: 'The database that stores raw data for RIDDC.',
-    href: 'https://pricaimcit.services.brown.edu/erddap/index.html',
+    href: `${ERDDAP_URL}/erddap/index.html`,
   },
   {
     name: 'Narragansett Bay Volume Viewer',

@@ -1,3 +1,4 @@
+import { ERDDAP_URL } from '@/static/urls';
 import {
   CONFIG,
   MA_VARIABLE_CONVERTER,
@@ -8,7 +9,7 @@ import {
   PlanktonVariable,
 } from '@/utils/data/api/buoy';
 
-const BASE_URL = 'https://pricaimcit.services.brown.edu/erddap/tabledap';
+const BASE_URL = `${ERDDAP_URL}/erddap/tabledap`;
 
 export const DATA_FORMATS = [
   'htmlTable',
@@ -34,9 +35,6 @@ type StartAndOrEndDate =
   | { start: Date; end?: Date }
   | { start?: Date; end: Date }
   | { start?: Date; end?: Date };
-
-export const ERDDAP_DATASET_LINK_RI_BUOY =
-  'https://pricaimcit.services.brown.edu/erddap/tabledap/combined_e784_bee5_492e.html';
 
 export function createRiBuoyDownloadUrl(
   fileFormat: DF,

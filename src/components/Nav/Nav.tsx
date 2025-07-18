@@ -1,4 +1,5 @@
 import { ExternalLink, Link } from '@/components';
+import { ERDDAP_URL } from '@/static/urls';
 import { HomeLink } from './HomeLink';
 import { DatasetShortcut } from './DatasetShortcut';
 
@@ -17,10 +18,7 @@ export function Nav() {
         </Link>
       </h2>
       <h2 className="hidden sm:flex">
-        <ExternalLink
-          className={LINK_COLORS}
-          href="https://pricaimcit.services.brown.edu/erddap/index.html"
-        >
+        <ExternalLink className={LINK_COLORS} href={`${ERDDAP_URL}/erddap/index.html`}>
           ERDDAP
         </ExternalLink>
       </h2>

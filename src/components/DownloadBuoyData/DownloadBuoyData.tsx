@@ -8,7 +8,7 @@ import {
   Modal,
   type DownloadDataFormProps,
 } from '@/components';
-import { ERDDAP_DATASET_LINK_RI_BUOY } from '@/utils/data/erddap';
+import { ERDDAP_URL } from '@/static/urls';
 import type { Dataset, downloadDataHelper } from '@/utils/data/api/buoy/types';
 
 type Params = {
@@ -52,7 +52,9 @@ export function DownloadBuoyData<T extends Dataset>({
         } as DownloadDataFormProps<T>)}
         <h4>
           Or, download the data directly from{' '}
-          <ExternalLink href={ERDDAP_DATASET_LINK_RI_BUOY}>ERDDAP</ExternalLink>.
+          <ExternalLink href={`${ERDDAP_URL}/erddap/tabledap`}>ERDDAP</ExternalLink>.
+          {/* Note (AM): This should link to different datasets based on the `dataset` prop. */}
+          {/* Issue #89 */}
         </h4>
       </Modal>
     </>

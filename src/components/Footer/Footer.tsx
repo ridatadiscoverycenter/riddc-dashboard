@@ -1,4 +1,5 @@
 import { Waves, Link, ExternalLink } from '@/components';
+import { ERDDAP_URL } from '@/static/urls';
 import { BrownLogo, GithubLogo, NsfLogo, RicaimLogo, ThreeCrsLogo, UriLogo } from '../Icon';
 
 const LOGO_SIZE = 5;
@@ -31,9 +32,7 @@ export function Footer() {
             <Link href="/glossary">Glossary</Link>
           </li>
           <li>
-            <ExternalLink href="https://pricaimcit.services.brown.edu/erddap/index.html">
-              ERDDAP
-            </ExternalLink>
+            <ExternalLink href={`${ERDDAP_URL}/erddap/index.html`}>ERDDAP</ExternalLink>
           </li>
           <li className="flex flex-row items-center gap-1">
             <ExternalLink href="https://github.com/brown-ccv/buoy-dashboard">
