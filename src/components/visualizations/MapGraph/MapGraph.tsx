@@ -47,7 +47,7 @@ export function MapGraph({
         <ToggleMenuButton opened={opened} setOpened={setOpened} position="right-2 top-2" />
         {children}
       </div>
-      <div className={`bg-white dark:bg-black relative ${GRAPH_SIZE_STYLES(opened)}`}>
+      <div className={`bg-white dark:bg-black text-black relative ${GRAPH_SIZE_STYLES(opened)}`}>
         <ToggleMenuButton opened={opened} setOpened={setOpened} position="md:hidden left-2 top-2" />
         {graph}
       </div>

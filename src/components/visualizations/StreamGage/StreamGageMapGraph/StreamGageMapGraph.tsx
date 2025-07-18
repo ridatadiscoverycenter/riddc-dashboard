@@ -214,6 +214,7 @@ export function StreamGageMapGraph({
         </div>
         <div className="flex flex-col gap-1 w-full">
           <input
+            aria-label="Time Slider"
             type="range"
             min={0}
             max={dates.length - 1}

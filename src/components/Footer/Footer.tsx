@@ -13,7 +13,7 @@ export function Footer() {
         <BrownLogo size={LOGO_SIZE - 1} />
         <NsfLogo size={LOGO_SIZE} />
       </div>
-      <p className="text-justify m-2 max-w-[65ch]">
+      <p className="m-2 max-w-[65ch]">
         This material is based upon work conducted by the Rhode Island Consortium for Coastal
         Ecology Assessment, Innovation & Modeling (RI C-AIM), and supported in full by the National
         Science Foundation EPSCoR Cooperative Agreement 1655221. Any opinions, findings, and

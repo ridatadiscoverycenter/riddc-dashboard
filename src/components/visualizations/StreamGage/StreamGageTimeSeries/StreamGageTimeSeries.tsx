@@ -15,7 +15,9 @@ import {
   TimeScale,
 } from 'chart.js';
 
-import { StreamGageData } from '@/utils/data';
+import './streamgage.modules.css';
+
+import { type StreamGageData } from '@/utils/data';
 
 ChartJS.register(
   TimeScale,
@@ -63,6 +65,7 @@ export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps)
   );
   return (
     <Line
+      className="invert-dark"
       data={{
         labels: dates.map((date) => formatDate(date, 'P p')),
         datasets,
@@ -77,6 +80,10 @@ export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps)
           title: {
             display: true,
             text: 'Stream Gage Height',
+            color: 'black',
+            font: {
+              size: 18,
+            },
           },
         },
         scales: {
@@ -84,16 +91,34 @@ export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps)
             title: {
               display: true,
               text: 'Time',
+              color: 'black',
+              font: {
+                size: 16,
+              },
             },
             ticks: {
               autoSkip: true,
               maxTicksLimit: 3,
+              color: 'black',
+              font: {
+                size: 14,
+              },
             },
           },
           y: {
             title: {
               display: true,
               text: 'Height (ft.)',
+              color: 'black',
+              font: {
+                size: 16,
+              },
+            },
+            ticks: {
+              color: 'black',
+              font: {
+                size: 14,
+              },
             },
           },
         },
