@@ -36,10 +36,6 @@ type StartAndOrEndDate =
   | { start?: Date; end: Date }
   | { start?: Date; end?: Date };
 
-// Note (AM): This probably shouldn't exist.
-export const ERDDAP_DATASET_LINK_RI_BUOY =
-  'https://pricaimcit.services.brown.edu/erddap/tabledap/combined_e784_bee5_492e.html';
-
 export function createRiBuoyDownloadUrl(
   fileFormat: DF,
   variables: RiBuoyVariable[],
