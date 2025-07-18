@@ -8,7 +8,6 @@ import {
   ExternalLink,
   FullBleedColumn,
   Header,
-  Link,
 } from '@/components';
 import { FishTrawlSummary } from '@/components/visualizations/Vega/';
 import { fetchCoordinates, fetchSamples, fetchTemperatures } from '@/utils/data/api/fish/fish';
@@ -82,10 +81,9 @@ async function PageWrapper({
         populations, whereas scientists had previously relied on anecdotal information.
       </p>
       <p>
-        The heatmap below shows the abundance by year of the most commonly found fish in the
-        University of Rhode Island Graduate School of Oceanography Fish Trawl Survey. The icons are
-        sized and colored by abundance. To learn more about a species, select one from the{' '}
-        <Link href="#species-about">Explore Panel</Link>.
+        The graphs below shows the abundance by year of the most commonly found fish in the
+        University of Rhode Island Graduate School of Oceanography Fish Trawl Survey, along with the
+        surface water temperature deviation from the seasonally-adjusted average.
       </p>
       <div className="full-bleed ">
         <div className="grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-4 m-4">
