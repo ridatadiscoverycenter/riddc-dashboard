@@ -1,4 +1,6 @@
-{
+import { Info } from "@/types";
+
+export const fishInfo: Record<string, Info> = {
   "Alewife": {
     "href": "http://www.fishbase.org/Summary/speciesSummary.php?ID=1583&AT=Alewife",
     "name": "Alewife",
@@ -10,7 +12,7 @@
   "Atlantic Herring": {
     "href": "http://www.fishbase.org/summary/speciesSummary.php?ID=24&AT=Atlantic+Herring",
     "name": "Atlantic Herring",
-    "sciName": "Clupea harengus Linnaeus, 1758\t\t\t\n\t\t\t\n\t\t\t\tAtlantic herring",
+    "sciName": "Clupea harengus Linnaeus",
     "photoUrl": "https://www.fishbase.us/images/thumbnails/jpg/tn_Clhar_ub.jpg",
     "Classification": "Actinopteri (ray-finned fishes) > Clupeiformes (Herrings) > Clupeidae (Herrings, shads, sardines, menhadens) > Clupeinae",
     "IUCN": "Least Concern (LC)"
@@ -74,9 +76,7 @@
     "name": "Northern Searobin",
     "sciName": "Prionotus carolinus",
     "photoUrl": "https://www.fishbase.us/images/thumbnails/jpg/tn_Prcar_u3.jpg",
-
     "Classification": "Actinopteri (ray-finned fishes) > Perciformes/Scorpaenoidei (Scorpionfishes) > Triglidae (Searobins) > Prionotinae",
-
     "IUCN": "Least Concern (LC)"
   },
   "Red Hake": {
@@ -84,9 +84,7 @@
     "name": "Red Hake",
     "sciName": "Urophycis chuss",
     "photoUrl": "https://www.fishbase.us/images/thumbnails/jpg/tn_Urchu_u0.jpg",
-
     "Classification": "Actinopteri (ray-finned fishes) > Gadiformes (Cods) > Phycidae (Phycid hakes)",
-
     "IUCN": "Not Evaluated"
   },
   "Scup": {
@@ -94,7 +92,6 @@
     "name": "Scup",
     "sciName": "Stenotomus chrysops",
     "photoUrl": "https://www.fishbase.us/images/thumbnails/jpg/tn_Stchr_u1.jpg",
-
     "Classification": "Actinopteri (ray-finned fishes) > Eupercaria/misc (Various families in series Eupercaria) > Sparidae (Porgies)",
     "IUCN": "Near Threatened (NT)"
   },
@@ -104,7 +101,6 @@
     "name": "Silver Hake",
     "sciName": "Merluccius bilinearis",
     "photoUrl": "https://www.fishbase.us/images/thumbnails/jpg/tn_Mebil_u0.jpg",
-
     "Classification": "Actinopteri (ray-finned fishes) > Gadiformes (Cods) > Merlucciidae (Merluccid hakes)",
     "IUCN": "Near Threatened (NT)"
   },
@@ -114,7 +110,6 @@
     "name": "Striped Searobin",
     "sciName": "Prionotus evolans",
     "photoUrl": "https://www.fishbase.us/images/thumbnails/jpg/tn_Prevo_u0.jpg",
-
     "Classification": "Actinopteri (ray-finned fishes) > Perciformes/Scorpaenoidei (Scorpionfishes) > Triglidae (Searobins) > Prionotinae",
     "IUCN": "Least Concern (LC)"
   },
@@ -123,7 +118,6 @@
     "name": "Summer Flounder",
     "sciName": "Paralichthys dentatus",
     "photoUrl": "https://www.fishbase.us/images/thumbnails/jpg/tn_Paden_u0.jpg",
-
     "Classification": "Actinopteri (ray-finned fishes) > Pleuronectiformes (Flatfishes) > Paralichthyidae (Large-tooth flounders)",
     "IUCN": "Least Concern (LC)"
   },
@@ -132,7 +126,6 @@
     "name": "Tautog",
     "sciName": "Tautoga onitis",
     "photoUrl": "https://www.fishbase.us/images/thumbnails/jpg/tn_Taoni_u0.jpg",
-
     "Classification": "Actinopteri (ray-finned fishes) > Eupercaria/misc (Various families in series Eupercaria) > Labridae (Wrasses)",
     "IUCN": "Vulnerable (VU)"
   },
@@ -141,7 +134,6 @@
     "name": "Weakfish",
     "sciName": "Cynoscion regalis",
     "photoUrl": "https://www.fishbase.us/images/thumbnails/jpg/tn_Cyreg_u0.jpg",
-
     "Classification": "Actinopteri (ray-finned fishes) > Eupercaria/misc (Various families in series Eupercaria) > Sciaenidae (Drums or croakers)",
     "IUCN": "Endangered (EN)"
   },
@@ -150,7 +142,6 @@
     "name": "Windowpane Flounder",
     "sciName": "Scophthalmus aquosus",
     "photoUrl": "https://www.fishbase.us/images/thumbnails/jpg/tn_Scaqu_l0.jpg",
-
     "Classification": "Actinopteri (ray-finned fishes) > Pleuronectiformes (Flatfishes) > Scophthalmidae (Turbots)",
     "IUCN": "Not Evaluated"
   },
@@ -159,7 +150,6 @@
     "name": "Winter Flounder",
     "sciName": "Pseudopleuronectes americanus",
     "photoUrl": "https://www.fishbase.us/images/thumbnails/jpg/tn_Psame_u1.jpg",
-
     "Classification": "Actinopteri (ray-finned fishes) > Pleuronectiformes (Flatfishes) > Pleuronectidae (Righteye flounders) > Pleuronectinae",
     "IUCN": "Not Evaluated"
   }
