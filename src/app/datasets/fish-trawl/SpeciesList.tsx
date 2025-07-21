@@ -3,13 +3,14 @@ import React from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { FishInfoPanel } from '@/components/FishInfoPanel';
 import { Info } from '@/types';
+import fishInfo from '@/assets/fishInfo.json';
 
 type ModalLaunchProps = {
-  item: Info;
+  item: string;
 };
 
 type SpeciesListProps = {
-  list: Info[];
+  list: string[];
 };
 
 function ModalLauncher({ item }: ModalLaunchProps) {
@@ -17,7 +18,7 @@ function ModalLauncher({ item }: ModalLaunchProps) {
   return (
     <>
       <button className="underline text-teal-800 hover:text-teal-500" onClick={() => setOpen(true)}>
-        {item.name}
+        {(fishInfo as Record<string, Info>)[item].name}
       </button>
       <Dialog open={open} onClose={setOpen} className="relative z-10">
         <DialogBackdrop
@@ -30,7 +31,7 @@ function ModalLauncher({ item }: ModalLaunchProps) {
               transition
               className="relative transform overflow-hidden rounded-lg bg-white dark:bg-slate-600 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-xl data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
             >
-              <FishInfoPanel species={item} />
+              <FishInfoPanel species={(fishInfo as Record<string, Info>)[item]} />
             </DialogPanel>
           </div>
         </div>

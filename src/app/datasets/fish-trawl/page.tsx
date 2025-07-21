@@ -12,7 +12,7 @@ import {
 import { FishTrawlSummary } from '@/components/visualizations/Vega/';
 import {
   fetchCoordinates,
-  fetchInfo,
+  // fetchInfo,
   fetchSamples,
   fetchTemperatures,
 } from '@/utils/data/api/fish/fish';
@@ -72,10 +72,10 @@ async function PageWrapper({
       ERROR_CODES.MISSING_END_DATE,
     ]
   );
-  const fishInfo =
-    typeof paramsOrError !== 'string'
-      ? await Promise.all(paramsOrError.vars.map(async (v) => await fetchInfo(v)))
-      : [];
+  // const fishInfo =
+  //   typeof paramsOrError !== 'string'
+  //     ? await Promise.all(paramsOrError.vars.map(async (v) => await fetchInfo(v)))
+  //     : [];
 
   return (
     <FullBleedColumn>
@@ -106,7 +106,7 @@ async function PageWrapper({
               description={
                 typeof paramsOrError === 'string' ? undefined : (
                   <>
-                    The upper plot compares <SpeciesList list={fishInfo}></SpeciesList> between{' '}
+                    The upper plot compares <SpeciesList list={paramsOrError.vars} /> between{' '}
                     {paramsOrError.start.toLocaleDateString()} and{' '}
                     {paramsOrError.end.toLocaleDateString()} at{' '}
                     {makeCommaSepList(

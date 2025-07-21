@@ -55,10 +55,6 @@ export interface Info {
   name?: string;
   sciName?: string;
   photoUrl?: string;
-  sectionData?: {
-    Classification?: {
-      Classification?: string;
-    };
-    IUCN?: string;
-  };
+  Classification?: string;
+  IUCN?: string;
 }

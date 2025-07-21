@@ -16,10 +16,7 @@ export function FishInfoPanel({ species }: FishInfoProps) {
         </Header>
 
         {species.href ? (
-          <ExternalLink
-            href={species.href.replace('Summary', 'summary')}
-            className="inline-flex hover:opacity-50"
-          >
+          <ExternalLink href={species.href} className="inline-flex hover:opacity-50">
             Source{<ArrowTopRightOnSquareIcon className="size-4" />}
           </ExternalLink>
         ) : (
@@ -34,19 +31,22 @@ export function FishInfoPanel({ species }: FishInfoProps) {
           </p>
           <p>
             <strong className="font-bold">IUCN Status: </strong>
-            {species.sectionData?.IUCN || 'Unknown'}
+            {species?.IUCN || 'Unknown'}
           </p>
           <p>
             <strong className="font-bold">Classification: </strong>
-            {species.sectionData?.Classification?.Classification || 'Unknown'}
+            {species.Classification || 'Unknown'}
           </p>
         </div>
         {species.photoUrl ? (
-          <img
-            className="col-span-1 rounded-md self-center justify-self-end"
-            src={species.photoUrl}
-            alt={`Picture of ${species.name}`}
-          />
+          <>
+            {species.photoUrl}
+            {/* <img
+              className="col-span-1 rounded-md self-center justify-self-end"
+              src={species.photoUrl}
+              alt={`Picture of ${species.name}`}
+            /> */}
+          </>
         ) : undefined}
       </div>
     </>
