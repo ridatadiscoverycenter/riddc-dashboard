@@ -1,6 +1,8 @@
+import React from 'react';
+import Image from 'next/image';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import { Info } from '@/types';
-import { ExternalLink, Header } from '@/components';
+import { ExternalLink, Header, Loading } from '@/components';
 
 type FishInfoProps = {
   species: Info | undefined;
@@ -39,14 +41,15 @@ export function FishInfoPanel({ species }: FishInfoProps) {
           </p>
         </div>
         {species.photoUrl ? (
-          <>
-            {species.photoUrl}
-            {/* <img
-              className="col-span-1 rounded-md self-center justify-self-end"
-              src={species.photoUrl}
+          <React.Suspense fallback={<Loading />}>
+            <Image
+              src={species.photoUrl.replace('.us', '.org')}
               alt={`Picture of ${species.name}`}
-            /> */}
-          </>
+              width={200}
+              height={200}
+              className="rounded-md self-center justify-self-end"
+            />
+          </React.Suspense>
         ) : undefined}
       </div>
     </>
