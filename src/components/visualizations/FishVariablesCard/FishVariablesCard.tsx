@@ -2,10 +2,10 @@
 
 import React from 'react';
 
-import { GraphErrorPanel } from '@/components';
+import { DownloadBuoyData, GraphErrorPanel } from '@/components';
 import { WaterTempChart } from '@/components/visualizations/WaterTempChart';
 import { ERROR_CODES } from '@/utils/fns';
-import { Sample, Temperature } from '@/types';
+import { FishVariable, Sample, Temperature } from '@/types';
 import { FishVariables } from '../FishVariables';
 
 type FishVariablesProps = {
@@ -37,7 +37,7 @@ export async function FishVariablesCard({
     (sample) =>
       sample.year >= startYear &&
       sample.year <= endYear &&
-      params.vars.includes(sample.title) &&
+      params.vars.includes(sample.species) &&
       params.buoys.includes(sample.station)
   );
   if (fishData.length === 0) {
@@ -64,6 +64,13 @@ export async function FishVariablesCard({
           )}
         />
       </div>
+      <DownloadBuoyData
+        variables={params.vars as FishVariable[]}
+        dataset="fish"
+        buoys={params.buoys}
+        start={params.start}
+        end={params.end}
+      />
     </>
   );
 }

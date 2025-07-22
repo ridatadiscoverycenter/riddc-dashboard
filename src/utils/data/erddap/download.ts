@@ -1,4 +1,5 @@
 import { ERDDAP_URL } from '@/static/urls';
+import { FishVariable } from '@/types';
 import {
   CONFIG,
   MA_VARIABLE_CONVERTER,
@@ -9,7 +10,7 @@ import {
   PlanktonVariable,
 } from '@/utils/data/api/buoy';
 
-const BASE_URL = `${ERDDAP_URL}/erddap/tabledap`;
+const BASE_URL = `${ERDDAP_URL}erddap/tabledap`;
 
 export const DATA_FORMATS = [
   'htmlTable',
@@ -119,5 +120,22 @@ export function createRealTimeDownloadUrl(
     CONFIG['buoy-telemetry'].datasetId,
     fileFormat,
     `${vars}&station_name=~"(${stations})"${start}${end}`
+  );
+}
+
+export function createFishDownloadUrl(
+  fileFormat: DF,
+  variables: FishVariable[],
+  buoys: string[],
+  time: StartAndOrEndDate | undefined = undefined
+) {
+  const vars = [...variables, 'Year', 'Station'].join(',');
+  const stations = buoys.join('|');
+  const start = time && time.start ? `&Year>=${time.start.getFullYear()}` : '';
+  const end = time && time.end ? `&Year<=${time.end.getFullYear()}` : '';
+  return createDownloadUrl(
+    'fish_trawl_3ce2_fedf_6833',
+    fileFormat,
+    `${vars}&Station=~"(${stations})"${start}${end}`
   );
 }

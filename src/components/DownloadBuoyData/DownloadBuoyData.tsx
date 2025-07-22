@@ -28,7 +28,9 @@ type DownloadDataProps<T extends Dataset> = T extends 'ri'
         ? Params & { variables: downloadDataHelper<'real-time'> }
         : T extends 'osom'
           ? Params & { variables: downloadDataHelper<'osom'> }
-          : never;
+          : T extends 'fish'
+            ? Params & { variables: downloadDataHelper<'fish'> }
+            : never;
 
 export function DownloadBuoyData<T extends Dataset>({
   variables,
