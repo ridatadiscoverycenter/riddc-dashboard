@@ -30,7 +30,6 @@ export type SampleBase = {
   abun: number;
 };
 
-
 export interface Info {
   href?: string;
   name?: string;

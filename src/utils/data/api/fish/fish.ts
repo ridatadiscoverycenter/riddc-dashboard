@@ -1,11 +1,6 @@
 import { z } from 'zod';
 
-import type {
-  FetchedFishCoordinate,
-  FetchedTemperature,
-  Info,
-  SampleBase,
-} from '@/types';
+import type { FetchedFishCoordinate, FetchedTemperature, Info, SampleBase } from '@/types';
 import { getAnimalFromSpecies } from '../../shared';
 import { erddapAPIGet } from '../erddap';
 
