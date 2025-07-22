@@ -69,7 +69,6 @@ export function ExploreForm({
   init = DEFAULT_INITIAL_DATA,
   mode = 'date',
 }: ExploreFormProps) {
-  console.log({ init });
   const [selectedBuoys, setSelectedBuoys] = React.useState<string[]>(
     buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys
   );

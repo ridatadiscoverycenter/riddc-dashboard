@@ -16,7 +16,7 @@ import {
 
 import { formatDate } from 'date-fns';
 import { movingAvg } from '@/utils/data/api/fish/downSample';
-import { type Temperature, AverageTemperature } from '@/types';
+import type { Temperature } from '@/utils/data/api/fish';
 
 ChartJS.register(LinearScale, PointElement, LineElement, ScatterController, Title, Tooltip, Legend);
 
@@ -45,7 +45,7 @@ export function WaterTempChart({ data }: { data: Temperature[] }) {
           avgData[Object.keys(avgData)[0]].map(({ timestamp }: { timestamp: Date }) => timestamp)
         )
       ) as Date[],
-      datasets: avgData as Record<string, AverageTemperature[]>,
+      datasets: avgData as Record<string, Temperature[]>,
     };
   }, [avgData]);
 

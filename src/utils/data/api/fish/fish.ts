@@ -1,101 +1,144 @@
+import { z } from 'zod';
+
 import type {
   FetchedFishCoordinate,
   FetchedTemperature,
-  FishCoordinate,
   Info,
-  Sample,
   SampleBase,
-  Temperature,
 } from '@/types';
-import { getAnimalFromSpecies, getTitleFromSpecies } from '../../shared';
+import { getAnimalFromSpecies } from '../../shared';
 import { erddapAPIGet } from '../erddap';
 
 /**
  * Fetches Coordinate information from ERDDAP.
  * @returns {Promise<FishCoordinate[]>}
  */
+const ZodFetchedFishCoordinate = z.object({
+  station_name: z.any(),
+  longitude: z.any(),
+  latitude: z.any(),
+});
+
+function validateFetchedFishCoordinate(
+  coordinates: unknown[]
+): coordinates is FetchedFishCoordinate[] {
+  try {
+    z.array(ZodFetchedFishCoordinate).parse(coordinates);
+    return true;
+  } catch (ex) {
+    return false;
+  }
+}
+function formatFishCoordinate(fetchedData: FetchedFishCoordinate) {
+  return {
+    stationName: fetchedData.station_name,
+    latitude: fetchedData.latitude,
+    longitude: fetchedData.longitude,
+    buoyId: fetchedData.station_name,
+  };
+}
+
+export type FishCoordinate = ReturnType<typeof formatFishCoordinate>;
+
 export async function fetchCoordinates() {
-  const coordinates = await erddapAPIGet<FetchedFishCoordinate[]>('fish/coordinates');
-  return coordinates.map(
-    (coordinate) =>
-      ({
-        ...coordinate,
-        stationName: coordinate.station_name,
-        buoyId: coordinate.station_name,
-      }) as FishCoordinate
-  );
+  const fetchedCoordinates = await erddapAPIGet<unknown[]>('fish/coordinates');
+  if (validateFetchedFishCoordinate(fetchedCoordinates)) {
+    return fetchedCoordinates.map(formatFishCoordinate);
+  } else {
+    throw new Error('Invalid data received when fetching fish coordinates');
+  }
 }
 
 /**
  * Fetches Sample information from ERDDAP and computes an animal name
  * @returns {Promise<Sample[]>}
  */
-export async function fetchSamples() {
-  const rawSamples = await erddapAPIGet<SampleBase[]>('fish/species');
-  return rawSamples.map(
-    (sample) => ({ ...sample, animal: getAnimalFromSpecies(sample.species) }) as Sample
-  );
+const ZodFetchedSamples = z.array(
+  z.object({
+    species: z.string(),
+    title: z.string(),
+    station: z.string(),
+    year: z.number(),
+    abun: z.union([z.number(), z.null()]),
+  })
+);
+
+function validateFetchedSamples(sampleData: unknown): sampleData is { data: SampleBase[] } {
+  try {
+    ZodFetchedSamples.parse(sampleData);
+    return true;
+  } catch (ex) {
+    return false;
+  }
 }
 
-/**
- * Alias for fetchTemperatures (backwards compatible).
- * @returns {Promise<Temperature[]>}
- */
-export async function fetchTemps() {
-  return fetchTemperatures();
+function formatFishSamples(sampleData: SampleBase) {
+  return {
+    species: sampleData.species,
+    title: sampleData.title,
+    station: sampleData.station,
+    year: sampleData.year,
+    abun: sampleData.abun || undefined,
+    animal: getAnimalFromSpecies(sampleData.species),
+  };
+}
+
+export type Sample = ReturnType<typeof formatFishSamples>;
+
+export async function fetchSamples() {
+  const rawSamples = await erddapAPIGet<SampleBase[]>('fish/species');
+  if (validateFetchedSamples(rawSamples)) {
+    return rawSamples.map(formatFishSamples);
+  } else {
+    throw new Error('Invalid data received when fetching Fish Sample Data');
+  }
 }
 
 /**
  * Fetches Temperature information from ERDDAP.
  * @returns {Promise<Temperature[]>}
  */
+const LEVELS = ['Surface', 'Bottom'] as const;
+const ZodFetchedTemperature = z.object({
+  level: z.enum(LEVELS),
+  month: z.number(),
+  delta: z.union([z.number(), z.null()]),
+  Station: z.string(),
+});
+
+function validateFetchedTemperature(temperatures: unknown[]): temperatures is FetchedTemperature[] {
+  try {
+    z.array(ZodFetchedTemperature).parse(temperatures);
+    return true;
+  } catch (ex) {
+    return false;
+  }
+}
+function formatTemperature(fetchedData: FetchedTemperature) {
+  return {
+    station: fetchedData.Station,
+    timestamp: new Date(fetchedData.year_month),
+    year: new Date(fetchedData.year_month).getUTCFullYear(),
+    delta: fetchedData.delta,
+    avg: fetchedData.delta,
+    level: fetchedData.level,
+  };
+}
+
+export type Temperature = ReturnType<typeof formatTemperature>;
+
 export async function fetchTemperatures() {
-  const temperatures = await erddapAPIGet<FetchedTemperature[]>('fish/temps');
-  return temperatures.map(
-    (temperature) =>
-      ({
-        ...temperature,
-        station: temperature.Station,
-        timestamp: new Date(temperature.year_month),
-        year: new Date(temperature.year_month).getUTCFullYear(),
-        meanTemp: temperature.mean_temp,
-        monthlyMean: temperature.monthly_mean,
-      }) as Temperature
-  );
+  const fetchedTemperatures = await erddapAPIGet<FetchedTemperature[]>('fish/temps');
+  if (validateFetchedTemperature(fetchedTemperatures)) {
+    return fetchedTemperatures.map(formatTemperature);
+  } else {
+    throw new Error('Invalid data received when fetching water temperature');
+  }
 }
 
 export async function fetchInfo(species: string) {
   const speciesInfo = await erddapAPIGet<Info>(`/fish/info/${species}`);
   return speciesInfo;
-}
-
-/**
- * Fetches coordinate, sample, and temperature information.
- * @returns {Promise<{coordinates: Coordinate[], samples: Sample[], temperatures: Temperature[]}>}
- */
-export async function fetchBaseData() {
-  const [coordinates, samples, temperatures] = await Promise.all([
-    fetchCoordinates(),
-    fetchSamples(),
-    fetchTemperatures(),
-  ]);
-  return {
-    coordinates,
-    samples,
-    temperatures,
-  };
-}
-
-/**
- * Fetch sample data and return a list of unique species in alphabetic order.
- * @returns {Promise<string[]>}
- */
-export async function fetchSpecies() {
-  const samples = await fetchSamples();
-  return Array.from(new Set(samples.map(({ species }) => species)))
-    .sort()
-    .map((species) => getTitleFromSpecies(species))
-    .map((species) => ({ value: species, label: getTitleFromSpecies(species) }));
 }
 
 export const FISH_SPECIES = [
