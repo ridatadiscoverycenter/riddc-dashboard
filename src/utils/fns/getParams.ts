@@ -10,7 +10,7 @@ import {
   RiBuoyVariable,
 } from '../data/api/buoy';
 import { PLANKTON_VARIABLES, PlanktonVariable } from '../data/api/buoy/plankton';
-import { FISH_SPECIES } from '../data/api/fish';
+import { FISH_SPECIES, FishVariable } from '../data/api/fish';
 
 export type ParsedParam<T> = { error: string; value: undefined } | { error: undefined; value: T };
 type Param = Exclude<PageProps['searchParams'], undefined>[string];
@@ -124,7 +124,7 @@ export function parseParamSamples(variablesParam: Param): ParsedParam<string[]> 
   if (variablesParam === undefined) return { error: ERROR_CODES.NO_VARS, value: undefined };
   if (variablesParam instanceof Array) return { error: ERROR_CODES.BAD_VARS, value: undefined };
   const variables = variablesParam.split(',');
-  if (variables.every((vari) => FISH_SPECIES.includes(vari as RealTimeBuoyVariable)))
+  if (variables.every((vari) => FISH_SPECIES.includes(vari as FishVariable)))
     return { error: undefined, value: variables };
   return { error: ERROR_CODES.INVALID_VARS, value: undefined };
 }

@@ -1,4 +1,4 @@
-import { FishVariable } from '@/types';
+import { FishVariable } from '../fish/fish';
 import type {
   RiBuoyVariable,
   MaBuoyVariable,

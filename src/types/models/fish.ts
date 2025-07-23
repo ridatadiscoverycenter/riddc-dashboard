@@ -1,30 +1,4 @@
 export type StationName = 'Fox Island' | 'Whale Rock';
-export type FishVariable =
-  | 'Alewife'
-  | 'Atlantic Herring'
-  | 'Bluefish'
-  | 'Butterfish'
-  | 'Cancer Crab'
-  | 'Cunner'
-  | 'Fourspot Flounder'
-  | 'Horseshoe Crab'
-  | 'Lady Crab'
-  | 'Little Skate'
-  | 'Lobster'
-  | 'Long Finned_squid'
-  | 'Longhorn Sculpin'
-  | 'Northern Searobin'
-  | 'Red Hake'
-  | 'Scup'
-  | 'Starfish'
-  | 'Silver Hake'
-  | 'Spider Crabs'
-  | 'Striped Searobin'
-  | 'Summer Flounder'
-  | 'Tautog'
-  | 'Weakfish'
-  | 'Windowpane Flounder'
-  | 'Winter Flounder';
 
 type FishCoordinateBase = {
   latitude: number;

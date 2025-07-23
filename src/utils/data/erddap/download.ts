@@ -1,5 +1,5 @@
 import { ERDDAP_URL } from '@/static/urls';
-import { FishVariable } from '@/types';
+import { FishVariable } from '@/utils/data/api/fish';
 import {
   CONFIG,
   MA_VARIABLE_CONVERTER,

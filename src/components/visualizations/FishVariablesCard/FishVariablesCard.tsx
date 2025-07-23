@@ -5,7 +5,8 @@ import React from 'react';
 import { DownloadBuoyData, GraphErrorPanel } from '@/components';
 import { WaterTempChart } from '@/components/visualizations/WaterTempChart';
 import { ERROR_CODES } from '@/utils/fns';
-import { FishVariable, Sample, Temperature } from '@/types';
+import type { Sample, Temperature } from '@/types';
+import type { FishVariable } from '@/utils/data/api/fish';
 import { FishVariables } from '../FishVariables';
 
 type FishVariablesProps = {

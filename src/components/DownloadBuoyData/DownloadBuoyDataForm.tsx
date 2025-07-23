@@ -17,7 +17,7 @@ import {
   createFishDownloadUrl,
 } from '@/utils/data/erddap';
 import type { Dataset, downloadDataHelper } from '@/utils/data/api/buoy/types';
-import { FishVariable } from '@/types';
+import type { FishVariable } from '@/utils/data/api/fish';
 
 type Params = {
   buoys: string[];

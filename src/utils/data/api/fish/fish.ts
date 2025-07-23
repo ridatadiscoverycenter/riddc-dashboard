@@ -152,4 +152,6 @@ export const FISH_SPECIES = [
   'Weakfish',
   'Windowpane',
   'Winter_flounder',
-];
+] as const;
+
+export type FishVariable = (typeof FISH_SPECIES)[number];
