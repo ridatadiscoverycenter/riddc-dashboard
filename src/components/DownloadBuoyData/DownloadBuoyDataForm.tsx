@@ -14,8 +14,10 @@ import {
   createPlanktonDownloadUrl,
   DATA_FORMATS,
   DF,
+  createFishDownloadUrl,
 } from '@/utils/data/erddap';
 import type { Dataset, downloadDataHelper } from '@/utils/data/api/buoy/types';
+import type { FishVariable } from '@/utils/data/api/fish';
 
 type Params = {
   buoys: string[];
@@ -30,7 +32,9 @@ export type DownloadDataFormProps<T extends Dataset> = T extends 'ri'
     ? Params & { variables: downloadDataHelper<'ma'> }
     : T extends 'plankton'
       ? Params & { variables: downloadDataHelper<'plankton'> }
-      : Params & { variables: downloadDataHelper<'real-time'> };
+      : T extends 'real-time'
+        ? Params & { variables: downloadDataHelper<'real-time'> }
+        : Params & { variables: downloadDataHelper<'fish'> };
 
 export function DownloadBuoyDataForm<T extends Dataset>({
   variables,
@@ -58,10 +62,12 @@ export function DownloadBuoyDataForm<T extends Dataset>({
                   start,
                   end,
                 })
-              : createRealTimeDownloadUrl(format, variables as RealTimeBuoyVariable[], buoys, {
-                  start,
-                  end,
-                }),
+              : dataset === 'real-time'
+                ? createRealTimeDownloadUrl(format, variables as RealTimeBuoyVariable[], buoys, {
+                    start,
+                    end,
+                  })
+                : createFishDownloadUrl(format, variables as FishVariable[], buoys, { start, end }),
         '_blank'
       )
       ?.focus();

@@ -1,3 +1,4 @@
+import { FishVariable } from '../fish/fish';
 import type {
   RiBuoyVariable,
   MaBuoyVariable,
@@ -92,4 +93,6 @@ export type downloadDataHelper<T extends Dataset> = T extends 'ri'
         ? RealTimeBuoyVariable[]
         : T extends 'osom'
           ? OsomBuoyVariable[]
-          : never;
+          : T extends 'fish'
+            ? FishVariable[]
+            : never;
