@@ -35,7 +35,7 @@ type StreamGageTimeSeriesProps = {
 };
 
 const LINE_COLORS = [
-  { borderColor: 'rgb(129,24,204)', backgroundColor: 'rgba(129,24,204,0.5)' },
+  { borderColor: 'rgb(168, 92, 222)', backgroundColor: 'rgba(168, 92, 222, 0.5)' },
   { borderColor: 'rgb(59,84,227)', backgroundColor: 'rgba(59,84,227,0.5)' },
   { borderColor: 'rgb(41,166,255)', backgroundColor: 'rgba(41,166,255,0.5)' },
   { borderColor: 'rgb(86,208,232)', backgroundColor: 'rgba(86,208,232,0.5)' },
@@ -74,6 +74,7 @@ export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps)
           backgroundColor: 'rgba(71,71,71,0.5)',
         }),
         label: siteName,
+        pointStyle: false,
         data: values.map(({ value }) => value),
       })),
     [data]
@@ -82,7 +83,9 @@ export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps)
     <Line
       data={{
         labels: dates.map((date) => formatDate(date, 'P p')),
-        datasets,
+        // Note (AM): TS doesn't like `pointStyle: false`, even though that's in the expected union.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        datasets: datasets as any,
       }}
       options={{
         responsive: true,
