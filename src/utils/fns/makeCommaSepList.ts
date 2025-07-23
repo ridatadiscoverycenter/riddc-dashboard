@@ -15,5 +15,5 @@ export function makeCommaSepFish(list: string[]) {
 
   const listCopy = [...list];
   const last = listCopy.pop();
-  return `${listCopy.map(getTitleFromSpecies).join(', ')} and ${getTitleFromSpecies(last)}`;
+  return `${listCopy.map(getTitleFromSpecies).join(', ')} and ${last !== undefined && getTitleFromSpecies(last)}`;
 }
