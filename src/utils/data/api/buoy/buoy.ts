@@ -1,57 +1,5 @@
 import { erddapAPIGet } from '../erddap';
-
-const MODEL_LINEWIDTH = 0.8;
-const MEASUREMENT_LINEWIDTH = 1.8;
-export const CONFIG_NAMES = ['ri-buoy', 'osom', 'ma-buoy', 'plankton', 'buoy-telemetry'] as const;
-export type BuoyConfigName = (typeof CONFIG_NAMES)[number];
-export type BuoyConfig = {
-  name: BuoyConfigName;
-  route: string;
-  datasetId: string;
-  lineWidth: number;
-  title: string;
-};
-export const CONFIG: { [key in BuoyConfigName]: BuoyConfig } = {
-  'ri-buoy': {
-    name: 'ri-buoy',
-    route: 'buoy',
-    datasetId: 'combined_e784_bee5_492e',
-    lineWidth: MEASUREMENT_LINEWIDTH,
-    title: 'Historical',
-  },
-  osom: {
-    name: 'osom',
-    route: 'model',
-    datasetId: 'model_data_77bb_15c2_6ab3',
-    lineWidth: MODEL_LINEWIDTH,
-    title: 'OSOM',
-  },
-  'ma-buoy': {
-    name: 'ma-buoy',
-    route: 'mabuoy',
-    datasetId: 'ma_buoy_data_a6c9_12eb_1ec5',
-    lineWidth: MEASUREMENT_LINEWIDTH,
-    title: 'Historical',
-  },
-  plankton: {
-    name: 'plankton',
-    route: 'plankton',
-    datasetId: 'plankton_time_series_7615_c513_ef8e',
-    lineWidth: MEASUREMENT_LINEWIDTH,
-    title: 'Plankton',
-  },
-  'buoy-telemetry': {
-    name: 'buoy-telemetry',
-    route: 'telemetry-raw',
-    datasetId: 'buoy_telemetry_0ffe_2dc0_916e',
-    lineWidth: MEASUREMENT_LINEWIDTH,
-    title: 'Real Time',
-  },
-};
-
-function getConfig(configName: BuoyConfigName) {
-  return CONFIG[configName];
-}
+import { getConfig, type BuoyConfigName } from '../config';
 
 export async function fetchSummaryData(configName: BuoyConfigName, bustCache = false) {
   const config = getConfig(configName);

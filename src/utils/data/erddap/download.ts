@@ -1,7 +1,6 @@
 import { ERDDAP_URL } from '@/static/urls';
 import { FishVariable } from '@/utils/data/api/fish';
 import {
-  CONFIG,
   MA_VARIABLE_CONVERTER,
   REAL_TIME_VARIABLE_CONVERTER,
   type RiBuoyVariable,
@@ -9,6 +8,7 @@ import {
   type RealTimeBuoyVariable,
   PlanktonVariable,
 } from '@/utils/data/api/buoy';
+import { getConfig } from '../api/config';
 
 const BASE_URL = `${ERDDAP_URL}erddap/tabledap`;
 
@@ -48,7 +48,7 @@ export function createRiBuoyDownloadUrl(
   const start = time && time.start ? `&time>=${time.start.toISOString().split('T')[0]}` : '';
   const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
   return createDownloadUrl(
-    CONFIG['ri-buoy'].datasetId,
+    getConfig('ri-buoy').datasetId,
     fileFormat,
     `${vars}&station_name=~"(${stations})"${start}${end}`
   );
@@ -65,7 +65,7 @@ export function createPlanktonDownloadUrl(
   const start = time && time.start ? `&time>=${time.start.toISOString().split('T')[0]}` : '';
   const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
   return createDownloadUrl(
-    CONFIG['plankton'].datasetId,
+    getConfig('plankton').datasetId,
     fileFormat,
     `${vars}&station_name=~"(${stations})"${start}${end}`
   );
@@ -91,7 +91,7 @@ export function createMaBuoyDownloadUrl(
   const start = time && time.start ? `&time>=${time.start.toISOString().split('T')[0]}` : '';
   const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
   return createDownloadUrl(
-    CONFIG['ma-buoy'].datasetId,
+    getConfig('ma-buoy').datasetId,
     fileFormat,
     `${vars}&station_name=~"(${stations})"${start}${end}`
   );
@@ -117,7 +117,7 @@ export function createRealTimeDownloadUrl(
   const start = time && time.start ? `&time>=${time.start.toISOString().split('T')[0]}` : '';
   const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
   return createDownloadUrl(
-    CONFIG['buoy-telemetry'].datasetId,
+    getConfig('buoy-telemetry').datasetId,
     fileFormat,
     `${vars}&station_name=~"(${stations})"${start}${end}`
   );
@@ -134,7 +134,7 @@ export function createFishDownloadUrl(
   const start = time && time.start ? `&Year>=${time.start.getFullYear()}` : '';
   const end = time && time.end ? `&Year<=${time.end.getFullYear()}` : '';
   return createDownloadUrl(
-    'fish_trawl_3ce2_fedf_6833',
+    getConfig('fish').datasetId,
     fileFormat,
     `${vars}&Station=~"(${stations})"${start}${end}`
   );
