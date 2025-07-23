@@ -10,7 +10,7 @@ import {
   RiBuoyVariable,
 } from '../data/api/buoy';
 import { PLANKTON_VARIABLES, PlanktonVariable } from '../data/api/buoy/plankton';
-import { FISH_SPECIES, FishVariable } from '../data/api/fish';
+import { FISH_SPECIES, type FishVariable } from '../data/api/fish';
 
 export type ParsedParam<T> = { error: string; value: undefined } | { error: undefined; value: T };
 type Param = Exclude<PageProps['searchParams'], undefined>[string];

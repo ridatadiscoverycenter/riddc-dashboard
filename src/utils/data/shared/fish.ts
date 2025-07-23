@@ -13,7 +13,8 @@ export function getAnimalFromSpecies(species: string) {
   return animal;
 }
 
-export function getTitleFromSpecies(species: string) {
+export function getTitleFromSpecies(species: string | undefined) {
+  if (species === undefined) return undefined;
   const title = species
     .replace('_', ' ')
     .replace(/[A-Z]/g, (letter) => `${letter.toLowerCase()}`)
