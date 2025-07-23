@@ -1,23 +1,23 @@
 import { erddapAPIGet } from '../erddap';
-import { getConfig, type BuoyConfigName } from '../config';
+import { getConfig, type DatasetConfigName } from '../config';
 
-export async function fetchSummaryData(configName: BuoyConfigName, bustCache = false) {
+export async function fetchSummaryData(configName: DatasetConfigName, bustCache = false) {
   const config = getConfig(configName);
   const bustCacheParam = bustCache ? `?cacheBust=${Math.random()}` : '';
   return await erddapAPIGet<unknown[]>(`${config.route}/summary${bustCacheParam}`);
 }
 
-export async function fetchBuoyCoordinates(configName: BuoyConfigName) {
+export async function fetchBuoyCoordinates(configName: DatasetConfigName) {
   const config = getConfig(configName);
   return await erddapAPIGet<unknown[]>(`/${config.route}/coordinates`);
 }
 
-export async function fetchBuoyVariables(configName: BuoyConfigName) {
+export async function fetchBuoyVariables(configName: DatasetConfigName) {
   const config = getConfig(configName);
   return await erddapAPIGet<unknown[]>(`/${config.route}/variables`);
 }
 
-export async function fetchBuoyTimeRange(configName: BuoyConfigName) {
+export async function fetchBuoyTimeRange(configName: DatasetConfigName) {
   const config = getConfig(configName);
   return await erddapAPIGet(`/${config.route}/timerange`);
 }
@@ -27,7 +27,7 @@ function formatDateForQueryParams(d: Date) {
 }
 
 export async function fetchBuoyData(
-  configName: BuoyConfigName,
+  configName: DatasetConfigName,
   ids: string[],
   vars: string[],
   startDate: Date,
