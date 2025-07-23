@@ -51,18 +51,21 @@ const LINE_COLORS = [
 
 const CHART_COLORS = {
   light: {
-    grid: "oklch(92.9% 0.013 255.508)",
-    text: "oklch(27.9% 0.041 260.031)",
+    grid: 'oklch(92.9% 0.013 255.508)',
+    text: 'oklch(27.9% 0.041 260.031)',
   },
   dark: {
-    grid: "oklch(44.6% 0.043 257.281)", 
-    text: "oklch(70.4% 0.04 256.788)",
+    grid: 'oklch(44.6% 0.043 257.281)',
+    text: 'oklch(70.4% 0.04 256.788)',
   },
-}
+};
 
 export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps) {
   const colorMode = useColorMode();
-  const chartColors = React.useMemo(() => colorMode === "light" ? CHART_COLORS.light : CHART_COLORS.dark, [colorMode]);
+  const chartColors = React.useMemo(
+    () => (colorMode === 'light' ? CHART_COLORS.light : CHART_COLORS.dark),
+    [colorMode]
+  );
   const datasets = React.useMemo(
     () =>
       data.map(({ siteName, values }, index) => ({
@@ -89,7 +92,7 @@ export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps)
             position: 'top' as const,
             labels: {
               color: chartColors.text,
-            }
+            },
           },
           title: {
             display: true,
@@ -109,7 +112,7 @@ export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps)
             },
             ticks: {
               autoSkip: true,
-              color: chartColors.text, 
+              color: chartColors.text,
               maxTicksLimit: 3,
             },
           },
