@@ -16,6 +16,7 @@ import {
 } from 'chart.js';
 
 import { StreamGageData } from '@/utils/data';
+import { useColorMode } from '@/hooks/useColorMode';
 
 ChartJS.register(
   TimeScale,
@@ -33,7 +34,7 @@ type StreamGageTimeSeriesProps = {
   data: StreamGageData[];
 };
 
-const COLORS = [
+const LINE_COLORS = [
   { borderColor: 'rgb(129,24,204)', backgroundColor: 'rgba(129,24,204,0.5)' },
   { borderColor: 'rgb(59,84,227)', backgroundColor: 'rgba(59,84,227,0.5)' },
   { borderColor: 'rgb(41,166,255)', backgroundColor: 'rgba(41,166,255,0.5)' },
@@ -48,11 +49,24 @@ const COLORS = [
   { borderColor: 'rgb(212,36,141)', backgroundColor: 'rgba(212,36,141,0.5)' },
 ];
 
+const CHART_COLORS = {
+  light: {
+    grid: "oklch(92.9% 0.013 255.508)",
+    text: "oklch(27.9% 0.041 260.031)",
+  },
+  dark: {
+    grid: "oklch(44.6% 0.043 257.281)", 
+    text: "oklch(70.4% 0.04 256.788)",
+  },
+}
+
 export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps) {
+  const colorMode = useColorMode();
+  const chartColors = React.useMemo(() => colorMode === "light" ? CHART_COLORS.light : CHART_COLORS.dark, [colorMode]);
   const datasets = React.useMemo(
     () =>
       data.map(({ siteName, values }, index) => ({
-        ...(COLORS[index] || {
+        ...(LINE_COLORS[index] || {
           borderColor: 'rgb(71,71,71)',
           backgroundColor: 'rgba(71,71,71,0.5)',
         }),
@@ -73,27 +87,43 @@ export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps)
         plugins: {
           legend: {
             position: 'top' as const,
+            labels: {
+              color: chartColors.text,
+            }
           },
           title: {
             display: true,
             text: 'Stream Gage Height',
+            color: chartColors.text,
           },
         },
         scales: {
           x: {
+            grid: {
+              color: chartColors.grid,
+            },
             title: {
               display: true,
               text: 'Time',
+              color: chartColors.text,
             },
             ticks: {
               autoSkip: true,
+              color: chartColors.text, 
               maxTicksLimit: 3,
             },
           },
           y: {
+            grid: {
+              color: chartColors.grid,
+            },
             title: {
               display: true,
               text: 'Height (ft.)',
+              color: chartColors.text,
+            },
+            ticks: {
+              color: chartColors.text,
             },
           },
         },
