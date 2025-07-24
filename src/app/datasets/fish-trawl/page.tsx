@@ -10,7 +10,12 @@ import {
   Header,
 } from '@/components';
 import { FishTrawlSummary } from '@/components/visualizations/Vega/';
-import { fetchCoordinates, fetchSamples, fetchTemperatures } from '@/utils/data/api/fish/fish';
+import {
+  fetchCoordinates,
+  // fetchInfo,
+  fetchSamples,
+  fetchTemperatures,
+} from '@/utils/data/api/fish/fish';
 import {
   ERROR_CODES,
   extractParams,
@@ -23,6 +28,7 @@ import {
 } from '@/utils/fns';
 import { PageProps } from '@/types';
 import { FishVariablesCard } from '@/components/visualizations/FishVariablesCard/FishVariablesCard';
+import { SpeciesList } from './SpeciesList';
 
 export default async function FishTrawl({ searchParams }: PageProps) {
   return (
@@ -67,6 +73,10 @@ async function PageWrapper({
       ERROR_CODES.MISSING_END_DATE,
     ]
   );
+  // const fishInfo =
+  //   typeof paramsOrError !== 'string'
+  //     ? await Promise.all(paramsOrError.vars.map(async (v) => await fetchInfo(v)))
+  //     : [];
 
   return (
     <FullBleedColumn>
@@ -88,7 +98,7 @@ async function PageWrapper({
       </p>
       <div className="full-bleed ">
         <div className="grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-4 m-4">
-          <Card className="bg-white/90 md:col-span-2 col-span-3 row-span-2 flex flex-col items-center justify-around gap-3">
+          <Card className="bg-white/90 md:col-span-2 col-span-3 row-span-2 flex flex-col items-center justify-around gap-3 max-h-fit pt-6 pb-10 place-self-center">
             <FishVariablesCard
               params={paramsOrError}
               data={summaryData}
@@ -97,14 +107,16 @@ async function PageWrapper({
               description={
                 typeof paramsOrError === 'string' ? undefined : (
                   <>
-                    This plot compares {makeCommaSepFish(paramsOrError.vars)} between{' '}
-                    {paramsOrError.start.getFullYear()} and {paramsOrError.end.getFullYear()} at{' '}
+                    The upper plot compares <SpeciesList list={paramsOrError.vars} /> between{' '}
+                    {paramsOrError.start.toLocaleDateString()} and{' '}
+                    {paramsOrError.end.toLocaleDateString()} at{' '}
                     {makeCommaSepList(
                       paramsOrError.buoys.map(
                         (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
                       )
                     )}
-                    . You can hover over the lines to see more specific data.
+                    . The lower plot shows surface water temperature deviations from the
+                    seasonally-adjusted mean.
                   </>
                 )
               }
