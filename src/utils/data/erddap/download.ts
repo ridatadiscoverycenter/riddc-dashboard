@@ -1,5 +1,6 @@
+import { ERDDAP_URL } from '@/static/urls';
+import { FishVariable } from '@/utils/data/api/fish';
 import {
-  CONFIG,
   MA_VARIABLE_CONVERTER,
   REAL_TIME_VARIABLE_CONVERTER,
   type RiBuoyVariable,
@@ -7,8 +8,9 @@ import {
   type RealTimeBuoyVariable,
   PlanktonVariable,
 } from '@/utils/data/api/buoy';
+import { getConfig } from '../api/config';
 
-const BASE_URL = 'https://pricaimcit.services.brown.edu/erddap/tabledap';
+const BASE_URL = `${ERDDAP_URL}erddap/tabledap`;
 
 export const DATA_FORMATS = [
   'htmlTable',
@@ -35,9 +37,6 @@ type StartAndOrEndDate =
   | { start?: Date; end: Date }
   | { start?: Date; end?: Date };
 
-export const ERDDAP_DATASET_LINK_RI_BUOY =
-  'https://pricaimcit.services.brown.edu/erddap/tabledap/combined_e784_bee5_492e.html';
-
 export function createRiBuoyDownloadUrl(
   fileFormat: DF,
   variables: RiBuoyVariable[],
@@ -49,7 +48,7 @@ export function createRiBuoyDownloadUrl(
   const start = time && time.start ? `&time>=${time.start.toISOString().split('T')[0]}` : '';
   const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
   return createDownloadUrl(
-    CONFIG['ri-buoy'].datasetId,
+    getConfig('ri-buoy').datasetId,
     fileFormat,
     `${vars}&station_name=~"(${stations})"${start}${end}`
   );
@@ -66,7 +65,7 @@ export function createPlanktonDownloadUrl(
   const start = time && time.start ? `&time>=${time.start.toISOString().split('T')[0]}` : '';
   const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
   return createDownloadUrl(
-    CONFIG['plankton'].datasetId,
+    getConfig('plankton').datasetId,
     fileFormat,
     `${vars}&station_name=~"(${stations})"${start}${end}`
   );
@@ -92,7 +91,7 @@ export function createMaBuoyDownloadUrl(
   const start = time && time.start ? `&time>=${time.start.toISOString().split('T')[0]}` : '';
   const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
   return createDownloadUrl(
-    CONFIG['ma-buoy'].datasetId,
+    getConfig('ma-buoy').datasetId,
     fileFormat,
     `${vars}&station_name=~"(${stations})"${start}${end}`
   );
@@ -118,8 +117,25 @@ export function createRealTimeDownloadUrl(
   const start = time && time.start ? `&time>=${time.start.toISOString().split('T')[0]}` : '';
   const end = time && time.end ? `&time<=${time.end.toISOString().split('T')[0]}` : '';
   return createDownloadUrl(
-    CONFIG['buoy-telemetry'].datasetId,
+    getConfig('buoy-telemetry').datasetId,
     fileFormat,
     `${vars}&station_name=~"(${stations})"${start}${end}`
+  );
+}
+
+export function createFishDownloadUrl(
+  fileFormat: DF,
+  variables: FishVariable[],
+  buoys: string[],
+  time: StartAndOrEndDate | undefined = undefined
+) {
+  const vars = [...variables, 'Year', 'Station'].join(',');
+  const stations = buoys.join('|');
+  const start = time && time.start ? `&Year>=${time.start.getFullYear()}` : '';
+  const end = time && time.end ? `&Year<=${time.end.getFullYear()}` : '';
+  return createDownloadUrl(
+    getConfig('fish').datasetId,
+    fileFormat,
+    `${vars}&Station=~"(${stations})"${start}${end}`
   );
 }

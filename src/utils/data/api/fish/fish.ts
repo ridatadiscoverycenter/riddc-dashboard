@@ -98,7 +98,7 @@ export async function fetchSpecies() {
     .map((species) => ({ value: species, label: getTitleFromSpecies(species) }));
 }
 
-export const FISH_SPECIES = [
+export const FISH_TITLES = [
   'Alewife',
   'Atlantic Herring',
   'Bluefish',
@@ -125,3 +125,33 @@ export const FISH_SPECIES = [
   'Windowpane Flounder',
   'Winter Flounder',
 ];
+
+export const FISH_SPECIES = [
+  'Alosa_spp',
+  'Atlantic_herring',
+  'Bluefish',
+  'Butterfish',
+  'Cancer_crab',
+  'Cunner',
+  'Fourspot_flounder',
+  'Horseshoe_crab',
+  'Lady_crab',
+  'Little_skate',
+  'Lobster',
+  'Long_finned_Squid',
+  'Longhorned_sculpin',
+  'Northern_searobin',
+  'Red_Hake',
+  'Scup',
+  'Sea_star',
+  'Silver_hake',
+  'Spider_crab',
+  'Striped_searobin',
+  'Summer_flounder',
+  'Tautog',
+  'Weakfish',
+  'Windowpane',
+  'Winter_flounder',
+] as const;
+
+export type FishVariable = (typeof FISH_SPECIES)[number];

@@ -23,7 +23,8 @@ export function downsampleStreamGageData(data: StreamGageData[], interval: Inter
       values: Object.entries(
         // Group data based on proximity to each time interval entry
         groupBy(
-          bouy.values,
+          // USGS States that values of -9999 indicate that no data was reported by the Stream Gage at this time point.
+          bouy.values.filter(({ value }) => value > -9990),
           (dataPoint: TimeSeriesDataPoint) => closestIndexTo(dataPoint.dateTime, binIntervals) || -1
         )
 

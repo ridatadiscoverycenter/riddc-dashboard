@@ -20,6 +20,7 @@ import {
   ERROR_CODES,
   extractParams,
   fetchMulti,
+  makeCommaSepFish,
   makeCommaSepList,
   parseParamBuoyIds,
   parseParamDate,
@@ -176,12 +177,12 @@ const DESCRIPTION = (
 
 const ERROR_LINKS = [
   {
-    href: '/datasets/fish-trawl?buoys=Fox%20Island&vars=Alewife,Fourspot%20Flounder&start=1959-01-01&end=2018-12-31',
+    href: '/datasets/fish-trawl?buoys=Fox%20Island&vars=Alosa_spp,Fourspot_flounder&start=1959-01-01&end=2018-12-31',
     description:
       'Alewife and Fourspot Flounder populations at Fox Island across the time series from 1959 to 2018',
   },
   {
-    href: '/datasets/fish-trawl?buoys=Whale%20Rock,Fox%20Island&vars=Cancer%20Crab,Atlantic%20Herring&start=1999-01-01&end=2005-12-31',
+    href: '/datasets/fish-trawl?buoys=Whale%20Rock,Fox%20Island&vars=Cancer_crab,Atlantic_herring&start=1999-01-01&end=2005-12-31',
     description: 'Cancer Crab and Atlantic Herring populations across sites from 1999 to 2005',
   },
 ];
