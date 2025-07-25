@@ -1,7 +1,7 @@
 import { Info } from '@/types';
 
 export const fishInfo: Record<string, Info> = {
-  Alewife: {
+  Alosa_spp: {
     href: 'http://www.fishbase.org/Summary/speciesSummary.php?ID=1583&AT=Alewife',
     name: 'Alewife',
     sciName: 'Alosa pseudoharengus',
@@ -10,7 +10,7 @@ export const fishInfo: Record<string, Info> = {
       'Actinopteri (ray-finned fishes) > Clupeiformes (Herrings) > Clupeidae (Herrings, shads, sardines, menhadens) > Alosinae',
     IUCN: 'Least Concern (LC)',
   },
-  'Atlantic Herring': {
+  Atlantic_herring: {
     href: 'http://www.fishbase.org/summary/speciesSummary.php?ID=24&AT=Atlantic+Herring',
     name: 'Atlantic Herring',
     sciName: 'Clupea harengus Linnaeus',
@@ -47,7 +47,10 @@ export const fishInfo: Record<string, Info> = {
       'Actinopteri (ray-finned fishes) > Eupercaria/misc (Various families in series Eupercaria) > Labridae (Wrasses)',
     IUCN: 'Least Concern (LC)',
   },
-  'Fourspot Flounder': {
+  Cancer_crab: {
+    name: 'Cancer Crab'
+  },
+  Fourspot_flounder: {
     href: 'http://www.fishbase.org/Summary/SpeciesSummary.php?ID=4229&AT=Fourspot+Flounder',
     name: 'Fourspot Flounder',
     sciName: 'Hippoglossina oblonga',
@@ -56,9 +59,9 @@ export const fishInfo: Record<string, Info> = {
       'Actinopteri (ray-finned fishes) > Pleuronectiformes (Flatfishes) > Paralichthyidae (Large-tooth flounders)',
     IUCN: 'Least Concern (LC)',
   },
-  'Horseshoe Crab': { name: 'Horseshoe Crab', sciName: 'Limulus polyphemus' },
-  'Lady Crab': { name: 'Lady Crab', sciName: 'Ovalipes ocellatus' },
-  'Little Skate': {
+  Horseshoe_crab: { name: 'Horseshoe Crab', sciName: 'Limulus polyphemus' },
+  Lady_crab: { name: 'Lady Crab', sciName: 'Ovalipes ocellatus' },
+  Little_skate: {
     href: 'http://www.fishbase.org/summary/speciesSummary.php?ID=2557&AT=Little+Skate',
     name: 'Little Skate',
     sciName: 'Leucoraja erinacea',
@@ -68,8 +71,11 @@ export const fishInfo: Record<string, Info> = {
 
     IUCN: 'Near Threatened (NT)',
   },
+  Long_finned_Squid: {
+    name: 'Long-finned Squid'
+  },
   Lobster: { name: 'Lobster', sciName: 'Homarus americanus' },
-  'Longhorn Sculpin': {
+  Longhorned_sculpin: {
     href: 'http://www.fishbase.org/summary/speciesSummary.php?ID=4120&AT=Longhorn+Sculpin',
     name: 'Longhorn Sculpin',
     sciName: 'Myoxocephalus octodecemspinosus',
@@ -79,7 +85,7 @@ export const fishInfo: Record<string, Info> = {
 
     IUCN: 'Not Evaluated',
   },
-  'Northern Searobin': {
+  Northern_searobin: {
     href: 'http://www.fishbase.org/Summary/speciesSummary.php?ID=1243&AT=Northern+Searobin',
     name: 'Northern Searobin',
     sciName: 'Prionotus carolinus',
@@ -88,7 +94,7 @@ export const fishInfo: Record<string, Info> = {
       'Actinopteri (ray-finned fishes) > Perciformes/Scorpaenoidei (Scorpionfishes) > Triglidae (Searobins) > Prionotinae',
     IUCN: 'Least Concern (LC)',
   },
-  'Red Hake': {
+  Red_Hake: {
     href: 'http://www.fishbase.org/summary/speciesSummary.php?ID=312&AT=Red+Hake',
     name: 'Red Hake',
     sciName: 'Urophycis chuss',
@@ -105,8 +111,9 @@ export const fishInfo: Record<string, Info> = {
       'Actinopteri (ray-finned fishes) > Eupercaria/misc (Various families in series Eupercaria) > Sparidae (Porgies)',
     IUCN: 'Near Threatened (NT)',
   },
+  Sea_star: {name: 'Sea Star'},
   Starfish: { name: 'Starfish', sciName: 'Asterias spp.' },
-  'Silver Hake': {
+  Silver_hake: {
     href: 'http://www.fishbase.org/Summary/SpeciesSummary.php?ID=323&AT=Silver+Hake',
     name: 'Silver Hake',
     sciName: 'Merluccius bilinearis',
@@ -115,8 +122,8 @@ export const fishInfo: Record<string, Info> = {
       'Actinopteri (ray-finned fishes) > Gadiformes (Cods) > Merlucciidae (Merluccid hakes)',
     IUCN: 'Near Threatened (NT)',
   },
-  'Spider Crabs': { name: 'Spider Crabs', sciName: 'Libinia emarginata' },
-  'Striped Searobin': {
+  Spider_crab: { name: 'Spider Crabs', sciName: 'Libinia emarginata' },
+  Striped_searobin: {
     href: 'http://www.fishbase.org/Summary/speciesSummary.php?ID=1244&AT=Striped+Searobin',
     name: 'Striped Searobin',
     sciName: 'Prionotus evolans',
@@ -125,7 +132,7 @@ export const fishInfo: Record<string, Info> = {
       'Actinopteri (ray-finned fishes) > Perciformes/Scorpaenoidei (Scorpionfishes) > Triglidae (Searobins) > Prionotinae',
     IUCN: 'Least Concern (LC)',
   },
-  'Summer Flounder': {
+  Summer_flounder: {
     href: 'http://www.fishbase.org/Summary/speciesSummary.php?ID=1338&AT=Summer+Flounder',
     name: 'Summer Flounder',
     sciName: 'Paralichthys dentatus',
@@ -152,7 +159,7 @@ export const fishInfo: Record<string, Info> = {
       'Actinopteri (ray-finned fishes) > Eupercaria/misc (Various families in series Eupercaria) > Sciaenidae (Drums or croakers)',
     IUCN: 'Endangered (EN)',
   },
-  'Windowpane Flounder': {
+  Windowpane: {
     href: 'http://www.fishbase.org/Summary/speciesSummary.php?ID=530&AT=Windowpane+Flounder',
     name: 'Windowpane Flounder',
     sciName: 'Scophthalmus aquosus',
@@ -161,7 +168,7 @@ export const fishInfo: Record<string, Info> = {
       'Actinopteri (ray-finned fishes) > Pleuronectiformes (Flatfishes) > Scophthalmidae (Turbots)',
     IUCN: 'Not Evaluated',
   },
-  'Winter Flounder': {
+  Winter_flounder: {
     href: 'http://www.fishbase.org/Summary/speciesSummary.php?ID=524&AT=winter+flounder',
     name: 'Winter Flounder',
     sciName: 'Pseudopleuronectes americanus',

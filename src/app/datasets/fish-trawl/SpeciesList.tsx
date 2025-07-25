@@ -3,13 +3,14 @@ import React from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { FishInfoPanel } from '@/components/FishInfoPanel';
 import { fishInfo } from '@/assets/fishInfo';
+import type { FishVariable } from '@/utils/data/api/fish';
 
 type ModalLaunchProps = {
-  item: string;
+  item: FishVariable;
 };
 
 type SpeciesListProps = {
-  list: string[];
+  list: FishVariable[];
 };
 
 function ModalLauncher({ item }: ModalLaunchProps) {
