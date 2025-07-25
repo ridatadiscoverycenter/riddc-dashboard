@@ -18,7 +18,7 @@ function ModalLauncher({ item }: ModalLaunchProps) {
   return (
     <>
       <button className="underline text-teal-800 hover:text-teal-500" onClick={() => setOpen(true)}>
-        {fishInfo[item]?.name}
+        {fishInfo[item].name}
       </button>
       <Dialog open={open} onClose={setOpen} className="relative z-10">
         <DialogBackdrop
