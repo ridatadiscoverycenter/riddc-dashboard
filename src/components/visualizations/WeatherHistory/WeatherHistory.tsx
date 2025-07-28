@@ -53,10 +53,10 @@ export function WeatherHistory({ data }: WeatherHistoryProps) {
         {
           label: 'Average Temperature',
           data: avgTemp,
-          borderColor: 'rgb(40, 40, 40)',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          borderColor: 'rgba(40, 40, 40, 0.8)',
+          backgroundColor: 'rgba(0, 0, 0, 0.3)',
           yAxisID: 'yTemp',
-          pointStyle: true,
+          pointStyle: false,
           cubicInterpolationMode: 'monotone',
         },
         {
@@ -66,6 +66,7 @@ export function WeatherHistory({ data }: WeatherHistoryProps) {
           backgroundColor: 'rgba(213, 213, 213, 0.5)',
           yAxisID: 'yTemp',
           pointStyle: false,
+          borderWidth: 1,
           cubicInterpolationMode: 'monotone',
         },
         {
@@ -75,6 +76,7 @@ export function WeatherHistory({ data }: WeatherHistoryProps) {
           backgroundColor: 'rgba(213, 213, 213, 0.5)',
           yAxisID: 'yTemp',
           pointStyle: false,
+          borderWidth: 1,
           cubicInterpolationMode: 'monotone',
           fill: '-1',
         },
