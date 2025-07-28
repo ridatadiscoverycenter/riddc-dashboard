@@ -10,7 +10,12 @@ import {
   Header,
 } from '@/components';
 import { FishTrawlSummary } from '@/components/visualizations/Vega/';
-import { fetchCoordinates, fetchSamples, fetchTemperatures } from '@/utils/data/api/fish/fish';
+import {
+  fetchCoordinates,
+  fetchSamples,
+  fetchTemperatures,
+  FishVariable,
+} from '@/utils/data/api/fish/fish';
 import {
   ERROR_CODES,
   extractParams,
@@ -22,6 +27,7 @@ import {
 } from '@/utils/fns';
 import { PageProps } from '@/types';
 import { FishVariablesCard } from '@/components/visualizations/FishVariablesCard/FishVariablesCard';
+import { SpeciesList } from './SpeciesList';
 
 export default async function FishTrawl({ searchParams }: PageProps) {
   return (
@@ -87,7 +93,7 @@ async function PageWrapper({
       </p>
       <div className="full-bleed ">
         <div className="grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-4 m-4">
-          <Card className="bg-white/90 md:col-span-2 col-span-3 row-span-2 flex flex-col items-center justify-around gap-3">
+          <Card className="bg-white/90 md:col-span-2 col-span-3 row-span-2 flex flex-col items-center justify-around gap-3 max-h-fit pt-6 pb-10 place-self-center">
             <FishVariablesCard
               params={paramsOrError}
               data={summaryData}
@@ -96,14 +102,17 @@ async function PageWrapper({
               description={
                 typeof paramsOrError === 'string' ? undefined : (
                   <>
-                    This plot compares {makeCommaSepList(paramsOrError.vars)} between{' '}
-                    {paramsOrError.start.getFullYear()} and {paramsOrError.end.getFullYear()} at{' '}
+                    The upper plot compares{' '}
+                    <SpeciesList list={paramsOrError.vars as FishVariable[]} /> between{' '}
+                    {paramsOrError.start.toLocaleDateString()} and{' '}
+                    {paramsOrError.end.toLocaleDateString()} at{' '}
                     {makeCommaSepList(
                       paramsOrError.buoys.map(
                         (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
                       )
                     )}
-                    . You can hover over the lines to see more specific data.
+                    . The lower plot shows surface water temperature deviations from the
+                    seasonally-adjusted mean.
                   </>
                 )
               }
@@ -164,12 +173,12 @@ const DESCRIPTION = (
 
 const ERROR_LINKS = [
   {
-    href: '/datasets/fish-trawl?buoys=Fox%20Island&vars=Alewife,Fourspot%20Flounder&start=1959-01-01&end=2018-12-31',
+    href: '/datasets/fish-trawl?buoys=Fox%20Island&vars=Alosa_spp,Fourspot_flounder&start=1959-01-01&end=2018-12-31',
     description:
       'Alewife and Fourspot Flounder populations at Fox Island across the time series from 1959 to 2018',
   },
   {
-    href: '/datasets/fish-trawl?buoys=Whale%20Rock,Fox%20Island&vars=Cancer%20Crab,Atlantic%20Herring&start=1999-01-01&end=2005-12-31',
+    href: '/datasets/fish-trawl?buoys=Whale%20Rock,Fox%20Island&vars=Cancer_crab,Atlantic_herring&start=1999-01-01&end=2005-12-31',
     description: 'Cancer Crab and Atlantic Herring populations across sites from 1999 to 2005',
   },
 ];

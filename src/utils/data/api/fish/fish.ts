@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import type { FetchedFishCoordinate, FetchedTemperature, Info, SampleBase } from '@/types';
-import { getAnimalFromSpecies } from '../../shared';
+import { getAnimalFromSpecies, getTitleFromSpecies } from '../../shared';
 import { erddapAPIGet } from '../erddap';
 
 /**
@@ -136,7 +136,24 @@ export async function fetchInfo(species: string) {
   return speciesInfo;
 }
 
-export const FISH_SPECIES = [
+/**
+ * Fetches coordinate, sample, and temperature information.
+ * @returns {Promise<{coordinates: Coordinate[], samples: Sample[], temperatures: Temperature[]}>}
+ */
+export async function fetchBaseData() {
+  const [coordinates, samples, temperatures] = await Promise.all([
+    fetchCoordinates(),
+    fetchSamples(),
+    fetchTemperatures(),
+  ]);
+  return {
+    coordinates,
+    samples,
+    temperatures,
+  };
+}
+
+export const FISH_TITLES = [
   'Alewife',
   'Atlantic Herring',
   'Bluefish',
@@ -163,3 +180,33 @@ export const FISH_SPECIES = [
   'Windowpane Flounder',
   'Winter Flounder',
 ];
+
+export const FISH_SPECIES = [
+  'Alosa_spp',
+  'Atlantic_herring',
+  'Bluefish',
+  'Butterfish',
+  'Cancer_crab',
+  'Cunner',
+  'Fourspot_flounder',
+  'Horseshoe_crab',
+  'Lady_crab',
+  'Little_skate',
+  'Lobster',
+  'Long_finned_Squid',
+  'Longhorned_sculpin',
+  'Northern_searobin',
+  'Red_Hake',
+  'Scup',
+  'Sea_star',
+  'Silver_hake',
+  'Spider_crab',
+  'Striped_searobin',
+  'Summer_flounder',
+  'Tautog',
+  'Weakfish',
+  'Windowpane',
+  'Winter_flounder',
+] as const;
+
+export type FishVariable = (typeof FISH_SPECIES)[number];

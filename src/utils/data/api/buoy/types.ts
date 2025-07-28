@@ -1,3 +1,4 @@
+import { FishVariable } from '../fish/fish';
 import type {
   RiBuoyVariable,
   MaBuoyVariable,
@@ -80,7 +81,7 @@ export type BuoyDataset = {
   downsampled: boolean;
 };
 
-export type Dataset = 'ri' | 'ma' | 'real-time' | 'plankton' | 'fish' | 'osom';
+export type Dataset = 'ri' | 'ma' | 'real-time' | 'plankton' | 'osom' | 'fish';
 
 export type downloadDataHelper<T extends Dataset> = T extends 'ri'
   ? RiBuoyVariable[]
@@ -92,4 +93,6 @@ export type downloadDataHelper<T extends Dataset> = T extends 'ri'
         ? RealTimeBuoyVariable[]
         : T extends 'osom'
           ? OsomBuoyVariable[]
-          : never;
+          : T extends 'fish'
+            ? FishVariable[]
+            : never;

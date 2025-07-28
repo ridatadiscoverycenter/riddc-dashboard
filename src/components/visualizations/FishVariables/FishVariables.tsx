@@ -106,7 +106,6 @@ function getStylesForGroup(
   const variableIndex = Array.from(new Set(variables)).findIndex(
     (variable) => variable === (variableInKey || '')
   );
-  console.log(variableIndex);
   return {
     color:
       stationNameIndex < 0 || stationNameIndex >= LINE_COLOR_OPTIONS.length
