@@ -22,16 +22,11 @@ export function BuoyPageSkeleton({
         {graph}
       </Card>
       {form}
-      <div className="col-span-1 relative">
-        {map}
-        <Header
-          size="sm"
-          variant="normal"
-          className="absolute top-2 left-0 w-full text-center"
-          colorMode="light"
-        >
+      <div className="col-span-1 relative flex flex-col items-center justify-around">
+        <Header size="sm" variant="normal" className="top-2 left-0 w-full text-center">
           Where are these buoys?
         </Header>
+        {map}
       </div>
       <Card className="bg-white/90 col-span-2 items-center">{summary}</Card>
       <div className="col-span-3 flex flex-col items-center justify-center">
