@@ -5,7 +5,7 @@ import { Vega, VisualizationSpec } from 'react-vega';
 
 import { Loading, Select } from '@/components';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
-import type { Sample } from '@/types';
+import type { Sample } from '@/utils/data/api/fish';
 
 type FishTrawlSummaryProps = {
   data: Sample[];

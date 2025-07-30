@@ -9,11 +9,6 @@ export type FetchedFishCoordinate = FishCoordinateBase & {
   station_name: StationName;
 };
 
-export type FishCoordinate = FishCoordinateBase & {
-  stationName: StationName;
-  buoyId: string;
-};
-
 export type TemperatureBase = {
   level: 'Surface' | 'Bottom';
   month: number;
@@ -27,19 +22,6 @@ export type FetchedTemperature = TemperatureBase & {
   monthly_mean: number;
 };
 
-export type Temperature = TemperatureBase & {
-  station: StationName;
-  timestamp: Date;
-  year: number;
-  meanTemp: number;
-  monthlyMean: number;
-  avg?: number;
-};
-
-export type AverageTemperature = Temperature & {
-  avg: number;
-};
-
 export type SampleBase = {
   species: string;
   title: string;
@@ -47,8 +29,6 @@ export type SampleBase = {
   year: number;
   abun: number;
 };
-
-export type Sample = { animal: string } & SampleBase;
 
 export interface Info {
   href?: string;

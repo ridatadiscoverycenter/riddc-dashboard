@@ -17,18 +17,18 @@ import { getTitleFromSpecies } from '@/utils/data/shared';
 
 ChartJS.register(LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const LINE_DASH_OPTIONS = [[], [4, 3], [3, 1]];
+const LINE_DASH_OPTIONS = [[], [8, 3], [2, 1], [3, 3]];
 
 const LINE_COLOR_OPTIONS = [
   { border: 'rgba(237, 40, 130, 0.7)', background: 'rgba(237, 40, 130, 0.2)' },
-  { border: 'rgba(72, 173, 105, 1.0)', background: 'rgba(72, 173, 105, 1.0)' },
+  { border: 'rgba(72, 173, 105, 1.0)', background: 'rgba(72, 173, 105, 0.2)' },
 ];
 
 type FishDataAbstract = {
   station: string;
   year: number;
   species: string;
-  abun: number;
+  abun: number | undefined;
 };
 
 type FishDataProps = {
@@ -79,7 +79,7 @@ export function FishVariables({ data }: FishDataProps) {
         options={{
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { labels: { boxHeight: 0.3 } }, tooltip: { intersect: false } },
+          plugins: { tooltip: { intersect: false } },
         }}
       />
     </div>
@@ -103,8 +103,9 @@ function getStylesForGroup(
 ) {
   const [stationNameInKey, variableInKey] = key.split('~');
   const stationNameIndex = stationNames.findIndex((name) => name === (stationNameInKey || ''));
-  const variableIndex = variables.findIndex((variable) => variable === (variableInKey || ''));
-
+  const variableIndex = Array.from(new Set(variables)).findIndex(
+    (variable) => variable === (variableInKey || '')
+  );
   return {
     color:
       stationNameIndex < 0 || stationNameIndex >= LINE_COLOR_OPTIONS.length
