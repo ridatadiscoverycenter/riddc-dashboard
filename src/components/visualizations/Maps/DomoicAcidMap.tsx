@@ -217,8 +217,10 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
       </section>
       <div className="w-full">
         <input
+          title="Date"
           type="range"
           className="w-full"
+          aria-label="Date"
           min={1}
           max={sampleDates.length - 1}
           step={1}
@@ -226,6 +228,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
           onChange={(evt) => setSelectedDate(evt.target.valueAsNumber)}
           list="beep"
         />
+
         <datalist id="beep" className="flex flex-row w-full justify-between">
           {[1, Math.ceil(sampleDates.length / 2), sampleDates.length].map((index) => (
             <option
