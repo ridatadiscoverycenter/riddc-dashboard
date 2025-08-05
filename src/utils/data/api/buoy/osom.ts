@@ -3,9 +3,16 @@ import { fetchSummaryData, fetchBuoyData, fetchBuoyCoordinates } from './buoy';
 
 export const OSOM_VARIABLES = [
   'SalinityBottom',
-  'WaterTempBottom',
   'SalinitySurface',
+  'WaterTempBottom',
   'WaterTempSurface',
+  'SurfaceHeight',
+  'VelocityEastwardBottom',
+  'VelocityEastwardSurface',
+  'VelocityNorthwardBottom',
+  'VelocityNorthwardSurface',
+  'KineticEnergyBottom',
+  'KineticEnergySurface',
 ] as const;
 export type OsomBuoyVariable = (typeof OSOM_VARIABLES)[number];
 
@@ -27,6 +34,13 @@ const ZodFetchedOsomSummary = z.object({
   SalinitySurface: z.number(),
   WaterTempBottom: z.number(),
   WaterTempSurface: z.number(),
+  SurfaceHeight: z.number(),
+  VelocityEastwardBottom: z.number(),
+  VelocityEastwardSurface: z.number(),
+  VelocityNorthwardBottom: z.number(),
+  VelocityNorthwardSurface: z.number(),
+  KineticEnergyBottom: z.number(),
+  KineticEnergySurface: z.number(),
   station_name: z.string(),
   buoyId: z.string(),
   time: z.string().datetime(),
@@ -47,6 +61,13 @@ function formatOsomSummaryData({
   SalinitySurface,
   WaterTempBottom,
   WaterTempSurface,
+  SurfaceHeight,
+  VelocityEastwardBottom,
+  VelocityEastwardSurface,
+  VelocityNorthwardBottom,
+  VelocityNorthwardSurface,
+  KineticEnergyBottom,
+  KineticEnergySurface,
   station_name,
   buoyId,
   time,
@@ -56,6 +77,13 @@ function formatOsomSummaryData({
     SalinitySurface,
     WaterTempBottom,
     WaterTempSurface,
+    SurfaceHeight,
+    VelocityEastwardBottom,
+    VelocityEastwardSurface,
+    VelocityNorthwardBottom,
+    VelocityNorthwardSurface,
+    KineticEnergyBottom,
+    KineticEnergySurface,
     buoyId,
     time: new Date(time),
     stationName: station_name,
@@ -86,7 +114,7 @@ const ZodFetchedOsomBuoyData = z.object({
   data: z.array(
     z.object({
       variable: z.enum(OSOM_VARIABLES),
-      value: z.union([z.number(), z.undefined()]),
+      value: z.union([z.number(), z.undefined(), z.null()]),
       station_name: z.string(),
       time: z.union([z.string().datetime(), z.number()]),
       units: z.string(),
@@ -110,7 +138,7 @@ function formatOsomBuoyData({ station_name, value, variable, units, time }: Fetc
   return {
     units,
     variable,
-    value,
+    value: value || undefined,
     time: new Date(time),
     stationName: station_name,
   };

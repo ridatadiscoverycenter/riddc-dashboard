@@ -48,7 +48,7 @@ export const fishInfo: Record<string, Info> = {
     IUCN: 'Least Concern (LC)',
   },
   Cancer_crab: {
-    name: 'Cancer Crab'
+    name: 'Cancer Crab',
   },
   Fourspot_flounder: {
     href: 'http://www.fishbase.org/Summary/SpeciesSummary.php?ID=4229&AT=Fourspot+Flounder',
@@ -72,7 +72,7 @@ export const fishInfo: Record<string, Info> = {
     IUCN: 'Near Threatened (NT)',
   },
   Long_finned_Squid: {
-    name: 'Long-finned Squid'
+    name: 'Long-finned Squid',
   },
   Lobster: { name: 'Lobster', sciName: 'Homarus americanus' },
   Longhorned_sculpin: {
@@ -111,7 +111,7 @@ export const fishInfo: Record<string, Info> = {
       'Actinopteri (ray-finned fishes) > Eupercaria/misc (Various families in series Eupercaria) > Sparidae (Porgies)',
     IUCN: 'Near Threatened (NT)',
   },
-  Sea_star: {name: 'Sea Star'},
+  Sea_star: { name: 'Sea Star' },
   Starfish: { name: 'Starfish', sciName: 'Asterias spp.' },
   Silver_hake: {
     href: 'http://www.fishbase.org/Summary/SpeciesSummary.php?ID=323&AT=Silver+Hake',
