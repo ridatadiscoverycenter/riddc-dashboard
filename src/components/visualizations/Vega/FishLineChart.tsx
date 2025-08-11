@@ -4,7 +4,7 @@ import { Vega, VisualizationSpec } from 'react-vega';
 
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading } from '@/components';
-import { Sample } from '@/types';
+import { Sample } from '@/utils/data/api/fish';
 
 type LineChartProps = {
   data: Sample[];
