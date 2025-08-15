@@ -21,7 +21,7 @@ export type BreatheSensorVariable = (typeof BREATHE_SENSOR_VARIABLES)[number];
 const ZodFetchedBreatheSensor = z.object({
   co_corrected: z.union([z.number(), z.null()]),
   co2_corrected_avg_t_drift_applied: z.union([z.number(), z.null()]),
-  local_timestamp: z.string().datetime({ local: true }),
+  datetime: z.string().datetime({local: true}),
   node_file_id: z.number(),
   node_id: z.number(),
 });
@@ -72,7 +72,7 @@ function formatFetchedData(fetchedData: FetchedBreatheSensor) {
     sensor_name: sensors[fetchedData.node_id.toString()].Location,
     latitude: sensors[fetchedData.node_id.toString()].Latitude,
     longitude: sensors[fetchedData.node_id.toString()].Longitude,
-    time: new Date(fetchedData.local_timestamp),
+    time: new Date(fetchedData.datetime),
     co: fetchedData.co_corrected,
     co2: fetchedData.co2_corrected_avg_t_drift_applied,
   };
