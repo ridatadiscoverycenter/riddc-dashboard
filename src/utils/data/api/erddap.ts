@@ -1,7 +1,7 @@
 const baseURL =
-  ((process.env.VITE_RIDDC_API_BASEURL as string | false) || 'https://api.riddc.brown.edu')
-  
- const erddapURL = baseURL + '/erddap';
+  (process.env.VITE_RIDDC_API_BASEURL as string | false) || 'https://api.riddc.brown.edu';
+
+const erddapURL = baseURL + '/erddap';
 
 export async function erddapAPIGet<T>(path: string) {
   const response = await fetch(`${erddapURL}/${path}`, {

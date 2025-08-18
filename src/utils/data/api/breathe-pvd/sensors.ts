@@ -21,7 +21,7 @@ export type BreatheSensorVariable = (typeof BREATHE_SENSOR_VARIABLES)[number];
 const ZodFetchedBreatheSensor = z.object({
   co_corrected: z.union([z.number(), z.null()]),
   co2_corrected_avg_t_drift_applied: z.union([z.number(), z.null()]),
-  datetime: z.string().datetime({local: true}),
+  datetime: z.string().datetime({ local: true }),
   node_file_id: z.number(),
   node_id: z.number(),
 });
@@ -32,16 +32,12 @@ function formatDateForQueryParams(d: Date) {
   return d.toISOString().split('T')[0];
 }
 
-export async function fetchBreatheData(ids: string[], startDate: Date, endDate: Date) {
-  //   const fetchedData = await APIGet<unknown[]>(
-  //     `breathepvd/sensor/${ids.join(',')}&start=${formatDateForQueryParams(startDate)}&end=${formatDateForQueryParams(endDate)}`
-  //   );
+export async function fetchBreatheData(ids: string[], startTime: Date, endTime: Date) {
   const fetchedData = await Promise.all(
     ids.map(
       async (id) =>
-        //   console.log(`breathepvd/sensor/${id}/range?start=${startDate}&end=${endDate}`)
         await APIGet<unknown[]>(
-          `breathepvd/sensor/${id}/range?start=${formatDateForQueryParams(startDate)}&end=${formatDateForQueryParams(endDate)}`
+          `breathepvd/sensor/${id}/range?start=${formatDateForQueryParams(startTime)}&end=${formatDateForQueryParams(endTime)}`
         )
     )
   );
@@ -69,9 +65,9 @@ function formatFetchedData(fetchedData: FetchedBreatheSensor) {
   const sensors = sensorInfo as Record<string, SensorInfo>;
   return {
     node: fetchedData.node_id,
-    sensor_name: sensors[fetchedData.node_id.toString()].Location,
-    latitude: sensors[fetchedData.node_id.toString()].Latitude,
-    longitude: sensors[fetchedData.node_id.toString()].Longitude,
+    sensorName: sensors[fetchedData.node_id.toString()].Location,
+    latitude: sensors[fetchedData.node_id.toString()].Latitude.replace(" N", ""),
+    longitude: `-${sensors[fetchedData.node_id.toString()].Longitude.replace(" W", "")}`,
     time: new Date(fetchedData.datetime),
     co: fetchedData.co_corrected,
     co2: fetchedData.co2_corrected_avg_t_drift_applied,
