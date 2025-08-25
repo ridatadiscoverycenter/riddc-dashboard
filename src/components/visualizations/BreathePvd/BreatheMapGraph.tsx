@@ -1,5 +1,7 @@
 'use client';
 
+//TO_REVIEW: I need to figure out how to make the selected variable update the map
+
 import React from 'react';
 import { compareAsc, formatDate, roundToNearestHours } from 'date-fns';
 
@@ -17,10 +19,15 @@ export function BreatheMapGraph({
   breatheData: BreatheSensorData[];
   className?: string;
 }) {
-  // TODO this needs to get date indices for each site? or just
   const dates = React.useMemo(
     () => breatheData.map(({ time }) => roundToNearestHours(time)).sort((a, b) => compareAsc(a, b)),
     [breatheData]
+  );
+  const [selectedVariable, setSelectedVariable] = React.useState('co');
+
+  const values = React.useMemo(
+    () => Array.from(new Set(breatheData.map((a) => (a as Record<string, any>)[selectedVariable]))),
+    [breatheData, selectedVariable]
   );
 
   const [selectedSensorNames, setSelectedSensors] = React.useState<string[]>([]);
@@ -30,6 +37,7 @@ export function BreatheMapGraph({
   );
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
   const selectedDate = React.useMemo(() => dates[selectedDateIndex], [dates, selectedDateIndex]);
+
   const breatheGeoJson = React.useMemo(
     () => ({
       type: 'geojson',
@@ -43,8 +51,10 @@ export function BreatheMapGraph({
           },
           properties: {
             site: sensorName,
+            node,
             variable: 'co', // TODO: this needs to get choice of variable!
-            value: co,
+            co,
+            co2,
             dateTime: time,
             date: dates.findIndex((v) => v.valueOf() === roundToNearestHours(time).valueOf()),
           },
@@ -53,29 +63,68 @@ export function BreatheMapGraph({
     }),
     [breatheData, dates]
   );
-  //   console.log(breatheGeoJson.data.features);
-  breatheGeoJson.data.features.map((feature) =>
-    console.log(feature.properties.date, feature.properties.site, feature.properties.value)
-  );
+
+  const dataRange = React.useMemo(() => {
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    return {
+      min,
+      mid: (min + max) / 2,
+      max,
+    };
+  }, [values]);
 
   const onLoad = React.useCallback<
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (map: React.MutableRefObject<any>, loaded: boolean) => () => void
   >(
     (map, loaded) => {
-      //   breatheGeoJson;
+      const { min, mid, max } = dataRange;
       map.current.addSource('breathe-data', breatheGeoJson);
       map.current.addLayer({
-        id: 'breathe-circles',
+        id: 'co-circles',
         type: 'circle',
         source: 'breathe-data',
+        // layout: {
+        //   visibility: 'visible',
+        // },
         paint: {
-          'circle-color': ['interpolate', ['linear'], ['get', 'value'], 0, '#4f14da', 1, '#99fee8'],
-          'circle-radius': ['interpolate', ['linear'], ['get', 'value'], 0, 5, 0.5, 12, 1, 20],
+          'circle-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'co'],
+            min,
+            '#4f14da',
+            max,
+            '#99fee8',
+          ],
+          'circle-radius': ['interpolate', ['linear'], ['get', 'co'], min, 5, mid, 12, max, 20],
           'circle-opacity': 0.75,
         },
         filter: ['==', 'date', selectedDateIndex],
       });
+      //   map.current.addLayer({
+      //     id: 'co2-circles',
+      //     type: 'circle',
+      //     source: 'breathe-data',
+      //     // layout: {
+      //     //   visibility: 'none',
+      //     // },
+      //     paint: {
+      //       'circle-color': [
+      //         'interpolate',
+      //         ['linear'],
+      //         ['get', 'co2'],
+      //         min,
+      //         '#4f14da',
+      //         max,
+      //         '#99fee8',
+      //       ],
+      //       'circle-radius': ['interpolate', ['linear'], ['get', 'co2'], min, 5, mid, 12, max, 20],
+      //       'circle-opacity': 0.75,
+      //     },
+      //     filter: ['==', 'date', selectedDateIndex],
+      //   });
       // Identifier text for each gage
       map.current.addLayer({
         id: 'sensor-ids',
@@ -91,23 +140,38 @@ export function BreatheMapGraph({
       function doSetPointer() {
         return setPointer(map, loaded);
       }
-      return () => {
-        // map.current.off('mouseenter', 'stream-gage-circles', doSetPointer);
-        // map.current.off('mouseleave', 'stream-gage-circles', doUnsetPointer);
-        // map.current.off('click', 'stream-gage-circles', doHandleCircleClick);
 
-        map.current.removeLayer('breath-circles');
-        map.current.removeLayer('breath-ids');
-        map.current.removeLayer('breath-selected');
+      function doUnsetPointer() {
+        return unsetPointer(map, loaded);
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      function doHandleCircleClick(event: any) {
+        return circleClickHandler(event, loaded, setSelectedSensors);
+      }
+
+      map.current.on('mouseenter', 'co-circles', doSetPointer);
+      map.current.on('mouseleave', 'co-circles', doUnsetPointer);
+      map.current.on('click', 'co-circles', doHandleCircleClick);
+
+      return () => {
+        map.current.off('mouseenter', 'co-circles', doSetPointer);
+        map.current.off('mouseleave', 'co-circles', doUnsetPointer);
+        map.current.off('click', 'co-circles', doHandleCircleClick);
+
+        map.current.removeLayer('co-circles');
+        map.current.removeLayer('sensor-ids');
+        // map.current.removeLayer('breath-selected');
         // map.current.removeSource('selected-breath-data');
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        map.current.removeSource('stream-data');
+        map.current.removeSource('breathe-data');
       };
     },
     [
       breatheGeoJson,
-      setSelectedDateIndex,
+      selectedDateIndex,
       setSelectedSensors,
+      //   selectedVariable,
       //   selectedBreatheDataGeoJson,
     ]
   );
@@ -117,6 +181,7 @@ export function BreatheMapGraph({
     <MapGraph
       onLoad={onLoad}
       graph={<Loading />}
+      selectedVariable={selectedVariable}
       syncOpenState={(isMapOpen) => setOpen(isMapOpen)}
       className="h-screen"
     >
@@ -125,6 +190,9 @@ export function BreatheMapGraph({
       >
         <div className="flex flex-col gap-2 w-full">
           <h1 className="text-xl">Air Quality</h1>
+          <input type="radio" id="co" name="variable" onClick={() => setSelectedVariable('co')} />
+          <input type="radio" id="co2" name="variable" onClick={() => setSelectedVariable('co2')} />
+          <p>{selectedVariable}</p>
           <h2 className="text-lg">{formatDate(selectedDate, "p 'at' P")}</h2>
           <p>
             Use the Date Slider to view hourly Stream Gage data across Rhode Island. Data is
@@ -139,8 +207,9 @@ export function BreatheMapGraph({
             value={selectedDateIndex}
             onChange={(e) => setSelectedDateIndex(Number(e.target.value))}
           />
+          {selectedDateIndex}
           <div className="w-full flex flex-row justify-between text-sm">
-            <span>Two Weeks Ago</span>
+            <span>{dates[0].toLocaleDateString()}</span>
             <span>{selectedDateIndex}</span>
             <span>Today</span>
           </div>
@@ -149,8 +218,8 @@ export function BreatheMapGraph({
           <h3 className="text-base">Legend:</h3>
           <div className={`w-full h-4 bg-gradient-to-r from-[#4f14da] to-[#99fee8]`} />
           <div className="w-full flex flex-row justify-between text-sm">
-            <span>0</span>
-            <span>1</span>
+            <span>{dataRange.min.toFixed(2)}</span>
+            <span>{dataRange.max.toFixed(2)}</span>
           </div>
         </div>
       </div>

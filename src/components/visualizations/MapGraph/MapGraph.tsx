@@ -15,6 +15,7 @@ export function MapGraph({
   graph,
   children,
   syncOpenState,
+  selectedVariable,
   className = '',
 }: React.PropsWithChildren<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,6 +35,13 @@ export function MapGraph({
       }
     }
   }, [loaded, onLoad, map]);
+
+  React.useEffect(() => {
+    if (loaded) {
+      map.current.setPaintProperty('co2-circles', 'circle-color', '#000000');
+      map.current.setLayoutProperty('co2-circles', 'visibility', 'visible');
+    }
+  }, [selectedVariable]);
 
   React.useEffect(() => {
     if (syncOpenState) {

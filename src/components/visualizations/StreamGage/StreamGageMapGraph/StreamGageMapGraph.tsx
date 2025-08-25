@@ -28,6 +28,7 @@ export function StreamGageMapGraph({
         .sort((a, b) => compareAsc(a, b)),
     [streamData]
   );
+  console.log(dates);
 
   const values = React.useMemo(
     () =>
@@ -127,6 +128,7 @@ export function StreamGageMapGraph({
         },
         filter: ['==', 'date', selectedDateIndex],
       });
+
       // Circle to indicate stream gage height
       map.current.addLayer({
         id: 'stream-gage-circles',
