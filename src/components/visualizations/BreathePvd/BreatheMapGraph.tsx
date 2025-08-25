@@ -85,9 +85,9 @@ export function BreatheMapGraph({
         id: 'co-circles',
         type: 'circle',
         source: 'breathe-data',
-        // layout: {
-        //   visibility: 'visible',
-        // },
+        layout: {
+          visibility: selectedVariable === 'co' ? 'visible' : 'none',
+        },
         paint: {
           'circle-color': [
             'interpolate',
@@ -101,31 +101,33 @@ export function BreatheMapGraph({
           'circle-radius': ['interpolate', ['linear'], ['get', 'co'], min, 5, mid, 12, max, 20],
           'circle-opacity': 0.75,
         },
-        filter: ['==', 'date', selectedDateIndex],
+        filter: ['all', ['==', 'date', selectedDateIndex], ['>=', 'co', 0]],
       });
-      //   map.current.addLayer({
-      //     id: 'co2-circles',
-      //     type: 'circle',
-      //     source: 'breathe-data',
-      //     // layout: {
-      //     //   visibility: 'none',
-      //     // },
-      //     paint: {
-      //       'circle-color': [
-      //         'interpolate',
-      //         ['linear'],
-      //         ['get', 'co2'],
-      //         min,
-      //         '#4f14da',
-      //         max,
-      //         '#99fee8',
-      //       ],
-      //       'circle-radius': ['interpolate', ['linear'], ['get', 'co2'], min, 5, mid, 12, max, 20],
-      //       'circle-opacity': 0.75,
-      //     },
-      //     filter: ['==', 'date', selectedDateIndex],
-      //   });
-      // Identifier text for each gage
+      map.current.addLayer({
+        id: 'co2-circles',
+        type: 'circle',
+        source: 'breathe-data',
+        layout: {
+          visibility: selectedVariable === 'co2' ? 'visible' : 'none',
+        },
+        paint: {
+          'circle-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'co2'],
+            min,
+            '#4f14da',
+            max,
+            '#99fee8',
+          ],
+          'circle-radius': ['interpolate', ['linear'], ['get', 'co2'], min, 5, mid, 12, max, 20],
+          'circle-opacity': 0.75,
+        },
+        filter: ['all', ['==', 'date', selectedDateIndex], ['>=', 'co2', 0]], // TODO: I currently only have nulls, have to test with non-null
+      });
+
+      //   Identifier text for each gage
+
       map.current.addLayer({
         id: 'sensor-ids',
         type: 'symbol',
@@ -160,6 +162,7 @@ export function BreatheMapGraph({
         map.current.off('click', 'co-circles', doHandleCircleClick);
 
         map.current.removeLayer('co-circles');
+        map.current.removeLayer('co2-circles');
         map.current.removeLayer('sensor-ids');
         // map.current.removeLayer('breath-selected');
         // map.current.removeSource('selected-breath-data');
@@ -169,9 +172,9 @@ export function BreatheMapGraph({
     },
     [
       breatheGeoJson,
+      dataRange,
       selectedDateIndex,
-      setSelectedSensors,
-      //   selectedVariable,
+      selectedVariable,
       //   selectedBreatheDataGeoJson,
     ]
   );
@@ -181,7 +184,7 @@ export function BreatheMapGraph({
     <MapGraph
       onLoad={onLoad}
       graph={<Loading />}
-      selectedVariable={selectedVariable}
+      //   selectedVariable={selectedVariable}
       syncOpenState={(isMapOpen) => setOpen(isMapOpen)}
       className="h-screen"
     >
@@ -207,7 +210,6 @@ export function BreatheMapGraph({
             value={selectedDateIndex}
             onChange={(e) => setSelectedDateIndex(Number(e.target.value))}
           />
-          {selectedDateIndex}
           <div className="w-full flex flex-row justify-between text-sm">
             <span>{dates[0].toLocaleDateString()}</span>
             <span>{selectedDateIndex}</span>
