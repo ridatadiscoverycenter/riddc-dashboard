@@ -7,8 +7,7 @@ import { compareAsc, formatDate, roundToNearestHours } from 'date-fns';
 
 import { Loading, MapGraph } from '@/components';
 import { type BreatheSensorData } from '@/utils/data/api/breathe-pvd';
-import { sensorInfo } from '@/assets/sensorInfo';
-import { pmInfo } from '@/assets/pmInfo';
+import { breathe } from '@/utils/data/api';
 
 // import { StreamGageTimeSeries } from '../StreamGageTimeSeries';
 
@@ -24,7 +23,6 @@ export function BreatheMapGraph({
     [breatheData]
   );
   const [selectedVariable, setSelectedVariable] = React.useState('co');
-
   const values = React.useMemo(
     () => Array.from(new Set(breatheData.map((a) => (a as Record<string, any>)[selectedVariable]))),
     [breatheData, selectedVariable]
@@ -64,6 +62,19 @@ export function BreatheMapGraph({
     [breatheData, dates]
   );
 
+  const selectedBreatheGeoJson = React.useMemo(
+    () => ({
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: breatheGeoJson.data.features.filter(({ properties }) =>
+          selectedSensorNames.includes(properties.site)
+        ),
+      },
+    }),
+    [breatheGeoJson, selectedSensorNames]
+  );
+
   const dataRange = React.useMemo(() => {
     const min = Math.min(...values);
     const max = Math.max(...values);
@@ -81,49 +92,59 @@ export function BreatheMapGraph({
     (map, loaded) => {
       const { min, mid, max } = dataRange;
       map.current.addSource('breathe-data', breatheGeoJson);
+      map.current.addSource('selected-breathe-data', selectedBreatheGeoJson);
+      // Pink border around selected gages
       map.current.addLayer({
-        id: 'co-circles',
+        id: 'breathe-selected',
+        type: 'circle',
+        source: 'selected-breathe-data',
+        paint: {
+          'circle-stroke-color': '#FF1DCE',
+          'circle-stroke-width': 3,
+          'circle-radius': [
+            'interpolate',
+            ['linear'],
+            ['get', selectedVariable],
+            min,
+            6,
+            mid,
+            13,
+            max,
+            21,
+          ],
+          'circle-opacity': 0,
+        },
+        filter: ['==', 'date', selectedDateIndex],
+      });
+
+      map.current.addLayer({
+        id: 'circles',
         type: 'circle',
         source: 'breathe-data',
-        layout: {
-          visibility: selectedVariable === 'co' ? 'visible' : 'none',
-        },
         paint: {
           'circle-color': [
             'interpolate',
             ['linear'],
-            ['get', 'co'],
+            ['get', selectedVariable],
             min,
             '#4f14da',
             max,
             '#99fee8',
           ],
-          'circle-radius': ['interpolate', ['linear'], ['get', 'co'], min, 5, mid, 12, max, 20],
+          'circle-radius': [
+            'interpolate',
+            ['linear'],
+            ['get', selectedVariable],
+            min,
+            5,
+            mid,
+            12,
+            max,
+            20,
+          ],
           'circle-opacity': 0.75,
         },
         filter: ['all', ['==', 'date', selectedDateIndex], ['>=', 'co', 0]],
-      });
-      map.current.addLayer({
-        id: 'co2-circles',
-        type: 'circle',
-        source: 'breathe-data',
-        layout: {
-          visibility: selectedVariable === 'co2' ? 'visible' : 'none',
-        },
-        paint: {
-          'circle-color': [
-            'interpolate',
-            ['linear'],
-            ['get', 'co2'],
-            min,
-            '#4f14da',
-            max,
-            '#99fee8',
-          ],
-          'circle-radius': ['interpolate', ['linear'], ['get', 'co2'], min, 5, mid, 12, max, 20],
-          'circle-opacity': 0.75,
-        },
-        filter: ['all', ['==', 'date', selectedDateIndex], ['>=', 'co2', 0]], // TODO: I currently only have nulls, have to test with non-null
       });
 
       //   Identifier text for each gage
@@ -152,31 +173,24 @@ export function BreatheMapGraph({
         return circleClickHandler(event, loaded, setSelectedSensors);
       }
 
-      map.current.on('mouseenter', 'co-circles', doSetPointer);
-      map.current.on('mouseleave', 'co-circles', doUnsetPointer);
-      map.current.on('click', 'co-circles', doHandleCircleClick);
+      map.current.on('mouseenter', 'circles', doSetPointer);
+      map.current.on('mouseleave', 'circles', doUnsetPointer);
+      map.current.on('click', 'circles', doHandleCircleClick);
 
       return () => {
-        map.current.off('mouseenter', 'co-circles', doSetPointer);
-        map.current.off('mouseleave', 'co-circles', doUnsetPointer);
-        map.current.off('click', 'co-circles', doHandleCircleClick);
+        map.current.off('mouseenter', 'circles', doSetPointer);
+        map.current.off('mouseleave', 'circles', doUnsetPointer);
+        map.current.off('click', 'circles', doHandleCircleClick);
 
-        map.current.removeLayer('co-circles');
-        map.current.removeLayer('co2-circles');
+        map.current.removeLayer('circles');
         map.current.removeLayer('sensor-ids');
-        // map.current.removeLayer('breath-selected');
-        // map.current.removeSource('selected-breath-data');
+        map.current.removeLayer('breathe-selected');
+        map.current.removeSource('selected-breathe-data');
         // eslint-disable-next-line react-hooks/exhaustive-deps
         map.current.removeSource('breathe-data');
       };
     },
-    [
-      breatheGeoJson,
-      dataRange,
-      selectedDateIndex,
-      selectedVariable,
-      //   selectedBreatheDataGeoJson,
-    ]
+    [breatheGeoJson, dataRange, selectedDateIndex, selectedVariable, selectedBreatheGeoJson]
   );
   const [opened, setOpen] = React.useState(false);
 
@@ -184,7 +198,6 @@ export function BreatheMapGraph({
     <MapGraph
       onLoad={onLoad}
       graph={<Loading />}
-      //   selectedVariable={selectedVariable}
       syncOpenState={(isMapOpen) => setOpen(isMapOpen)}
       className="h-screen"
     >
@@ -247,13 +260,13 @@ function circleClickHandler(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   event: any,
   loaded: boolean,
-  setSelectedBuoys: React.Dispatch<React.SetStateAction<string[]>>
+  setSelectedSensors: React.Dispatch<React.SetStateAction<string[]>>
 ) {
   if (loaded) {
     const features = event['features'] as { properties: { site: string } }[];
     if (features && features.length > 0) {
       const site = features[0]['properties']['site'];
-      setSelectedBuoys((currentNames) => {
+      setSelectedSensors((currentNames) => {
         if (currentNames.includes(site))
           return currentNames.filter((siteName) => siteName !== site);
         return [...currentNames, site];
