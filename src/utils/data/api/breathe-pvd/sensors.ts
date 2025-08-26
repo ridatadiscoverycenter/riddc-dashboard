@@ -6,7 +6,7 @@ import { APIGet } from '../erddap';
 /**
  * Types
  */
-type SensorInfo = {
+export type SensorInfo = {
   'Sensor ID': string;
   node_id: number;
   Location: string;
@@ -66,8 +66,8 @@ function formatFetchedData(fetchedData: FetchedBreatheSensor) {
   return {
     node: fetchedData.node_id,
     sensorName: sensors[fetchedData.node_id.toString()].Location,
-    latitude: sensors[fetchedData.node_id.toString()].Latitude.replace(" N", ""),
-    longitude: `-${sensors[fetchedData.node_id.toString()].Longitude.replace(" W", "")}`,
+    latitude: sensors[fetchedData.node_id.toString()].Latitude.replace(' N', ''),
+    longitude: `-${sensors[fetchedData.node_id.toString()].Longitude.replace(' W', '')}`,
     time: new Date(fetchedData.datetime),
     co: fetchedData.co_corrected,
     co2: fetchedData.co2_corrected_avg_t_drift_applied,

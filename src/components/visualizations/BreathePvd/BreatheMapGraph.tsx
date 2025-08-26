@@ -5,7 +5,7 @@
 import React from 'react';
 import { compareAsc, formatDate, roundToNearestHours } from 'date-fns';
 
-import { Loading, MapGraph } from '@/components';
+import { Input, Label, Loading, MapGraph } from '@/components';
 import { type BreatheSensorData } from '@/utils/data/api/breathe-pvd';
 import { breathe } from '@/utils/data/api';
 
@@ -206,7 +206,15 @@ export function BreatheMapGraph({
       >
         <div className="flex flex-col gap-2 w-full">
           <h1 className="text-xl">Air Quality</h1>
-          <input type="radio" id="co" name="variable" onClick={() => setSelectedVariable('co')} />
+          <Input
+            type="radio"
+            id="co"
+            name="variable"
+            value="CO"
+            onClick={() => setSelectedVariable('co')}
+          />
+          {/* <label htmlFor="co">CO</label> */}
+
           <input type="radio" id="co2" name="variable" onClick={() => setSelectedVariable('co2')} />
           <p>{selectedVariable}</p>
           <h2 className="text-lg">{formatDate(selectedDate, "p 'at' P")}</h2>

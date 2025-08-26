@@ -19,6 +19,7 @@ export async function erddapAPIGet<T>(path: string) {
 }
 
 export async function APIGet<T>(path: string) {
+  console.log(`${baseURL}/${path}`);
   const response = await fetch(`${baseURL}/${path}`, {
     headers: {
       Accept: 'application/json',
