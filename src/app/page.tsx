@@ -43,7 +43,7 @@ export default function Home() {
           <li key={href}>
             <Card className="bg-white/90 dark:bg-white/10">
               <Header size="sm" tag="h3">
-                <Link href={href}>{name}</Link>
+                <ExternalLink href={href}>{name}</ExternalLink>
               </Header>
               <p className="text-sm">{description}</p>
             </Card>
@@ -57,29 +57,91 @@ export default function Home() {
         The National Science Foundation in 2017 awarded the University of Rhode Island with a grant
         to establish a statewide research consortium — the RI Consortium for Coastal Ecology
         Assessment, Innovation, and Modeling (RI C-AIM) — to study the effects of climate
-        variability on coastal ecosystems. The RI Data Discovery Center is one of the efforts of RI
-        C-AIM consortium.
+        variability on coastal ecosystems. The RI Data Discovery Center (RIDDC) is one of the
+        efforts founded by the RI C-AIM consortium.
+      </p>
+      <p>
+        This legacy continues with funding for the RIDDC through the NSF Rhode Island Network for
+        Excellence in Science and Technology (
+        <ExternalLink href="https://web.uri.edu/rinsfepscor/welcome-ri-nest/">RI-NEST</ExternalLink>
+        ) and the Brown University{' '}
+        <ExternalLink href="http://ecf.brown.edu">
+          Equitable Climate Futures Initiative (ECF)
+        </ExternalLink>
+        . The RIDDC also supports data for efforts by the{' '}
+        <ExternalLink href="https://www.uri.edu/news/2025/07/uri-awarded-7-million-nsf-grant-to-boost-research-excellence-in-environmental-microplastics/">
+          NSF SIMCoast
+        </ExternalLink>
+        , <ExternalLink href="https://www.3crs.org/">NSF 3CRS</ExternalLink>, and{' '}
+        <ExternalLink href="https://pamspublic.science.energy.gov/WebPAMSExternal/Interface/Common/ViewPublicAbstract.aspx?rv=6e7a1289-0296-4323-bba0-b0d8c6c575c9&rtc=24&PRoleId=10">
+          DoE EPSCOR
+        </ExternalLink>{' '}
+        projects.
       </p>
       <p>
         The goal of the RI Data Discovery Center is to become the national and international
-        go-to-source for data on the Narragansett Bay ecosystem. For C-AIM investigators pursuing
-        the research goals of the Integrated Bay Observatory, Predicting Ecosystem Response and
-        Visualization & Imaging, RI Data Discovery Center will become the site where they will store
-        their data, share their data internally with other C-AIM investigators and share their data
-        externally with investigators around the world.
+        go-to-source for data on the Narragansett Bay ecosystem, including neighboring land areas
+        and hydrological basins in RI, MA, and CT. For researchers involved in these projects, the
+        Data Discovery Center will become the site where they will store their data, share their
+        data internally with other investigators and share their data externally with investigators
+        around the world. If you are a researcher interested in environmental data in this region,
+        please contact <ExternalLink href="mailto:baylor@brown.edu">Baylor Fox-Kemper</ExternalLink>{' '}
+        to inquire, suggest, or add new datasets to the repository.
       </p>
       <p>
-        In addition to new data collected by C-AIM investigators, RI Data Discovery Center will also
-        collect and share historical data on the Narragansett Bay ecosystem. In addition to sharing
-        data with scientists, RIDDC will also become the go-to-source where decision makers,
+        In addition to new data collected by project investigators, RI Data Discovery Center will
+        also collect and share historical data on the Narragansett Bay ecosystem. In addition to
+        sharing data with scientists, RIDDC will also become the go-to-source where decision makers,
         land-use managers, relevant industries, citizen scientists and students can find data on the
         Narragansett Bay ecosystem.
       </p>
       <Header size="lg" variant="impact" className="w-full text-center">
-        Leadership
+        Current Leadership
+      </Header>
+      <Header size="md" className="w-full text-center">
+        <ExternalLink href="https://web.uri.edu/rinsfepscor/welcome-ri-nest/">
+          NSF RI-NEST Project
+        </ExternalLink>
       </Header>
       <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 md:gap-8 gap-4">
-        {LEADERSHIP.map(({ name, affiliations }) => (
+        {NEST_LEADERSHIP.map(({ name, role, affiliations }) => (
+          <li key={name}>
+            <Card className="bg-white/30 hover:bg-white/80 dark:bg-white/10 hover:dark:bg-white/30 flex flex-col py-5">
+              <Header size="md">{name}</Header>
+              <p className="text-cyan-600 dark:text-cyan-200">{role}</p>
+              {affiliations.map((affiliation) => (
+                <p key={affiliation}>{affiliation}</p>
+              ))}
+            </Card>
+          </li>
+        ))}
+      </ul>
+      <Header size="md" className="w-full text-center mt-3">
+        <ExternalLink href="http://ecf.brown.edu">
+          Equitable Climate Futures Initiative
+        </ExternalLink>
+      </Header>
+      <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 md:gap-8 gap-4">
+        {CLIMATE_FUTURES_LEADERSHIP.map(({ name, role, affiliations }) => (
+          <li key={name}>
+            <Card className="bg-white/30 hover:bg-white/80 dark:bg-white/10 hover:dark:bg-white/30 flex flex-col py-5">
+              <Header size="md">{name}</Header>
+              <p className="text-cyan-600 dark:text-cyan-200">{role}</p>
+              {affiliations.map((affiliation) => (
+                <p key={affiliation}>{affiliation}</p>
+              ))}
+            </Card>
+          </li>
+        ))}
+      </ul>
+      <Header size="lg" variant="impact" className="w-full text-center mt-3">
+        Past Leadership
+      </Header>
+      <Header size="md" className="w-full text-center">
+        <Link href="https://web.uri.edu/rinsfepscor/welcome/">NSF C-AIM Project</Link>
+      </Header>
+      <ul className="margin-auto grid sm:grid-cols-1 md:grid-cols-3 md:gap-8 gap-4">
+        {PAST_LEADERSHIP.map(({ name, affiliations }) => (
           <li key={name}>
             <Card className="bg-white/30 hover:bg-white/80 dark:bg-white/10 hover:dark:bg-white/30 flex flex-col py-5">
               <Header size="sm">{name}</Header>
@@ -129,7 +191,41 @@ export default function Home() {
   );
 }
 
-const LEADERSHIP = [
+const NEST_LEADERSHIP = [
+  {
+    name: 'Dr. Elin Torell',
+    role: 'RI NSF EPSCoR Principal Investigator',
+    affiliations: ['Director of the Coastal Institute at the University of Rhode Island'],
+  },
+  {
+    name: 'Dr. Jill Pipher',
+    role: 'Brown U. Principal Investigator',
+    affiliations: ['Elisha Benjamin Andrews Professor of Mathematics'],
+  },
+  {
+    name: 'Dr. Baylor Fox-Kemper',
+    role: 'Second Director of the RIDDC, Senior Personnel',
+    affiliations: ['Department of Earth, Environmental, & Planetary Sciences, Brown University'],
+  },
+];
+
+const CLIMATE_FUTURES_LEADERSHIP = [
+  {
+    name: 'Dr. Baylor Fox-Kemper',
+    role: 'Second Director of the RIDDC, Faculty Co-Chair of ECF',
+    affiliations: ['Professor of Earth, Environmental, & Planetary Sciences, Brown University'],
+  },
+  {
+    name: 'Dr. Elizabeth Fussell',
+    role: 'Faculty Co-Chair of the ECF',
+    affiliations: [
+      'Professor of Population Studies and Environment and Society (Research)',
+      'Professor of Epidemiology (Research)',
+    ],
+  },
+];
+
+const PAST_LEADERSHIP = [
   {
     name: 'Dr. Geoffrey Bothun',
     affiliations: [
@@ -142,18 +238,6 @@ const LEADERSHIP = [
     affiliations: [
       'Department of Molecular Pharmacology, Physiology & Biotechnology, Brown University',
     ],
-  },
-  {
-    name: 'Dr. Lewis Rothstein',
-    affiliations: ['Graduate School of Oceanography, University of Rhode Island'],
-  },
-  {
-    name: 'Neal Overstrom',
-    affiliations: ['Nature Laboratory, Rhode Island School of Design'],
-  },
-  {
-    name: 'Dr. Bethany Jenkins',
-    affiliations: ['Department of Cell and Molecular Biology, University of Rhode Island'],
   },
   {
     name: 'Dr. Baylor Fox-Kemper',
