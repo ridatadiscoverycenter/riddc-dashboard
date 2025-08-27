@@ -5,12 +5,10 @@
 import React from 'react';
 import { compareAsc, formatDate, roundToNearestHours } from 'date-fns';
 
-import { Input, Label, Loading, MapGraph } from '@/components';
+import { Loading, MapGraph } from '@/components';
 import { type BreatheSensorData } from '@/utils/data/api/breathe-pvd';
-import { breathe } from '@/utils/data/api';
 
-// import { StreamGageTimeSeries } from '../StreamGageTimeSeries';
-
+// TODO where do i downsample
 export function BreatheMapGraph({
   breatheData,
   className = '',
@@ -18,16 +16,40 @@ export function BreatheMapGraph({
   breatheData: BreatheSensorData[];
   className?: string;
 }) {
+  // remove duplicate times
+  function removeDuplicates(duplicatesArray: BreatheSensorData[]) {
+    return duplicatesArray
+      .map(function (entry) {
+        return entry.time.getTime();
+      })
+      .filter(function (date, i, array) {
+        return array.indexOf(date) === i;
+      })
+      .map(function (time) {
+        return new Date(time);
+      });
+  }
+
   const dates = React.useMemo(
-    () => breatheData.map(({ time }) => roundToNearestHours(time)).sort((a, b) => compareAsc(a, b)),
+    () =>
+      Array.from(
+        (removeDuplicates(breatheData) as Date[]).map((time) => roundToNearestHours(time))
+      ).sort((a, b) => compareAsc(a, b)),
     [breatheData]
   );
+
   const [selectedVariable, setSelectedVariable] = React.useState('co');
   const values = React.useMemo(
-    () => Array.from(new Set(breatheData.map((a) => (a as Record<string, any>)[selectedVariable]))),
+    () =>
+      Array.from(
+        new Set(
+          breatheData
+            .filter((e) => e[selectedVariable] !== null)
+            .map((a) => (a as Record<string, any>)[selectedVariable])
+        )
+      ),
     [breatheData, selectedVariable]
   );
-
   const [selectedSensorNames, setSelectedSensors] = React.useState<string[]>([]);
   const selectedSensors = React.useMemo(
     () => breatheData.filter(({ sensorName }) => selectedSensorNames.includes(sensorName)),
@@ -38,55 +60,11 @@ export function BreatheMapGraph({
 
   // I'm going to be copying this code a bunch so I should probably find a way to make a function
   const coGeoJson = React.useMemo(
-    () => ({
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: breatheData
-          .filter(({ co }) => co !== null)
-          .map(({ node, sensorName, latitude, longitude, co, time }) => ({
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [longitude, latitude],
-            },
-            properties: {
-              site: sensorName,
-              node,
-              variable: 'co',
-              co,
-              dateTime: time,
-              date: dates.findIndex((v) => v.valueOf() === roundToNearestHours(time).valueOf()),
-            },
-          })),
-      },
-    }),
+    () => createGeoJson(breatheData, 'co', dates),
     [breatheData, dates]
   );
   const co2GeoJson = React.useMemo(
-    () => ({
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: breatheData
-          .filter(({ co2 }) => co2 !== null)
-          .map(({ node, sensorName, latitude, longitude, co, co2, time }) => ({
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [longitude, latitude],
-            },
-            properties: {
-              site: sensorName,
-              node,
-              variable: 'co2', // TODO: this needs to get choice of variable!
-              co2,
-              dateTime: time,
-              date: dates.findIndex((v) => v.valueOf() === roundToNearestHours(time).valueOf()),
-            },
-          })),
-      },
-    }),
+    () => createGeoJson(breatheData, 'co2', dates),
     [breatheData, dates]
   );
 
@@ -130,7 +108,7 @@ export function BreatheMapGraph({
         paint: {
           'circle-stroke-color': '#FF1DCE',
           'circle-stroke-width': 3,
-          'circle-radius': ['interpolate', ['linear'], ['get', 'co2'], min, 6, mid, 13, max, 21],
+          'circle-radius': ['interpolate', ['linear'], ['get', 'v'], min, 6, mid, 13, max, 21],
           'circle-opacity': 0,
         },
         filter: ['==', 'date', selectedDateIndex],
@@ -141,40 +119,24 @@ export function BreatheMapGraph({
         type: 'circle',
         source: 'co-data',
         paint: {
-          'circle-color': [
-            'interpolate',
-            ['linear'],
-            ['get', 'co'],
-            min,
-            '#4f14da',
-            max,
-            '#99fee8',
-          ],
-          'circle-radius': ['interpolate', ['linear'], ['get', 'co'], min, 5, mid, 12, max, 20],
+          'circle-color': ['interpolate', ['linear'], ['get', 'v'], min, '#4f14da', max, '#99fee8'],
+          'circle-radius': ['interpolate', ['linear'], ['get', 'v'], min, 5, mid, 12, max, 20],
           'circle-opacity': 0.75,
         },
         layout: { visibility: selectedVariable === 'co' ? 'visible' : 'none' },
-        filter: ['all', ['==', 'date', selectedDateIndex], ['>=', 'co', 0]],
+        filter: ['all', ['==', 'date', selectedDateIndex]],
       });
       map.current.addLayer({
         id: 'co2-circles',
         type: 'circle',
         source: 'co2-data',
         paint: {
-          'circle-color': [
-            'interpolate',
-            ['linear'],
-            ['get', 'co2'],
-            min,
-            '#4f14da',
-            max,
-            '#99fee8',
-          ],
-          'circle-radius': ['interpolate', ['linear'], ['get', 'co2'], min, 5, mid, 12, max, 20],
+          'circle-color': ['interpolate', ['linear'], ['get', 'v'], min, '#4f14da', max, '#99fee8'],
+          'circle-radius': ['interpolate', ['linear'], ['get', 'v'], min, 5, mid, 12, max, 20],
           'circle-opacity': 0.75,
         },
         layout: { visibility: selectedVariable === 'co2' ? 'visible' : 'none' },
-        filter: ['all', ['==', 'date', selectedDateIndex], ['>=', 'co2', 0]],
+        filter: ['all', ['==', 'date', selectedDateIndex]],
       });
 
       //   Identifier text for each gage
@@ -326,3 +288,51 @@ function circleClickHandler(
     }
   }
 }
+
+function createGeoJson(data: BreatheSensorData[], variable: string, dates: Date[]) {
+  return {
+    type: 'geojson',
+    data: {
+      type: 'FeatureCollection',
+      features: data
+        // .filter((v) => v[variable] !== null)
+        .filter((entry) => entry[variable] !== null)
+        .map(({ [variable]: v, longitude, latitude, sensorName, time, node }) => ({
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [longitude, latitude] },
+          properties: {
+            site: sensorName,
+            node,
+            v,
+            datetime: time,
+            date: dates.findIndex((v) => v.valueOf() === roundToNearestHours(time).valueOf()),
+          },
+        })),
+    },
+  };
+}
+// type: 'geojson',
+//       data: {
+//         type: 'FeatureCollection',
+//         features: breatheData
+//           .filter(({ co2 }) => co2 !== null)
+//           .map(({ node, sensorName, latitude, longitude, co, co2, time }) => ({
+//             type: 'Feature',
+//             geometry: {
+//               type: 'Point',
+//               coordinates: [longitude, latitude],
+//             },
+//             properties: {
+//               site: sensorName,
+//               node,
+//               variable: 'co2', // TODO: this needs to get choice of variable!
+//               co2,
+//               dateTime: time,
+//               date: dates.findIndex((v) => v.valueOf() === roundToNearestHours(time).valueOf()),
+//             },
+//           })),
+//       },
+//     }),
+//     [breatheData, dates]
+//   );
+// }
