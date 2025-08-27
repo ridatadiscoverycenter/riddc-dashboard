@@ -36,27 +36,55 @@ export function BreatheMapGraph({
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
   const selectedDate = React.useMemo(() => dates[selectedDateIndex], [dates, selectedDateIndex]);
 
-  const breatheGeoJson = React.useMemo(
+  // I'm going to be copying this code a bunch so I should probably find a way to make a function
+  const coGeoJson = React.useMemo(
     () => ({
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: breatheData.map(({ node, sensorName, latitude, longitude, co, co2, time }) => ({
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [longitude, latitude],
-          },
-          properties: {
-            site: sensorName,
-            node,
-            variable: 'co', // TODO: this needs to get choice of variable!
-            co,
-            co2,
-            dateTime: time,
-            date: dates.findIndex((v) => v.valueOf() === roundToNearestHours(time).valueOf()),
-          },
-        })),
+        features: breatheData
+          .filter(({ co }) => co !== null)
+          .map(({ node, sensorName, latitude, longitude, co, time }) => ({
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [longitude, latitude],
+            },
+            properties: {
+              site: sensorName,
+              node,
+              variable: 'co',
+              co,
+              dateTime: time,
+              date: dates.findIndex((v) => v.valueOf() === roundToNearestHours(time).valueOf()),
+            },
+          })),
+      },
+    }),
+    [breatheData, dates]
+  );
+  const co2GeoJson = React.useMemo(
+    () => ({
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: breatheData
+          .filter(({ co2 }) => co2 !== null)
+          .map(({ node, sensorName, latitude, longitude, co, co2, time }) => ({
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [longitude, latitude],
+            },
+            properties: {
+              site: sensorName,
+              node,
+              variable: 'co2', // TODO: this needs to get choice of variable!
+              co2,
+              dateTime: time,
+              date: dates.findIndex((v) => v.valueOf() === roundToNearestHours(time).valueOf()),
+            },
+          })),
       },
     }),
     [breatheData, dates]
@@ -67,12 +95,12 @@ export function BreatheMapGraph({
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: breatheGeoJson.data.features.filter(({ properties }) =>
+        features: coGeoJson.data.features.filter(({ properties }) =>
           selectedSensorNames.includes(properties.site)
         ),
       },
     }),
-    [breatheGeoJson, selectedSensorNames]
+    [coGeoJson, selectedSensorNames]
   );
 
   const dataRange = React.useMemo(() => {
@@ -91,7 +119,8 @@ export function BreatheMapGraph({
   >(
     (map, loaded) => {
       const { min, mid, max } = dataRange;
-      map.current.addSource('breathe-data', breatheGeoJson);
+      map.current.addSource('co-data', coGeoJson);
+      map.current.addSource('co2-data', co2GeoJson);
       map.current.addSource('selected-breathe-data', selectedBreatheGeoJson);
       // Pink border around selected gages
       map.current.addLayer({
@@ -101,17 +130,7 @@ export function BreatheMapGraph({
         paint: {
           'circle-stroke-color': '#FF1DCE',
           'circle-stroke-width': 3,
-          'circle-radius': [
-            'interpolate',
-            ['linear'],
-            ['get', selectedVariable],
-            min,
-            6,
-            mid,
-            13,
-            max,
-            21,
-          ],
+          'circle-radius': ['interpolate', ['linear'], ['get', 'co2'], min, 6, mid, 13, max, 21],
           'circle-opacity': 0,
         },
         filter: ['==', 'date', selectedDateIndex],
@@ -120,31 +139,42 @@ export function BreatheMapGraph({
       map.current.addLayer({
         id: 'circles',
         type: 'circle',
-        source: 'breathe-data',
+        source: 'co-data',
         paint: {
           'circle-color': [
             'interpolate',
             ['linear'],
-            ['get', selectedVariable],
+            ['get', 'co'],
             min,
             '#4f14da',
             max,
             '#99fee8',
           ],
-          'circle-radius': [
-            'interpolate',
-            ['linear'],
-            ['get', selectedVariable],
-            min,
-            5,
-            mid,
-            12,
-            max,
-            20,
-          ],
+          'circle-radius': ['interpolate', ['linear'], ['get', 'co'], min, 5, mid, 12, max, 20],
           'circle-opacity': 0.75,
         },
+        layout: { visibility: selectedVariable === 'co' ? 'visible' : 'none' },
         filter: ['all', ['==', 'date', selectedDateIndex], ['>=', 'co', 0]],
+      });
+      map.current.addLayer({
+        id: 'co2-circles',
+        type: 'circle',
+        source: 'co2-data',
+        paint: {
+          'circle-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'co2'],
+            min,
+            '#4f14da',
+            max,
+            '#99fee8',
+          ],
+          'circle-radius': ['interpolate', ['linear'], ['get', 'co2'], min, 5, mid, 12, max, 20],
+          'circle-opacity': 0.75,
+        },
+        layout: { visibility: selectedVariable === 'co2' ? 'visible' : 'none' },
+        filter: ['all', ['==', 'date', selectedDateIndex], ['>=', 'co2', 0]],
       });
 
       //   Identifier text for each gage
@@ -152,7 +182,7 @@ export function BreatheMapGraph({
       map.current.addLayer({
         id: 'sensor-ids',
         type: 'symbol',
-        source: 'breathe-data',
+        source: 'co-data',
         layout: {
           'text-field': ['get', 'site'],
           'text-size': 11,
@@ -183,14 +213,16 @@ export function BreatheMapGraph({
         map.current.off('click', 'circles', doHandleCircleClick);
 
         map.current.removeLayer('circles');
+        map.current.removeLayer('co2-circles');
         map.current.removeLayer('sensor-ids');
         map.current.removeLayer('breathe-selected');
         map.current.removeSource('selected-breathe-data');
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        map.current.removeSource('breathe-data');
+        map.current.removeSource('co-data');
+        map.current.removeSource('co2-data');
       };
     },
-    [breatheGeoJson, dataRange, selectedDateIndex, selectedVariable, selectedBreatheGeoJson]
+    [coGeoJson, co2GeoJson, dataRange, selectedDateIndex, selectedVariable, selectedBreatheGeoJson]
   );
   const [opened, setOpen] = React.useState(false);
 
@@ -206,17 +238,26 @@ export function BreatheMapGraph({
       >
         <div className="flex flex-col gap-2 w-full">
           <h1 className="text-xl">Air Quality</h1>
-          <Input
-            type="radio"
-            id="co"
-            name="variable"
-            value="CO"
-            onClick={() => setSelectedVariable('co')}
-          />
+          <div>
+            <input
+              type="radio"
+              id="co"
+              name="variable"
+              onClick={() => setSelectedVariable('co')}
+              defaultChecked
+            />
+            <label htmlFor="co2">CO</label>
+          </div>
           {/* <label htmlFor="co">CO</label> */}
-
-          <input type="radio" id="co2" name="variable" onClick={() => setSelectedVariable('co2')} />
-          <p>{selectedVariable}</p>
+          <div>
+            <input
+              type="radio"
+              id="co2"
+              name="variable"
+              onClick={() => setSelectedVariable('co2')}
+            />
+            <label htmlFor="co2">CO2</label>
+          </div>
           <h2 className="text-lg">{formatDate(selectedDate, "p 'at' P")}</h2>
           <p>
             Use the Date Slider to view hourly Stream Gage data across Rhode Island. Data is
