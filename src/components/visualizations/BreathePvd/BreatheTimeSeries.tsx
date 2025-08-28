@@ -34,6 +34,7 @@ type BreatheTimeSeriesProps = {
   dates: Date[];
   data: BreatheSensorData[];
   names: string[];
+  variable: string;
 };
 
 const LINE_COLORS = [
@@ -62,7 +63,7 @@ const CHART_COLORS = {
   },
 };
 
-export function BreatheTimeSeries({ dates, data, names }: BreatheTimeSeriesProps) {
+export function BreatheTimeSeries({ dates, data, names, variable }: BreatheTimeSeriesProps) {
   const colorMode = useColorMode();
   const chartColors = React.useMemo(
     () => (colorMode === 'light' ? CHART_COLORS.light : CHART_COLORS.dark),
@@ -71,7 +72,7 @@ export function BreatheTimeSeries({ dates, data, names }: BreatheTimeSeriesProps
 
   const { datasets } = React.useMemo(() => {
     return {
-      datasets: groupBy(data, ({ sensorName, latitude }) => sensorName),
+      datasets: groupBy(data, ({ sensorName }) => sensorName),
     };
   }, [data]);
 
@@ -82,7 +83,9 @@ export function BreatheTimeSeries({ dates, data, names }: BreatheTimeSeriesProps
         borderColor: 'rgb(71,71,71)',
         backgroundColor: 'rgba(71,71,71,0.5)',
       };
-      const dataArray = Array.from(data.filter(({ co }) => co !== null).map(({ co }) => co));
+      const dataArray = Array.from(
+        data.filter((d) => d[variable] !== null).map((d) => d[variable])
+      );
 
       return {
         label: key,
@@ -95,10 +98,11 @@ export function BreatheTimeSeries({ dates, data, names }: BreatheTimeSeriesProps
         radius: 0,
       };
     });
-  }, [datasets, dates]);
+  }, [datasets, dates, variable]);
 
   return (
     <Line
+      // @ts-expect-error cubicInterpolationMode gives a ts check error here even when correct
       data={{ labels: dates.map((date) => formatDate(date, 'P p')), datasets: dataGroups }}
       options={{
         responsive: true,
@@ -138,7 +142,7 @@ export function BreatheTimeSeries({ dates, data, names }: BreatheTimeSeriesProps
             },
             title: {
               display: true,
-              text: 'CO',
+              text: variable,
               color: chartColors.text,
             },
             ticks: {

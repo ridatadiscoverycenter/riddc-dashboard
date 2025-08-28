@@ -192,7 +192,14 @@ export function BreatheMapGraph({
   return (
     <MapGraph
       onLoad={onLoad}
-      graph={<BreatheTimeSeries dates={dates} data={selectedSensors} names={selectedSensorNames} />}
+      graph={
+        <BreatheTimeSeries
+          dates={dates}
+          data={selectedSensors}
+          names={selectedSensorNames}
+          variable={selectedVariable}
+        />
+      }
       syncOpenState={(isMapOpen) => setOpen(isMapOpen)}
       className="h-screen"
     >
@@ -237,8 +244,7 @@ export function BreatheMapGraph({
           />
           <div className="w-full flex flex-row justify-between text-sm">
             <span>{dates[0].toLocaleDateString()}</span>
-            <span>{selectedDateIndex}</span>
-            <span>Today</span>
+            <span>{dates[dates.length - 1].toLocaleDateString()}</span>
           </div>
         </div>
         <div className="flex flex-col gap-1 w-full">
