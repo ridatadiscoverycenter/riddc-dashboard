@@ -28,7 +28,6 @@ export function StreamGageMapGraph({
         .sort((a, b) => compareAsc(a, b)),
     [streamData]
   );
-  console.log(dates);
 
   const values = React.useMemo(
     () =>

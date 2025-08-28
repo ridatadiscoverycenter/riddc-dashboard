@@ -7,6 +7,7 @@ import { compareAsc, formatDate, roundToNearestHours } from 'date-fns';
 
 import { Loading, MapGraph } from '@/components';
 import { type BreatheSensorData } from '@/utils/data/api/breathe-pvd';
+import { BreatheTimeSeries } from './BreatheTimeSeries';
 
 // TODO where do i downsample
 export function BreatheMapGraph({
@@ -191,7 +192,7 @@ export function BreatheMapGraph({
   return (
     <MapGraph
       onLoad={onLoad}
-      graph={<Loading />}
+      graph={<BreatheTimeSeries dates={dates} data={selectedSensors} names={selectedSensorNames} />}
       syncOpenState={(isMapOpen) => setOpen(isMapOpen)}
       className="h-screen"
     >
