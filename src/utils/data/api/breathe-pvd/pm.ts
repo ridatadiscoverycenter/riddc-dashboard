@@ -3,9 +3,7 @@ import { z } from 'zod';
 import { pmInfo } from '@/assets/pmInfo';
 import { APIGet } from '../erddap';
 
-export const BREATHE_PM_VIEWER_VARS = [
-  'pm25', 'pm1', 'pm10'
-]
+export const BREATHE_PM_VIEWER_VARS = ['pm25', 'pm1', 'pm10'];
 
 /**
  * Types
@@ -69,7 +67,7 @@ function formatFetchedData(fetchedData: FetchedPmSensor) {
   const id = fetchedData.sn.replace('MOD-', '');
   return {
     id: id,
-    sensor_name: sensors[id].description,
+    sensorName: sensors[id].description,
     latitude: fetchedData['geo.lat'],
     longitude: fetchedData['geo.lon'],
     time: new Date(fetchedData.timestamp),

@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-import { formatDate } from 'date-fns';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -99,11 +98,10 @@ export function BreatheTimeSeries({ dates, data, names, variable }: BreatheTimeS
       };
     });
   }, [names, datasets, dates, variable]);
-
   return (
     <Line
       // @ts-expect-error cubicInterpolationMode gives a ts check error here even when correct
-      data={{ labels: dates.map((date) => formatDate(date, 'P p')), datasets: dataGroups }}
+      data={{ labels: dates.map((date) => date.toLocaleDateString()), datasets: dataGroups }}
       options={{
         responsive: true,
         maintainAspectRatio: false,

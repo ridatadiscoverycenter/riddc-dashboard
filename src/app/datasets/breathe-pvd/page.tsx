@@ -20,12 +20,12 @@ async function PageWrapper({ sensors }: PageWrapperProps) {
   const sensorData = await fetchBreatheData(
     // Object.keys(sensorInfo),
     ['250', '254'],
-    subDays(new Date('2025-08-08'), 1),
+    subDays(new Date('2025-08-20'), 1),
     new Date('2025-08-25')
   );
   const pmData = await fetchPmData(
     ['00810', '00811'],
-    subDays(new Date('2025-08-08'), 1),
+    subDays(new Date('2025-08-20'), 1),
     new Date('2025-08-25')
   );
   const filteredData = downsamplePmData(pmData);

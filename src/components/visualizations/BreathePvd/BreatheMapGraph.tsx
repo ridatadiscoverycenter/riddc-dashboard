@@ -14,7 +14,6 @@ import {
 import { BREATHE_PM_VIEWER_VARS, type BreathePmData } from '@/utils/data/api/breathe-pvd';
 import { BreatheTimeSeries } from './BreatheTimeSeries';
 
-// TODO where do i downsample
 export function BreatheMapGraph({
   breatheSensorData,
   breathePmData,
@@ -46,7 +45,7 @@ export function BreatheMapGraph({
     [breatheSensorData]
   );
 
-  const [selectedVariable, setSelectedVariable] = React.useState<BreatheSensorViewerVars>('pm1');
+  const [selectedVariable, setSelectedVariable] = React.useState<BreatheSensorViewerVars>('co');
   const values = React.useMemo(
     () =>
       Array.from(
@@ -56,12 +55,15 @@ export function BreatheMapGraph({
             .map((a) => (a as Record<string, any>)[selectedVariable])
         )
       ),
-    [breatheSensorData, selectedVariable]
+    [breatheSensorData, breathePmData, selectedVariable]
   );
   const [selectedSensorNames, setSelectedSensors] = React.useState<string[]>([]);
   const selectedSensors = React.useMemo(
-    () => breatheSensorData.filter(({ sensorName }) => selectedSensorNames.includes(sensorName)),
-    [breatheSensorData, selectedSensorNames]
+    () =>
+      [...breatheSensorData, ...breathePmData].filter(({ sensorName }) =>
+        selectedSensorNames.includes(sensorName)
+      ),
+    [breatheSensorData, breathePmData, selectedSensorNames]
   );
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
   const selectedDate = React.useMemo(() => dates[selectedDateIndex], [dates, selectedDateIndex]);
@@ -76,6 +78,14 @@ export function BreatheMapGraph({
   );
   const pm1GeoJson = React.useMemo(
     () => createGeoJson(breathePmData, 'pm1', dates),
+    [breathePmData, dates]
+  );
+  const pm10GeoJson = React.useMemo(
+    () => createGeoJson(breathePmData, 'pm10', dates),
+    [breathePmData, dates]
+  );
+  const pm25GeoJson = React.useMemo(
+    () => createGeoJson(breathePmData, 'pm25', dates),
     [breathePmData, dates]
   );
 
@@ -101,7 +111,7 @@ export function BreatheMapGraph({
         ),
       },
     }),
-    [coGeoJson, selectedSensorNames, co2GeoJson]
+    [pm1GeoJson, selectedSensorNames]
   );
 
   const dataRange = React.useMemo(() => {
@@ -123,6 +133,8 @@ export function BreatheMapGraph({
       map.current.addSource('co-data', coGeoJson);
       map.current.addSource('co2-data', co2GeoJson);
       map.current.addSource('pm1-data', pm1GeoJson);
+      map.current.addSource('pm10-data', pm10GeoJson);
+      map.current.addSource('pm25-data', pm25GeoJson);
       map.current.addSource('selected-breathe-data', selectedBreatheGeoJson);
       map.current.addSource('selected-pm-data', selectedPmGeoJson);
       // Pink border around selected gages
@@ -193,9 +205,6 @@ export function BreatheMapGraph({
       map.current.on('mouseenter', 'circles', doSetPointer);
       map.current.on('mouseleave', 'circles', doUnsetPointer);
       map.current.on('click', 'circles', doHandleCircleClick);
-      map.current.on('mouseenter', 'circles', doSetPointer);
-      map.current.on('mouseleave', 'circles', doUnsetPointer);
-      map.current.on('click', 'circles', doHandleCircleClick);
 
       return () => {
         map.current.off('mouseenter', 'circles', doSetPointer);
@@ -210,6 +219,8 @@ export function BreatheMapGraph({
         map.current.removeSource('selected-pm-data');
         // eslint-disable-next-line react-hooks/exhaustive-deps
         map.current.removeSource('pm1-data');
+        map.current.removeSource('pm10-data');
+        map.current.removeSource('pm25-data');
         map.current.removeSource('co-data');
         map.current.removeSource('co2-data');
       };
@@ -245,32 +256,34 @@ export function BreatheMapGraph({
       >
         <div className="flex flex-col gap-2 w-full">
           <h1 className="text-xl">Air Quality</h1>
-          <div>
-            <input
-              type="radio"
-              id="co"
-              name="variable"
-              onClick={(e) => setSelectedVariable('co')}
-              defaultChecked
-            />
-            <label htmlFor="co2">CO</label>
+          <div className="flex flex-col">
+            {[...BREATHE_SENSOR_VIEWER_VARS, ...BREATHE_PM_VIEWER_VARS].map((option, index) => {
+              return (
+                <div key={option}>
+                  <div>
+                    <input
+                      type="radio"
+                      id={option}
+                      name="variable"
+                      value={option}
+                      onClick={(e) => clickHandler(e, setSelectedVariable)}
+                      defaultChecked={index === 0}
+                    />
+                    <label htmlFor={option} className="text-xl">
+                      {option}
+                      {/* TODO: formatter for option display */}
+                    </label>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          {/* <label htmlFor="co">CO</label> */}
-          <div>
-            <input
-              type="radio"
-              id="co2"
-              name="variable"
-              onClick={() => setSelectedVariable('co2')}
-            />
-            <label htmlFor="co2">CO2</label>
-          </div>
-          <h2 className="text-lg">{formatDate(selectedDate, "p 'at' P")}</h2>
-          <p>
-            Use the Date Slider to view hourly Stream Gage data across Rhode Island. Data is
-            displayed in feet.
-          </p>
         </div>
+        <h2 className="text-lg">{formatDate(selectedDate, "p 'at' P")}</h2>
+        <p>
+          Use the Date Slider to view hourly Stream Gage data across Rhode Island. Data is displayed
+          in feet.
+        </p>
         <div className="flex flex-col gap-1 w-full">
           <input
             type="range"
@@ -331,6 +344,10 @@ function circleClickHandler(
       // if (!opened) setOpened(true);
     }
   }
+}
+
+function clickHandler(e, setSelectedVariable) {
+  setSelectedVariable(e.target.value);
 }
 
 function createGeoJson(
