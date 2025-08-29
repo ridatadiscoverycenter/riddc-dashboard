@@ -6,15 +6,22 @@ import React from 'react';
 import { compareAsc, formatDate, roundToNearestHours } from 'date-fns';
 
 import { MapGraph } from '@/components';
-import { type BreatheSensorData } from '@/utils/data/api/breathe-pvd';
+import {
+  BREATHE_SENSOR_VIEWER_VARS,
+  type BreatheSensorData,
+  type BreatheSensorViewerVars,
+} from '@/utils/data/api/breathe-pvd';
+import { BREATHE_PM_VIEWER_VARS, type BreathePmData } from '@/utils/data/api/breathe-pvd';
 import { BreatheTimeSeries } from './BreatheTimeSeries';
 
 // TODO where do i downsample
 export function BreatheMapGraph({
-  breatheData,
+  breatheSensorData,
+  breathePmData,
   className = '',
 }: {
-  breatheData: BreatheSensorData[];
+  breatheSensorData: BreatheSensorData[];
+  breathePmData: BreathePmData[];
   className?: string;
 }) {
   // remove duplicate times
@@ -34,39 +41,42 @@ export function BreatheMapGraph({
   const dates = React.useMemo(
     () =>
       Array.from(
-        (removeDuplicates(breatheData) as Date[]).map((time) => roundToNearestHours(time))
+        (removeDuplicates(breatheSensorData) as Date[]).map((time) => roundToNearestHours(time))
       ).sort((a, b) => compareAsc(a, b)),
-    [breatheData]
+    [breatheSensorData]
   );
 
-  const [selectedVariable, setSelectedVariable] = React.useState('co');
+  const [selectedVariable, setSelectedVariable] = React.useState<BreatheSensorViewerVars>('pm1');
   const values = React.useMemo(
     () =>
       Array.from(
         new Set(
-          breatheData
-            .filter((e) => e[selectedVariable] !== null)
+          [...breatheSensorData, ...breathePmData]
+            .filter((e) => selectedVariable in e && e[selectedVariable] !== null)
             .map((a) => (a as Record<string, any>)[selectedVariable])
         )
       ),
-    [breatheData, selectedVariable]
+    [breatheSensorData, selectedVariable]
   );
   const [selectedSensorNames, setSelectedSensors] = React.useState<string[]>([]);
   const selectedSensors = React.useMemo(
-    () => breatheData.filter(({ sensorName }) => selectedSensorNames.includes(sensorName)),
-    [breatheData, selectedSensorNames]
+    () => breatheSensorData.filter(({ sensorName }) => selectedSensorNames.includes(sensorName)),
+    [breatheSensorData, selectedSensorNames]
   );
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
   const selectedDate = React.useMemo(() => dates[selectedDateIndex], [dates, selectedDateIndex]);
 
-  // I'm going to be copying this code a bunch so I should probably find a way to make a function
   const coGeoJson = React.useMemo(
-    () => createGeoJson(breatheData, 'co', dates),
-    [breatheData, dates]
+    () => createGeoJson(breatheSensorData, 'co', dates),
+    [breatheSensorData, dates]
   );
   const co2GeoJson = React.useMemo(
-    () => createGeoJson(breatheData, 'co2', dates),
-    [breatheData, dates]
+    () => createGeoJson(breatheSensorData, 'co2', dates),
+    [breatheSensorData, dates]
+  );
+  const pm1GeoJson = React.useMemo(
+    () => createGeoJson(breathePmData, 'pm1', dates),
+    [breathePmData, dates]
   );
 
   const selectedBreatheGeoJson = React.useMemo(
@@ -86,7 +96,7 @@ export function BreatheMapGraph({
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: co2GeoJson.data.features.filter(({ properties }) =>
+        features: pm1GeoJson.data.features.filter(({ properties }) =>
           selectedSensorNames.includes(properties.site)
         ),
       },
@@ -112,6 +122,7 @@ export function BreatheMapGraph({
       const { min, mid, max } = dataRange;
       map.current.addSource('co-data', coGeoJson);
       map.current.addSource('co2-data', co2GeoJson);
+      map.current.addSource('pm1-data', pm1GeoJson);
       map.current.addSource('selected-breathe-data', selectedBreatheGeoJson);
       map.current.addSource('selected-pm-data', selectedPmGeoJson);
       // Pink border around selected gages
@@ -125,7 +136,6 @@ export function BreatheMapGraph({
           'circle-radius': ['interpolate', ['linear'], ['get', 'v'], min, 6, mid, 13, max, 21],
           'circle-opacity': 0,
         },
-        layout: { visibility: selectedVariable === 'co' ? 'visible' : 'none' },
         filter: ['==', 'date', selectedDateIndex],
       });
       map.current.addLayer({
@@ -138,10 +148,8 @@ export function BreatheMapGraph({
           'circle-radius': ['interpolate', ['linear'], ['get', 'v'], min, 6, mid, 13, max, 21],
           'circle-opacity': 0,
         },
-        layout: { visibility: selectedVariable === 'co2' ? 'visible' : 'none' },
         filter: ['==', 'date', selectedDateIndex],
       });
-
       map.current.addLayer({
         id: 'circles',
         type: 'circle',
@@ -185,6 +193,9 @@ export function BreatheMapGraph({
       map.current.on('mouseenter', 'circles', doSetPointer);
       map.current.on('mouseleave', 'circles', doUnsetPointer);
       map.current.on('click', 'circles', doHandleCircleClick);
+      map.current.on('mouseenter', 'circles', doSetPointer);
+      map.current.on('mouseleave', 'circles', doUnsetPointer);
+      map.current.on('click', 'circles', doHandleCircleClick);
 
       return () => {
         map.current.off('mouseenter', 'circles', doSetPointer);
@@ -198,6 +209,7 @@ export function BreatheMapGraph({
         map.current.removeSource('selected-breathe-data');
         map.current.removeSource('selected-pm-data');
         // eslint-disable-next-line react-hooks/exhaustive-deps
+        map.current.removeSource('pm1-data');
         map.current.removeSource('co-data');
         map.current.removeSource('co2-data');
       };
@@ -321,7 +333,11 @@ function circleClickHandler(
   }
 }
 
-function createGeoJson(data: BreatheSensorData[], variable: string, dates: Date[]) {
+function createGeoJson(
+  data: BreatheSensorData[] | BreathePmData[],
+  variable: string,
+  dates: Date[]
+) {
   return {
     type: 'geojson',
     data: {

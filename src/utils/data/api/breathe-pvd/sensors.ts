@@ -3,6 +3,9 @@ import { z } from 'zod';
 import { sensorInfo } from '@/assets/sensorInfo';
 import { APIGet } from '../erddap';
 
+export const BREATHE_SENSOR_VIEWER_VARS = ['co', 'co2']
+export type BreatheSensorViewerVars = 'co' | 'co2'
+
 /**
  * Types
  */
@@ -14,7 +17,7 @@ export type SensorInfo = {
   Longitude: string;
   'Installation Date': string;
 };
-export const BREATHE_SENSOR_VARIABLES = ['co_corrected', 'co2_corrected_avg_t_drift_applied'];
+const BREATHE_SENSOR_VARIABLES = ['co_corrected', 'co2_corrected_avg_t_drift_applied'];
 
 export type BreatheSensorVariable = (typeof BREATHE_SENSOR_VARIABLES)[number];
 

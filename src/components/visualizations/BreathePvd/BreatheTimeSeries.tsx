@@ -98,7 +98,7 @@ export function BreatheTimeSeries({ dates, data, names, variable }: BreatheTimeS
         radius: 0,
       };
     });
-  }, [datasets, dates, variable]);
+  }, [names, datasets, dates, variable]);
 
   return (
     <Line

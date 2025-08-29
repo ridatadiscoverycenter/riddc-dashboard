@@ -3,6 +3,10 @@ import { z } from 'zod';
 import { pmInfo } from '@/assets/pmInfo';
 import { APIGet } from '../erddap';
 
+export const BREATHE_PM_VIEWER_VARS = [
+  'pm25', 'pm1', 'pm10'
+]
+
 /**
  * Types
  */
@@ -21,8 +25,8 @@ const ZodFetchedPmSensor = z.object({
   ws: z.union([z.number(), z.null()]),
   timestamp: z.string().datetime({ local: true }),
   sn: z.string(),
-  'geo.lat': z.string(),
-  'geo.lon': z.string(),
+  'geo.lat': z.number(),
+  'geo.lon': z.number(),
 });
 export type FetchedPmSensor = z.infer<typeof ZodFetchedPmSensor>;
 
@@ -44,7 +48,7 @@ export async function fetchPmData(ids: string[], startDate: Date, endDate: Date)
   if (validateFetchedData(flattenedData)) {
     return (flattenedData as FetchedPmSensor[]).map(formatFetchedData);
   } else {
-    throw new Error('Invalid data received when fetching sensor data');
+    throw new Error('Invalid data received when fetching pm data');
   }
 }
 
