@@ -22,5 +22,5 @@ async function PageWrapper({ sensors }: PageWrapperProps) {
     subDays(new Date('2025-08-08'), 1),
     new Date('2025-08-25')
   );
-  return <BreatheMapGraph breatheData={data} />;
+  return <BreatheMapGraph breatheData={data} className="h-[75vh]" />;
 }

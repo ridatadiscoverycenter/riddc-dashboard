@@ -5,7 +5,7 @@
 import React from 'react';
 import { compareAsc, formatDate, roundToNearestHours } from 'date-fns';
 
-import { Loading, MapGraph } from '@/components';
+import { MapGraph } from '@/components';
 import { type BreatheSensorData } from '@/utils/data/api/breathe-pvd';
 import { BreatheTimeSeries } from './BreatheTimeSeries';
 
@@ -81,6 +81,18 @@ export function BreatheMapGraph({
     }),
     [coGeoJson, selectedSensorNames]
   );
+  const selectedPmGeoJson = React.useMemo(
+    () => ({
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: co2GeoJson.data.features.filter(({ properties }) =>
+          selectedSensorNames.includes(properties.site)
+        ),
+      },
+    }),
+    [coGeoJson, selectedSensorNames, co2GeoJson]
+  );
 
   const dataRange = React.useMemo(() => {
     const min = Math.min(...values);
@@ -101,6 +113,7 @@ export function BreatheMapGraph({
       map.current.addSource('co-data', coGeoJson);
       map.current.addSource('co2-data', co2GeoJson);
       map.current.addSource('selected-breathe-data', selectedBreatheGeoJson);
+      map.current.addSource('selected-pm-data', selectedPmGeoJson);
       // Pink border around selected gages
       map.current.addLayer({
         id: 'breathe-selected',
@@ -112,31 +125,33 @@ export function BreatheMapGraph({
           'circle-radius': ['interpolate', ['linear'], ['get', 'v'], min, 6, mid, 13, max, 21],
           'circle-opacity': 0,
         },
+        layout: { visibility: selectedVariable === 'co' ? 'visible' : 'none' },
+        filter: ['==', 'date', selectedDateIndex],
+      });
+      map.current.addLayer({
+        id: 'pm-selected',
+        type: 'circle',
+        source: 'selected-pm-data',
+        paint: {
+          'circle-stroke-color': '#FF1DCE',
+          'circle-stroke-width': 3,
+          'circle-radius': ['interpolate', ['linear'], ['get', 'v'], min, 6, mid, 13, max, 21],
+          'circle-opacity': 0,
+        },
+        layout: { visibility: selectedVariable === 'co2' ? 'visible' : 'none' },
         filter: ['==', 'date', selectedDateIndex],
       });
 
       map.current.addLayer({
         id: 'circles',
         type: 'circle',
-        source: 'co-data',
+        source: `${selectedVariable}-data`,
         paint: {
           'circle-color': ['interpolate', ['linear'], ['get', 'v'], min, '#4f14da', max, '#99fee8'],
           'circle-radius': ['interpolate', ['linear'], ['get', 'v'], min, 5, mid, 12, max, 20],
           'circle-opacity': 0.75,
         },
-        layout: { visibility: selectedVariable === 'co' ? 'visible' : 'none' },
-        filter: ['all', ['==', 'date', selectedDateIndex]],
-      });
-      map.current.addLayer({
-        id: 'co2-circles',
-        type: 'circle',
-        source: 'co2-data',
-        paint: {
-          'circle-color': ['interpolate', ['linear'], ['get', 'v'], min, '#4f14da', max, '#99fee8'],
-          'circle-radius': ['interpolate', ['linear'], ['get', 'v'], min, 5, mid, 12, max, 20],
-          'circle-opacity': 0.75,
-        },
-        layout: { visibility: selectedVariable === 'co2' ? 'visible' : 'none' },
+        // layout: { visibility: selectedVariable === 'co' ? 'visible' : 'none' },
         filter: ['all', ['==', 'date', selectedDateIndex]],
       });
 
@@ -145,7 +160,7 @@ export function BreatheMapGraph({
       map.current.addLayer({
         id: 'sensor-ids',
         type: 'symbol',
-        source: 'co-data',
+        source: `${selectedVariable}-data`,
         layout: {
           'text-field': ['get', 'site'],
           'text-size': 11,
@@ -166,6 +181,7 @@ export function BreatheMapGraph({
         return circleClickHandler(event, loaded, setSelectedSensors);
       }
 
+      // TODO I need to unselect points when they no longer exist in new data...
       map.current.on('mouseenter', 'circles', doSetPointer);
       map.current.on('mouseleave', 'circles', doUnsetPointer);
       map.current.on('click', 'circles', doHandleCircleClick);
@@ -176,16 +192,25 @@ export function BreatheMapGraph({
         map.current.off('click', 'circles', doHandleCircleClick);
 
         map.current.removeLayer('circles');
-        map.current.removeLayer('co2-circles');
         map.current.removeLayer('sensor-ids');
         map.current.removeLayer('breathe-selected');
+        map.current.removeLayer('pm-selected');
         map.current.removeSource('selected-breathe-data');
+        map.current.removeSource('selected-pm-data');
         // eslint-disable-next-line react-hooks/exhaustive-deps
         map.current.removeSource('co-data');
         map.current.removeSource('co2-data');
       };
     },
-    [coGeoJson, co2GeoJson, dataRange, selectedDateIndex, selectedVariable, selectedBreatheGeoJson]
+    [
+      coGeoJson,
+      co2GeoJson,
+      dataRange,
+      selectedDateIndex,
+      selectedVariable,
+      selectedBreatheGeoJson,
+      selectedPmGeoJson,
+    ]
   );
   const [opened, setOpen] = React.useState(false);
 
@@ -201,10 +226,10 @@ export function BreatheMapGraph({
         />
       }
       syncOpenState={(isMapOpen) => setOpen(isMapOpen)}
-      className="h-screen"
+      className={className}
     >
       <div
-        className={`h-screen z-50 absolute top-6 left-2 bg-slate-100/90 dark:bg-slate-800/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
+        className={`z-50 absolute top-6 left-2 bg-slate-100/90 dark:bg-slate-800/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
       >
         <div className="flex flex-col gap-2 w-full">
           <h1 className="text-xl">Air Quality</h1>
@@ -213,7 +238,7 @@ export function BreatheMapGraph({
               type="radio"
               id="co"
               name="variable"
-              onClick={() => setSelectedVariable('co')}
+              onClick={(e) => setSelectedVariable('co')}
               defaultChecked
             />
             <label htmlFor="co2">CO</label>
@@ -318,28 +343,3 @@ function createGeoJson(data: BreatheSensorData[], variable: string, dates: Date[
     },
   };
 }
-// type: 'geojson',
-//       data: {
-//         type: 'FeatureCollection',
-//         features: breatheData
-//           .filter(({ co2 }) => co2 !== null)
-//           .map(({ node, sensorName, latitude, longitude, co, co2, time }) => ({
-//             type: 'Feature',
-//             geometry: {
-//               type: 'Point',
-//               coordinates: [longitude, latitude],
-//             },
-//             properties: {
-//               site: sensorName,
-//               node,
-//               variable: 'co2', // TODO: this needs to get choice of variable!
-//               co2,
-//               dateTime: time,
-//               date: dates.findIndex((v) => v.valueOf() === roundToNearestHours(time).valueOf()),
-//             },
-//           })),
-//       },
-//     }),
-//     [breatheData, dates]
-//   );
-// }
