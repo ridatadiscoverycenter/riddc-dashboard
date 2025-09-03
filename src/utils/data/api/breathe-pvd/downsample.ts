@@ -79,7 +79,5 @@ function createDateInterval(allDates: Date[], interval: Interval) {
  * @returns
  */
 function computeBinPoint(data: BreathePmData[]) {
-  // console.log(data)
   return data.filter((f, i) => i === 0);
-  // return data.map(({ value }) => value).reduce((a, b) => a + b, 0) / data.length;
 }

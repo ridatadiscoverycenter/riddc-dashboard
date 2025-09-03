@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { pmInfo } from '@/assets/pmInfo';
 import { APIGet } from '../erddap';
 
-export const BREATHE_PM_VIEWER_VARS = ['pm25', 'pm1', 'pm10'];
+export const BREATHE_PM_VIEWER_VARS = ['pm1', 'pm10', 'pm25'];
 
 /**
  * Types

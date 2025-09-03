@@ -5,26 +5,21 @@ import { fetchPmData, type SensorInfo } from '@/utils/data/api/breathe-pvd';
 import { fetchBreatheData } from '@/utils/data/api/breathe-pvd/sensors';
 import { BreatheMapGraph } from '@/components/visualizations/BreathePvd/BreatheMapGraph';
 import { downsamplePmData } from '@/utils/data/api/breathe-pvd/downsample';
-
-type PageWrapperProps = { sensors: Record<number, SensorInfo> };
+import { pmInfo } from '@/assets/pmInfo';
 
 export default async function BreathePvd() {
-  return <PageWrapper sensors={sensorInfo} />;
+  return <PageWrapper />;
 }
 
-async function PageWrapper({ sensors }: PageWrapperProps) {
-  // TODO change data declaration
-  //   const data = await fetchBreatheData(Object.keys(sensorInfo), subDays(new Date(), 90), new Date());
-  //   const data = await fetchBreatheData(ids, subDays(new Date(), 1), new Date());
-  //   const data = await fetchBreatheData(ids, subDays(new Date(), 1), new Date());
+async function PageWrapper() {
   const sensorData = await fetchBreatheData(
-    // Object.keys(sensorInfo),
-    ['250', '254'],
+    Object.keys(sensorInfo),
+    // ['250', '254'],
     subDays(new Date('2025-08-20'), 1),
     new Date('2025-08-25')
   );
   const pmData = await fetchPmData(
-    ['00810', '00811'],
+    Object.keys(pmInfo),
     subDays(new Date('2025-08-20'), 1),
     new Date('2025-08-25')
   );

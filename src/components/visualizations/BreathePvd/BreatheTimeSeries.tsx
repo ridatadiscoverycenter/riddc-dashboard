@@ -97,7 +97,7 @@ export function BreatheTimeSeries({ dates, data, names, variable }: BreatheTimeS
         radius: 0,
       };
     });
-  }, [names, datasets, dates, variable]);
+  }, [names, datasets, variable]);
   return (
     <Line
       // @ts-expect-error cubicInterpolationMode gives a ts check error here even when correct

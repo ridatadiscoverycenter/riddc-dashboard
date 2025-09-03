@@ -10,8 +10,9 @@ import {
   BREATHE_SENSOR_VIEWER_VARS,
   type BreatheSensorData,
   type BreatheSensorViewerVars,
+  BREATHE_PM_VIEWER_VARS,
+  type BreathePmData,
 } from '@/utils/data/api/breathe-pvd';
-import { BREATHE_PM_VIEWER_VARS, type BreathePmData } from '@/utils/data/api/breathe-pvd';
 import { BreatheTimeSeries } from './BreatheTimeSeries';
 
 export function BreatheMapGraph({
@@ -60,10 +61,11 @@ export function BreatheMapGraph({
   const [selectedSensorNames, setSelectedSensors] = React.useState<string[]>([]);
   const selectedSensors = React.useMemo(
     () =>
-      [...breatheSensorData, ...breathePmData].filter(({ sensorName }) =>
-        selectedSensorNames.includes(sensorName)
+      [...breatheSensorData, ...breathePmData].filter(
+        ({ sensorName, ...rest }) =>
+          selectedSensorNames.includes(sensorName) && Object.keys(rest).includes(selectedVariable)
       ),
-    [breatheSensorData, breathePmData, selectedSensorNames]
+    [breatheSensorData, breathePmData, selectedSensorNames, selectedVariable]
   );
   function clickHandler(e, setSelectedVariable) {
     const newValue = e.target.value;
@@ -105,24 +107,37 @@ export function BreatheMapGraph({
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: coGeoJson.data.features.filter(({ properties }) =>
-          selectedSensorNames.includes(properties.site)
-        ),
+        features: [
+          ...coGeoJson.data.features.filter(({ properties }) =>
+            selectedSensorNames.includes(properties.site)
+          ),
+          ...co2GeoJson.data.features.filter(({ properties }) =>
+            selectedSensorNames.includes(properties.site)
+          ),
+        ],
       },
     }),
-    [coGeoJson, selectedSensorNames, selectedVariable]
+    [coGeoJson, co2GeoJson, selectedSensorNames, selectedVariable]
   );
   const selectedPmGeoJson = React.useMemo(
     () => ({
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: pm1GeoJson.data.features.filter(({ properties }) =>
-          selectedSensorNames.includes(properties.site)
-        ),
+        features: [
+          ...pm1GeoJson.data.features.filter(({ properties }) =>
+            selectedSensorNames.includes(properties.site)
+          ),
+          ...pm10GeoJson.data.features.filter(({ properties }) =>
+            selectedSensorNames.includes(properties.site)
+          ),
+          ...pm25GeoJson.data.features.filter(({ properties }) =>
+            selectedSensorNames.includes(properties.site)
+          ),
+        ],
       },
     }),
-    [pm1GeoJson, selectedSensorNames]
+    [pm1GeoJson, pm10GeoJson, pm25GeoJson, selectedSensorNames]
   );
 
   const dataRange = React.useMemo(() => {
@@ -160,7 +175,7 @@ export function BreatheMapGraph({
           'circle-radius': ['interpolate', ['linear'], ['get', 'v'], min, 6, mid, 13, max, 21],
           'circle-opacity': 0,
         },
-        filter: ['==', 'date', selectedDateIndex],
+        filter: ['all', ['==', 'date', selectedDateIndex], ['==', 'variable', selectedVariable]],
       });
       map.current.addLayer({
         id: 'pm-selected',
@@ -172,7 +187,7 @@ export function BreatheMapGraph({
           'circle-radius': ['interpolate', ['linear'], ['get', 'v'], min, 6, mid, 13, max, 21],
           'circle-opacity': 0,
         },
-        filter: ['==', 'date', selectedDateIndex],
+        filter: ['all', ['==', 'date', selectedDateIndex], ['==', 'variable', selectedVariable]],
       });
       map.current.addLayer({
         id: 'circles',
@@ -245,6 +260,8 @@ export function BreatheMapGraph({
       selectedVariable,
       selectedBreatheGeoJson,
       selectedPmGeoJson,
+      pm10GeoJson,
+      pm25GeoJson,
     ]
   );
   const [opened, setOpen] = React.useState(false);
@@ -368,7 +385,6 @@ function createGeoJson(
     data: {
       type: 'FeatureCollection',
       features: data
-        // .filter((v) => v[variable] !== null)
         .filter((entry) => entry[variable] !== null)
         .map(({ [variable]: v, longitude, latitude, sensorName, time, node }) => ({
           type: 'Feature',
@@ -379,6 +395,7 @@ function createGeoJson(
             v,
             datetime: time,
             date: dates.findIndex((v) => v.valueOf() === roundToNearestHours(time).valueOf()),
+            variable,
           },
         })),
     },
