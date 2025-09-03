@@ -65,6 +65,17 @@ export function BreatheMapGraph({
       ),
     [breatheSensorData, breathePmData, selectedSensorNames]
   );
+  function clickHandler(e, setSelectedVariable) {
+    const newValue = e.target.value;
+    setSelectedVariable(newValue);
+    setSelectedSensors(
+      Array.from(
+        new Set(
+          selectedSensors.filter((sensor) => newValue in sensor).map(({ sensorName }) => sensorName)
+        )
+      )
+    );
+  }
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
   const selectedDate = React.useMemo(() => dates[selectedDateIndex], [dates, selectedDateIndex]);
 
@@ -99,7 +110,7 @@ export function BreatheMapGraph({
         ),
       },
     }),
-    [coGeoJson, selectedSensorNames]
+    [coGeoJson, selectedSensorNames, selectedVariable]
   );
   const selectedPmGeoJson = React.useMemo(
     () => ({
@@ -138,6 +149,7 @@ export function BreatheMapGraph({
       map.current.addSource('selected-breathe-data', selectedBreatheGeoJson);
       map.current.addSource('selected-pm-data', selectedPmGeoJson);
       // Pink border around selected gages
+      // TODO we basically need one of these for each var
       map.current.addLayer({
         id: 'breathe-selected',
         type: 'circle',
@@ -344,10 +356,6 @@ function circleClickHandler(
       // if (!opened) setOpened(true);
     }
   }
-}
-
-function clickHandler(e, setSelectedVariable) {
-  setSelectedVariable(e.target.value);
 }
 
 function createGeoJson(
