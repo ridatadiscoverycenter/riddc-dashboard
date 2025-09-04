@@ -12,8 +12,17 @@ import {
   type BreatheSensorViewerVars,
   BREATHE_PM_VIEWER_VARS,
   type BreathePmData,
+  BreathePmViewerVars,
 } from '@/utils/data/api/breathe-pvd';
 import { BreatheTimeSeries } from './BreatheTimeSeries';
+
+type CombinedData = BreatheSensorData & BreathePmData;
+type SensorType = 'sensor' | 'pm';
+type SensorVars<T extends SensorType> = T extends 'sensor'
+  ? BreatheSensorViewerVars
+  : T extends 'pm'
+    ? BreathePmViewerVars
+    : never;
 
 export function BreatheMapGraph({
   breatheSensorData,
@@ -46,12 +55,12 @@ export function BreatheMapGraph({
     [breatheSensorData]
   );
 
-  const [selectedVariable, setSelectedVariable] = React.useState<BreatheSensorViewerVars>('co');
+  const [selectedVariable, setSelectedVariable] = React.useState<SensorVars<'sensor' | 'pm'>>('co');
   const values = React.useMemo(
     () =>
       Array.from(
         new Set(
-          [...breatheSensorData, ...breathePmData]
+          ([...breatheSensorData, ...breathePmData] as CombinedData[])
             .filter((e) => selectedVariable in e && e[selectedVariable] !== null)
             .map((a) => (a as Record<string, any>)[selectedVariable])
         )
@@ -64,10 +73,14 @@ export function BreatheMapGraph({
       [...breatheSensorData, ...breathePmData].filter(
         ({ sensorName, ...rest }) =>
           selectedSensorNames.includes(sensorName) && Object.keys(rest).includes(selectedVariable)
-      ),
+      ) as (BreatheSensorData & BreathePmData)[],
     [breatheSensorData, breathePmData, selectedSensorNames, selectedVariable]
   );
-  function clickHandler(e, setSelectedVariable) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function clickHandler(
+    e: any
+    // setSelectedVariable: React.Dispatch<React.SetStateAction<string[]>>
+  ) {
     const newValue = e.target.value;
     setSelectedVariable(newValue);
     setSelectedSensors(
@@ -117,7 +130,7 @@ export function BreatheMapGraph({
         ],
       },
     }),
-    [coGeoJson, co2GeoJson, selectedSensorNames, selectedVariable]
+    [coGeoJson, co2GeoJson, selectedSensorNames]
   );
   const selectedPmGeoJson = React.useMemo(
     () => ({
@@ -260,6 +273,7 @@ export function BreatheMapGraph({
       selectedVariable,
       selectedBreatheGeoJson,
       selectedPmGeoJson,
+      pm1GeoJson,
       pm10GeoJson,
       pm25GeoJson,
     ]
@@ -295,7 +309,7 @@ export function BreatheMapGraph({
                       id={option}
                       name="variable"
                       value={option}
-                      onClick={(e) => clickHandler(e, setSelectedVariable)}
+                      onClick={(e) => clickHandler(e)}
                       defaultChecked={index === 0}
                     />
                     <label htmlFor={option} className="text-xl">
@@ -377,14 +391,14 @@ function circleClickHandler(
 
 function createGeoJson(
   data: BreatheSensorData[] | BreathePmData[],
-  variable: string,
+  variable: 'co' | 'co2' | 'pm1' | 'pm10' | 'pm25',
   dates: Date[]
 ) {
   return {
     type: 'geojson',
     data: {
       type: 'FeatureCollection',
-      features: data
+      features: (data as CombinedData[])
         .filter((entry) => entry[variable] !== null)
         .map(({ [variable]: v, longitude, latitude, sensorName, time, node }) => ({
           type: 'Feature',

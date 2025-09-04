@@ -13,6 +13,7 @@ type pmSensorInfo = {
   description: string;
 };
 export const PM_SENSOR_VARIABLES = ['pm25', 'pm1', 'pm10', 'ws'];
+export type BreathePmViewerVars = 'co' | 'co2';
 
 export type PmSensorVariable = (typeof PM_SENSOR_VARIABLES)[number];
 

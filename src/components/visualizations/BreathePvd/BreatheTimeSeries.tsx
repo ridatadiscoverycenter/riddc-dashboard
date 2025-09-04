@@ -14,7 +14,7 @@ import {
   TimeScale,
 } from 'chart.js';
 
-import { BreatheSensorData } from '@/utils/data/api/breathe-pvd';
+import { BreathePmData, BreatheSensorData } from '@/utils/data/api/breathe-pvd';
 import { useColorMode } from '@/hooks/useColorMode';
 import { groupBy } from '@/utils/fns';
 
@@ -29,12 +29,17 @@ ChartJS.register(
   Legend
 );
 
-type BreatheTimeSeriesProps = {
+type SensorType = 'sensor' | 'pm';
+
+type BreatheTimeSeriesPropsHelper = {
   dates: Date[];
-  data: BreatheSensorData[];
   names: string[];
-  variable: string;
 };
+type BreatheTimeSeriesProps<T extends SensorType> = T extends 'sensor'
+  ? BreatheTimeSeriesPropsHelper & { data: BreatheSensorData[]; variable: 'co' | 'co2' }
+  : T extends 'pm'
+    ? BreatheTimeSeriesPropsHelper & { data: BreathePmData[]; variable: 'pm1' | 'pm10' | 'pm25' }
+    : never;
 
 const LINE_COLORS = [
   { borderColor: 'rgb(168, 92, 222)', backgroundColor: 'rgba(168, 92, 222, 0.5)' },
@@ -62,7 +67,12 @@ const CHART_COLORS = {
   },
 };
 
-export function BreatheTimeSeries({ dates, data, names, variable }: BreatheTimeSeriesProps) {
+export function BreatheTimeSeries<T extends SensorType>({
+  dates,
+  data,
+  names,
+  variable,
+}: BreatheTimeSeriesProps<T>) {
   const colorMode = useColorMode();
   const chartColors = React.useMemo(
     () => (colorMode === 'light' ? CHART_COLORS.light : CHART_COLORS.dark),
