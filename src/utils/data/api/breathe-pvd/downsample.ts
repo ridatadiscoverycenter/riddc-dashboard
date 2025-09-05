@@ -16,7 +16,7 @@ export function downsamplePmData(data: BreathePmData[], interval: Interval = 'ho
   );
 
   return (
-    Object.entries(groupBy(data, (d) => closestIndexTo(d.time, binIntervals)) || -1)
+    Object.entries(groupBy(data, (d) => closestIndexTo(d.time, binIntervals) || -1))
       .map(([dateIndexString, data]) => {
         const dateIndex = Number(dateIndexString);
         if (isNaN(dateIndex) || dateIndex === -1) return undefined;
@@ -26,9 +26,8 @@ export function downsamplePmData(data: BreathePmData[], interval: Interval = 'ho
         };
       })
       .filter((entry) => entry !== undefined)
-      //
-      .map(({ data }) => computeBinPoint(data))
-      .sort((a, b) => compareAsc(a.time, b.time))
+      .map(({ date, data }) => computeBinPoint(data))
+      // .sort((a, b) => compareAsc(a.time, b.time))
       .flat()
   );
   // Object.entries(groupBy(d, (dataPoint) => closestIndexTo(dataPoint.dateTime, binIntervals)))

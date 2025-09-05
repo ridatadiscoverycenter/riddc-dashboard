@@ -80,6 +80,7 @@ export function BreatheMapGraph({
       ),
     [breatheSensorData, breathePmData, selectedVariable]
   );
+
   const [selectedSensorNames, setSelectedSensors] = React.useState<string[]>([]);
   function useSelectSensors<T extends Vars>() {
     const selectedSensors = React.useMemo(
