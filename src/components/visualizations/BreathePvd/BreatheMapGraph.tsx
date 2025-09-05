@@ -24,6 +24,19 @@ type SensorVars<T extends SensorType> = T extends 'sensor'
     ? BreathePmViewerVars
     : never;
 
+type Vars = BreatheSensorViewerVars & BreathePmViewerVars;
+type BreatheTimeSeriesPropsHelper = {
+  dates: Date[];
+  names: string[];
+  variable: Vars;
+};
+
+type BreatheDataProps<T extends Vars> = T extends 'co' | 'co2'
+  ? BreatheSensorData[]
+  : T extends 'pm'
+    ? BreathePmData[]
+    : never;
+
 export function BreatheMapGraph({
   breatheSensorData,
   breathePmData,
@@ -68,14 +81,18 @@ export function BreatheMapGraph({
     [breatheSensorData, breathePmData, selectedVariable]
   );
   const [selectedSensorNames, setSelectedSensors] = React.useState<string[]>([]);
-  const selectedSensors = React.useMemo(
-    () =>
-      [...breatheSensorData, ...breathePmData].filter(
-        ({ sensorName, ...rest }) =>
-          selectedSensorNames.includes(sensorName) && Object.keys(rest).includes(selectedVariable)
-      ) as (BreatheSensorData & BreathePmData)[],
-    [breatheSensorData, breathePmData, selectedSensorNames, selectedVariable]
-  );
+  function useSelectSensors<T extends Vars>() {
+    const selectedSensors = React.useMemo(
+      () =>
+        [...breatheSensorData, ...breathePmData].filter(
+          ({ sensorName, ...rest }) =>
+            selectedSensorNames.includes(sensorName) && Object.keys(rest).includes(selectedVariable)
+        ),
+      [breatheSensorData, breathePmData, selectedSensorNames, selectedVariable]
+    );
+    return selectedSensors as BreatheDataProps<T>;
+  }
+  const selectedSensors = useSelectSensors();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function clickHandler(
     e: any

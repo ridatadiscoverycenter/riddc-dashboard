@@ -14,7 +14,12 @@ import {
   TimeScale,
 } from 'chart.js';
 
-import { BreathePmData, BreatheSensorData } from '@/utils/data/api/breathe-pvd';
+import {
+  BreathePmData,
+  BreathePmViewerVars,
+  BreatheSensorData,
+  BreatheSensorViewerVars,
+} from '@/utils/data/api/breathe-pvd';
 import { useColorMode } from '@/hooks/useColorMode';
 import { groupBy } from '@/utils/fns';
 
@@ -29,16 +34,17 @@ ChartJS.register(
   Legend
 );
 
-type SensorType = 'sensor' | 'pm';
+type Vars = BreatheSensorViewerVars & BreathePmViewerVars;
 
 type BreatheTimeSeriesPropsHelper = {
   dates: Date[];
   names: string[];
+  variable: Vars;
 };
-type BreatheTimeSeriesProps<T extends SensorType> = T extends 'sensor'
-  ? BreatheTimeSeriesPropsHelper & { data: BreatheSensorData[]; variable: 'co' | 'co2' }
+type BreatheTimeSeriesProps<T extends Vars> = T extends 'co' | 'co2'
+  ? BreatheTimeSeriesPropsHelper & { data: BreatheSensorData[] }
   : T extends 'pm'
-    ? BreatheTimeSeriesPropsHelper & { data: BreathePmData[]; variable: 'pm1' | 'pm10' | 'pm25' }
+    ? BreatheTimeSeriesPropsHelper & { data: BreathePmData[] }
     : never;
 
 const LINE_COLORS = [
@@ -67,7 +73,7 @@ const CHART_COLORS = {
   },
 };
 
-export function BreatheTimeSeries<T extends SensorType>({
+export function BreatheTimeSeries<T extends Vars>({
   dates,
   data,
   names,
