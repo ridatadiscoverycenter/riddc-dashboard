@@ -17,19 +17,8 @@ import {
 import { BreatheTimeSeries } from './BreatheTimeSeries';
 
 type CombinedData = BreatheSensorData & BreathePmData;
-type SensorType = 'sensor' | 'pm';
-type SensorVars<T extends SensorType> = T extends 'sensor'
-  ? BreatheSensorViewerVars
-  : T extends 'pm'
-    ? BreathePmViewerVars
-    : never;
 
 type Vars = BreatheSensorViewerVars & BreathePmViewerVars;
-type BreatheTimeSeriesPropsHelper = {
-  dates: Date[];
-  names: string[];
-  variable: Vars;
-};
 
 type BreatheDataProps<T extends Vars> = T extends 'co' | 'co2'
   ? BreatheSensorData[]
@@ -68,7 +57,7 @@ export function BreatheMapGraph({
     [breatheSensorData]
   );
 
-  const [selectedVariable, setSelectedVariable] = React.useState<SensorVars<'sensor' | 'pm'>>('co');
+  const [selectedVariable, setSelectedVariable] = React.useState<Vars>('co');
   const values = React.useMemo(
     () =>
       Array.from(
@@ -82,18 +71,17 @@ export function BreatheMapGraph({
   );
 
   const [selectedSensorNames, setSelectedSensors] = React.useState<string[]>([]);
-  function useSelectSensors<T extends Vars>() {
-    const selectedSensors = React.useMemo(
-      () =>
-        [...breatheSensorData, ...breathePmData].filter(
-          ({ sensorName, ...rest }) =>
-            selectedSensorNames.includes(sensorName) && Object.keys(rest).includes(selectedVariable)
-        ),
-      [breatheSensorData, breathePmData, selectedSensorNames, selectedVariable]
-    );
-    return selectedSensors as BreatheDataProps<T>;
-  }
-  const selectedSensors = useSelectSensors();
+  const selectedSensors = React.useMemo(
+    () =>
+      [...breatheSensorData, ...breathePmData].filter(
+        ({ sensorName, ...rest }) =>
+          selectedSensorNames.includes(sensorName) && Object.keys(rest).includes(selectedVariable)
+      ) as (BreatheSensorData & BreathePmData)[],
+    [breatheSensorData, breathePmData, selectedSensorNames, selectedVariable]
+  );
+  const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
+  const selectedDate = React.useMemo(() => dates[selectedDateIndex], [dates, selectedDateIndex]);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function clickHandler(
     e: any
@@ -109,8 +97,6 @@ export function BreatheMapGraph({
       )
     );
   }
-  const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
-  const selectedDate = React.useMemo(() => dates[selectedDateIndex], [dates, selectedDateIndex]);
 
   const coGeoJson = React.useMemo(
     () => createGeoJson(breatheSensorData, 'co', dates),

@@ -47,6 +47,7 @@ type BreatheTimeSeriesProps<T extends Vars> = T extends 'co' | 'co2'
     ? BreatheTimeSeriesPropsHelper & { data: BreathePmData[] }
     : never;
 
+// TODO I don't like these colors for AQ
 const LINE_COLORS = [
   { borderColor: 'rgb(168, 92, 222)', backgroundColor: 'rgba(168, 92, 222, 0.5)' },
   { borderColor: 'rgb(59,84,227)', backgroundColor: 'rgba(59,84,227,0.5)' },

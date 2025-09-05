@@ -1,7 +1,7 @@
 import { subDays } from 'date-fns';
 
 import { sensorInfo } from '@/assets/sensorInfo';
-import { fetchPmData, type SensorInfo } from '@/utils/data/api/breathe-pvd';
+import { fetchPmData } from '@/utils/data/api/breathe-pvd';
 import { fetchBreatheData } from '@/utils/data/api/breathe-pvd/sensors';
 import { BreatheMapGraph } from '@/components/visualizations/BreathePvd/BreatheMapGraph';
 import { downsamplePmData } from '@/utils/data/api/breathe-pvd/downsample';

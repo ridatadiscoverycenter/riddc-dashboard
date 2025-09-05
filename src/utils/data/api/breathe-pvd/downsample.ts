@@ -1,4 +1,4 @@
-import { closestIndexTo, compareAsc, eachDayOfInterval, eachHourOfInterval } from 'date-fns';
+import { closestIndexTo, eachDayOfInterval, eachHourOfInterval } from 'date-fns';
 
 import { groupBy } from '@/utils/fns';
 import { BreathePmData } from './pm';
@@ -15,21 +15,18 @@ export function downsamplePmData(data: BreathePmData[], interval: Interval = 'ho
     interval
   );
 
-  return (
-    Object.entries(groupBy(data, (d) => closestIndexTo(d.time, binIntervals) || -1))
-      .map(([dateIndexString, data]) => {
-        const dateIndex = Number(dateIndexString);
-        if (isNaN(dateIndex) || dateIndex === -1) return undefined;
-        return {
-          date: binIntervals[dateIndex],
-          data,
-        };
-      })
-      .filter((entry) => entry !== undefined)
-      .map(({ date, data }) => computeBinPoint(data))
-      // .sort((a, b) => compareAsc(a.time, b.time))
-      .flat()
-  );
+  return Object.entries(groupBy(data, (d) => closestIndexTo(d.time, binIntervals) || -1))
+    .map(([dateIndexString, data]) => {
+      const dateIndex = Number(dateIndexString);
+      if (isNaN(dateIndex) || dateIndex === -1) return undefined;
+      return {
+        date: binIntervals[dateIndex],
+        data,
+      };
+    })
+    .filter((entry) => entry !== undefined)
+    .map(({ data }) => computeBinPoint(data))
+    .flat();
   // Object.entries(groupBy(d, (dataPoint) => closestIndexTo(dataPoint.dateTime, binIntervals)))
 
   //   return data
