@@ -1,7 +1,5 @@
 'use client';
 
-//TO_REVIEW: I need to figure out how to make the selected variable update the map
-
 import React from 'react';
 import { compareAsc, formatDate, roundToNearestHours } from 'date-fns';
 
@@ -19,12 +17,6 @@ import { BreatheTimeSeries } from './BreatheTimeSeries';
 type CombinedData = BreatheSensorData & BreathePmData;
 
 type Vars = BreatheSensorViewerVars & BreathePmViewerVars;
-
-type BreatheDataProps<T extends Vars> = T extends 'co' | 'co2'
-  ? BreatheSensorData[]
-  : T extends 'pm'
-    ? BreathePmData[]
-    : never;
 
 export function BreatheMapGraph({
   breatheSensorData,
@@ -64,6 +56,7 @@ export function BreatheMapGraph({
         new Set(
           ([...breatheSensorData, ...breathePmData] as CombinedData[])
             .filter((e) => selectedVariable in e && e[selectedVariable] !== null)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .map((a) => (a as Record<string, any>)[selectedVariable])
         )
       ),
@@ -83,10 +76,7 @@ export function BreatheMapGraph({
   const selectedDate = React.useMemo(() => dates[selectedDateIndex], [dates, selectedDateIndex]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function clickHandler(
-    e: any
-    // setSelectedVariable: React.Dispatch<React.SetStateAction<string[]>>
-  ) {
+  function clickHandler(e: any) {
     const newValue = e.target.value;
     setSelectedVariable(newValue);
     setSelectedSensors(
@@ -244,8 +234,6 @@ export function BreatheMapGraph({
       function doHandleCircleClick(event: any) {
         return circleClickHandler(event, loaded, setSelectedSensors);
       }
-
-      // TODO I need to unselect points when they no longer exist in new data...
       map.current.on('mouseenter', 'circles', doSetPointer);
       map.current.on('mouseleave', 'circles', doUnsetPointer);
       map.current.on('click', 'circles', doHandleCircleClick);
