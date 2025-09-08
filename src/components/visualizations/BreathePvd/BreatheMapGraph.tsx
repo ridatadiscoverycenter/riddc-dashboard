@@ -17,7 +17,7 @@ import { FormattedVar } from './FormattedVar';
 
 type CombinedData = BreatheSensorData & BreathePmData;
 
-type Vars = BreatheSensorViewerVars & BreathePmViewerVars;
+type Vars = BreatheSensorViewerVars | BreathePmViewerVars;
 
 export function BreatheMapGraph({
   breatheSensorData,
@@ -306,7 +306,7 @@ export function BreatheMapGraph({
                       defaultChecked={index === 0}
                     />
                     <label htmlFor={option} className="text-xl">
-                      {FormattedVar(option as Vars)}
+                      {FormattedVar(option)}
                     </label>
                   </div>
                 </div>

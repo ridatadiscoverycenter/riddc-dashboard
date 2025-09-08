@@ -3,8 +3,7 @@ import { z } from 'zod';
 import { pmInfo } from '@/assets/pmInfo';
 import { APIGet } from '../erddap';
 
-export const BREATHE_PM_VIEWER_VARS = ['pm1', 'pm25', 'pm10'];
-export type BreathePmViewerVars = typeof BREATHE_PM_VIEWER_VARS;
+export const BREATHE_PM_VIEWER_VARS = ['pm1', 'pm10', 'pm25'];
 
 /**
  * Types
@@ -13,7 +12,8 @@ type pmSensorInfo = {
   sn: string;
   description: string;
 };
-export const PM_SENSOR_VARIABLES = ['pm1', 'pm25', 'pm10', 'ws'];
+export const PM_SENSOR_VARIABLES = ['pm25', 'pm1', 'pm10', 'ws'];
+export type BreathePmViewerVars = 'pm25' | 'pm1' | 'pm10';
 
 export type PmSensorVariable = (typeof PM_SENSOR_VARIABLES)[number];
 

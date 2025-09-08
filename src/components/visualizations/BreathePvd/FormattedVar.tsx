@@ -1,6 +1,6 @@
 import { BreatheSensorViewerVars, PmSensorVariable } from '@/utils/data/api/breathe-pvd';
 
-export function FormattedVar(variable: BreatheSensorViewerVars & PmSensorVariable) {
+export function FormattedVar(variable: BreatheSensorViewerVars | PmSensorVariable) {
   if (variable === 'co') return <>CO (ppm)</>;
   if (variable === 'co2')
     return (

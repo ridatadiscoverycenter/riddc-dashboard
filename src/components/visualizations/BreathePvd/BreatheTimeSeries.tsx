@@ -34,7 +34,7 @@ ChartJS.register(
   Legend
 );
 
-type Vars = BreatheSensorViewerVars & BreathePmViewerVars;
+type Vars = BreatheSensorViewerVars | BreathePmViewerVars;
 
 type BreatheTimeSeriesPropsHelper = {
   dates: Date[];
@@ -74,7 +74,7 @@ const CHART_COLORS = {
   },
 };
 
-function formattedVar(v) {
+function formattedVar(v: Vars) {
   if (v === 'co') return 'CO';
   if (v === 'co2') return 'CO2';
   if (v === 'pm1') return 'PM 1.0µm';
@@ -108,7 +108,9 @@ export function BreatheTimeSeries<T extends Vars>({
         backgroundColor: 'rgba(71,71,71,0.5)',
       };
       const dataArray = Array.from(
-        data.filter((d) => d[variable] !== null).map((d) => d[variable])
+        data
+          .filter((d) => (d as Record<string, any>)[variable as string] !== null)
+          .map((d) => (d as Record<string, any>)[variable])
       );
 
       return {
