@@ -290,6 +290,17 @@ const DATASETS = [
       </>
     ),
   },
+  {
+    name: 'Air Quality',
+    href: '/datasets/breathe-pvd',
+    description: () => (
+      <>
+        A map of air quality in Providence, RI. Data from the{' '}
+        <ExternalLink href="https://www.breatheprovidence.com/">Breathe Providence</ExternalLink>{' '}
+        team.
+      </>
+    ),
+  },
 ];
 
 const EXTERNAL_RESOURCES = [
