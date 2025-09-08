@@ -74,6 +74,14 @@ const CHART_COLORS = {
   },
 };
 
+function formattedVar(v) {
+  if (v === 'co') return 'CO';
+  if (v === 'co2') return 'CO2';
+  if (v === 'pm1') return 'PM 1.0µm';
+  if (v === 'pm25') return 'PM 2.5µm';
+  if (v === 'pm10') return 'PM 10µm';
+}
+
 export function BreatheTimeSeries<T extends Vars>({
   dates,
   data,
@@ -85,7 +93,7 @@ export function BreatheTimeSeries<T extends Vars>({
     () => (colorMode === 'light' ? CHART_COLORS.light : CHART_COLORS.dark),
     [colorMode]
   );
-
+  formattedVar(variable);
   const { datasets } = React.useMemo(() => {
     return {
       datasets: groupBy(data, ({ sensorName }) => sensorName),
@@ -157,7 +165,7 @@ export function BreatheTimeSeries<T extends Vars>({
             },
             title: {
               display: true,
-              text: variable,
+              text: formattedVar(variable),
               color: chartColors.text,
             },
             ticks: {

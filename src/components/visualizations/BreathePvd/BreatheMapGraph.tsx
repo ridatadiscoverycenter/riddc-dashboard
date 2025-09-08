@@ -13,6 +13,7 @@ import {
   BreathePmViewerVars,
 } from '@/utils/data/api/breathe-pvd';
 import { BreatheTimeSeries } from './BreatheTimeSeries';
+import { FormattedVar } from './FormattedVar';
 
 type CombinedData = BreatheSensorData & BreathePmData;
 
@@ -305,8 +306,7 @@ export function BreatheMapGraph({
                       defaultChecked={index === 0}
                     />
                     <label htmlFor={option} className="text-xl">
-                      {option}
-                      {/* TODO: formatter for option display */}
+                      {FormattedVar(option as Vars)}
                     </label>
                   </div>
                 </div>

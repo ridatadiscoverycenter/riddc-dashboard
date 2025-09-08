@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { pmInfo } from '@/assets/pmInfo';
 import { APIGet } from '../erddap';
 
-export const BREATHE_PM_VIEWER_VARS = ['pm1', 'pm10', 'pm25'];
+export const BREATHE_PM_VIEWER_VARS = ['pm1', 'pm25', 'pm10'];
+export type BreathePmViewerVars = typeof BREATHE_PM_VIEWER_VARS;
 
 /**
  * Types
@@ -12,8 +13,7 @@ type pmSensorInfo = {
   sn: string;
   description: string;
 };
-export const PM_SENSOR_VARIABLES = ['pm25', 'pm1', 'pm10', 'ws'];
-export type BreathePmViewerVars = 'co' | 'co2';
+export const PM_SENSOR_VARIABLES = ['pm1', 'pm25', 'pm10', 'ws'];
 
 export type PmSensorVariable = (typeof PM_SENSOR_VARIABLES)[number];
 
@@ -72,8 +72,8 @@ function formatFetchedData(fetchedData: FetchedPmSensor) {
     latitude: fetchedData['geo.lat'],
     longitude: fetchedData['geo.lon'],
     time: new Date(fetchedData.timestamp),
-    pm25: fetchedData.pm25,
     pm1: fetchedData.pm1,
+    pm25: fetchedData.pm25,
     pm10: fetchedData.pm10,
     windspeed: fetchedData.ws,
   };
