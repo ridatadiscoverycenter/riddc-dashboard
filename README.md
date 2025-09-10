@@ -21,6 +21,8 @@ npm run format
 
 When you commit changes, `husky` will automatically format your code as well.
 
+If you are working on a map visualization, you will need to get the Maptiler API key. Copy `.env.example` to `.env` or `.env.local`, and get the key from 1Password. NextJS will automatically detect the `.env` file, and allow the code to query Maptiler successfully.
+
 ## Deployments
 
 This application is deployed through Firebase App Hosting, and a new version is rolled out whenever a new commit is pushed to `main`. After a Pull Request is merged, a new deployment should be visibile after Firebase finished the build process.
