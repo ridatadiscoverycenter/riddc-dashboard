@@ -183,4 +183,4 @@ export const sensorInfo = {
     Longitude: '71.444401 W ',
     'Installation Date': '9/1/2023',
   },
-};
+} as const;

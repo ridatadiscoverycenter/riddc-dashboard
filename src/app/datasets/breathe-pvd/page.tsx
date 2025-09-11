@@ -1,11 +1,11 @@
 import { subDays } from 'date-fns';
 
-import { sensorInfo } from '@/assets/sensorInfo';
+import { sensorInfo } from '@/utils/data/api/breathe-pvd/sensorInfo';
 import { fetchPmData } from '@/utils/data/api/breathe-pvd';
 import { fetchBreatheData } from '@/utils/data/api/breathe-pvd/sensors';
 import { BreatheMapGraph } from '@/components/visualizations/BreathePvd/BreatheMapGraph';
 import { downsamplePmData } from '@/utils/data/api/breathe-pvd/downsample';
-import { pmInfo } from '@/assets/pmInfo';
+import { pmInfo } from '@/utils/data/api/breathe-pvd/pmInfo';
 
 export default async function BreathePvd() {
   return <PageWrapper />;

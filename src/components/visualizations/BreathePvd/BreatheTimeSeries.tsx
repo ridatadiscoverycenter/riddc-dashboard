@@ -93,7 +93,6 @@ export function BreatheTimeSeries<T extends Vars>({
     () => (colorMode === 'light' ? CHART_COLORS.light : CHART_COLORS.dark),
     [colorMode]
   );
-  formattedVar(variable);
   const { datasets } = React.useMemo(() => {
     return {
       datasets: groupBy(data, ({ sensorName }) => sensorName),

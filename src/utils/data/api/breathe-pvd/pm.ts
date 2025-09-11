@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { pmInfo } from '@/assets/pmInfo';
-import { APIGet } from '../erddap';
+import { pmInfo } from '@/utils/data/api/breathe-pvd/pmInfo';
+import { erddapAPIGet } from '../erddap';
 
 export const BREATHE_PM_VIEWER_VARS = ['pm1', 'pm10', 'pm25'];
 
@@ -18,10 +18,10 @@ export type BreathePmViewerVars = 'pm25' | 'pm1' | 'pm10';
 export type PmSensorVariable = (typeof PM_SENSOR_VARIABLES)[number];
 
 const ZodFetchedPmSensor = z.object({
-  pm25: z.union([z.number(), z.null()]),
-  pm1: z.union([z.number(), z.null()]),
-  pm10: z.union([z.number(), z.null()]),
-  ws: z.union([z.number(), z.null()]),
+  pm25: z.number(),
+  pm1: z.number(),
+  pm10: z.number(),
+  ws: z.number(),
   timestamp: z.string().datetime({ local: true }),
   sn: z.string(),
   'geo.lat': z.number(),
@@ -38,8 +38,9 @@ export async function fetchPmData(ids: string[], startDate: Date, endDate: Date)
   const fetchedData = await Promise.all(
     ids.map(
       async (id) =>
-        await APIGet<unknown[]>(
-          `breathepvd/pm/${id}/range?start=${formatDateForQueryParams(startDate)}&end=${formatDateForQueryParams(endDate)}`
+        await erddapAPIGet<unknown[]>(
+          `breathepvd/pm/${id}/range?start=${formatDateForQueryParams(startDate)}&end=${formatDateForQueryParams(endDate)}`,
+          false
         )
     )
   );
@@ -53,7 +54,7 @@ export async function fetchPmData(ids: string[], startDate: Date, endDate: Date)
 
 function validateFetchedData(data: unknown): data is FetchedPmSensor {
   try {
-    z.array(ZodFetchedPmSensor).parse(data);
+    z.array(ZodFetchedPmSensor).safeParse(data);
     return true;
   } catch (ex) {
     if (ex instanceof z.ZodError) {

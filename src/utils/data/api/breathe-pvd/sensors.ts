@@ -1,10 +1,11 @@
 import { z } from 'zod';
 
-import { sensorInfo } from '@/assets/sensorInfo';
-import { APIGet } from '../erddap';
+import { sensorInfo } from '@/utils/data/api/breathe-pvd/sensorInfo';
+import { erddapAPIGet } from '../erddap';
 
 export const BREATHE_SENSOR_VIEWER_VARS = ['co', 'co2'];
 export type BreatheSensorViewerVars = 'co' | 'co2';
+type Sensors = keyof typeof sensorInfo;
 
 /**
  * Types
@@ -39,7 +40,7 @@ export async function fetchBreatheData(ids: string[], startTime: Date, endTime: 
   const fetchedData = await Promise.all(
     ids.map(
       async (id) =>
-        await APIGet<unknown[]>(
+        await erddapAPIGet<unknown[]>(
           `breathepvd/sensor/${id}/range?start=${formatDateForQueryParams(startTime)}&end=${formatDateForQueryParams(endTime)}`
         )
     )
@@ -64,13 +65,16 @@ function validateFetchedData(data: unknown): data is FetchedBreatheSensor {
   }
 }
 
+function getSensor(sensor: unknown) {
+  return sensorInfo[sensor as Sensors];
+}
+
 function formatFetchedData(fetchedData: FetchedBreatheSensor) {
-  const sensors = sensorInfo as Record<string, SensorInfo>;
   return {
     node: fetchedData.node_id,
-    sensorName: sensors[fetchedData.node_id.toString()].Location,
-    latitude: sensors[fetchedData.node_id.toString()].Latitude.replace(' N', ''),
-    longitude: `-${sensors[fetchedData.node_id.toString()].Longitude.replace(' W', '')}`,
+    sensorName: getSensor(fetchedData.node_id).Location,
+    latitude: getSensor(fetchedData.node_id).Latitude.replace(' N', ''),
+    longitude: `-${getSensor(fetchedData.node_id).Longitude.replace(' W', '')}`,
     time: new Date(fetchedData.datetime),
     co: fetchedData.co_corrected,
     co2: fetchedData.co2_corrected_avg_t_drift_applied,

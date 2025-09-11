@@ -315,10 +315,7 @@ export function BreatheMapGraph({
           </div>
         </div>
         <h2 className="text-lg">{formatDate(selectedDate, "p 'at' P")}</h2>
-        <p>
-          Use the Date Slider to view hourly Stream Gage data across Rhode Island. Data is displayed
-          in feet.
-        </p>
+        <p>Use the Date Slider to view hourly air quality data across Providence.</p>
         <div className="flex flex-col gap-1 w-full">
           <input
             type="range"

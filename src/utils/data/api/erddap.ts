@@ -3,8 +3,10 @@ const baseURL =
 
 const erddapURL = baseURL + '/erddap';
 
-export async function erddapAPIGet<T>(path: string) {
-  const response = await fetch(`${erddapURL}/${path}`, {
+export async function erddapAPIGet<T>(path: string, isErddap = true) {
+  console.log(`${baseURL}${isErddap ? '/erddap' : ''}${path}`);
+  console.log(erddapURL);
+  const response = await fetch(`${baseURL}${isErddap ? '/erddap' : ''}/${path}`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -18,20 +20,6 @@ export async function erddapAPIGet<T>(path: string) {
   );
 }
 
-export async function APIGet<T>(path: string) {
-  const response = await fetch(`${baseURL}/${path}`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
-  if (response.ok) {
-    return (await response.json()) as T;
-  }
-  throw new Error(
-    `An error ${response.status} occurred when fetching data from "${baseURL}/${path}": ${response.statusText}`
-  );
-}
 export async function erddapGet<T>(path: string) {
   const response = await fetch(`${erddapURL}/${path}`, {
     headers: {
