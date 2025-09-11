@@ -4,8 +4,6 @@ const baseURL =
 const erddapURL = baseURL + '/erddap';
 
 export async function erddapAPIGet<T>(path: string, isErddap = true) {
-  console.log(`${baseURL}${isErddap ? '/erddap' : ''}${path}`);
-  console.log(erddapURL);
   const response = await fetch(`${baseURL}${isErddap ? '/erddap' : ''}/${path}`, {
     headers: {
       Accept: 'application/json',

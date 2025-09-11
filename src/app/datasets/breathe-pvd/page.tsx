@@ -1,3 +1,4 @@
+import React from 'react';
 import { subDays } from 'date-fns';
 
 import { sensorInfo } from '@/utils/data/api/breathe-pvd/sensorInfo';
@@ -6,23 +7,20 @@ import { fetchBreatheData } from '@/utils/data/api/breathe-pvd/sensors';
 import { BreatheMapGraph } from '@/components/visualizations/BreathePvd/BreatheMapGraph';
 import { downsamplePmData } from '@/utils/data/api/breathe-pvd/downsample';
 import { pmInfo } from '@/utils/data/api/breathe-pvd/pmInfo';
+import { Loading } from '@/components';
 
 export default async function BreathePvd() {
-  return <PageWrapper />;
+  return (
+    <React.Suspense fallback={<Loading />}>
+      <PageWrapper />
+    </React.Suspense>
+  );
 }
 
 async function PageWrapper() {
-  const sensorData = await fetchBreatheData(
-    Object.keys(sensorInfo),
-    // ['250', '254'],
-    subDays(new Date('2025-08-20'), 1),
-    new Date('2025-08-25')
-  );
-  const pmData = await fetchPmData(
-    Object.keys(pmInfo),
-    subDays(new Date('2025-08-20'), 1),
-    new Date('2025-08-25')
-  );
+  const now = new Date();
+  const sensorData = await fetchBreatheData(Object.keys(sensorInfo), subDays(now, 1), now);
+  const pmData = await fetchPmData(Object.keys(pmInfo), subDays(now, 1), now);
   const filteredData = downsamplePmData(pmData);
   return (
     <BreatheMapGraph

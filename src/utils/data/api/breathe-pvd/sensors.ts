@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { sensorInfo } from '@/utils/data/api/breathe-pvd/sensorInfo';
 import { erddapAPIGet } from '../erddap';
+import { formatDateForQueryParams } from '../shared';
 
 export const BREATHE_SENSOR_VIEWER_VARS = ['co', 'co2'];
 export type BreatheSensorViewerVars = 'co' | 'co2';
@@ -31,17 +32,13 @@ const ZodFetchedBreatheSensor = z.object({
 });
 export type FetchedBreatheSensor = z.infer<typeof ZodFetchedBreatheSensor>;
 
-function formatDateForQueryParams(d: Date) {
-  //   return d;
-  return d.toISOString().split('T')[0];
-}
-
 export async function fetchBreatheData(ids: string[], startTime: Date, endTime: Date) {
   const fetchedData = await Promise.all(
     ids.map(
       async (id) =>
         await erddapAPIGet<unknown[]>(
-          `breathepvd/sensor/${id}/range?start=${formatDateForQueryParams(startTime)}&end=${formatDateForQueryParams(endTime)}`
+          `breathepvd/sensor/${id}/range?start=${formatDateForQueryParams(startTime)}&end=${formatDateForQueryParams(endTime)}`,
+          false
         )
     )
   );

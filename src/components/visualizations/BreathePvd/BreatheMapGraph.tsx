@@ -76,9 +76,8 @@ export function BreatheMapGraph({
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
   const selectedDate = React.useMemo(() => dates[selectedDateIndex], [dates, selectedDateIndex]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function clickHandler(e: any) {
-    const newValue = e.target.value;
+  function clickHandler(e: React.MouseEvent<HTMLInputElement, MouseEvent>) {
+    const newValue = e.currentTarget.value as Vars;
     setSelectedVariable(newValue);
     setSelectedSensors(
       Array.from(
@@ -292,11 +291,12 @@ export function BreatheMapGraph({
       >
         <div className="flex flex-col gap-2 w-full">
           <h1 className="text-xl">Air Quality</h1>
-          <div className="flex flex-col">
+          <fieldset>
+            <legend>Choose a variable</legend>
             {[...BREATHE_SENSOR_VIEWER_VARS, ...BREATHE_PM_VIEWER_VARS].map((option, index) => {
               return (
-                <div key={option}>
-                  <div>
+                <li className="list-none" key={option}>
+                  <label htmlFor={option} className="text-xl">
                     <input
                       type="radio"
                       id={option}
@@ -304,18 +304,16 @@ export function BreatheMapGraph({
                       value={option}
                       onClick={(e) => clickHandler(e)}
                       defaultChecked={index === 0}
-                    />
-                    <label htmlFor={option} className="text-xl">
-                      {FormattedVar(option)}
-                    </label>
-                  </div>
-                </div>
+                    />{' '}
+                    {FormattedVar(option)}
+                  </label>
+                </li>
               );
             })}
-          </div>
+          </fieldset>
         </div>
         <h2 className="text-lg">{formatDate(selectedDate, "p 'at' P")}</h2>
-        <p>Use the Date Slider to view hourly air quality data across Providence.</p>
+        <p>Use the date slider to view hourly air quality data across Providence.</p>
         <div className="flex flex-col gap-1 w-full">
           <input
             type="range"
@@ -323,6 +321,7 @@ export function BreatheMapGraph({
             max={dates.length - 1}
             value={selectedDateIndex}
             onChange={(e) => setSelectedDateIndex(Number(e.target.value))}
+            aria-label="date slider"
           />
           <div className="w-full flex flex-row justify-between text-sm">
             <span>{dates[0].toLocaleDateString()}</span>

@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { pmInfo } from '@/utils/data/api/breathe-pvd/pmInfo';
 import { erddapAPIGet } from '../erddap';
+import { formatDateForQueryParams } from '../shared';
 
 export const BREATHE_PM_VIEWER_VARS = ['pm1', 'pm10', 'pm25'];
 
@@ -28,11 +29,6 @@ const ZodFetchedPmSensor = z.object({
   'geo.lon': z.number(),
 });
 export type FetchedPmSensor = z.infer<typeof ZodFetchedPmSensor>;
-
-function formatDateForQueryParams(d: Date) {
-  //   return d;
-  return d.toISOString().split('T')[0];
-}
 
 export async function fetchPmData(ids: string[], startDate: Date, endDate: Date) {
   const fetchedData = await Promise.all(
