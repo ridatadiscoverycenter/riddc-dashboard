@@ -1,5 +1,6 @@
 import { erddapAPIGet } from '../erddap';
 import { getConfig, type DatasetConfigName } from '../config';
+import { formatDateForQueryParams } from '../shared';
 
 export async function fetchSummaryData(configName: DatasetConfigName, bustCache = false) {
   const config = getConfig(configName);
@@ -20,10 +21,6 @@ export async function fetchBuoyVariables(configName: DatasetConfigName) {
 export async function fetchBuoyTimeRange(configName: DatasetConfigName) {
   const config = getConfig(configName);
   return await erddapAPIGet(`/${config.route}/timerange`);
-}
-
-function formatDateForQueryParams(d: Date) {
-  return d.toISOString().split('T')[0];
 }
 
 export async function fetchBuoyData(
