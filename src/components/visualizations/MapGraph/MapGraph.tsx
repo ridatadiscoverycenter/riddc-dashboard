@@ -3,6 +3,7 @@
 import React from 'react';
 import { useMap } from '@/components';
 import { ToggleMenuButton } from './ToggleMenuButton';
+import { type LngLatBoundsLike } from 'maplibre-gl';
 
 const COMPONENT_TRANSITION_STYLES = 'transition-[width] duration-500 ease-in-out';
 const MAP_SIZE_STYLES = (opened: boolean) =>
@@ -16,15 +17,20 @@ export function MapGraph({
   children,
   syncOpenState,
   className = '',
+  bounds = [
+    [-71.5, 41.92],
+    [-71.16, 41.32],
+  ],
 }: React.PropsWithChildren<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onLoad: (map: React.MutableRefObject<any>, loaded: boolean) => (() => void) | void;
   graph: React.ReactNode;
   syncOpenState?: (open: boolean) => void;
   className?: string;
+  bounds?: LngLatBoundsLike;
 }>) {
   const [opened, setOpened] = React.useState(false);
-  const { map, loaded, containerRef } = useMap();
+  const { map, loaded, containerRef } = useMap(bounds);
 
   React.useEffect(() => {
     if (loaded) {

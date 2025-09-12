@@ -128,7 +128,6 @@ export function BreatheTimeSeries<T extends Vars>({
     });
   }, [names, datasets, variable]);
 
-  console.log(dataGroups);
   return (
     <Line
       data={{

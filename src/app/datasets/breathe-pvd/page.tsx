@@ -19,8 +19,8 @@ export default async function BreathePvd() {
 
 async function PageWrapper() {
   const now = new Date();
-  const sensorData = await fetchBreatheData(Object.keys(sensorInfo), subDays(now, 1), now);
-  const pmData = await fetchPmData(Object.keys(pmInfo), subDays(now, 1), now);
+  const sensorData = await fetchBreatheData(Object.keys(sensorInfo), subDays(now, 2), now);
+  const pmData = await fetchPmData(Object.keys(pmInfo), subDays(now, 2), now);
   const filteredData = downsamplePmData(pmData);
   return (
     <BreatheMapGraph
