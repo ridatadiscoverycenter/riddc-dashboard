@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { compareAsc } from 'date-fns';
 
 import { sensorInfo } from '@/utils/data/api/breathe-pvd/sensorInfo';
 import { erddapAPIGet } from '../erddap';
@@ -44,7 +45,9 @@ export async function fetchBreatheData(ids: string[], startTime: Date, endTime: 
   );
   const flattenedData = fetchedData.flat();
   if (validateFetchedData(flattenedData)) {
-    return (flattenedData as FetchedBreatheSensor[]).map(formatFetchedData);
+    return (flattenedData as FetchedBreatheSensor[])
+      .map(formatFetchedData)
+      .sort((a, b) => compareAsc(a.time, b.time));
   } else {
     throw new Error('Invalid data received when fetching sensor data');
   }

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { compareAsc, formatDate, roundToNearestHours } from 'date-fns';
+import { eachHourOfInterval, formatDate, roundToNearestHours } from 'date-fns';
 
 import { MapGraph } from '@/components';
 import {
@@ -28,25 +28,12 @@ export function BreatheMapGraph({
   breathePmData: BreathePmData[];
   className?: string;
 }) {
-  // remove duplicate times
-  function removeDuplicates(duplicatesArray: BreatheSensorData[]) {
-    return duplicatesArray
-      .map(function (entry) {
-        return entry.time.getTime();
-      })
-      .filter(function (date, i, array) {
-        return array.indexOf(date) === i;
-      })
-      .map(function (time) {
-        return new Date(time);
-      });
-  }
-
   const dates = React.useMemo(
     () =>
-      Array.from(
-        (removeDuplicates(breatheSensorData) as Date[]).map((time) => roundToNearestHours(time))
-      ).sort((a, b) => compareAsc(a, b)),
+      eachHourOfInterval({
+        start: breatheSensorData[0].time,
+        end: breatheSensorData[breatheSensorData.length - 1].time,
+      }),
     [breatheSensorData]
   );
 
@@ -201,7 +188,7 @@ export function BreatheMapGraph({
         type: 'circle',
         source: `${selectedVariable}-data`,
         paint: {
-          'circle-color': ['interpolate', ['linear'], ['get', 'v'], min, '#4f14da', max, '#99fee8'],
+          'circle-color': ['interpolate', ['linear'], ['get', 'v'], min, '#8e44ad', max, '#c0392b'],
           'circle-radius': ['interpolate', ['linear'], ['get', 'v'], min, 5, mid, 12, max, 20],
           'circle-opacity': 0.75,
         },
@@ -277,7 +264,6 @@ export function BreatheMapGraph({
       onLoad={onLoad}
       graph={
         <BreatheTimeSeries
-          dates={dates}
           data={selectedSensors}
           names={selectedSensorNames}
           variable={selectedVariable}
@@ -330,7 +316,7 @@ export function BreatheMapGraph({
         </div>
         <div className="flex flex-col gap-1 w-full">
           <h3 className="text-base">Legend:</h3>
-          <div className={`w-full h-4 bg-gradient-to-r from-[#4f14da] to-[#99fee8]`} />
+          <div className={`w-full h-4 bg-gradient-to-r from-[#8e44ad] to-[#c0392b]`} />
           <div className="w-full flex flex-row justify-between text-sm">
             <span>{dataRange.min.toFixed(2)}</span>
             <span>{dataRange.max.toFixed(2)}</span>

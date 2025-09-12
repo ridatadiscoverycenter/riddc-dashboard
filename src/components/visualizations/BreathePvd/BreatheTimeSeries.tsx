@@ -37,7 +37,6 @@ ChartJS.register(
 type Vars = BreatheSensorViewerVars | BreathePmViewerVars;
 
 type BreatheTimeSeriesPropsHelper = {
-  dates: Date[];
   names: string[];
   variable: Vars;
 };
@@ -83,7 +82,6 @@ function formattedVar(v: Vars) {
 }
 
 export function BreatheTimeSeries<T extends Vars>({
-  dates,
   data,
   names,
   variable,
@@ -109,7 +107,12 @@ export function BreatheTimeSeries<T extends Vars>({
       const dataArray = Array.from(
         data
           .filter((d) => (d as Record<string, any>)[variable as string] !== null)
-          .map((d) => (d as Record<string, any>)[variable])
+          .map((d) => {
+            return {
+              x: (d as Record<string, any>).time,
+              y: (d as Record<string, any>)[variable],
+            };
+          })
       );
 
       return {
@@ -124,10 +127,13 @@ export function BreatheTimeSeries<T extends Vars>({
       };
     });
   }, [names, datasets, variable]);
+
+  console.log(dataGroups);
   return (
     <Line
-      // @ts-expect-error cubicInterpolationMode gives a ts check error here even when correct
-      data={{ labels: dates.map((date) => date.toLocaleDateString()), datasets: dataGroups }}
+      data={{
+        datasets: dataGroups as any,
+      }}
       options={{
         responsive: true,
         maintainAspectRatio: false,
@@ -146,18 +152,14 @@ export function BreatheTimeSeries<T extends Vars>({
         },
         scales: {
           x: {
-            grid: {
-              color: chartColors.grid,
-            },
-            title: {
-              display: true,
-              text: 'Time',
-              color: chartColors.text,
-            },
+            type: 'linear',
+            grid: { color: chartColors.grid },
+            title: { display: true, text: 'Time', color: chartColors.text },
             ticks: {
               autoSkip: true,
               color: chartColors.text,
               maxTicksLimit: 3,
+              callback: (val) => new Date(val).toLocaleDateString(),
             },
           },
           y: {
@@ -177,4 +179,24 @@ export function BreatheTimeSeries<T extends Vars>({
       }}
     />
   );
+
+  //       scales: {
+
+  //         y: {
+  //           grid: {
+  //             color: chartColors.grid,
+  //           },
+  //           title: {
+  //             display: true,
+  //             text: formattedVar(variable),
+  //             color: chartColors.text,
+  //           },
+  //           ticks: {
+  //             color: chartColors.text,
+  //           },
+  //         },
+  //       },
+  //     }}
+  //   />
+  // );
 }
