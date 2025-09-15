@@ -1,8 +1,7 @@
 import React from 'react';
 import maplibregl from 'maplibre-gl';
 
-// Note (AM): This needs to be scoped in MapTiler or hidden with a Secret Manager.
-const API_KEY = 'VStCFFYMJAABHpPVId3w';
+const API_KEY = process.env.MAPTILER_KEY;
 
 export function useMap() {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -12,6 +11,10 @@ export function useMap() {
 
   React.useEffect(() => {
     if (map.current) return;
+    if (!API_KEY) {
+      console.error('missing Maptiler API key');
+      return;
+    }
     map.current = new maplibregl.Map({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       container: containerRef.current as any,
@@ -27,9 +30,13 @@ export function useMap() {
       maxZoom: 11,
       minZoom: 8,
     });
-    map.current.on('load', () => {
+    function setLoadedOnMapLoad() {
       setLoaded(true);
-    });
+    }
+    map.current.on('load', setLoadedOnMapLoad);
+    return () => {
+      map.current.off('load', setLoadedOnMapLoad);
+    };
   }, [map, setLoaded]);
 
   return { containerRef, map, loaded };

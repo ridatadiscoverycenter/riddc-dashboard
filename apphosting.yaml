@@ -1,0 +1,12 @@
+runConfig:
+  minInstances: 0
+  maxInstances: 10
+  cpu: 2
+  memoryMiB: 512
+
+env:
+  - variable: MAPTILER_KEY
+    secret: projects/766398966649/secrets/maptiler-key
+    availability:
+      - BUILD
+      - RUNTIME
