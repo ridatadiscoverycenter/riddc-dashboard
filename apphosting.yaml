@@ -6,7 +6,7 @@ runConfig:
 
 env:
   - variable: MAPTILER_KEY
-    secret: projects/766398966649/secrets/maptiler-key
+    secret: maptiler-key
     availability:
       - BUILD
       - RUNTIME

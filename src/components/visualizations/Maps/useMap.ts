@@ -1,20 +1,26 @@
 import React from 'react';
 import maplibregl from 'maplibre-gl';
-
-const API_KEY = process.env.MAPTILER_KEY;
+import { fetchMapTilerSecret } from '@/utils/fns/fetchMapTilerSecret';
 
 export function useMap() {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = React.useRef<any>(null);
   const [loaded, setLoaded] = React.useState(false);
+  const [apiKey, setApiKey] = React.useState(null);
 
   React.useEffect(() => {
-    if (map.current) return;
-    if (!API_KEY) {
-      console.error('missing Maptiler API key');
-      return;
+    async function getApiKey() {
+      const apiKey = await fetchMapTilerSecret();
+      setApiKey(apiKey);
     }
+    getApiKey();
+  }, []);
+
+  React.useEffect(() => {
+    const API_KEY = apiKey;
+    if (map.current) return;
+    if (!API_KEY) return;
     map.current = new maplibregl.Map({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       container: containerRef.current as any,
@@ -37,7 +43,7 @@ export function useMap() {
     return () => {
       map.current.off('load', setLoadedOnMapLoad);
     };
-  }, [map, setLoaded]);
+  }, [map, setLoaded, apiKey]);
 
   return { containerRef, map, loaded };
 }
