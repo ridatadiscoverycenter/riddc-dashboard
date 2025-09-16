@@ -3,11 +3,12 @@ import maplibregl, { type LngLatBoundsLike } from 'maplibre-gl';
 
 // Note (AM): This needs to be scoped in MapTiler or hidden with a Secret Manager.
 const API_KEY = 'VStCFFYMJAABHpPVId3w';
+const BOUNDS: LngLatBoundsLike = [
+  [-71.5, 41.92],
+  [-71.16, 41.32],
+];
 
-export function useMap(bounds: LngLatBoundsLike = [
-        [-71.5, 41.92],
-        [-71.16, 41.32],
-      ]) {
+export function useMap(bounds: LngLatBoundsLike = BOUNDS) {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = React.useRef<any>(null);
@@ -30,7 +31,7 @@ export function useMap(bounds: LngLatBoundsLike = [
     map.current.on('load', () => {
       setLoaded(true);
     });
-  }, [map, setLoaded]);
+  }, [map, setLoaded, bounds]);
 
   return { containerRef, map, loaded };
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { eachHourOfInterval, formatDate, roundToNearestHours } from 'date-fns';
+import { eachHourOfInterval, roundToNearestHours } from 'date-fns';
 
 import { MapGraph } from '@/components';
 import {
@@ -62,6 +62,19 @@ export function BreatheMapGraph({
   );
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
   const selectedDate = React.useMemo(() => dates[selectedDateIndex], [dates, selectedDateIndex]);
+  const formattedDate = React.useMemo(
+    () =>
+      new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        timeZoneName: 'short',
+      }).format(selectedDate),
+    [selectedDate]
+  );
 
   function clickHandler(e: React.MouseEvent<HTMLInputElement, MouseEvent>) {
     const newValue = e.currentTarget.value as Vars;
@@ -302,7 +315,7 @@ export function BreatheMapGraph({
             })}
           </fieldset>
         </div>
-        <h2 className="text-lg">{formatDate(selectedDate, "p 'at' P")}</h2>
+        <h2 className="text-lg">{formattedDate}</h2>
         <p>Use the date slider to view hourly air quality data across Providence.</p>
         <div className="flex flex-col gap-1 w-full">
           <input
