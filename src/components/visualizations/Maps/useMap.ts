@@ -2,7 +2,6 @@ import React from 'react';
 import maplibregl from 'maplibre-gl';
 import { fetchSecret } from '@/utils/fns/fetchSecret';
 
-
 export function useMap() {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,4 +1,4 @@
-'use server'
+'use server';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { SecretManagerServiceClient } = require('@google-cloud/secret-manager');
@@ -11,10 +11,3 @@ export async function fetchSecret() {
 
   return secret.payload.data.toString();
 }
-
-// export async function secret() {
-//   const secret = await getSecret();
-//   return secret;
-// }
-
-// export const secret = getSecret()
