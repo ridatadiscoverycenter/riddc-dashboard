@@ -7,7 +7,7 @@ export function useMap() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = React.useRef<any>(null);
   const [loaded, setLoaded] = React.useState(false);
-  const [apiKey, setApiKey] = React.useState('');
+  const [apiKey, setApiKey] = React.useState(null);
 
   React.useEffect(() => {
     async function getApiKey() {
@@ -20,11 +20,7 @@ export function useMap() {
   React.useEffect(() => {
     const API_KEY = apiKey;
     if (map.current) return;
-    if (API_KEY == '') return;
-    if (!API_KEY) {
-      console.error('missing Maptiler API key');
-      return;
-    }
+    if (!API_KEY) return;
     map.current = new maplibregl.Map({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       container: containerRef.current as any,
