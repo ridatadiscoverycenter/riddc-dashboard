@@ -9,6 +9,8 @@ import { downsamplePmData } from '@/utils/data/api/breathe-pvd/downsample';
 import { pmInfo } from '@/utils/data/api/breathe-pvd/pmInfo';
 import { Loading } from '@/components';
 
+const DATA_WINDOW = 30;
+
 export default async function BreathePvd() {
   return (
     <React.Suspense fallback={<Loading />}>
@@ -19,8 +21,12 @@ export default async function BreathePvd() {
 
 async function PageWrapper() {
   const now = new Date();
-  const sensorData = await fetchBreatheData(Object.keys(sensorInfo), subDays(now, 30), now);
-  const pmData = await fetchPmData(Object.keys(pmInfo), subDays(now, 30), now);
+  const sensorData = await fetchBreatheData(
+    Object.keys(sensorInfo),
+    subDays(now, DATA_WINDOW),
+    now
+  );
+  const pmData = await fetchPmData(Object.keys(pmInfo), subDays(now, DATA_WINDOW), now);
   const filteredData = downsamplePmData(pmData);
   return (
     <BreatheMapGraph
