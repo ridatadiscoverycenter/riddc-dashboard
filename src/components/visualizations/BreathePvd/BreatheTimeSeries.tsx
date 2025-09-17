@@ -22,6 +22,7 @@ import {
 } from '@/utils/data/api/breathe-pvd';
 import { useColorMode } from '@/hooks/useColorMode';
 import { groupBy } from '@/utils/fns';
+import { formatDate } from 'date-fns';
 
 ChartJS.register(
   TimeScale,
@@ -152,7 +153,7 @@ export function BreatheTimeSeries<T extends Vars>({
             intersect: false,
             callbacks: {
               title: function (tooltipItems) {
-                return new Date(tooltipItems[0].parsed.x).toLocaleString();
+                return formatDate(tooltipItems[0].parsed.x, 'P p');
               },
             },
           },
