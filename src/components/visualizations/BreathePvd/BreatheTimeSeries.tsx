@@ -109,7 +109,7 @@ export function BreatheTimeSeries<T extends Vars>({
           .filter((d) => (d as Record<string, any>)[variable as string] !== null)
           .map((d) => {
             return {
-              x: (d as Record<string, any>).time,
+              x: new Date((d as Record<string, any>).time),
               y: (d as Record<string, any>)[variable],
             };
           })
@@ -147,6 +147,14 @@ export function BreatheTimeSeries<T extends Vars>({
             display: true,
             text: 'Concentration',
             color: chartColors.text,
+          },
+          tooltip: {
+            intersect: false,
+            callbacks: {
+              title: function (tooltipItems) {
+                return new Date(tooltipItems[0].parsed.x).toLocaleString();
+              },
+            },
           },
         },
         scales: {
