@@ -152,6 +152,7 @@ export function BreatheTimeSeries<T extends Vars>({
         scales: {
           x: {
             type: 'linear',
+            bounds: 'data',
             grid: { color: chartColors.grid },
             title: { display: true, text: 'Time', color: chartColors.text },
             ticks: {
@@ -178,24 +179,4 @@ export function BreatheTimeSeries<T extends Vars>({
       }}
     />
   );
-
-  //       scales: {
-
-  //         y: {
-  //           grid: {
-  //             color: chartColors.grid,
-  //           },
-  //           title: {
-  //             display: true,
-  //             text: formattedVar(variable),
-  //             color: chartColors.text,
-  //           },
-  //           ticks: {
-  //             color: chartColors.text,
-  //           },
-  //         },
-  //       },
-  //     }}
-  //   />
-  // );
 }

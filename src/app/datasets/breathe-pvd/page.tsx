@@ -9,7 +9,7 @@ import { downsamplePmData } from '@/utils/data/api/breathe-pvd/downsample';
 import { pmInfo } from '@/utils/data/api/breathe-pvd/pmInfo';
 import { Loading } from '@/components';
 
-const DATA_WINDOW = 30;
+const DATA_WINDOW = 14;
 
 export default async function BreathePvd() {
   return (
