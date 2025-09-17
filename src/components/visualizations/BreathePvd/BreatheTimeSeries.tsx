@@ -156,9 +156,10 @@ export function BreatheTimeSeries<T extends Vars>({
             grid: { color: chartColors.grid },
             title: { display: true, text: 'Time', color: chartColors.text },
             ticks: {
+              // get tick every other day
+              stepSize: 86400000 * 2,
               autoSkip: true,
               color: chartColors.text,
-              maxTicksLimit: 3,
               callback: (val) => new Date(val).toLocaleDateString(),
             },
           },
