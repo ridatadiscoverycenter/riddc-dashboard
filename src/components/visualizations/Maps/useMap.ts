@@ -1,8 +1,7 @@
 import React from 'react';
 import maplibregl, { type LngLatBoundsLike } from 'maplibre-gl';
+import { fetchMapTilerSecret } from '@/utils/fns/fetchMapTilerSecret';
 
-// Note (AM): This needs to be scoped in MapTiler or hidden with a Secret Manager.
-const API_KEY = 'VStCFFYMJAABHpPVId3w';
 const BOUNDS: LngLatBoundsLike = [
   [-71.5, 41.92],
   [-71.16, 41.32],
@@ -13,9 +12,20 @@ export function useMap(bounds: LngLatBoundsLike = BOUNDS) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = React.useRef<any>(null);
   const [loaded, setLoaded] = React.useState(false);
+  const [apiKey, setApiKey] = React.useState(null);
 
   React.useEffect(() => {
+    async function getApiKey() {
+      const apiKey = await fetchMapTilerSecret();
+      setApiKey(apiKey);
+    }
+    getApiKey();
+  }, []);
+
+  React.useEffect(() => {
+    const API_KEY = apiKey;
     if (map.current) return;
+    if (!API_KEY) return;
     map.current = new maplibregl.Map({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       container: containerRef.current as any,
@@ -28,10 +38,14 @@ export function useMap(bounds: LngLatBoundsLike = BOUNDS) {
       maxZoom: 11,
       minZoom: 8,
     });
-    map.current.on('load', () => {
+    function setLoadedOnMapLoad() {
       setLoaded(true);
-    });
-  }, [map, setLoaded, bounds]);
+    }
+    map.current.on('load', setLoadedOnMapLoad);
+    return () => {
+      map.current.off('load', setLoadedOnMapLoad);
+    };
+  }, [map, setLoaded, apiKey, bounds]);
 
   return { containerRef, map, loaded };
 }
