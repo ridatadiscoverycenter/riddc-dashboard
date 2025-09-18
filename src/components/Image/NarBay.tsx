@@ -10,7 +10,7 @@ export default function NarBay({ className = '' }: { className?: string }) {
       y="0px"
       // Originally viewBox="0 0 1396.4 762.4"
       // This was constrained to make a better Hero image.
-      viewBox="0 200 1396.4 552.4"
+      viewBox="0 200 900.4 552.4"
       xmlSpace="preserve"
       className={className}
     >
