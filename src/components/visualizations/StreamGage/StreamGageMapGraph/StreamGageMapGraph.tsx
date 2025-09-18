@@ -127,6 +127,7 @@ export function StreamGageMapGraph({
         },
         filter: ['==', 'date', selectedDateIndex],
       });
+
       // Circle to indicate stream gage height
       map.current.addLayer({
         id: 'stream-gage-circles',

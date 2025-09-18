@@ -1,8 +1,13 @@
 import React from 'react';
-import maplibregl from 'maplibre-gl';
+import maplibregl, { type LngLatBoundsLike } from 'maplibre-gl';
 import { fetchMapTilerSecret } from '@/utils/fns/fetchMapTilerSecret';
 
-export function useMap() {
+const BOUNDS: LngLatBoundsLike = [
+  [-71.5, 41.92],
+  [-71.16, 41.32],
+];
+
+export function useMap(bounds: LngLatBoundsLike = BOUNDS) {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = React.useRef<any>(null);
@@ -27,10 +32,7 @@ export function useMap() {
       style: `https://api.maptiler.com/maps/basic/style.json?key=${API_KEY}`,
       // More things can be set here, but I'll ignore them for now.
       // TODO: flexible bounds to work with fish trawl locations? Or just expand?
-      bounds: [
-        [-71.5, 41.92],
-        [-71.16, 41.32],
-      ],
+      bounds: bounds,
       center: [-71.4128, 41.584],
       zoom: 8.5,
       maxZoom: 11,
@@ -43,7 +45,7 @@ export function useMap() {
     return () => {
       map.current.off('load', setLoadedOnMapLoad);
     };
-  }, [map, setLoaded, apiKey]);
+  }, [map, setLoaded, apiKey, bounds]);
 
   return { containerRef, map, loaded };
 }
