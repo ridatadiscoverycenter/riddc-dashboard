@@ -34,7 +34,7 @@ function sizeTailwindClass(size: Size) {
   if (size === 'md') return 'text-2xl';
   if (size === 'lg') return 'text-3xl';
   if (size === 'xl') return 'text-4xl';
-  // size === "hero"
+  if (size === 'hero') return 'text-5xl';
   return 'text-7xl';
 }
 
