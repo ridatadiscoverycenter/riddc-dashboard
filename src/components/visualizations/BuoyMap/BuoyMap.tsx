@@ -50,7 +50,11 @@ export function BuoyMap({
 
   const [selectedBuoyNames, setSelectedBuoys] = React.useState<string[]>([]);
   const selectedBuoys = React.useMemo(
-    () => streamData.filter(({ siteName, variableName }) => selectedBuoyNames.includes(siteName) && variableName === selectedVariable.value),
+    () =>
+      streamData.filter(
+        ({ siteName, variableName }) =>
+          selectedBuoyNames.includes(siteName) && variableName === selectedVariable.value
+      ),
     [streamData, selectedBuoyNames, selectedVariable.value]
   );
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
