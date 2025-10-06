@@ -1,5 +1,6 @@
 import React from 'react';
 import maplibregl, { type LngLatBoundsLike } from 'maplibre-gl';
+import { fetchMapTilerSecret } from '@/utils/fns/fetchMapTilerSecret';
 
 const BOUNDS: LngLatBoundsLike = [
   [-71.5, 41.92],
@@ -11,9 +12,18 @@ export function useMap(bounds: LngLatBoundsLike = BOUNDS) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = React.useRef<any>(null);
   const [loaded, setLoaded] = React.useState(false);
+  const [apiKey, setApiKey] = React.useState(null);
 
   React.useEffect(() => {
-    const API_KEY = process.env.NEXT_PUBLIC_MAPTILER_KEY;
+    async function getApiKey() {
+      const apiKey = await fetchMapTilerSecret();
+      setApiKey(apiKey);
+    }
+    getApiKey();
+  }, []);
+
+  React.useEffect(() => {
+    const API_KEY = apiKey;
     if (map.current) return;
     if (!API_KEY) return;
     map.current = new maplibregl.Map({
@@ -35,7 +45,7 @@ export function useMap(bounds: LngLatBoundsLike = BOUNDS) {
     return () => {
       map.current.off('load', setLoadedOnMapLoad);
     };
-  }, [map, setLoaded, bounds]);
+  }, [map, apiKey, setLoaded, bounds]);
 
   return { containerRef, map, loaded };
 }

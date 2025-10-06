@@ -1,8 +1,5 @@
 # syntax=docker.io/docker/dockerfile:1
 
-FROM alpine
-RUN --mount=type=secret,id=NEXT_PUBLIC_MAPTILER_KEY,env=NEXT_PUBLIC_MAPTILER_KEY
-
 FROM node:20-alpine AS base
 FROM google/cloud-sdk
 
