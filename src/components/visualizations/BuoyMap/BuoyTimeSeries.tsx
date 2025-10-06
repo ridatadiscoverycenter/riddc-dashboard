@@ -77,7 +77,6 @@ export function BuoyTimeSeries({ dates, data }: BuoyTimeSeriesProps) {
         cubicInterpolationMode: 'monotone',
         label: siteName,
         pointStyle: false,
-        //data: values.map(({ value }) => value),
         data: Array.from(Array(dates.length), (_, i) => dates[i]).map(
           (date) => values.find(({ dateTime }) => dateTime.valueOf() === date.valueOf())?.value
         ),
