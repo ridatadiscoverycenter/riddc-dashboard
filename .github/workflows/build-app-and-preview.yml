@@ -53,7 +53,9 @@ jobs:
           service: ${{ env.image }}
           project_id: ${{ env.gcp_project_id }}
           image: ${{ env.gcp_registry_url }}/${{ env.gcp_project_id }}/${{ env.gcp_container_registry }}/${{ env.image }}
-          flags: '--allow-unauthenticated'
+          flags: >-
+              --allow-unauthenticated
+              --service-account=766398966649-compute@developer.gserviceaccount.com
 
       - name: Extract Git SHA for Comment
         id: vars
