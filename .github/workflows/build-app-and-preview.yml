@@ -11,7 +11,7 @@ env:
   gcp_container_registry: cloud-run
   # However you want to name your images in the Container Registry
   image: '${{ github.event.repository.name }}-pr-${{ github.event.number }}'
-  NEXT_PUBLIC_MAPTILER_KEY: {{secrets.NEXT_PUBLIC_MAPTILER_KEY}}
+  NEXT_PUBLIC_MAPTILER_KEY: ${{secrets.NEXT_PUBLIC_MAPTILER_KEY}}
 
 jobs:
   build-preview-and-deploy:
