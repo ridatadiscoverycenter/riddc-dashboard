@@ -4,13 +4,14 @@ on: pull_request
 
 env:
   # Project ID for your GCP Project.
-  gcp_project_id: buoy-dashboard
+  gcp_project_id: buoy-dashboard-784db
   # URL for the Google Container Registry: formatted as `${location}-docker.pkg.dev`, where location is often `us-central1`.
   gcp_registry_url: us-central1-docker.pkg.dev
   # Name for your container Registry for this project.
   gcp_container_registry: cloud-run
   # However you want to name your images in the Container Registry
   image: '${{ github.event.repository.name }}-pr-${{ github.event.number }}'
+  NEXT_PUBLIC_MAPTILER_KEY: {{secrets.NEXT_PUBLIC_MAPTILER_KEY}}
 
 jobs:
   build-preview-and-deploy:
@@ -75,4 +76,3 @@ jobs:
           message: |
             # [App Preview](${{ steps.deploy.outputs.url }})
             <sub>(${{ env.COMMIT_SHA }})</sub>
-            
