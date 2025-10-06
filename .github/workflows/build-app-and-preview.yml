@@ -1,0 +1,78 @@
+name: Build App Preview And Deploy
+
+on: pull_request
+
+env:
+  # Project ID for your GCP Project.
+  gcp_project_id: buoy-dashboard
+  # URL for the Google Container Registry: formatted as `${location}-docker.pkg.dev`, where location is often `us-central1`.
+  gcp_registry_url: us-central1-docker.pkg.dev
+  # Name for your container Registry for this project.
+  gcp_container_registry: cloud-run
+  # However you want to name your images in the Container Registry
+  image: '${{ github.event.repository.name }}-pr-${{ github.event.number }}'
+
+jobs:
+  build-preview-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ env.gcp_project_id }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          export_environment_variables: true
+          create_credentials_file: true
+
+      - uses: 'google-github-actions/setup-gcloud@v2'
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+            registry: ${{ env.gcp_registry_url }}
+            username: _json_key
+            password: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Configure Docker Auth
+        shell: bash
+        run: |
+          gcloud auth configure-docker ${{ env.gcp_registry_url }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ env.gcp_registry_url }}/${{ env.gcp_project_id }}/${{ env.gcp_container_registry }}/${{ env.image }}:latest
+
+      - uses: 'google-github-actions/deploy-cloudrun@v2'
+        id: "deploy"
+        with:
+          service: ${{ env.image }}
+          project_id: ${{ env.gcp_project_id }}
+          image: ${{ env.gcp_registry_url }}/${{ env.gcp_project_id }}/${{ env.gcp_container_registry }}/${{ env.image }}
+          flags: '--allow-unauthenticated'
+
+      - name: Extract Git SHA for Comment
+        id: vars
+        run: |
+          gitsha=$(git rev-parse HEAD)
+          echo "COMMIT_SHA=$gitsha" >> $GITHUB_ENV
+
+      - name: Delete Old Link
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          mode: delete 
+          comment-tag: previewlink
+
+      - name: Post Preview Link
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          mode: recreate
+          reactions: rocket
+          comment-tag: previewlink
+          message: |
+            # [App Preview](${{ steps.deploy.outputs.url }})
+            <sub>(${{ env.COMMIT_SHA }})</sub>
+            
