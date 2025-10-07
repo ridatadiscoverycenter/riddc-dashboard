@@ -147,7 +147,7 @@ const LINKS = {
 
 const DESCRIPTION = (
   <p>
-    This dataset spans from 2003 to 2019 and was collected by the <LINKS.NBFSMN /> with{' '}
+    This dataset spans from 2003 to 2022 and was collected by the <LINKS.NBFSMN /> with{' '}
     <LINKS.RIDEM_OWR /> as the lead agency. Agencies involved in collection and maintenance of the
     data are:
     <LINKS.RIDEM_OWR />, <LINKS.URI_GSO_MERL />
