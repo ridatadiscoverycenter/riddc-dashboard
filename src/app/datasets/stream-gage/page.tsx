@@ -1,19 +1,7 @@
 import React from 'react';
 
-import { Loading, StreamGageMapGraph } from '@/components';
-import { downsampleStreamGageData, fetchStreamGageData } from '@/utils/data';
+import { StreamGage as Visualization } from '@/components';
 
-export default async function StreamGage() {
-  return (
-    <React.Suspense fallback={<Loading />}>
-      <PageWrapper />
-    </React.Suspense>
-  );
-}
-
-async function PageWrapper() {
-  const streamData = await fetchStreamGageData(14, 'Gage height');
-  const downsampledData = downsampleStreamGageData(streamData);
-
-  return <StreamGageMapGraph className="h-[75vh]" streamData={downsampledData} />;
+export default function StreamGage() {
+  return <Visualization className="h-[75vh]" />  
 }
