@@ -9,7 +9,7 @@ import { downsamplePmData } from '@/utils/data/api/breathe-pvd/downsample';
 import { pmInfo } from '@/utils/data/api/breathe-pvd/pmInfo';
 import { Loading } from '@/components';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 const DATA_WINDOW = 14;
 

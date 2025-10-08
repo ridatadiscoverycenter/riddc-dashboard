@@ -3,7 +3,7 @@ import React from 'react';
 import { Loading, StreamGageMapGraph } from '@/components';
 import { downsampleStreamGageData, fetchStreamGageData } from '@/utils/data';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 export default async function StreamGage() {
   return (
