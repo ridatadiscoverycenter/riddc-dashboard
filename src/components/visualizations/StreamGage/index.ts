@@ -1,3 +1,3 @@
 export * from './StreamGageMapGraph';
 export * from './StreamGageTimeSeries';
-export * from "./StreamGage";
+export * from './StreamGage';

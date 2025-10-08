@@ -9,11 +9,10 @@ export type UseLocalStorageParams<T> = {
   validate?: (value: T) => boolean;
 };
 
-
 export function useLocalStorageState<T>(
   defaultValue: T,
   key: string,
-  useLocalStorageParams: UseLocalStorageParams<T> = {},
+  useLocalStorageParams: UseLocalStorageParams<T> = {}
 ) {
   const { serialize, deserialize, validate } = useLocalStorageParams;
   const [data, setData] = React.useState<T>(defaultValue);
