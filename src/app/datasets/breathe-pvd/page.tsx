@@ -8,7 +8,7 @@ import { BreatheMapGraph } from '@/components/visualizations/BreathePvd/BreatheM
 import { pmInfo } from '@/utils/data/api/breathe-pvd/pmInfo';
 import { Loading } from '@/components';
 
-const DATA_WINDOW = 14;
+const DATA_WINDOW = 30;
 
 export default async function BreathePvd() {
   return (
