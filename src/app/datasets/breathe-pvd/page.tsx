@@ -5,11 +5,10 @@ import { sensorInfo } from '@/utils/data/api/breathe-pvd/sensorInfo';
 import { fetchPmData } from '@/utils/data/api/breathe-pvd';
 import { fetchBreatheData } from '@/utils/data/api/breathe-pvd/sensors';
 import { BreatheMapGraph } from '@/components/visualizations/BreathePvd/BreatheMapGraph';
-import { downsamplePmData } from '@/utils/data/api/breathe-pvd/downsample';
 import { pmInfo } from '@/utils/data/api/breathe-pvd/pmInfo';
 import { Loading } from '@/components';
 
-const DATA_WINDOW = 14;
+const DATA_WINDOW = 30;
 
 export default async function BreathePvd() {
   return (
@@ -27,12 +26,7 @@ async function PageWrapper() {
     now
   );
   const pmData = await fetchPmData(Object.keys(pmInfo), subDays(now, DATA_WINDOW), now);
-  const filteredData = downsamplePmData(pmData);
   return (
-    <BreatheMapGraph
-      breatheSensorData={sensorData}
-      breathePmData={filteredData}
-      className="h-[75vh]"
-    />
+    <BreatheMapGraph breatheSensorData={sensorData} breathePmData={pmData} className="h-[75vh]" />
   );
 }

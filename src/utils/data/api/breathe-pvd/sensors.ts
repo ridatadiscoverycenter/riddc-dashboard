@@ -38,7 +38,7 @@ export async function fetchBreatheData(ids: string[], startTime: Date, endTime: 
     ids.map(
       async (id) =>
         await erddapAPIGet<unknown[]>(
-          `breathepvd/sensor/${id}/range?start=${formatDateForQueryParams(startTime)}&end=${formatDateForQueryParams(endTime)}`,
+          `breathepvd/sensor/${id}/hourly?start=${formatDateForQueryParams(startTime)}&end=${formatDateForQueryParams(endTime)}`,
           false
         )
     )
