@@ -60,5 +60,5 @@ jobs:
           image: ${{ env.gcp_registry_url }}/${{ env.gcp_project_id }}/${{ env.gcp_container_registry }}/${{ env.image }}
           flags: >-
               --allow-unauthenticated
-              --service-account=766398966649-compute@developer.gserviceaccount.com
+              --service-account=github-action-878005190@buoy-dashboard-784db.iam.gserviceaccount.com
           
