@@ -45,7 +45,7 @@ export function useMap(bounds: LngLatBoundsLike = BOUNDS) {
     return () => {
       map.current.off('load', setLoadedOnMapLoad);
     };
-  }, [map, setLoaded, apiKey, bounds]);
+  }, [map, apiKey, setLoaded, bounds]);
 
   return { containerRef, map, loaded };
 }

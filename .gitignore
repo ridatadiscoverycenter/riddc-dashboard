@@ -2,6 +2,8 @@
 
 .env
 
+service_account.json
+
 # dependencies
 /node_modules
 /.pnp
