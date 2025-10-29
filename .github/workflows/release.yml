@@ -10,7 +10,7 @@ on:
 
 env:
   # Project ID for your GCP Project.
-  gcp_project_id: buoy-dashboard
+  gcp_project_id: buoy-dashboard-784db
   # URL for the Google Container Registry: formatted as `${location}-docker.pkg.dev`, where location is often `us-central1`.
   gcp_registry_url: us-central1-docker.pkg.dev
   # Name for your container Registry for this project.

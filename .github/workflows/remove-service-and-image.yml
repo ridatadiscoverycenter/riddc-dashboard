@@ -7,7 +7,7 @@ on:
 
 env:
   # Project ID for your GCP Project.  
-  gcp_project_id: buoy-dashboard
+  gcp_project_id: buoy-dashboard-784db
   # Name for your container Registry for this project.
   gcp_container_registry: cloud-run
   # Google Cloud location for your services. Usually `us-central1`.
