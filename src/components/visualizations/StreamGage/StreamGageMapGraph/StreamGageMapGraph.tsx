@@ -201,6 +201,10 @@ export function StreamGageMapGraph({
       graph={<StreamGageTimeSeries dates={dates} data={selectedBuoys} />}
       syncOpenState={(isMapOpen) => setOpen(isMapOpen)}
       className={className}
+      bounds={[
+        [-72.25, 42.1],
+        [-71.17, 41.1],
+      ]}
     >
       <div
         className={`z-50 absolute top-6 left-2 bg-slate-100/90 dark:bg-slate-800/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
