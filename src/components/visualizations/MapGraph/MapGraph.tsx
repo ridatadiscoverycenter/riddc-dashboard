@@ -3,6 +3,13 @@
 import React from 'react';
 import { type LngLatBoundsLike } from 'maplibre-gl';
 import { useMap } from '@/components';
+import { ToggleMenuButton } from './ToggleMenuButton';
+
+const COMPONENT_TRANSITION_STYLES = 'transition-[width] duration-500 ease-in-out';
+const MAP_SIZE_STYLES = (opened: boolean) =>
+  `${COMPONENT_TRANSITION_STYLES} ${opened ? 'w-0' : 'w-[100%]'}`;
+const GRAPH_SIZE_STYLES = (opened: boolean) =>
+  `${COMPONENT_TRANSITION_STYLES} ${opened ? 'w-[100%]' : 'w-0'}`;
 
 export function MapGraph({
   onLoad,
@@ -42,10 +49,18 @@ export function MapGraph({
 
   return (
     <div className={`flex flex-row w-full text-base items-stretch ${className}`}>
-      <div ref={containerRef} className={`relative md:w-[50%] w-[100%]`}>
+      <div ref={containerRef} className={`relative ${MAP_SIZE_STYLES(opened)} md:w-[50%]`}>
+        <ToggleMenuButton
+          opened={opened}
+          setOpened={setOpened}
+          position="right-2 top-2 md:hidden"
+        />
         {children}
       </div>
-      <div className={`bg-white dark:bg-black relative md:w-[50%] w-[100%]`}>{graph}</div>
+      <div className={`bg-white dark:bg-black relative ${GRAPH_SIZE_STYLES(opened)} md:w-[50%]`}>
+        <ToggleMenuButton opened={opened} setOpened={setOpened} position="left-2 top-2 md:hidden" />
+        {graph}
+      </div>
     </div>
   );
 }

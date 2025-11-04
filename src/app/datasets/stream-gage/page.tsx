@@ -14,8 +14,7 @@ export default async function StreamGage() {
 }
 
 async function PageWrapper() {
-  // TODO put this back to 14
-  const streamData = await fetchStreamGageData(1, 'Gage height');
+  const streamData = await fetchStreamGageData(14, 'Gage height');
   const downsampledData = downsampleStreamGageData(streamData);
 
   return (

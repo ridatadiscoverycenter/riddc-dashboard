@@ -130,8 +130,8 @@ export function BreatheTimeSeries<T extends Vars>({
   }, [names, datasets, variable]);
   if (data.length === 0)
     return (
-      <div className="flex w-full h-full place-content-center place-items-center">
-        Select a circle at the left to view time series data.
+      <div className="flex w-full h-full place-content-center place-items-center text-xl">
+        Select a circle on the left to view time series data.
       </div>
     );
   return (
