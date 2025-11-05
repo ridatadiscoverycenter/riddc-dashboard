@@ -23,12 +23,16 @@ async function PageWrapper() {
         Stream Gage
       </Header>
       <p>
-        This map shows near-realtime data of stream heights in Rhode Island for the the most recent
-        two weeks from the{' '}
+        This map shows near-realtime data of gage height of streams in Rhode Island for the the most
+        recent two weeks from the{' '}
         <ExternalLink href="https://waterservices.usgs.gov/docs/instantaneous-values/instantaneous-values-details/">
           USGS Instantaneous Values Service
         </ExternalLink>
         . USGS data collection occurs every 15 minutes and is transmitted every hour.
+      </p>
+      <p>
+        Gage height is depicted by circle size and color. Select up to five circles to view a line
+        graph over time.
       </p>
       <section className="full-bleed w-full min-h-[70vh] relative p-0 my-0 min-w-full">
         <StreamGageMapGraph className="absolute w-full h-full" streamData={downsampledData} />
