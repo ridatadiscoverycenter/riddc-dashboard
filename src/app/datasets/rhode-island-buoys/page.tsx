@@ -12,9 +12,17 @@ import {
 import { PageProps } from '@/types';
 import { fetchWeatherData } from '@/utils/data';
 import {
+  fetchOsomBuoyData,
   fetchRiBuoyCoordinates,
   fetchRiBuoyData,
   fetchRiSummaryData,
+  MaBuoyData,
+  OSOM_VARIABLES,
+  OsomBuoyData,
+  OsomBuoyVariable,
+  PlanktonData,
+  RealTimeBuoyData,
+  RiBuoyData,
   type RiBuoyVariable,
 } from '@/utils/data/api/buoy';
 import {
@@ -71,6 +79,11 @@ async function PageWrapper({
           errorLinks={errorLinks}
           buoyDataFetcher={(ids, vars, start, end) =>
             fetchRiBuoyData(ids, vars as RiBuoyVariable[], start, end)
+          }
+          supplementalDataFetcher={(ids, vars, start, end) =>
+            vars.every((v) => OSOM_VARIABLES.includes(v as OsomBuoyVariable))
+              ? fetchOsomBuoyData(ids, vars as OsomBuoyVariable[], start, end)
+              : Promise.resolve([])
           }
           dataset="ri"
           weatherDataFetcher={fetchWeatherData}
