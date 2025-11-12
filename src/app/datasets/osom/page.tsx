@@ -11,10 +11,17 @@ import {
 } from '@/components';
 import { fetchWeatherData } from '@/utils/data';
 import {
+  fetchMaBuoyData,
   fetchOsomBuoyCoordinates,
   fetchOsomBuoyData,
   fetchOsomSummaryData,
+  fetchRiBuoyData,
+  MA_BUOY_VARIABLES,
+  MaBuoyVariable,
   OsomBuoyVariable,
+  RI_BUOY_VARIABLES,
+  RiBuoyData,
+  RiBuoyVariable,
 } from '@/utils/data/api/buoy';
 import {
   ERROR_CODES,
@@ -72,6 +79,15 @@ async function PageWrapper({
           buoyDataFetcher={(ids, vars, start, end) =>
             fetchOsomBuoyData(ids, vars as OsomBuoyVariable[], start, end)
           }
+          supplementalDataFetcher={async (ids, vars, start, end) => {
+            const riBuoyData = vars.every((v) => RI_BUOY_VARIABLES.includes(v as RiBuoyVariable))
+              ? await fetchRiBuoyData(ids, vars as RiBuoyVariable[], start, end)
+              : [];
+            const maBuoyData = vars.every((v) => MA_BUOY_VARIABLES.includes(v as MaBuoyVariable))
+              ? await fetchMaBuoyData(ids, vars as MaBuoyVariable[], start, end)
+              : [];
+            return [...riBuoyData, ...maBuoyData] as Awaited<ReturnType<typeof fetchOsomBuoyData>>;
+          }}
           dataset="osom"
           weatherDataFetcher={fetchWeatherData}
           description={

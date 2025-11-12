@@ -12,19 +12,22 @@ import type {
   PlanktonData,
   OsomBuoyData,
 } from '@/utils/data/api/buoy';
-import { ERROR_CODES } from '@/utils/fns';
+import { ERROR_CODES, fetchMulti } from '@/utils/fns';
 import type { Dataset } from '@/utils/data/api/buoy/types';
+
+type BuoyDataFetcher = (
+  buoys: string[],
+  variables: string[],
+  start: Date,
+  end: Date
+) => Promise<RiBuoyData[] | MaBuoyData[] | RealTimeBuoyData[] | PlanktonData[] | OsomBuoyData[]>;
 
 type BuoyVariablesProps = {
   params: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
   dataset: Dataset;
   errorLinks: { href: string; description: string }[];
-  buoyDataFetcher: (
-    buoys: string[],
-    variables: string[],
-    start: Date,
-    end: Date
-  ) => Promise<RiBuoyData[] | MaBuoyData[] | RealTimeBuoyData[] | PlanktonData[] | OsomBuoyData[]>;
+  buoyDataFetcher: BuoyDataFetcher;
+  supplementalDataFetcher: BuoyDataFetcher;
   weatherDataFetcher: (start: Date, end: Date) => Promise<WeatherData[]>;
   description: React.ReactNode;
 };
@@ -34,6 +37,7 @@ export async function BuoyVariablesCard({
   dataset,
   errorLinks,
   buoyDataFetcher,
+  supplementalDataFetcher,
   weatherDataFetcher,
   description,
 }: BuoyVariablesProps) {
@@ -48,7 +52,15 @@ export async function BuoyVariablesCard({
     );
   }
 
-  const buoyData = await buoyDataFetcher(params.buoys, params.vars, params.start, params.end);
+  const { buoyData, weatherData, supplementalData } = await fetchMulti({
+    buoyData: buoyDataFetcher(params.buoys, params.vars, params.start, params.end),
+    weatherData: weatherDataFetcher(params.start, params.end),
+    supplementalData: supplementalDataFetcher(params.buoys, params.vars, params.start, params.end),
+  });
+
+  //const buoyData = await buoyDataFetcher(params.buoys, params.vars, params.start, params.end);
+  //const supplementalData = await ;
+
   // If no data was found, display an error.
   if (buoyData.length === 0) {
     return (
@@ -59,7 +71,7 @@ export async function BuoyVariablesCard({
     );
   }
 
-  const weatherData = await weatherDataFetcher(params.start, params.end);
+  //const weatherData = await ;
 
   return (
     <DataGraph
@@ -75,7 +87,7 @@ export async function BuoyVariablesCard({
         />
       }
     >
-      <BuoyVariables data={buoyData} dataset={dataset} />
+      <BuoyVariables data={buoyData} supplementalData={supplementalData} dataset={dataset} />
     </DataGraph>
   );
 }
