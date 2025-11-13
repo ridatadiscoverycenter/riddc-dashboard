@@ -89,6 +89,7 @@ function generateDataGroups(
       key as `${string}~${string}`,
       supplemental
     );
+    console.log({ color, dash });
     const dataWithBlanks = Array.from(Array(dates.length), (_, i) => dates[i]).map(
       (date) => data.find(({ time }) => time.valueOf() === date.valueOf())?.value
     );
@@ -141,33 +142,6 @@ export function BuoyVariables({ data, supplementalData, dataset }: BuoyVariables
     [supplementalDatasets, buoysInPlot, varsInPlot, joinedDates, dataset]
   );
 
-  /*
-  const dataGroups = React.useMemo(() => {
-    const group = Object.entries(datasets);
-    return group.map(([key, data]) => {
-      const { color, dash } = getStylesForGroup(
-        varsInPlot,
-        buoysInPlot,
-        key as `${string}~${string}`,
-        false
-      );
-      const dataWithBlanks = Array.from(Array(joinedDates.length), (_, i) => joinedDates[i]).map(
-        (date) => data.find(({ time }) => time.valueOf() === date.valueOf())?.value
-      );
-      const [stationName, variable] = key.split('~');
-      return {
-        label: `${stationName} ~ ${variableToLabel(variable, dataset)}`,
-        data: dataWithBlanks,
-        borderColor: color.border,
-        backgroundColor: color.background,
-        cubicInterpolationMode: 'monotone',
-        borderDash: dash,
-        pointStyle: false,
-      };
-    });
-  }, [datasets, varsInPlot, buoysInPlot, joinedDates, dataset]);
-*/
-
   return (
     <div className="h-80 w-full">
       <button onClick={() => setDisplaySupplemental((c) => !c)}>view supplemental data</button>
@@ -176,6 +150,7 @@ export function BuoyVariables({ data, supplementalData, dataset }: BuoyVariables
           labels: dates.map((date) => formatDate(date, 'P')),
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           datasets: dataGroups.concat(displaySupplemental ? supplementalDataGroups : []) as any,
+          //datasets: supplementalDataGroups as any, //dataGroups.concat(displaySupplemental ? supplementalDataGroups : []) as any,
         }}
         options={{
           responsive: true,
@@ -209,9 +184,9 @@ function getStylesForGroup(
     color:
       stationNameIndex < 0 ||
       stationNameIndex >=
-        (supplemental ? SUPPLEMENTAL_LINE_COLOR_OPTIONS : LINE_COLOR_OPTIONS).length
+        (!supplemental ? SUPPLEMENTAL_LINE_COLOR_OPTIONS : LINE_COLOR_OPTIONS).length
         ? { border: 'rgba(0, 0, 0, 0.5)', background: 'rgba(0, 0, 0, 0.2)' }
-        : (supplemental ? SUPPLEMENTAL_LINE_COLOR_OPTIONS : LINE_COLOR_OPTIONS)[stationNameIndex],
+        : (!supplemental ? SUPPLEMENTAL_LINE_COLOR_OPTIONS : LINE_COLOR_OPTIONS)[stationNameIndex],
     dash:
       variableIndex < 0 || variableIndex >= LINE_DASH_OPTIONS.length
         ? []
