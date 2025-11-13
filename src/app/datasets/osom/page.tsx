@@ -21,7 +21,6 @@ import {
   MaBuoyVariable,
   OsomBuoyVariable,
   RI_BUOY_VARIABLES,
-  RiBuoyData,
   RiBuoyVariable,
 } from '@/utils/data/api/buoy';
 import {
