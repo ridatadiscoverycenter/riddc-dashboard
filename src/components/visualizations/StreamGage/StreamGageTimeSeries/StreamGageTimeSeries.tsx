@@ -61,7 +61,7 @@ const CHART_COLORS = {
   },
 };
 
-export function StreamGageTimeSeries({ dates, data, opened }: StreamGageTimeSeriesProps) {
+export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps) {
   const colorMode = useColorMode();
   const chartColors = React.useMemo(
     () => (colorMode === 'light' ? CHART_COLORS.light : CHART_COLORS.dark),
