@@ -61,7 +61,7 @@ const CHART_COLORS = {
   },
 };
 
-export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps) {
+export function StreamGageTimeSeries({ dates, data, opened }: StreamGageTimeSeriesProps) {
   const colorMode = useColorMode();
   const chartColors = React.useMemo(
     () => (colorMode === 'light' ? CHART_COLORS.light : CHART_COLORS.dark),
@@ -82,8 +82,8 @@ export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps)
   );
   if (data.length === 0)
     return (
-      <div className="items-center content-center h-full m-5 justify-items-center">
-        <ArrowAnimation className="text-xl">
+      <div className="items-center content-center h-full m-5">
+        <ArrowAnimation className="text-xl md:justify-items-center">
           Select a circle on the left to view time series data.
         </ArrowAnimation>
       </div>

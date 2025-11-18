@@ -5,7 +5,7 @@
   --draw-arrow-head-duration: 300ms;
 }
 
-path {
+.arrow-path {
   stroke: black;
   stroke-width: 2;
   stroke-linecap: round;

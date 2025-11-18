@@ -198,7 +198,7 @@ export function StreamGageMapGraph({
   return (
     <MapGraph
       onLoad={onLoad}
-      graph={<StreamGageTimeSeries dates={dates} data={selectedBuoys} />}
+      graph={<StreamGageTimeSeries dates={dates} data={selectedBuoys} opened={opened} />}
       syncOpenState={(isMapOpen) => setOpen(isMapOpen)}
       className={className}
       bounds={[
