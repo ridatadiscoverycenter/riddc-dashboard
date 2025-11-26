@@ -17,7 +17,6 @@ import {
 
 import { StreamGageData } from '@/utils/data';
 import { useColorMode } from '@/hooks/useColorMode';
-import { ArrowAnimation } from '@/components/ArrowAnimation/ArrowAnimation';
 
 ChartJS.register(
   TimeScale,
@@ -82,10 +81,8 @@ export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps)
   );
   if (data.length === 0)
     return (
-      <div className="items-center content-center h-full m-5">
-        <ArrowAnimation className="text-xl md:justify-items-center">
-          Select a circle on the left to view time series data.
-        </ArrowAnimation>
+      <div className="items-center content-center h-full m-5 text-xl md:justify-items-center">
+        Select a circle on the left to view time series data.
       </div>
     );
   return (
