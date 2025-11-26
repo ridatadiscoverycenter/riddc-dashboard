@@ -34,6 +34,7 @@ async function PageWrapper() {
         Gage height is depicted by circle size and color. Select up to five circles to view a line
         graph over time.
       </p>
+      <p className="md:hidden">On mobile, tap the arrow button to view the graph.</p>
       <section className="full-bleed w-full min-h-[70vh] relative p-0 my-0 min-w-full">
         <StreamGageMapGraph className="absolute w-full h-full" streamData={downsampledData} />
       </section>
