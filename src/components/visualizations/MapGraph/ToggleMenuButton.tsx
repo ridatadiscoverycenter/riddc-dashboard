@@ -9,14 +9,13 @@ type ToggleMenuButtonProps = {
 export function ToggleMenuButton({ opened, setOpened, position }: ToggleMenuButtonProps) {
   return (
     <button
-      className={`z-50 px-2 bg-slate-100 rounded-md absolute transform-rotate duration-500 ease-in-out  ${position}`}
+      className={`z-50 w-[45px] bg-slate-100 rounded-md absolute aspect-square transform-rotate duration-500 ease-in-out  ${position}`}
       onClick={() => setOpened((v) => !v)}
     >
       <div className={`justify-items-center ${opened ? 'rotate-180' : 'rotate-0'}`}>
-        <LeftIcon size={2} color="black" />
+        <LeftIcon size={1} color="black" />
       </div>
-
-      <span>{opened ? 'Map' : 'Graph'}</span>
+      <div className="text-sm">{opened ? 'Map' : 'Graph'}</div>
     </button>
   );
 }

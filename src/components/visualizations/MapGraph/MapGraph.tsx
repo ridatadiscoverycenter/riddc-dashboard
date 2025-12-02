@@ -53,12 +53,12 @@ export function MapGraph({
         <ToggleMenuButton
           opened={opened}
           setOpened={setOpened}
-          position="right-2 top-2 md:hidden"
+          position="right-1 top-1 md:hidden"
         />
         {children}
       </div>
       <div className={`bg-white dark:bg-black relative ${GRAPH_SIZE_STYLES(opened)} md:w-[50%]`}>
-        <ToggleMenuButton opened={opened} setOpened={setOpened} position="left-2 top-2 md:hidden" />
+        <ToggleMenuButton opened={opened} setOpened={setOpened} position="left-1 top-1 md:hidden" />
         {graph}
       </div>
     </div>

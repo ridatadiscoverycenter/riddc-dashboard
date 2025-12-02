@@ -207,14 +207,19 @@ export function StreamGageMapGraph({
       ]}
     >
       <div
-        className={`z-50 absolute top-6 left-2 bg-slate-100/90 dark:bg-slate-800/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
+        className={`z-50 absolute top-6 left-2 bg-slate-100/90 dark:bg-slate-800/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-28 md:max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
       >
         <div className="flex flex-col gap-2 w-full">
-          <h1 className="text-xl">Stream Gage Height</h1>
-          <h2 className="text-lg">{formatDate(selectedDate, "p 'at' P")}</h2>
-          <p>
+          <h1 className="text-lg md:text-xl leading-none md:leading-normal">Stream Gage Height</h1>
+          <h2 className="text-md md:text-lg leading-none md:leading-normal">
+            {formatDate(selectedDate, 'P p')}
+          </h2>
+          <p className="hidden md:inline">
             Use the Date Slider to view hourly Stream Gage data across Rhode Island. Data is
             displayed in feet.
+          </p>
+          <p className="md:hidden leading-[1.2]">
+            Use the Date Slider to view hourly Stream Gage data.
           </p>
         </div>
         <div className="flex flex-col gap-1 w-full">
@@ -225,13 +230,13 @@ export function StreamGageMapGraph({
             value={selectedDateIndex}
             onChange={(e) => setSelectedDateIndex(Number(e.target.value))}
           />
-          <div className="w-full flex flex-row justify-between text-sm">
-            <span>Two Weeks Ago</span>
-            <span>Today</span>
+          <div className="w-full flex flex-row justify-between text-xs md:text-sm">
+            <span className="text-xs w-min">Two Weeks</span>
+            <span className="text-xs w-min">Today</span>
           </div>
         </div>
         <div className="flex flex-col gap-1 w-full">
-          <h3 className="text-base">Legend:</h3>
+          <h3 className="text-base hidden md:inline">Legend:</h3>
           <div className={`w-full h-4 bg-gradient-to-r from-[#4f14da] to-[#99fee8]`} />
           <div className="w-full flex flex-row justify-between text-sm">
             <span>{dataRange.min.toFixed(2)} ft.</span>
