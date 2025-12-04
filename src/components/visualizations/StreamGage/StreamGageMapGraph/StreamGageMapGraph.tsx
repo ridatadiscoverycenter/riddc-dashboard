@@ -231,8 +231,8 @@ export function StreamGageMapGraph({
             onChange={(e) => setSelectedDateIndex(Number(e.target.value))}
           />
           <div className="w-full flex flex-row justify-between text-xs md:text-sm">
-            <span className="text-xs w-min">Two Weeks</span>
-            <span className="text-xs w-min">Today</span>
+            <span className="w-min">Two Weeks</span>
+            <span className="w-min">Today</span>
           </div>
         </div>
         <div className="flex flex-col gap-1 w-full">
