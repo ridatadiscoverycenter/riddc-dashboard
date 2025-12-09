@@ -128,7 +128,12 @@ export function BreatheTimeSeries<T extends Vars>({
       };
     });
   }, [names, datasets, variable]);
-
+  if (data.length === 0)
+    return (
+      <div className="flex w-full text-xl md:text-2xl h-full place-items-center justify-around align-center">
+        Select a circle on the left to view time series data.
+      </div>
+    );
   return (
     <Line
       data={{
