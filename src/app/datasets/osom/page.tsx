@@ -28,7 +28,8 @@ import {
 
 import { PageProps } from '@/types';
 
-export default async function Osom({ searchParams }: PageProps) {
+export default async function Osom(props: PageProps) {
+  const searchParams = await props.searchParams;
   return (
     <React.Suspense fallback={<DefaultBuoyPage description={DESCRIPTION} />}>
       <PageWrapper params={searchParams} errorLinks={OSOM_BUOY_ERROR_LINKS} />

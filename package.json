@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -17,34 +17,34 @@
   "prettier": "@brown-ccv/prettier-config",
   "dependencies": {
     "@google-cloud/secret-manager": "^6.1.0",
-    "@headlessui/react": "^2.1.10",
+    "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.1.5",
     "chart.js": "^4.4.9",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.11.9",
     "maplibre-gl": "^4.7.1",
-    "next": "^14.2.16",
-    "react": "^18",
+    "next": "16.0.8",
+    "react": "19.2.1",
     "react-chartjs-2": "^5.3.0",
     "react-datepicker": "^8.4.0",
-    "react-dom": "^18",
+    "react-dom": "19.2.1",
     "react-select": "^5.10.1",
     "react-vega": "^7.6.0",
     "tailwind-merge": "^3.2.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@brown-ccv/eslint-config": "^0.3.0",
+    "@brown-ccv/eslint-config": "^0.3.1",
     "@brown-ccv/prettier-config": "^0.3.0",
     "@playwright/test": "^1.46.1",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
     "@types/yargs": "^17.0.32",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.5",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.8",
     "husky": "^8.0.0",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
@@ -54,5 +54,9 @@
     "tsx": "^4.16.2",
     "typescript": "^5",
     "yargs": "^17.7.2"
+  },
+  "overrides": {
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3"
   }
 }

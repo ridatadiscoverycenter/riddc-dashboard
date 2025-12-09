@@ -12,6 +12,9 @@ import {
   Tooltip,
   Legend,
   TimeScale,
+  type TooltipItem,
+  ChartTypeRegistry,
+  ChartType,
 } from 'chart.js';
 
 import {
@@ -41,6 +44,8 @@ type BreatheTimeSeriesPropsHelper = {
   names: string[];
   variable: Vars;
 };
+
+type TooltipData = { dataPoints: TooltipItem<'line'>[] };
 type BreatheTimeSeriesProps<T extends Vars> = T extends 'co' | 'co2'
   ? BreatheTimeSeriesPropsHelper & { data: BreatheSensorData[] }
   : T extends 'pm'
@@ -158,7 +163,8 @@ export function BreatheTimeSeries<T extends Vars>({
             intersect: false,
             callbacks: {
               title: function (tooltipItems) {
-                return formatDate(tooltipItems[0].parsed.x, 'P p');
+                const parsed = tooltipItems[0].parsed;
+                return formatDate(parsed.x as number, 'P p');
               },
             },
           },

@@ -29,7 +29,8 @@ import { PageProps } from '@/types';
 import { FishVariablesCard } from '@/components/visualizations/FishVariablesCard/FishVariablesCard';
 import { SpeciesList } from './SpeciesList';
 
-export default async function FishTrawl({ searchParams }: PageProps) {
+export default async function FishTrawl(props: PageProps) {
+  const searchParams = await props.searchParams;
   return (
     <React.Suspense fallback={<DefaultBuoyPage description={DESCRIPTION} />}>
       <PageWrapper params={searchParams} errorLinks={ERROR_LINKS} />
