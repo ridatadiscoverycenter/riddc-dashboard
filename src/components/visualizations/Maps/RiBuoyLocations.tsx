@@ -3,8 +3,8 @@ import React from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-import { RiBuoyCoordinate } from '@/utils/data/api/buoy';
 import { useMap } from './useMap';
+import { RiBuoyCoordinate } from '@/utils/data/api/buoy';
 
 type RiBuoyLocationsProps = {
   locations: RiBuoyCoordinate[];

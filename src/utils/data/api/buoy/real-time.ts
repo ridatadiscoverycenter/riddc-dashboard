@@ -314,7 +314,7 @@ function validateFetchedRealTimeBuoySummary(
     z.array(ZodFetchedRealTimeBuoySummary).parse(summary);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -443,7 +443,7 @@ function validateFetchedRealTimeBuoyCoordinate(
     z.array(ZodFetchedRealTimeBuoyCoordinate).parse(coordinates);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -504,7 +504,7 @@ function validateFetchedRealTimeBuoyData(
     ZodFetchedRealTimeBuoyData.parse(buoyData);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }

@@ -53,7 +53,7 @@ function validateFetchedPlanktonData(
     ZodFetchedPlanktonData.parse(planktonData);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -105,7 +105,7 @@ function validateFetchedBuoyCoordinate(
     z.array(ZodFetchedBuoyCoordinate).parse(coordinates);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -191,7 +191,7 @@ function validateFetchedSummary(summary: unknown[]): summary is FetchedPlanktonS
     z.array(ZodFetchedPlanktonSummary).parse(summary);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }

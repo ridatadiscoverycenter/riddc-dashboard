@@ -56,7 +56,7 @@ function validateFetchedRiBuoyData(buoyData: unknown): buoyData is { data: Fetch
     ZodFetchedRiBuoyData.parse(buoyData);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -146,7 +146,7 @@ function validateFetchedRiBuoySummary(summary: unknown[]): summary is FetchedRiS
     z.array(ZodFetchedRiSummaryData).parse(summary);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -214,7 +214,7 @@ function validateFetchedRiBuoyCoordinate(
     z.array(ZodFetchedRiBuoyCoordinate).parse(coordinates);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -273,7 +273,7 @@ function validateFetchedRiBuoyVariables(
     z.array(ZodFetchedRiBuoyVariables).parse(variables);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -310,7 +310,7 @@ function validateFetchedRiBuoyTimeRange(timerange: unknown): timerange is Fetche
     ZodFetchedRiBuoyTimeRange.parse(timerange);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }

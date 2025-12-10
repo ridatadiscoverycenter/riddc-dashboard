@@ -1,6 +1,6 @@
+import { BrownLogo, GithubLogo, NsfLogo, RicaimLogo, ThreeCrsLogo, UriLogo } from '../Icon';
 import { Waves, Link, ExternalLink } from '@/components';
 import { ERDDAP_URL } from '@/static/urls';
-import { BrownLogo, GithubLogo, NsfLogo, RicaimLogo, ThreeCrsLogo, UriLogo } from '../Icon';
 
 const LOGO_SIZE = 5;
 

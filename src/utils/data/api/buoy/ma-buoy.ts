@@ -112,7 +112,7 @@ function validateFetchedMaBuoyData(buoyData: unknown): buoyData is { data: Fetch
     ZodFetchedMaBuoyData.parse(buoyData);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -236,7 +236,7 @@ function validateFetchedMaBuoySummary(summary: unknown[]): summary is FetchedMaS
     z.array(ZodFetchedMaSummaryData).parse(summary);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -321,7 +321,7 @@ function validateFetchedMaBuoyCoordinate(
     z.array(ZodFetchedMaBuoyCoordinate).parse(coordinates);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -380,7 +380,7 @@ function validateFetchedMaBuoyVariables(
     z.array(ZodFetchedMaBuoyVariables).parse(variables);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -417,7 +417,7 @@ function validateFetchedMaBuoyTimeRange(timerange: unknown): timerange is Fetche
     ZodFetchedMaBuoyTimeRange.parse(timerange);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }

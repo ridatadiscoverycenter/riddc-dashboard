@@ -21,7 +21,7 @@ function validateFetchedFishCoordinate(
     z.array(ZodFetchedFishCoordinate).parse(coordinates);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -64,7 +64,7 @@ function validateFetchedSamples(sampleData: unknown): sampleData is { data: Samp
     ZodFetchedSamples.parse(sampleData);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }
@@ -108,7 +108,7 @@ function validateFetchedTemperature(temperatures: unknown[]): temperatures is Fe
     z.array(ZodFetchedTemperature).parse(temperatures);
     return true;
   } catch (ex) {
-    console.error(ex)
+    console.error(ex);
     return false;
   }
 }

@@ -124,29 +124,28 @@ type PlanktonVarLabels = [
   'DIP (Bottom)',
 ];
 
-const PLANKTON_PAIRS: { viewer: PlanktonVarLabels[number]; erddap: PlanktonVariable }[] =
-  [
-    { viewer: 'Silica (Bottom)', erddap: 'SilicaBottom' },
-    { viewer: 'NH4 (Surface)', erddap: 'NH4Surface' },
-    { viewer: 'Salinity (Bottom) (PSU)', erddap: 'SalinityBottom' },
-    { viewer: 'Chlorophyll (Surface) (μg L-1)', erddap: 'ChlorophyllSurface' },
-    { viewer: 'Water Temperature (Bottom) (°C)', erddap: 'WaterTempBottom' },
-    { viewer: 'NH4 (Bottom)', erddap: 'NH4Bottom' },
-    { viewer: 'NO3 (Bottom)', erddap: 'NO3Bottom' },
-    { viewer: 'NO2 (Surface)', erddap: 'NO2Surface' },
-    { viewer: 'DIN (Surface)', erddap: 'DINSurface' },
-    { viewer: 'DIP (Surface)', erddap: 'DIPSurface' },
-    { viewer: 'NO2 (Bottom)', erddap: 'NO2Bottom' },
-    { viewer: 'Water Temperature (Surface) (°C)', erddap: 'WaterTempSurface' },
-    { viewer: 'Chlorophyll (Bottom) (μg L-1)', erddap: 'ChlorophyllBottom' },
-    { viewer: 'Phaeo (Bottom)', erddap: 'PhaeoBottom' },
-    { viewer: 'Silica (Surface)', erddap: 'SilicaSurface' },
-    { viewer: 'Salinity (Surface) (PSU)', erddap: 'SalinitySurface' },
-    { viewer: 'NO3 (Surface)', erddap: 'NO3Surface' },
-    { viewer: 'DIN (Bottom)', erddap: 'DINBottom' },
-    { viewer: 'Phaeo (Surface)', erddap: 'PhaeoSurface' },
-    { viewer: 'DIP (Bottom)', erddap: 'DIPBottom' },
-  ] as const;
+const PLANKTON_PAIRS: { viewer: PlanktonVarLabels[number]; erddap: PlanktonVariable }[] = [
+  { viewer: 'Silica (Bottom)', erddap: 'SilicaBottom' },
+  { viewer: 'NH4 (Surface)', erddap: 'NH4Surface' },
+  { viewer: 'Salinity (Bottom) (PSU)', erddap: 'SalinityBottom' },
+  { viewer: 'Chlorophyll (Surface) (μg L-1)', erddap: 'ChlorophyllSurface' },
+  { viewer: 'Water Temperature (Bottom) (°C)', erddap: 'WaterTempBottom' },
+  { viewer: 'NH4 (Bottom)', erddap: 'NH4Bottom' },
+  { viewer: 'NO3 (Bottom)', erddap: 'NO3Bottom' },
+  { viewer: 'NO2 (Surface)', erddap: 'NO2Surface' },
+  { viewer: 'DIN (Surface)', erddap: 'DINSurface' },
+  { viewer: 'DIP (Surface)', erddap: 'DIPSurface' },
+  { viewer: 'NO2 (Bottom)', erddap: 'NO2Bottom' },
+  { viewer: 'Water Temperature (Surface) (°C)', erddap: 'WaterTempSurface' },
+  { viewer: 'Chlorophyll (Bottom) (μg L-1)', erddap: 'ChlorophyllBottom' },
+  { viewer: 'Phaeo (Bottom)', erddap: 'PhaeoBottom' },
+  { viewer: 'Silica (Surface)', erddap: 'SilicaSurface' },
+  { viewer: 'Salinity (Surface) (PSU)', erddap: 'SalinitySurface' },
+  { viewer: 'NO3 (Surface)', erddap: 'NO3Surface' },
+  { viewer: 'DIN (Bottom)', erddap: 'DINBottom' },
+  { viewer: 'Phaeo (Surface)', erddap: 'PhaeoSurface' },
+  { viewer: 'DIP (Bottom)', erddap: 'DIPBottom' },
+] as const;
 
 type RealTimeVarLabels = [
   'Fluorescence Counts',
