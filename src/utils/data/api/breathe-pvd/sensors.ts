@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { compareAsc } from 'date-fns';
 
-import { sensorInfo } from '@/utils/data/api/breathe-pvd/sensorInfo';
 import { erddapAPIGet } from '../erddap';
 import { formatDateForQueryParams } from '../shared';
+import { sensorInfo } from '@/utils/data/api/breathe-pvd/sensorInfo';
 
 export const BREATHE_SENSOR_VIEWER_VARS = ['co', 'co2'];
 export type BreatheSensorViewerVars = 'co' | 'co2';
@@ -20,9 +20,7 @@ export type SensorInfo = {
   Longitude: string;
   'Installation Date': string;
 };
-const BREATHE_SENSOR_VARIABLES = ['co_corrected', 'co2_corrected_avg_t_drift_applied'];
-
-export type BreatheSensorVariable = (typeof BREATHE_SENSOR_VARIABLES)[number];
+export type BreatheSensorVariable = ['co_corrected', 'co2_corrected_avg_t_drift_applied'];
 
 const ZodFetchedBreatheSensor = z.object({
   co_corrected: z.union([z.number(), z.null()]),

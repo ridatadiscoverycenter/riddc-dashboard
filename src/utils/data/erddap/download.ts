@@ -1,3 +1,4 @@
+import { getConfig } from '../api/config';
 import { ERDDAP_URL } from '@/static/urls';
 import { FishVariable } from '@/utils/data/api/fish';
 import {
@@ -8,7 +9,6 @@ import {
   type RealTimeBuoyVariable,
   PlanktonVariable,
 } from '@/utils/data/api/buoy';
-import { getConfig } from '../api/config';
 
 const BASE_URL = `${ERDDAP_URL}erddap/tabledap`;
 

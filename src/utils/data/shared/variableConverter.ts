@@ -9,7 +9,7 @@ import { Dataset } from '../api/buoy/types';
 import { getTitleFromSpecies } from './fish';
 
 // Rhode Island Buoys
-const RI_VAR_LABELS = [
+type RiVarLabels = [
   '% O2 (Surface)',
   '% O2 (Bottom)',
   'Depth (Bottom) (m)',
@@ -29,9 +29,9 @@ const RI_VAR_LABELS = [
   'Turbidity (Bottom) (NTU)',
   'Chlorophyll (μg L-1)',
   'Total Fluorescence',
-] as const;
+];
 
-const RI_PAIRS: { viewer: (typeof RI_VAR_LABELS)[number]; erddap: RiBuoyVariable }[] = [
+const RI_PAIRS: { viewer: RiVarLabels[number]; erddap: RiBuoyVariable }[] = [
   { viewer: '% O2 (Surface)', erddap: 'O2PercentSurface' },
   { viewer: '% O2 (Bottom)', erddap: 'O2PercentBottom' },
   { viewer: 'Depth (Bottom) (m)', erddap: 'DepthBottom' },
@@ -54,7 +54,7 @@ const RI_PAIRS: { viewer: (typeof RI_VAR_LABELS)[number]; erddap: RiBuoyVariable
 ] as const;
 
 // MA buoys
-const MA_VAR_LABELS = [
+type MaVarLabels = [
   'Chlorophyll (Bottom) (RFU)',
   'Chlorophyll (Surface) (RFU)',
   'Depth (m)',
@@ -75,9 +75,9 @@ const MA_VAR_LABELS = [
   'Specific Conductance (Surface) (mS cm-1)',
   'Water Temperature (Bottom) (°C)',
   'Water Temperature (Surface) (°C)',
-] as const;
+];
 
-const MA_PAIRS: { viewer: (typeof MA_VAR_LABELS)[number]; erddap: MaBuoyVariable }[] = [
+const MA_PAIRS: { viewer: MaVarLabels[number]; erddap: MaBuoyVariable }[] = [
   { viewer: 'Depth (m)', erddap: 'depth' },
   { viewer: 'Depth (Surface) (m)', erddap: 'DepthSurface' },
   { viewer: 'Depth (Bottom) (m)', erddap: 'DepthBottom' },
@@ -101,7 +101,7 @@ const MA_PAIRS: { viewer: (typeof MA_VAR_LABELS)[number]; erddap: MaBuoyVariable
 ] as const;
 
 // plankton variables
-const PLANKTON_VAR_LABELS = [
+type PlanktonVarLabels = [
   'Silica (Bottom)',
   'NH4 (Surface)',
   'Salinity (Bottom) (PSU)',
@@ -122,9 +122,9 @@ const PLANKTON_VAR_LABELS = [
   'DIN (Bottom)',
   'Phaeo (Surface)',
   'DIP (Bottom)',
-] as const;
+];
 
-const PLANKTON_PAIRS: { viewer: (typeof PLANKTON_VAR_LABELS)[number]; erddap: PlanktonVariable }[] =
+const PLANKTON_PAIRS: { viewer: PlanktonVarLabels[number]; erddap: PlanktonVariable }[] =
   [
     { viewer: 'Silica (Bottom)', erddap: 'SilicaBottom' },
     { viewer: 'NH4 (Surface)', erddap: 'NH4Surface' },
@@ -148,7 +148,7 @@ const PLANKTON_PAIRS: { viewer: (typeof PLANKTON_VAR_LABELS)[number]; erddap: Pl
     { viewer: 'DIP (Bottom)', erddap: 'DIPBottom' },
   ] as const;
 
-const REAL_TIME_VAR_LABELS = [
+type RealTimeVarLabels = [
   'Fluorescence Counts',
   'FDOM (ppb)',
   'FDOM (Despike) (ppb)',
@@ -228,10 +228,10 @@ const REAL_TIME_VAR_LABELS = [
   'Solar Irradiance (Despike)',
   'Solar Irradiance Instrument Range (QC)',
   'Solar Irradiance Stuck Value (QC)',
-] as const;
+];
 
 const REAL_TIME_PAIRS: {
-  viewer: (typeof REAL_TIME_VAR_LABELS)[number];
+  viewer: RealTimeVarLabels[number];
   erddap: RealTimeBuoyVariable;
 }[] = [
   { viewer: 'Fluorescence Counts', erddap: 'FluorescenceCounts' },
@@ -272,14 +272,14 @@ const REAL_TIME_PAIRS: {
   { viewer: 'Solar Irradiance (Despike)', erddap: 'SolarIrradianceDespike' },
 ];
 
-const OSOM_VAR_LABELS = [
+type OsomVarLabels = [
   'Salinity (Bottom) (PSU)',
   'Salinity (Surface) (PSU)',
   'Temperature (Bottom) (°C)',
   'Temperature (Surface) (°C)',
-] as const;
+];
 
-const OSOM_PAIRS: { viewer: (typeof OSOM_VAR_LABELS)[number]; erddap: OsomBuoyVariable }[] = [
+const OSOM_PAIRS: { viewer: OsomVarLabels[number]; erddap: OsomBuoyVariable }[] = [
   { viewer: 'Salinity (Bottom) (PSU)', erddap: 'SalinityBottom' },
   { viewer: 'Salinity (Surface) (PSU)', erddap: 'SalinitySurface' },
   { viewer: 'Temperature (Bottom) (°C)', erddap: 'WaterTempBottom' },

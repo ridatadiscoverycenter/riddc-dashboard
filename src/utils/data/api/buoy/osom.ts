@@ -38,6 +38,7 @@ function validateFetchedOsomSummary(summary: unknown[]): summary is FetchedOsomS
     z.array(ZodFetchedOsomSummary).parse(summary);
     return true;
   } catch (ex) {
+    console.error(ex)
     return false;
   }
 }
@@ -102,6 +103,7 @@ function validateFetchedOsomBuoyData(
     ZodFetchedOsomBuoyData.parse(buoyData);
     return true;
   } catch (ex) {
+    console.error(ex)
     return false;
   }
 }
@@ -146,6 +148,7 @@ function validateFetchedOsomBuoyCoordinate(
     z.array(ZodFetchedOsomBuoyCoordinate).parse(coordinates);
     return true;
   } catch (ex) {
+    console.error(ex)
     return false;
   }
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Vega, VisualizationSpec } from 'react-vega';
+import { VegaEmbed, VisualizationSpec } from 'react-vega';
 
 import { Loading, Select } from '@/components';
 import { Size, useScreenSize } from '@/hooks/useScreenSize';

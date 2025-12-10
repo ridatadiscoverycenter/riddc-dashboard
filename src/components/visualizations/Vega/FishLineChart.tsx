@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Vega, VisualizationSpec } from 'react-vega';
+import { VegaEmbed, VisualizationSpec } from 'react-vega';
 
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading } from '@/components';
@@ -198,9 +198,9 @@ export function FishLineChart({ data }: LineChartProps) {
           <Loading />
         </div>
       ) : (
-        <Vega
+        <VegaEmbed
           className="flex flex-col items-center justify-center"
-          actions={false}
+          // actions={false}
           spec={fishChartSpec}
         />
       )}
