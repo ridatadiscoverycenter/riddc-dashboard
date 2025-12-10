@@ -8,7 +8,6 @@ export async function fetchMapTilerSecret() {
   const [secret] = await client.accessSecretVersion({
     name: 'projects/766398966649/secrets/maptiler-key/versions/1',
   });
-  console.log(secret)
   
   return secret.payload.data.toString();
 }

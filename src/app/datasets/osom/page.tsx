@@ -2,13 +2,14 @@ import React from 'react';
 
 import {
   BuoyPageSkeleton,
-  DefaultBuoyPage,
+  // DefaultBuoyPage,
   ExploreForm,
   ExternalLink,
   BuoyVariablesCard,
   BuoyLocationsMap,
   OsomBuoySummary,
 } from '@/components';
+import { DefaultBuoyPage } from '@/components/PageSkeletons/BuoyPageSkeleton';
 import { fetchWeatherData } from '@/utils/data';
 import {
   fetchOsomBuoyCoordinates,
