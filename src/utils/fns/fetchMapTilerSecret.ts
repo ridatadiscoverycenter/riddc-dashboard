@@ -8,5 +8,9 @@ export async function fetchMapTilerSecret() {
     name: 'projects/766398966649/secrets/maptiler-key/versions/1',
   });
 
-  return secret.payload.data.toString();
+  if (secret.payload && secret.payload.data) {
+    return secret.payload.data.toString();
+  } else {
+    throw new Error('Invalid or no api key retreived');
+  }
 }
