@@ -12,7 +12,7 @@ export function useMap(bounds: LngLatBoundsLike = BOUNDS) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = React.useRef<any>(null);
   const [loaded, setLoaded] = React.useState(false);
-  const [apiKey, setApiKey] = React.useState("");
+  const [apiKey, setApiKey] = React.useState('');
 
   React.useEffect(() => {
     async function getApiKey() {
