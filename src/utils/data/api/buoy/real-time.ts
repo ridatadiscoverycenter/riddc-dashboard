@@ -292,7 +292,7 @@ const ZodFetchedRealTimeBuoySummary = z.object({
   SolarIrradianceInstrumentRangeQC: z.number(),
   SolarIrradianceStuckValueQC: z.number(),
   station_name: z.string(),
-  time: z.string().datetime(),
+  time: z.iso.datetime(),
   buoyId: z.string(),
 });
 
@@ -322,7 +322,7 @@ function validateFetchedRealTimeBuoySummary(
 function formatRealTimeSummaryData(fetchedData: FetchedRealTimeBuoySummary) {
   return {
     stationName: fetchedData.station_name,
-    time: new Date(fetchedData.station_name),
+    time: new Date(fetchedData.time),
     buoyId: fetchedData.buoyId,
     fluorescenceCounts: fetchedData.FluorescenceCounts,
     fdom: fetchedData.FDOM,
