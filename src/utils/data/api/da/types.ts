@@ -33,6 +33,7 @@ export function validateFetchedDomoicAcidCoordiate(
     z.array(ZodDomoicAcidCoordiate).parse(coordinates);
     return true;
   } catch (ex) {
+    console.error(ex);
     return false;
   }
 }
@@ -73,6 +74,7 @@ export function validateFetchedDomoicAcidSamples(
     z.array(ZodDomoicAcidSample).parse(samples);
     return true;
   } catch (ex) {
+    console.error(ex);
     return false;
   }
 }

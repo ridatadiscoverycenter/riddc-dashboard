@@ -2,13 +2,14 @@ import React from 'react';
 
 import {
   BuoyPageSkeleton,
-  DefaultBuoyPage,
+  // DefaultBuoyPage,
   ExploreForm,
   ExternalLink,
   BuoyVariablesCard,
   BuoyLocationsMap,
   OsomBuoySummary,
 } from '@/components';
+import { DefaultBuoyPage } from '@/components/PageSkeletons/BuoyPageSkeleton';
 import { fetchWeatherData } from '@/utils/data';
 import {
   fetchOsomBuoyCoordinates,
@@ -28,7 +29,8 @@ import {
 
 import { PageProps } from '@/types';
 
-export default async function Osom({ searchParams }: PageProps) {
+export default async function Osom(props: PageProps) {
+  const searchParams = await props.searchParams;
   return (
     <React.Suspense fallback={<DefaultBuoyPage description={DESCRIPTION} />}>
       <PageWrapper params={searchParams} errorLinks={OSOM_BUOY_ERROR_LINKS} />

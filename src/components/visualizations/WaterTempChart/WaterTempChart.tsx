@@ -101,6 +101,7 @@ export function WaterTempChart({ data }: { data: Temperature[] }) {
       <Line
         data={{
           labels: dates.map((date) => formatDate(date, 'yyyy')),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           datasets: [...lineGroups, ...scatterGroups] as any,
         }}
         options={{

@@ -1,8 +1,7 @@
 import { closestIndexTo, compareAsc, eachDayOfInterval, eachHourOfInterval } from 'date-fns';
 
-import { groupBy } from '@/utils/fns';
-
 import { StreamGageData } from './fetchStreamGageData';
+import { groupBy } from '@/utils/fns';
 
 type TimeSeriesData = StreamGageData['values'];
 type TimeSeriesDataPoint = TimeSeriesData[number];

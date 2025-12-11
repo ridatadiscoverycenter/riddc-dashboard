@@ -28,7 +28,8 @@ import {
 
 import { PageProps } from '@/types';
 
-export default async function MassachusettsBuoyData({ searchParams }: PageProps) {
+export default async function MassachusettsBuoyData(props: PageProps) {
+  const searchParams = await props.searchParams;
   return (
     <React.Suspense fallback={<DefaultBuoyPage description={DESCRIPTION} />}>
       <PageWrapper params={searchParams} errorLinks={MA_BUOY_ERROR_LINKS} />

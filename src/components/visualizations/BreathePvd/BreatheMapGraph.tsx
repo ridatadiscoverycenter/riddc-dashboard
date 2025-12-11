@@ -3,6 +3,8 @@
 import React from 'react';
 import { eachHourOfInterval, roundToNearestHours } from 'date-fns';
 
+import { BreatheTimeSeries } from './BreatheTimeSeries';
+import { FormattedVar } from './FormattedVar';
 import { MapGraph } from '@/components';
 import {
   BREATHE_SENSOR_VIEWER_VARS,
@@ -12,8 +14,6 @@ import {
   type BreathePmData,
   BreathePmViewerVars,
 } from '@/utils/data/api/breathe-pvd';
-import { BreatheTimeSeries } from './BreatheTimeSeries';
-import { FormattedVar } from './FormattedVar';
 
 type CombinedData = BreatheSensorData & BreathePmData;
 
@@ -249,7 +249,6 @@ export function BreatheMapGraph({
         map.current.removeLayer('pm-selected');
         map.current.removeSource('selected-breathe-data');
         map.current.removeSource('selected-pm-data');
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         map.current.removeSource('pm1-data');
         map.current.removeSource('pm10-data');
         map.current.removeSource('pm25-data');

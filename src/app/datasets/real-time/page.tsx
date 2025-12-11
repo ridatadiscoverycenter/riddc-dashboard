@@ -25,7 +25,8 @@ import { fetchWeatherData } from '@/utils/data';
 import { PageProps } from '@/types';
 import { ERDDAP_URL } from '@/static/urls';
 
-export default async function RealTime({ searchParams }: PageProps) {
+export default async function RealTime(props: PageProps) {
+  const searchParams = await props.searchParams;
   const { summaryData, coordinates } = await fetchMulti({
     summaryData: fetchRealTimeSummaryData(),
     coordinates: fetchRealTimeBuoyCoordinates(),

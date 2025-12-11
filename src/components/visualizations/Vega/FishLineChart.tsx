@@ -200,7 +200,7 @@ export function FishLineChart({ data }: LineChartProps) {
       ) : (
         <Vega
           className="flex flex-col items-center justify-center"
-          actions={false}
+          // actions={false}
           spec={fishChartSpec}
         />
       )}

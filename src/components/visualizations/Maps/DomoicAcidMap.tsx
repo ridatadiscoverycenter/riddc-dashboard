@@ -4,9 +4,9 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import maplibregl from 'maplibre-gl';
 import { formatDate } from 'date-fns';
 
+import { useMap } from './useMap';
 import buoymarker from '@/assets/buoy-marker.svg';
 import { DomoicAcidCoordinate, DomoicAcidSample } from '@/utils/data/api/da';
-import { useMap } from './useMap';
 
 type DomoicAcidMapProps = {
   samples: DomoicAcidSample[];
@@ -166,7 +166,6 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
         map.current.removeLayer('da-buoys');
         map.current.removeSource('da-samples');
         map.current.removeSource('da-stations');
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         map.current.removeImage('buoy-marker');
       };
     }

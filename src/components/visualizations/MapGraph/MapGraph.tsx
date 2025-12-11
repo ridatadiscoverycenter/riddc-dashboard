@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { type LngLatBoundsLike } from 'maplibre-gl';
-import { useMap } from '@/components';
 import { ToggleMenuButton } from './ToggleMenuButton';
+import { useMap } from '@/components';
 
 const COMPONENT_TRANSITION_STYLES = 'transition-[width] duration-500 ease-in-out';
 const MAP_SIZE_STYLES = (opened: boolean) =>

@@ -2,11 +2,11 @@
 
 import React from 'react';
 
+import { FishVariables } from '../FishVariables';
 import { DownloadBuoyData, GraphErrorPanel } from '@/components';
 import { WaterTempChart } from '@/components/visualizations/WaterTempChart';
 import { ERROR_CODES } from '@/utils/fns';
 import type { Sample, Temperature, FishVariable } from '@/utils/data/api/fish';
-import { FishVariables } from '../FishVariables';
 
 type FishVariablesProps = {
   params: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
