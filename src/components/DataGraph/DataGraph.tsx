@@ -1,4 +1,4 @@
-import { WeatherHistory } from '@/components';
+import { BuoyVariables, WeatherHistory } from '@/components';
 import { WeatherData } from '@/utils/data';
 
 type BuoyGraphProps = {
@@ -19,7 +19,7 @@ export function DataGraph({
         {children}
         <WeatherHistory data={weather} />
       </div>
-      {download !== undefined ? download : null}
+      {/* {download !== undefined ? download : null} */}
     </>
   );
 }

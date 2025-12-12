@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, ExploreForm, Header, Loading } from '@/components';
+import { Card, Header, Loading } from '@/components';
+import { ExploreForm } from '@/components/ExploreForm';
 
 type BuoyPageSkeletonProps = {
   graph: React.ReactNode;
@@ -58,6 +59,6 @@ export function DefaultBuoyPage({ description }: { description: React.ReactNode 
       map={<Loading />}
       summary={<Loading />}
       description={description}
-    />
+    ></BuoyPageSkeleton>
   );
 }

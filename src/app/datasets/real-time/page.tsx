@@ -49,6 +49,8 @@ export default async function RealTime(props: PageProps) {
     ]
   );
 
+  const maxDate = new Date(Math.max(...timeRange));
+
   return (
     <>
       <p className="mt-6">
@@ -62,17 +64,23 @@ export default async function RealTime(props: PageProps) {
             dataset="real-time"
             errorLinks={[
               {
-                description: 'Changes in Phosphate and Nitrate levels over the last month',
-                href: `/datasets/real-time?buoys=Buoy-620,Buoy-720&vars=PhosphateSurface,NitrateNSurface&end=${new Date().toISOString().split('T')[0]}&start=${subMonths(new Date(), 1).toISOString().split('T')[0]}`,
-              },
-              {
-                description: 'Changes in dissolved oxygen and salinity levels over the two months',
-                href: `/datasets/real-time?buoys=Buoy-620,Buoy-720&vars=O2Surface,SalinitySurface&end=${new Date().toISOString().split('T')[0]}&start=${subMonths(new Date(), 2).toISOString().split('T')[0]}`,
+                description:
+                  'Changes in Phosphate and Nitrate levels over the last available month',
+                href: `/datasets/real-time?buoys=Buoy-620,Buoy-720&vars=PhosphateSurface,NitrateNSurface&end=${maxDate.toISOString().split('T')[0]}&start=${
+                  subMonths(new Date(Math.max(...timeRange)), 1)
+                    .toISOString()
+                    .split('T')[0]
+                }`,
               },
               {
                 description:
-                  'Changes in dissolved oxygen and nitrate levels over the last three months',
-                href: `/datasets/real-time?buoys=Buoy-620,Buoy-720&vars=O2Surface,NitrateNSurface&end=${new Date().toISOString().split('T')[0]}&start=${subMonths(new Date(), 3).toISOString().split('T')[0]}`,
+                  'Changes in dissolved oxygen and salinity levels over the two available months',
+                href: `/datasets/real-time?buoys=Buoy-620,Buoy-720&vars=O2Surface,SalinitySurface&end=${maxDate.toISOString().split('T')[0]}&start=${subMonths(maxDate, 2).toISOString().split('T')[0]}`,
+              },
+              {
+                description:
+                  'Changes in dissolved oxygen and nitrate levels over the last three available months',
+                href: `/datasets/real-time?buoys=Buoy-620,Buoy-720&vars=O2Surface,NitrateNSurface&end=${maxDate.toISOString().split('T')[0]}&start=${subMonths(maxDate, 3).toISOString().split('T')[0]}`,
               },
             ]}
             buoyDataFetcher={(ids, vars, start, end) =>
