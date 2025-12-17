@@ -97,7 +97,7 @@ async function PageWrapper({
           dataset="ri"
           dateBounds={{
             startDate: new Date('2003-05-22'),
-            endDate: new Date('2019-12-31'),
+            endDate: new Date('2022-12-31'),
           }}
           init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
         />
