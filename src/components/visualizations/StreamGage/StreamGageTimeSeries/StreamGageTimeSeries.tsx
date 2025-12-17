@@ -79,6 +79,12 @@ export function StreamGageTimeSeries({ dates, data }: StreamGageTimeSeriesProps)
       })),
     [data]
   );
+  if (data.length === 0)
+    return (
+      <div className="flex h-full text-xl md:text-2xl place-items-center justify-around">
+        Select a circle on the left to view time series data.
+      </div>
+    );
   return (
     <Line
       data={{

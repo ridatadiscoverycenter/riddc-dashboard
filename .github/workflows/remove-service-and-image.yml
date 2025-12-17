@@ -1,0 +1,37 @@
+name: Remove Preview and Delete Images
+
+on:
+  pull_request:
+    types:
+      - closed
+
+env:
+  # Project ID for your GCP Project.  
+  gcp_project_id: buoy-dashboard-784db
+  # Name for your container Registry for this project.
+  gcp_container_registry: cloud-run
+  # Google Cloud location for your services. Usually `us-central1`.
+  gcp_location: us-central1
+  # URL for the Google Container Registry: formatted as `${gcp_location}-docker.pkg.dev`.
+  gcp_registry_url: us-central1-docker.pkg.dev
+  # However you want to name your images in the Container Registry.
+  # This should match the image name defined in the preview action.
+  image: '${{ github.event.repository.name }}-pr-${{ github.event.number }}'
+
+jobs:
+  remove-services-and-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ env.gcp_project_id }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          export_environment_variables: true
+      
+      - uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Delete Services
+        run: gcloud run services delete ${{ env.image }} --region ${{ env.gcp_location }} --quiet
+
+      - name: Delete Images
+        run: gcloud container images delete ${{ env.gcp_registry_url }}/${{ env.gcp_project_id }}/${{ env.gcp_container_registry }}/${{ env.image }}

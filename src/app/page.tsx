@@ -306,6 +306,8 @@ const DATASETS = [
       </>
     ),
   },
+  // Page decomissioned until data is fixed.
+  /*
   {
     name: 'Real Time Data',
     href: '/datasets/real-time',
@@ -318,6 +320,7 @@ const DATASETS = [
       </>
     ),
   },
+  */
   {
     name: 'Ocean State Ocean Model',
     href: '/datasets/osom',
@@ -368,8 +371,8 @@ const DATASETS = [
     href: '/datasets/stream-gage',
     description: () => (
       <>
-        A map of water levels across streams and waterways in Rhode Island over the last 2 weeks.
-        Data from the{' '}
+        A map of stream gage height across streams and waterways in Rhode Island over the last 2
+        weeks. Data from the{' '}
         <ExternalLink href="https://waterservices.usgs.gov/">US Geological Survey</ExternalLink>.
       </>
     ),

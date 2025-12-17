@@ -76,7 +76,7 @@ export function BreatheMapGraph({
     [selectedDate]
   );
 
-  function clickHandler(e: React.MouseEvent<HTMLInputElement, MouseEvent>) {
+  function clickHandler(e: React.ChangeEvent<HTMLSelectElement>) {
     const newValue = e.currentTarget.value as Vars;
     setSelectedVariable(newValue);
     setSelectedSensors(
@@ -286,37 +286,29 @@ export function BreatheMapGraph({
       className={className}
       bounds={[
         [-71.5, 41.92],
-        [-71.32, 41.6],
+        [-71.32, 41.7],
       ]}
     >
       <div
-        className={`z-50 absolute top-6 left-2 bg-slate-100/90 dark:bg-slate-800/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
+        className={`z-50 absolute top-6 left-2 bg-slate-100/90 dark:bg-slate-800/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-32 md:max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
       >
         <div className="flex flex-col gap-2 w-full">
-          <h1 className="text-xl">Air Quality</h1>
-          <fieldset>
-            <legend>Choose a variable</legend>
-            {[...BREATHE_SENSOR_VIEWER_VARS, ...BREATHE_PM_VIEWER_VARS].map((option, index) => {
+          <h1 className="text-lg md:text-xl leading-none md:leading-normal">Air Quality</h1>
+          <select
+            onChange={(e) => clickHandler(e)}
+            className="md:text-lg border-solid shadow-lg rounded-md"
+          >
+            {[...BREATHE_SENSOR_VIEWER_VARS, ...BREATHE_PM_VIEWER_VARS].map((opt) => {
               return (
-                <li className="list-none" key={option}>
-                  <label htmlFor={option} className="text-xl">
-                    <input
-                      type="radio"
-                      id={option}
-                      name="variable"
-                      value={option}
-                      onClick={(e) => clickHandler(e)}
-                      defaultChecked={index === 0}
-                    />{' '}
-                    {FormattedVar(option)}
-                  </label>
-                </li>
+                <option id={opt} value={opt} key={opt}>
+                  {FormattedVar(opt)}
+                </option>
               );
             })}
-          </fieldset>
+          </select>
         </div>
-        <h2 className="text-lg">{formattedDate}</h2>
-        <p>Use the date slider to view hourly air quality data across Providence.</p>
+        <h2 className="text-md md:text-lg leading-none md:leading-normal">{formattedDate}</h2>
+        <p>Use the date slider to view hourly air quality data.</p>
         <div className="flex flex-col gap-1 w-full">
           <input
             type="range"
@@ -326,13 +318,13 @@ export function BreatheMapGraph({
             onChange={(e) => setSelectedDateIndex(Number(e.target.value))}
             aria-label="date slider"
           />
-          <div className="w-full flex flex-row justify-between text-sm">
+          <div className="w-full flex flex-row justify-between text-xs md:text-sm">
             <span>{dates[0].toLocaleDateString()}</span>
             <span>{dates[dates.length - 1].toLocaleDateString()}</span>
           </div>
         </div>
         <div className="flex flex-col gap-1 w-full">
-          <h3 className="text-base">Legend:</h3>
+          <h3 className="text-base hidden md:inline">Legend:</h3>
           <div className={`w-full h-4 bg-gradient-to-r from-[#8e44ad] to-[#c0392b]`} />
           <div className="w-full flex flex-row justify-between text-sm">
             <span>{dataRange.min.toFixed(2)}</span>

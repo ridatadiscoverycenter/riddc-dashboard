@@ -35,7 +35,7 @@ export async function fetchPmData(ids: string[], startDate: Date, endDate: Date)
     ids.map(
       async (id) =>
         await erddapAPIGet<unknown[]>(
-          `breathepvd/pm/${id}/range?start=${formatDateForQueryParams(startDate)}&end=${formatDateForQueryParams(endDate)}`,
+          `breathepvd/pm/${id}/hourly?start=${formatDateForQueryParams(startDate)}&end=${formatDateForQueryParams(endDate)}`,
           false
         )
     )
