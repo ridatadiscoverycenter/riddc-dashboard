@@ -306,6 +306,8 @@ const DATASETS = [
       </>
     ),
   },
+  // Page decomissioned until data is fixed.
+  /*
   {
     name: 'Real Time Data',
     href: '/datasets/real-time',
@@ -318,6 +320,7 @@ const DATASETS = [
       </>
     ),
   },
+  */
   {
     name: 'Ocean State Ocean Model',
     href: '/datasets/osom',
