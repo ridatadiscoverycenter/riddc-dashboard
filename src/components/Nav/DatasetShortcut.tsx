@@ -55,10 +55,13 @@ const DATASETS = [
     name: 'Massachusetts Buoys',
     href: '/datasets/massachusetts-buoys',
   },
+  // Page decomissioned until data is fixed. 
+  /*
   {
     name: 'Real Time Data',
     href: '/datasets/real-time',
   },
+  */
   {
     name: 'Ocean State Ocean Model',
     href: '/datasets/osom',
