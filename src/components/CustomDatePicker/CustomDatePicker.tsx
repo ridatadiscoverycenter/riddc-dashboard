@@ -58,7 +58,8 @@ export function CustomDatePicker({ selected, setDate, dateBounds, mode }: DatePi
           : customYearHeader
       }
       selected={selected}
-      onChange={(date) => date !== null && setDate(date)} // this seems bad but i keep getting a lint error that I want to think about later
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onChange={(date: any) => date !== null && setDate(date)} // this seems bad but i keep getting a lint error that I want to think about later
       minDate={dateBounds.startDate}
       maxDate={dateBounds.endDate}
       showYearPicker={mode === 'year'}
