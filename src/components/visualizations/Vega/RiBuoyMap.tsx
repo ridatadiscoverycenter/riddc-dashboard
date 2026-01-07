@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { VegaEmbed } from 'react-vega';
+import type { VisualizationSpec } from 'vega-embed';
 import { RiBuoyCoordinate } from '@/utils/data/api/buoy';
 
 import { RiGeoJson, RiGeoJsonOutlines } from '@/static/ri.geojson';
@@ -24,7 +25,7 @@ function getGraphicWidth(size: Size | undefined) {
 export function RiBuoyMap({ locations }: RiBuoyMapProps) {
   const size = useScreenSize();
   const colorMode = useColorMode();
-  const buoyMapSpec = React.useMemo<any>(
+  const buoyMapSpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       background: 'transparent',

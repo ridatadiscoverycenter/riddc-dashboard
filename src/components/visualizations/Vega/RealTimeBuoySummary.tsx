@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { VegaEmbed } from 'react-vega';
+import type { VisualizationSpec } from 'vega-embed';
 
 import type { RealTimeBuoyVariable, RealTimeSummaryData } from '@/utils/data/api/buoy';
 import { REAL_TIME_BUOY_VARIABLES } from '@/utils/data/api/buoy';
@@ -23,7 +24,7 @@ function getGraphicWidth(size: Size | undefined) {
 export function RealTimeBuoySummary({ data }: RealTimeBuoySummaryProps) {
   const size = useScreenSize();
   const [variable, setVariable] = React.useState<RealTimeBuoyVariable>('AirPressure');
-  const buoySummarySpec = React.useMemo<any>(
+  const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       description: 'Buoy Data Summary Chart',

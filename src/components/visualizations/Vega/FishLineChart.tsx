@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { VegaEmbed } from 'react-vega';
+import type { VisualizationSpec } from 'vega-embed';
 
 import { Size, useScreenSize } from '@/hooks/useScreenSize';
 import { Loading } from '@/components';
@@ -26,7 +27,7 @@ export function FishLineChart({ data }: LineChartProps) {
     [data]
   );
 
-  const fishChartSpec = React.useMemo<any>(
+  const fishChartSpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       description: 'Fish trawl survey line chart, with value labels shown upon mouse hover.',

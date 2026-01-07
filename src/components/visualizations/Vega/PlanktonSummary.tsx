@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { VegaEmbed } from 'react-vega';
+import type { VisualizationSpec } from 'vega-embed';
 
 import {
   PLANKTON_VARIABLES,
@@ -30,7 +31,7 @@ export function PlanktonSummary({ data }: PlanktonBuoySummaryProps) {
     value: key,
   }));
   const [variable, setVariable] = React.useState<{ value: PlanktonVariable }>(options[0]);
-  const buoySummarySpec = React.useMemo<any>(
+  const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       description: 'Buoy Data Summary Chart',

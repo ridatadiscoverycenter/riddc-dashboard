@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { VegaEmbed } from 'react-vega';
+import type { VisualizationSpec } from 'vega-embed';
 
 import type { MaBuoySummaryData, MaBuoyVariable } from '@/utils/data/api/buoy';
 import { MA_BUOY_VARIABLES } from '@/utils/data/api/buoy';
@@ -27,7 +28,7 @@ export function MaBuoySummary({ data }: MaBuoySummaryProps) {
     value: key,
   }));
   const [variable, setVariable] = React.useState<{ value: MaBuoyVariable }>(options[0]);
-  const buoySummarySpec = React.useMemo<any>(
+  const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       description: 'Buoy Data Summary Chart',

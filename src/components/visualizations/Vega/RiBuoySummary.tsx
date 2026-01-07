@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
-import { VegaEmbed, VisualizationSpec } from 'react-vega';
+import { VegaEmbed } from 'react-vega';
+import type { VisualizationSpec } from 'vega-embed';
 
 import {
   type RiBuoySummaryData,
@@ -155,7 +156,7 @@ export function RiBuoySummary({ data }: RiBuoySummaryProps) {
       ) : (
         <VegaEmbed
           className="flex flex-col items-center justify-center"
-          actions={false}
+          options={{ actions: false }}
           spec={buoySummarySpec}
         />
       )}
