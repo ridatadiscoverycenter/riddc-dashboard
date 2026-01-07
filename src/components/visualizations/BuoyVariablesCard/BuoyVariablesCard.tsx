@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import { DataGraph, DownloadBuoyData, GraphErrorPanel } from '@/components';
+import { DataGraph, GraphErrorPanel } from '@/components';
+import { DownloadBuoyData } from '@/components/DownloadBuoyData/DownloadBuoyData';
 import { BuoyVariables } from '@/components/visualizations/BuoyVariables';
 import type { WeatherData } from '@/utils/data';
 import type {
