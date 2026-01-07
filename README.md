@@ -37,4 +37,4 @@ npm run test
 
 ## Visualization
 
-Visualizations in this application are created with [Vega](https://vega.github.io/) and displayed using the [React Vega](https://www.npmjs.com/package/react-vega) library. All the visualizations are located in `src/components/visualizations`.
+Visualizations in this application are created with [VegaEmbed](https://vega.github.io/) and displayed using the [React VegaEmbed](https://www.npmjs.com/package/react-vega) library. All the visualizations are located in `src/components/visualizations`.

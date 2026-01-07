@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Vega, VisualizationSpec } from 'react-vega';
+import { VegaEmbed, VisualizationSpec } from 'react-vega';
 
 import type { OsomBuoyVariable, OsomSummary } from '@/utils/data/api/buoy';
 import { OSOM_VARIABLES } from '@/utils/data/api/buoy';
@@ -152,7 +152,7 @@ export function OsomBuoySummary({ data }: OsomBuoySummaryProps) {
           <Loading />
         </div>
       ) : (
-        <Vega
+        <VegaEmbed
           className="flex flex-col items-center justify-center"
           actions={false}
           spec={buoySummarySpec}

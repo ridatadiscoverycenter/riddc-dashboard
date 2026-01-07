@@ -10,7 +10,7 @@ import {
   FullBleedColumn,
   Header,
 } from '@/components';
-import { FishTrawlSummary } from '@/components/visualizations/Vega/';
+import { FishTrawlSummary } from '@/components/visualizations/VegaEmbed/';
 import {
   fetchCoordinates,
   fetchSamples,
