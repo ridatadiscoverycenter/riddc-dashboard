@@ -281,7 +281,7 @@ const DATASETS = [
     href: '/datasets/rhode-island-buoys',
     description: () => (
       <>
-        Collected over 16 years by the{' '}
+        Collected over 19 years by the{' '}
         <ExternalLink href="https://dem.ri.gov/environmental-protection-bureau/water-resources/research-monitoring/narraganset-bay-assessment-fixed-site-monitoring">
           Fixed-Site Monitoring Stations and Data in Narragansett Bay
         </ExternalLink>
@@ -306,6 +306,8 @@ const DATASETS = [
       </>
     ),
   },
+  // Page decomissioned until data is fixed.
+  /*
   {
     name: 'Real Time Data',
     href: '/datasets/real-time',
@@ -318,6 +320,7 @@ const DATASETS = [
       </>
     ),
   },
+  */
   {
     name: 'Ocean State Ocean Model',
     href: '/datasets/osom',
