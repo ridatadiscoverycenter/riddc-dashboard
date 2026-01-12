@@ -110,7 +110,6 @@ export function StreamGageMapGraph({
   >(
     (map, loaded) => {
       const { min, mid, max } = dataRange;
-      // selectedStreamDataGeoJson;
       map.current.addSource('stream-data', streamDataGeoJson);
       map.current.addSource('selected-stream-data', selectedStreamDataGeoJson);
       // Pink border around selected gages

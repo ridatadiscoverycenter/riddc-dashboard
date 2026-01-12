@@ -12,8 +12,6 @@ import {
   Tooltip,
   Legend,
   TimeScale,
-  // ChartTypeRegistry,
-  // ChartType,
 } from 'chart.js';
 
 import { formatDate } from 'date-fns';

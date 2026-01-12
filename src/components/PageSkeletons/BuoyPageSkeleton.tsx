@@ -59,6 +59,6 @@ export function DefaultBuoyPage({ description }: { description: React.ReactNode 
       map={<Loading />}
       summary={<Loading />}
       description={description}
-    ></BuoyPageSkeleton>
+    />
   );
 }
