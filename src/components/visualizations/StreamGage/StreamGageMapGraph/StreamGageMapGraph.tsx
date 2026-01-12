@@ -3,10 +3,9 @@
 import React from 'react';
 import { compareAsc, formatDate } from 'date-fns';
 
+import { StreamGageTimeSeries } from '../StreamGageTimeSeries';
 import { MapGraph } from '@/components';
 import { type StreamGageData } from '@/utils/data';
-
-import { StreamGageTimeSeries } from '../StreamGageTimeSeries';
 
 export function StreamGageMapGraph({
   streamData,
@@ -107,11 +106,10 @@ export function StreamGageMapGraph({
 
   const onLoad = React.useCallback<
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (map: React.MutableRefObject<any>, loaded: boolean) => () => void
+    (map: React.RefObject<any>, loaded: boolean) => () => void
   >(
     (map, loaded) => {
       const { min, mid, max } = dataRange;
-      selectedStreamDataGeoJson;
       map.current.addSource('stream-data', streamDataGeoJson);
       map.current.addSource('selected-stream-data', selectedStreamDataGeoJson);
       // Pink border around selected gages
@@ -186,7 +184,6 @@ export function StreamGageMapGraph({
         map.current.removeLayer('stream-gage-ids');
         map.current.removeLayer('stream-gage-selected');
         map.current.removeSource('selected-stream-data');
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         map.current.removeSource('stream-data');
       };
     },

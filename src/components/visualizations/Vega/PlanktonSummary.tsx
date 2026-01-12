@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
-import { Vega, VisualizationSpec } from 'react-vega';
+import { VegaEmbed } from 'react-vega';
+import type { VisualizationSpec } from 'vega-embed';
 
 import {
   PLANKTON_VARIABLES,
@@ -155,9 +156,9 @@ export function PlanktonSummary({ data }: PlanktonBuoySummaryProps) {
           <Loading />
         </div>
       ) : (
-        <Vega
+        <VegaEmbed
           className="flex flex-col items-center justify-center"
-          actions={false}
+          options={{ actions: false }}
           spec={buoySummarySpec}
         />
       )}

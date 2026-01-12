@@ -27,7 +27,8 @@ import {
   parseParamDate,
 } from '@/utils/fns';
 
-export default async function PlanktonBuoyData({ searchParams }: PageProps) {
+export default async function PlanktonBuoyData(props: PageProps) {
+  const searchParams = await props.searchParams;
   return (
     <React.Suspense fallback={<DefaultBuoyPage description={DESCRIPTION} />}>
       <PageWrapper params={searchParams} errorLinks={PLANKTON_ERROR_LINKS} />

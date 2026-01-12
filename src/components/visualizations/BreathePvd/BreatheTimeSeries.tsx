@@ -14,6 +14,7 @@ import {
   TimeScale,
 } from 'chart.js';
 
+import { formatDate } from 'date-fns';
 import {
   BreathePmData,
   BreathePmViewerVars,
@@ -22,7 +23,6 @@ import {
 } from '@/utils/data/api/breathe-pvd';
 import { useColorMode } from '@/hooks/useColorMode';
 import { groupBy } from '@/utils/fns';
-import { formatDate } from 'date-fns';
 
 ChartJS.register(
   TimeScale,
@@ -41,6 +41,7 @@ type BreatheTimeSeriesPropsHelper = {
   names: string[];
   variable: Vars;
 };
+
 type BreatheTimeSeriesProps<T extends Vars> = T extends 'co' | 'co2'
   ? BreatheTimeSeriesPropsHelper & { data: BreatheSensorData[] }
   : T extends 'pm'
@@ -107,11 +108,11 @@ export function BreatheTimeSeries<T extends Vars>({
       };
       const dataArray = Array.from(
         data
-          .filter((d) => (d as Record<string, any>)[variable as string] !== null)
+          .filter((d) => (d as Record<string, number | string | Date>)[variable as string] !== null)
           .map((d) => {
             return {
-              x: new Date((d as Record<string, any>).time),
-              y: (d as Record<string, any>)[variable],
+              x: new Date((d as Record<string, number | string | Date>).time),
+              y: (d as Record<string, number | string | Date>)[variable],
             };
           })
       );
@@ -137,6 +138,7 @@ export function BreatheTimeSeries<T extends Vars>({
   return (
     <Line
       data={{
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         datasets: dataGroups as any,
       }}
       options={{
@@ -158,7 +160,8 @@ export function BreatheTimeSeries<T extends Vars>({
             intersect: false,
             callbacks: {
               title: function (tooltipItems) {
-                return formatDate(tooltipItems[0].parsed.x, 'P p');
+                const parsed = tooltipItems[0].parsed;
+                return formatDate(parsed.x as number, 'P p');
               },
             },
           },

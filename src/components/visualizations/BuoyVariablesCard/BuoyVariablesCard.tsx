@@ -2,7 +2,9 @@
 
 import React from 'react';
 
-import { BuoyVariables, DataGraph, DownloadBuoyData, GraphErrorPanel } from '@/components';
+import { DataGraph, GraphErrorPanel } from '@/components';
+import { DownloadBuoyData } from '@/components/DownloadBuoyData/DownloadBuoyData';
+import { BuoyVariables } from '@/components/visualizations/BuoyVariables';
 import type { WeatherData } from '@/utils/data';
 import type {
   MaBuoyData,
@@ -60,7 +62,6 @@ export async function BuoyVariablesCard({
   }
 
   const weatherData = await weatherDataFetcher(params.start, params.end);
-
   return (
     <DataGraph
       description={description}

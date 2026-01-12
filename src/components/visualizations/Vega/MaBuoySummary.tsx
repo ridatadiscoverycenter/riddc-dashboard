@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
-import { Vega, VisualizationSpec } from 'react-vega';
+import { VegaEmbed } from 'react-vega';
+import type { VisualizationSpec } from 'vega-embed';
 
 import type { MaBuoySummaryData, MaBuoyVariable } from '@/utils/data/api/buoy';
 import { MA_BUOY_VARIABLES } from '@/utils/data/api/buoy';
@@ -150,9 +151,9 @@ export function MaBuoySummary({ data }: MaBuoySummaryProps) {
           <Loading />
         </div>
       ) : (
-        <Vega
+        <VegaEmbed
           className="flex flex-col items-center justify-center"
-          actions={false}
+          options={{ actions: false }}
           spec={buoySummarySpec}
         />
       )}

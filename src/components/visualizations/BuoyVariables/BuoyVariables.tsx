@@ -98,6 +98,7 @@ export function BuoyVariables({ data, dataset }: BuoyVariablesProps) {
       <Line
         data={{
           labels: dates.map((date) => formatDate(date, 'P')),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           datasets: dataGroups as any,
         }}
         options={{

@@ -1,10 +1,10 @@
 import React from 'react';
 import * as Headless from '@headlessui/react';
-import clsx from 'clsx';
-import { Link } from '@/components';
+import { clsx } from 'clsx';
 
 import { styles, type Color } from './styles';
 import { TouchTarget } from './TouchTarget';
+import { Link } from '@/components';
 
 export type ButtonProps = (
   | { color?: Color; outline?: never; plain?: never }

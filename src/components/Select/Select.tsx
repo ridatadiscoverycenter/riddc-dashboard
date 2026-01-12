@@ -30,6 +30,7 @@ export function Select({ label, options, forceLight = false, dataset, ...props }
     <Label label={label} forceLight={forceLight}>
       <ReactSelect
         {...props}
+        instanceId={React.useId()}
         options={formatted}
         unstyled
         classNames={{

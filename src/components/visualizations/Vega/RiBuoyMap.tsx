@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
-import { Vega, VisualizationSpec } from 'react-vega';
+import { VegaEmbed } from 'react-vega';
+import type { VisualizationSpec } from 'vega-embed';
 import { RiBuoyCoordinate } from '@/utils/data/api/buoy';
 
 import { RiGeoJson, RiGeoJsonOutlines } from '@/static/ri.geojson';
@@ -134,5 +135,5 @@ export function RiBuoyMap({ locations }: RiBuoyMapProps) {
         <Loading />
       </div>
     );
-  return <Vega actions={false} spec={buoyMapSpec} />;
+  return <VegaEmbed options={{ actions: false }} spec={buoyMapSpec} />;
 }
