@@ -232,6 +232,10 @@ export function StreamGageMapGraph({
             <span className="w-min">Today</span>
           </div>
         </div>
+        <p>
+          Add stream gages to a time-series plot by clicking on the circle. Open the time series
+          panel by clicking the arrow on the top right of the map.
+        </p>
         <div className="flex flex-col gap-1 w-full">
           <h3 className="text-base hidden md:inline">Legend:</h3>
           <div className={`w-full h-4 bg-gradient-to-r from-[#4f14da] to-[#99fee8]`} />
