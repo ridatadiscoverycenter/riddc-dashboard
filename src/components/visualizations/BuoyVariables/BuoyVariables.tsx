@@ -42,6 +42,13 @@ const LINE_COLOR_OPTIONS = [
   { border: 'rgba(156, 237, 80, 0.7)', background: 'rgba(156, 237, 80, 0.2)' },
 ];
 
+const SUPPLEMENTAL_LINE_COLOR_OPTIONS = [
+  { border: 'rgba(128, 11, 64, 0.7)', background: 'rgba(128, 11, 64, 0.2)' },
+  { border: 'rgba(45, 136, 26, 0.7)', background: 'rgba(45, 136, 26, 0.2)' },
+  { border: 'rgba(17, 117, 164, 0.7)', background: 'rgba(17, 117, 164, 0.2)' },
+  { border: 'rgba(77, 144, 15, 0.7)', background: 'rgba(77, 144, 15, 0.2)' },
+];
+
 type BuoyDataAbstract = {
   value: number | undefined;
   stationName: string;
@@ -52,54 +59,98 @@ type BuoyDataAbstract = {
 
 type BuoyVariablesProps = {
   data: BuoyDataAbstract[];
+  supplementalData: BuoyDataAbstract[];
   dataset: Dataset;
 };
 
-export function BuoyVariables({ data, dataset }: BuoyVariablesProps) {
-  const { dates, datasets } = React.useMemo(() => {
-    const sortedData = data.sort(({ time: time1 }, { time: time2 }) => compareAsc(time1, time2));
+function formatDatasets(data: BuoyDataAbstract[]) {
+  const sortedData = data.sort(({ time: time1 }, { time: time2 }) => compareAsc(time1, time2));
+  return {
+    dates: Array.from(new Set(sortedData.map(({ time }) => time.valueOf()))).map(
+      (dateValue) => new Date(dateValue)
+    ),
+    datasets: groupBy(sortedData, ({ variable, stationName }) => `${stationName}~${variable}`),
+  };
+}
+
+function generateDataGroups(
+  datasets: ReturnType<typeof formatDatasets>['datasets'],
+  buoys: string[],
+  vars: string[],
+  dates: Date[],
+  dataset: Dataset,
+  supplemental: boolean
+) {
+  const groups = Object.entries(datasets);
+  return groups.map(([key, data]) => {
+    const { color, dash } = getStylesForGroup(
+      vars,
+      buoys,
+      key as `${string}~${string}`,
+      supplemental
+    );
+    console.log({ color, dash });
+    const dataWithBlanks = Array.from(Array(dates.length), (_, i) => dates[i]).map(
+      (date) => data.find(({ time }) => time.valueOf() === date.valueOf())?.value
+    );
+    const [stationName, variable] = key.split('~');
+    const supplementalLabel = supplemental ? (dataset === 'osom' ? ' (Observed)' : ' (OSOM)') : '';
     return {
-      dates: Array.from(new Set(sortedData.map(({ time }) => time.valueOf()))).map(
-        (dateValue) => new Date(dateValue)
-      ),
-      datasets: groupBy(sortedData, ({ variable, stationName }) => `${stationName}~${variable}`),
+      label: `${stationName} ~ ${variableToLabel(variable, dataset)}${supplementalLabel}`,
+      data: dataWithBlanks,
+      borderColor: color.border,
+      backgroundColor: color.background,
+      cubicInterpolationMode: 'monotone',
+      borderDash: dash,
+      pointStyle: false,
     };
-  }, [data]);
+  });
+}
+
+export function BuoyVariables({ data, supplementalData, dataset }: BuoyVariablesProps) {
+  const [displaySupplemental, setDisplaySupplemental] = React.useState(true);
+  const { dates, datasets } = React.useMemo(() => formatDatasets(data), [data]);
+  const { dates: supplementalDates, datasets: supplementalDatasets } = React.useMemo(
+    () => formatDatasets(supplementalData),
+    [supplementalData]
+  );
+
+  const joinedDates = React.useMemo(
+    () =>
+      Array.from(
+        new Set(
+          dates
+            .map((date) => date.valueOf())
+            .concat(supplementalDates.map((date) => date.valueOf()))
+        )
+      )
+        .sort((valueA, valueB) => valueA - valueB)
+        .map((value) => new Date(value)),
+    [dates, supplementalDates]
+  );
 
   const buoysInPlot = React.useMemo(() => getBuoysFromDatasetList(datasets), [datasets]);
   const varsInPlot = React.useMemo(() => getVariablesFromDatasetList(datasets), [datasets]);
 
-  const dataGroups = React.useMemo(() => {
-    const group = Object.entries(datasets);
-    return group.map(([key, data]) => {
-      const { color, dash } = getStylesForGroup(
-        varsInPlot,
-        buoysInPlot,
-        key as `${string}~${string}`
-      );
-      const dataWithBlanks = Array.from(Array(dates.length), (_, i) => dates[i]).map(
-        (date) => data.find(({ time }) => time.valueOf() === date.valueOf())?.value
-      );
-      const [stationName, variable] = key.split('~');
-      return {
-        label: `${stationName} ~ ${variableToLabel(variable, dataset)}`,
-        data: dataWithBlanks,
-        borderColor: color.border,
-        backgroundColor: color.background,
-        cubicInterpolationMode: 'monotone',
-        borderDash: dash,
-        pointStyle: false,
-      };
-    });
-  }, [datasets, varsInPlot, buoysInPlot, dates, dataset]);
+  const dataGroups = React.useMemo(
+    () => generateDataGroups(datasets, buoysInPlot, varsInPlot, joinedDates, dataset, false),
+    [datasets, buoysInPlot, varsInPlot, joinedDates, dataset]
+  );
+  const supplementalDataGroups = React.useMemo(
+    () =>
+      generateDataGroups(supplementalDatasets, buoysInPlot, varsInPlot, joinedDates, dataset, true),
+    [supplementalDatasets, buoysInPlot, varsInPlot, joinedDates, dataset]
+  );
 
   return (
     <div className="h-80 w-full">
+      <button onClick={() => setDisplaySupplemental((c) => !c)}>view supplemental data</button>
       <Line
         data={{
           labels: dates.map((date) => formatDate(date, 'P')),
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          datasets: dataGroups as any,
+          datasets: dataGroups.concat(displaySupplemental ? supplementalDataGroups : []) as any,
+          //datasets: supplementalDataGroups as any, //dataGroups.concat(displaySupplemental ? supplementalDataGroups : []) as any,
         }}
         options={{
           responsive: true,
@@ -123,16 +174,19 @@ function getVariablesFromDatasetList(datasets: Record<string | number, BuoyDataA
 function getStylesForGroup(
   variables: string[],
   stationNames: string[],
-  key: `${string}~${string}`
+  key: `${string}~${string}`,
+  supplemental: boolean
 ) {
   const [stationNameInKey, variableInKey] = key.split('~');
   const stationNameIndex = stationNames.findIndex((name) => name === (stationNameInKey || ''));
   const variableIndex = variables.findIndex((variable) => variable === (variableInKey || ''));
   return {
     color:
-      stationNameIndex < 0 || stationNameIndex >= LINE_COLOR_OPTIONS.length
+      stationNameIndex < 0 ||
+      stationNameIndex >=
+        (!supplemental ? SUPPLEMENTAL_LINE_COLOR_OPTIONS : LINE_COLOR_OPTIONS).length
         ? { border: 'rgba(0, 0, 0, 0.5)', background: 'rgba(0, 0, 0, 0.2)' }
-        : LINE_COLOR_OPTIONS[stationNameIndex],
+        : (!supplemental ? SUPPLEMENTAL_LINE_COLOR_OPTIONS : LINE_COLOR_OPTIONS)[stationNameIndex],
     dash:
       variableIndex < 0 || variableIndex >= LINE_DASH_OPTIONS.length
         ? []
