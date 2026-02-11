@@ -67,6 +67,19 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
 
   React.useEffect(() => {
     if (loaded) {
+      map.current.addControl(
+        new maplibregl.NavigationControl({
+          showCompass: false,
+          showZoom: true,
+        })
+      );
+    }
+  }, [loaded]);
+
+  React.useEffect(() => {
+    if (loaded) {
+      // map.current.scrollZoom.disable();
+      map.current.cooperativeGestures.enable();
       map.current.addSource('da-stations', {
         type: 'geojson',
         data: {
@@ -215,25 +228,33 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
         </div>
       </section>
       <div className="w-full">
-        <input
-          title="Date"
-          type="range"
-          className="w-full"
-          aria-label="Date"
-          min={1}
-          max={sampleDates.length - 1}
-          step={1}
-          value={selectedDateIndex}
-          onChange={(evt) => setSelectedDate(evt.target.valueAsNumber)}
-          list="beep"
-        />
-
+        <div className="px-10">
+          <input
+            title="Date"
+            type="range"
+            className="flex justify-center justify-items-center justify-self-center w-full"
+            aria-label="Date"
+            min={1}
+            max={sampleDates.length - 1}
+            step={1}
+            value={selectedDateIndex}
+            onChange={(evt) => setSelectedDate(evt.target.valueAsNumber)}
+            list="beep"
+          />
+        </div>
         <datalist id="beep" className="flex flex-row w-full justify-between">
-          {[1, Math.ceil(sampleDates.length / 2), sampleDates.length].map((index) => (
+          {[
+            1,
+            Math.ceil(sampleDates.length / 4),
+            Math.ceil(sampleDates.length / 2),
+            Math.ceil((sampleDates.length * 3) / 4),
+            sampleDates.length,
+          ].map((index) => (
             <option
               key={index}
               value={index - 1}
               label={formatDate(sampleDates[index - 1], 'MM/dd/yyyy')}
+              className="justify-center"
             >
               {formatDate(sampleDates[index - 1], 'MM/dd/yyyy')}
             </option>
