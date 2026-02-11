@@ -234,7 +234,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
             type="range"
             className="flex justify-center justify-items-center justify-self-center w-full"
             aria-label="Date"
-            min={1}
+            min={0}
             max={sampleDates.length - 1}
             step={1}
             value={selectedDateIndex}
@@ -254,7 +254,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
               key={index}
               value={index - 1}
               label={formatDate(sampleDates[index - 1], 'MM/dd/yyyy')}
-              className="justify-center"
+              className="justify-center [writing-mode:vertical-lr] md:[writing-mode:horizontal-tb]"
             >
               {formatDate(sampleDates[index - 1], 'MM/dd/yyyy')}
             </option>
