@@ -228,11 +228,11 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
         </div>
       </section>
       <div className="w-full">
-        <div className="px-10">
+        <div className="px-1 sm:px-10">
           <input
             title="Date"
             type="range"
-            className="flex justify-center justify-items-center justify-self-center w-full"
+            className="flex justify-self-center w-full"
             aria-label="Date"
             min={0}
             max={sampleDates.length - 1}
@@ -254,7 +254,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
               key={index}
               value={index - 1}
               label={formatDate(sampleDates[index - 1], 'MM/dd/yyyy')}
-              className="justify-center [writing-mode:vertical-lr] md:[writing-mode:horizontal-tb]"
+              className="justify-center [writing-mode:vertical-lr] sm:[writing-mode:horizontal-tb]"
             >
               {formatDate(sampleDates[index - 1], 'MM/dd/yyyy')}
             </option>

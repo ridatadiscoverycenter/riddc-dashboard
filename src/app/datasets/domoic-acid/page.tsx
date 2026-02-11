@@ -13,10 +13,10 @@ export default async function DomoicAcid() {
       </Header>
       <p>
         This map on domoic acid concentrations in Narragansett Bay (NB) was generated from a
-        research project carried out at the University of Rhode Island by Co- Principal
-        Investigators Drs. Matthew Bertin and Bethany Jenkins and their research teams. This work
-        was funded by Rhode Island Sea Grant and the Rhode Island Consortium for Coastal Ecology
-        Assessment, Innovation, and Modeling (RI C-AIM).
+        research project carried out at the University of Rhode Island by Co-Principal Investigators
+        Drs. Matthew Bertin and Bethany Jenkins and their research teams. This work was funded by
+        Rhode Island Sea Grant and the Rhode Island Consortium for Coastal Ecology Assessment,
+        Innovation, and Modeling (RI C-AIM).
       </p>
       <DomoicAcidMap samples={samples} stations={stations} />
       <Header size="md">Background</Header>
