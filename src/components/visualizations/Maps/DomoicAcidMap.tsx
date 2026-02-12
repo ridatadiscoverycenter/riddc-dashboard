@@ -67,19 +67,6 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
 
   React.useEffect(() => {
     if (loaded) {
-      map.current.addControl(
-        new maplibregl.NavigationControl({
-          showCompass: false,
-          showZoom: true,
-        })
-      );
-    }
-  }, [loaded]);
-
-  React.useEffect(() => {
-    if (loaded) {
-      // map.current.scrollZoom.disable();
-      map.current.cooperativeGestures.enable();
       map.current.addSource('da-stations', {
         type: 'geojson',
         data: {
