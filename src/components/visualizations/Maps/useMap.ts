@@ -7,7 +7,7 @@ const BOUNDS: LngLatBoundsLike = [
   [-71.16, 41.32],
 ];
 
-export function useMap(bounds: LngLatBoundsLike = BOUNDS, cooperativeGestures: boolean = true) {
+export function useMap(bounds: LngLatBoundsLike = BOUNDS) {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = React.useRef<any>(null);
@@ -36,7 +36,7 @@ export function useMap(bounds: LngLatBoundsLike = BOUNDS, cooperativeGestures: b
       zoom: 8.5,
       maxZoom: 11,
       minZoom: 8,
-      cooperativeGestures: cooperativeGestures,
+      cooperativeGestures: true,
       attributionControl: false,
     });
     function setLoadedOnMapLoad() {

@@ -221,10 +221,10 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
             step={1}
             value={selectedDateIndex}
             onChange={(evt) => setSelectedDate(evt.target.valueAsNumber)}
-            list="beep"
+            list="date-list"
           />
         </div>
-        <datalist id="beep" className="flex flex-row w-full justify-between">
+        <datalist id="date-list" className="flex flex-row w-full justify-between">
           {[
             1,
             Math.ceil(sampleDates.length / 4),
