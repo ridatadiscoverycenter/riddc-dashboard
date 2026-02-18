@@ -31,11 +31,13 @@ export function useMap(bounds: LngLatBoundsLike = BOUNDS) {
       container: containerRef.current as any,
       style: `https://api.maptiler.com/maps/basic/style.json?key=${API_KEY}`,
       // More things can be set here, but I'll ignore them for now.
-      bounds: bounds,
+      bounds,
       center: [-71.4128, 41.584],
       zoom: 8.5,
       maxZoom: 11,
       minZoom: 8,
+      cooperativeGestures: true,
+      attributionControl: false,
     });
     function setLoadedOnMapLoad() {
       setLoaded(true);

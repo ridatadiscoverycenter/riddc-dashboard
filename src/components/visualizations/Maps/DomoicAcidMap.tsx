@@ -24,7 +24,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
     [samples]
   );
   const rangePDA = React.useMemo(
-    () => Array.from(new Set(samples.map(({ pDA }) => pDA))),
+    () => Array.from(new Set(samples.map(({ pDA }) => pDA))).sort((a, b) => a - b),
     [samples]
   );
   const rangeStations = React.useMemo(
@@ -137,9 +137,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
             'icon-size': 0.5,
           },
         });
-        map.current.on('click', () => {
-          popup.remove();
-        });
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         map.current.on('click', 'da-buoys', (e: any) => {
           const station = stations.find((station) => {
@@ -159,6 +157,12 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
             popup.addTo(map.current);
           }
         });
+        map.current.on('mouseenter', 'da-buoys', () => {
+          map.current.getCanvas().style.cursor = 'pointer';
+        });
+        map.current.on('mouseleave', 'da-buoys', () => {
+          map.current.getCanvas().style.cursor = '';
+        });
       };
 
       return () => {
@@ -174,12 +178,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
     <>
       <section className="full-bleed w-full min-h-[70vh] relative p-0 my-0">
         <div ref={containerRef} className="absolute w-full h-full" />
-        {/* MD - Date Icon */}
-        <div className="md:hidden absolute top-[10%] left-8 bg-white/75 dark:bg-slate-800/75 flex text-lg font-bold p-4 rounded-md drop-shadow-md w-[225px]">
-          <h2>{formatDate(selectedDate, 'MM/dd/yyyy')}</h2>
-        </div>
-        {/* LG - Buoy List */}
-        <div className="hidden md:flex flex-col absolute top-[10%] left-8 h-[80%] bg-white/75 dark:bg-slate-800/75 p-4 rounded-md w-[225px] overflow-clip">
+        <div className="flex flex-col absolute top-[3%] left-3 h-[40%] md:top-[8%] md:left-8 md:max-h-[80%] md:h-fit bg-white/90 dark:bg-slate-800/90 p-4 rounded-md w-[225px] overflow-auto">
           <h2 className="text-lg font-bold">{formatDate(selectedDate, 'MM/dd/yyyy')}</h2>
           <ul className="flex flex-col gap-2">
             {rangeStations.map((stationName) => {
@@ -215,25 +214,33 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
         </div>
       </section>
       <div className="w-full">
-        <input
-          title="Date"
-          type="range"
-          className="w-full"
-          aria-label="Date"
-          min={1}
-          max={sampleDates.length - 1}
-          step={1}
-          value={selectedDateIndex}
-          onChange={(evt) => setSelectedDate(evt.target.valueAsNumber)}
-          list="beep"
-        />
-
-        <datalist id="beep" className="flex flex-row w-full justify-between">
-          {[1, Math.ceil(sampleDates.length / 2), sampleDates.length].map((index) => (
+        <div className="px-1 sm:px-10">
+          <input
+            title="Date"
+            type="range"
+            className="flex justify-self-center w-full"
+            aria-label="Date"
+            min={0}
+            max={sampleDates.length - 1}
+            step={1}
+            value={selectedDateIndex}
+            onChange={(evt) => setSelectedDate(evt.target.valueAsNumber)}
+            list="date-list"
+          />
+        </div>
+        <datalist id="date-list" className="flex flex-row w-full justify-between">
+          {[
+            1,
+            Math.ceil(sampleDates.length / 4),
+            Math.ceil(sampleDates.length / 2),
+            Math.ceil((sampleDates.length * 3) / 4),
+            sampleDates.length,
+          ].map((index) => (
             <option
               key={index}
               value={index - 1}
-              label={formatDate(sampleDates[index - 1], 'MM/dd/yyyy')}
+              label={formatDate(sampleDates[index - 1], 'MMM yyyy')}
+              className="justify-center [writing-mode:vertical-lr] sm:[writing-mode:horizontal-tb]"
             >
               {formatDate(sampleDates[index - 1], 'MM/dd/yyyy')}
             </option>

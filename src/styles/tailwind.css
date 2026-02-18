@@ -3,5 +3,6 @@
 @tailwind utilities;
 
 .maplibregl-popup-close-button {
-  color: black;
+    color: black;
+    padding-inline: 5;
 }
