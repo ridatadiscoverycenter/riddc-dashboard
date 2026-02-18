@@ -24,7 +24,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
     [samples]
   );
   const rangePDA = React.useMemo(
-    () => Array.from(new Set(samples.map(({ pDA }) => pDA))),
+    () => Array.from(new Set(samples.map(({ pDA }) => pDA))).sort((a, b) => a - b),
     [samples]
   );
   const rangeStations = React.useMemo(
@@ -159,6 +159,9 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
         });
         map.current.on('mouseenter', 'da-buoys', () => {
           map.current.getCanvas().style.cursor = 'pointer';
+        });
+        map.current.on('mouseleave', 'da-buoys', () => {
+          map.current.getCanvas().style.cursor = '';
         });
       };
 
