@@ -406,6 +406,6 @@ const EXTERNAL_RESOURCES = [
     name: 'RIDDC Data Articles',
     description:
       'Articles and jupyter notebooks with stories, exploratory data analyses, and code examples using data stored in ERDDAP.',
-    href: 'https://riddc-jupyter-book.web.app/notebooks/fox-kemper/first_example_aquarius.html',
+    href: 'https://riddc-jupyter-book.web.app/',
   },
 ];
