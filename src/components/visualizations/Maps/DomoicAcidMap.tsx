@@ -137,9 +137,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
             'icon-size': 0.5,
           },
         });
-        map.current.on('click', () => {
-          popup.remove();
-        });
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         map.current.on('click', 'da-buoys', (e: any) => {
           const station = stations.find((station) => {
@@ -158,6 +156,9 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
             );
             popup.addTo(map.current);
           }
+        });
+        map.current.on('mouseenter', 'da-buoys', () => {
+          map.current.getCanvas().style.cursor = 'pointer';
         });
       };
 
