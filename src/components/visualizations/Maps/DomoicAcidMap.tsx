@@ -62,7 +62,6 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
         })),
     [samples, selectedDate, stations]
   );
-
   const popup = React.useMemo(() => new maplibregl.Popup(), []);
 
   React.useEffect(() => {
@@ -152,11 +151,19 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
             );
             popup.setLngLat(e.lngLat);
             popup.setHTML(
-              `<div style="display: flex; flex-flow: column; gap: 2px;"><h3 style="color: black; font-weight: bold">${station.stationName}</h3>${sample === undefined ? '' : `<p style="color: black">${Math.round(sample.properties.pDA * 1000) / 1000} ng of DA / L</p>`}</div>`
+              `<div style="display: flex; flex-flow: column; gap: 2px;"><h3 style="color: black; font-weight: bold">${station.stationName}</h3><p style="color: black">${formatDate(selectedDate, 'MMM yyyy')}</p>${sample === undefined ? '' : `<p style="color: black">${Math.round(sample.properties.pDA * 1000) / 1000} ng of DA / L</p>`}</div>`
             );
             popup.addTo(map.current);
+            popup.getElement().id = station.stationName;
           }
         });
+        if (popup.isOpen()) {
+          const station = popup.getElement().id;
+          const sample = samplesAtDate.find((sample) => sample.properties.stationName === station);
+          popup.setHTML(
+            `<div style="display: flex; flex-flow: column; gap: 2px;"><h3 style="color: black; font-weight: bold">${station}</h3><p style="color: black">${formatDate(selectedDate, 'MMM yyyy')}</p>${sample === undefined ? 'No Data' : `<p style="color: black">${Math.round(sample.properties.pDA * 1000) / 1000} ng of DA / L</p>`}</div>`
+          );
+        }
         map.current.on('mouseenter', 'da-buoys', () => {
           map.current.getCanvas().style.cursor = 'pointer';
         });
