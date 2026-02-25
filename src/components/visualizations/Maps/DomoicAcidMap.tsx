@@ -14,7 +14,9 @@ type DomoicAcidMapProps = {
 };
 
 export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
-  stations = stations.filter(({ stationName }) => stationName !== 'GSO time');
+  stations = stations.filter(
+    ({ stationName }) => stationName !== 'GSO time' && stationName !== 'DEM-6Q-4'
+  );
   const { map, loaded, containerRef } = useMap();
 
   const sampleDates = React.useMemo(
@@ -106,10 +108,10 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
     if (loaded && markers) {
       markers.map((marker) => {
         const sample = samplesAtDate.find((sample) => sample.properties.stationName == marker.name);
-        const popup = new maplibregl.Popup({ offset: 25 }).setHTML(
+        const isOpen = marker.marker.getPopup().isOpen();
+        const popup = new maplibregl.Popup({ offset: 25, focusAfterOpen: !isOpen }).setHTML(
           `<div style="display: flex; flex-flow: column; gap: 2px;"><h3 style="color: black; font-weight: bold">${marker.name}</h3>${sample === undefined ? 'No Data' : `<p style="color: black">${Math.round(sample.properties.pDA * 1000) / 1000} ng of DA / L</p>`}</div>`
         );
-        const isOpen = marker.marker.getPopup().isOpen();
         // const popup = marker.marker.getPopup().setText('updated');
         marker.marker.setPopup(popup).addTo(map.current);
         // console.log(popup.isOpen());
