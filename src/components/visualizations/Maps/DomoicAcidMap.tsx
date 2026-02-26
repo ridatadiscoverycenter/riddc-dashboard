@@ -112,38 +112,10 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
         const popup = new maplibregl.Popup({ offset: 25, focusAfterOpen: !isOpen }).setHTML(
           `<div style="display: flex; flex-flow: column; gap: 2px;"><h3 style="color: black; font-weight: bold">${marker.name}</h3>${sample === undefined ? 'No Data' : `<p style="color: black">${Math.round(sample.properties.pDA * 1000) / 1000} ng of DA / L</p>`}</div>`
         );
-        // const popup = marker.marker.getPopup().setText('updated');
         marker.marker.setPopup(popup).addTo(map.current);
-        // console.log(popup.isOpen());
         if (isOpen) marker.marker.togglePopup();
-        // isOpen && popup.fire(new Event('open'));
-        // .setPopup(
-        //   marker.popup.setHTML(
-        //     `<div style="display: flex; flex-flow: column; gap: 2px;"><h3 style="color: black; font-weight: bold">${marker.name}</h3>${sample === undefined ? 'No Data' : `<p style="color: black">${Math.round(sample.properties.pDA * 1000) / 1000} ng of DA / L</p>`}</div>`
-        //   )
-        // )
-        // .addTo(map.current);
       });
-
-      //     popup.setHTML(
-      //       `<div style="display: flex; flex-flow: column; gap: 2px;"><h3 style="color: black; font-weight: bold">${marker.properties.name}</h3>${sample === undefined ? 'No Data' : `<p style="color: black">${Math.round(sample.properties.pDA * 1000) / 1000} ng of DA / L</p>`}</div>`
-      //     );
-      //     const el = new Image(25, 25);
-      //     el.src = buoyImg.src;
-      //     el.id = 'marker';
-
-      //     // add marker to map
-      //     new maplibregl.Marker({ element: el })
-      //       .setLngLat(marker.geometry.coordinates)
-      //       .setPopup(popup)
-      //       .addTo(map.current);
-      //   });
-      // };
-      // buoyImg.src = buoymarker.src;
     }
-    return () => {
-      // map.current.removeSource('da-stations');
-    };
   }, [loaded, samplesAtDate, selectedDate]);
 
   React.useEffect(() => {
