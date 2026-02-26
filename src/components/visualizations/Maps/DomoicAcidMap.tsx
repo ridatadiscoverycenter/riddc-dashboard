@@ -113,6 +113,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
           `<div style="display: flex; flex-flow: column; gap: 2px;"><h3 style="color: black; font-weight: bold">${marker.name}</h3>${sample === undefined ? 'No Data' : `<p style="color: black">${Math.round(sample.properties.pDA * 1000) / 1000} ng of DA / L</p>`}</div>`
         );
         marker.marker.setPopup(popup).addTo(map.current);
+        // If the popup was open, reopen so it seems persistent
         if (isOpen) marker.marker.togglePopup();
       });
     }
