@@ -14,6 +14,9 @@ type DomoicAcidMapProps = {
 };
 
 export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
+  stations = stations.filter(
+    ({ stationName }) => stationName !== 'GSO time' && stationName !== 'DEM-6Q-4'
+  );
   const { map, loaded, containerRef } = useMap();
 
   const sampleDates = React.useMemo(
@@ -63,7 +66,56 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
     [samples, selectedDate, stations]
   );
 
-  const popup = React.useMemo(() => new maplibregl.Popup(), []);
+  const buoyGeojson = React.useMemo(() => {
+    return {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: stations.map((station) => ({
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: { lng: station.longitude, lat: station.latitude },
+          },
+          properties: {
+            name: station.stationName,
+          },
+        })),
+      },
+    };
+  }, [loaded]);
+
+  const markers = React.useMemo(() => {
+    if (loaded) {
+      const markers = buoyGeojson.data.features.map((point) => {
+        const el = new Image(25, 25);
+        el.src = buoymarker.src;
+        el.id = point.properties.name;
+        const popup = new maplibregl.Popup({ offset: 25 });
+        const marker = new maplibregl.Marker({ element: el })
+          .setLngLat(point.geometry.coordinates)
+          .setPopup(popup)
+          .addTo(map.current);
+        return { marker, el, name: point.properties.name };
+      });
+      return markers;
+    }
+  }, [loaded]);
+
+  React.useEffect(() => {
+    if (loaded && markers) {
+      markers.map((marker) => {
+        const sample = samplesAtDate.find((sample) => sample.properties.stationName == marker.name);
+        const isOpen = marker.marker.getPopup().isOpen();
+        const popup = new maplibregl.Popup({ offset: 25, focusAfterOpen: !isOpen }).setHTML(
+          `<div style="display: flex; flex-flow: column; gap: 2px;"><h3 style="color: black; font-weight: bold">${marker.name}</h3>${sample === undefined ? 'No Data' : `<p style="color: black">${Math.round(sample.properties.pDA * 1000) / 1000} ng of DA / L</p>`}</div>`
+        );
+        marker.marker.setPopup(popup).addTo(map.current);
+        // If the popup was open, reopen so it seems persistent
+        if (isOpen) marker.marker.togglePopup();
+      });
+    }
+  }, [loaded, samplesAtDate, selectedDate]);
 
   React.useEffect(() => {
     if (loaded) {
@@ -90,6 +142,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
           features: samplesAtDate,
         },
       });
+
       const minVar = Math.min(...rangePDA);
       const maxVar = Math.max(...rangePDA);
       const midVar = (maxVar + minVar) / 2;
@@ -124,56 +177,13 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
         },
       });
 
-      const buoyImg = new Image(45, 45);
-      buoyImg.src = buoymarker.src;
-      buoyImg.onload = () => {
-        map.current.addImage('buoy-marker', buoyImg);
-        map.current.addLayer({
-          id: 'da-buoys',
-          type: 'symbol',
-          source: 'da-stations',
-          layout: {
-            'icon-image': 'buoy-marker',
-            'icon-size': 0.5,
-          },
-        });
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        map.current.on('click', 'da-buoys', (e: any) => {
-          const station = stations.find((station) => {
-            const { lng, lat } = e.lngLat;
-            const lngDiff = Math.abs(station.longitude - lng);
-            const latDiff = Math.abs(station.latitude - lat);
-            return lngDiff <= 0.005 && latDiff <= 0.005;
-          });
-          if (station) {
-            const sample = samplesAtDate.find(
-              (sample) => sample.properties.stationName === station.stationName
-            );
-            popup.setLngLat(e.lngLat);
-            popup.setHTML(
-              `<div style="display: flex; flex-flow: column; gap: 2px;"><h3 style="color: black; font-weight: bold">${station.stationName}</h3>${sample === undefined ? '' : `<p style="color: black">${Math.round(sample.properties.pDA * 1000) / 1000} ng of DA / L</p>`}</div>`
-            );
-            popup.addTo(map.current);
-          }
-        });
-        map.current.on('mouseenter', 'da-buoys', () => {
-          map.current.getCanvas().style.cursor = 'pointer';
-        });
-        map.current.on('mouseleave', 'da-buoys', () => {
-          map.current.getCanvas().style.cursor = '';
-        });
-      };
-
       return () => {
         map.current.removeLayer('da-circles');
-        map.current.removeLayer('da-buoys');
         map.current.removeSource('da-samples');
         map.current.removeSource('da-stations');
-        map.current.removeImage('buoy-marker');
       };
     }
-  }, [map, loaded, samples, stations, selectedDate, rangePDA, popup, samplesAtDate]);
+  }, [map, loaded, samples, stations, selectedDate, rangePDA, samplesAtDate]);
   return (
     <>
       <section className="full-bleed w-full min-h-[70vh] relative p-0 my-0">
