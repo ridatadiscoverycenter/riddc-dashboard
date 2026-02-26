@@ -88,12 +88,10 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
   const markers = React.useMemo(() => {
     if (loaded) {
       const markers = buoyGeojson.data.features.map((point) => {
-        console.log(point.properties);
         const el = new Image(25, 25);
         el.src = buoymarker.src;
         el.id = point.properties.name;
         const popup = new maplibregl.Popup({ offset: 25 });
-        popup.setHTML('<p>placeholder</p>');
         const marker = new maplibregl.Marker({ element: el })
           .setLngLat(point.geometry.coordinates)
           .setPopup(popup)
