@@ -5,6 +5,7 @@ import {
   fetchBuoyCoordinates,
   fetchBuoyVariables,
   fetchBuoyTimeRange,
+  fetchSummaryMeanData,
 } from './buoy';
 
 export const RI_BUOY_VARIABLES = [
@@ -188,6 +189,138 @@ export async function fetchRiSummaryData(bustCache = false) {
     throw new Error('Invalid data received when fetching RI Buoy Summary Data.');
   }
 }
+
+/**
+ * Buoy Summary Mean
+ */
+
+export async function fetchRiSummaryMeanData(bustCache = false) {
+  const fetchedRiSummaryMeanData = await fetchSummaryMeanData('ri-buoy', bustCache);
+  if (validateFetchedRiBuoySummaryMeanData(fetchedRiSummaryMeanData)) {
+    return fetchedRiSummaryMeanData.map(formatRiSummaryMeanData).flat();
+  } else {
+    throw new Error('Invalid data received when fetching RI Buoy Summary Mean Data.');
+  }
+}
+
+export type FetchedRiSummaryMeanData = {
+  O2PercentSurface: number | null;
+  O2PercentBottom: number | null;
+  depth: number | null;
+  SalinityBottom: number | null;
+  pHBottom: number | null;
+  DepthBottom: number | null;
+  TurbidityBottom: number | null;
+  ChlorophyllSurface: number | null;
+  pHSurface: number | null;
+  SpCondSurface: number | null;
+  SpCondBottom: number | null;
+  FSpercentSurface: number | null;
+  WaterTempBottom: number | null;
+  O2Surface: number | null;
+  O2Bottom: number | null;
+  WaterTempSurface: number | null;
+  SalinitySurface: number | null;
+  DensitySurface: number | null;
+  DensityBottom: number | null;
+  station_name: string;
+  time: string;
+  buoyId: string;
+};
+
+const ZodFetchedRiSummaryMeanData = z.object({
+  O2PercentSurface: z.union([z.number(), z.null()]),
+  O2PercentBottom: z.union([z.number(), z.null()]),
+  depth: z.union([z.number(), z.null()]),
+  SalinityBottom: z.union([z.number(), z.null()]),
+  pHBottom: z.union([z.number(), z.null()]),
+  DepthBottom: z.union([z.number(), z.null()]),
+  TurbidityBottom: z.union([z.number(), z.null()]),
+  ChlorophyllSurface: z.union([z.number(), z.null()]),
+  pHSurface: z.union([z.number(), z.null()]),
+  SpCondSurface: z.union([z.number(), z.null()]),
+  SpCondBottom: z.union([z.number(), z.null()]),
+  FSpercentSurface: z.union([z.number(), z.null()]),
+  WaterTempBottom: z.union([z.number(), z.null()]),
+  O2Surface: z.union([z.number(), z.null()]),
+  O2Bottom: z.union([z.number(), z.null()]),
+  WaterTempSurface: z.union([z.number(), z.null()]),
+  SalinitySurface: z.union([z.number(), z.null()]),
+  DensitySurface: z.union([z.number(), z.null()]),
+  DensityBottom: z.union([z.number(), z.null()]),
+  station_name: z.string(),
+  time: z.string().datetime(),
+  buoyId: z.string(),
+});
+
+function validateFetchedRiBuoySummaryMeanData(
+  summary: unknown[]
+): summary is FetchedRiSummaryData[] {
+  try {
+    z.array(ZodFetchedRiSummaryMeanData).parse(summary);
+    return true;
+  } catch (ex) {
+    return false;
+  }
+}
+
+function formatRiSummaryMeanData(fetchedData: FetchedRiSummaryData) {
+  const { station_name, time, buoyId } = fetchedData;
+  const MEAN_VARS = [
+    'O2PercentSurface',
+    'O2PercentBottom',
+    'DepthBottom',
+    'depth',
+    'pHBottom',
+    'pHSurface',
+    'SpCondSurface',
+    'SpCondBottom',
+    'WaterTempBottom',
+    'WaterTempSurface',
+    'O2Surface',
+    'O2Bottom',
+    'SalinityBottom',
+    'SalinitySurface',
+    'DensitySurface',
+    'DensityBottom',
+    'TurbidityBottom',
+    'ChlorophyllSurface',
+    'FSpercentSurface',
+  ];
+  return MEAN_VARS.map((variableName) => ({
+    stationName: station_name,
+    time: new Date(time),
+    buoyId,
+    variable: variableName,
+    value: (fetchedData as unknown as Record<string, number | null>)[variableName],
+  }));
+  /*return {
+    stationName: fetchedData.station_name,
+    time: new Date(fetchedData.time),
+    buoyId: fetchedData.buoyId,
+    O2PercentSurface: fetchedData.O2PercentSurface,
+    O2PercentBottom: fetchedData.O2PercentBottom,
+    DepthBottom: fetchedData.DepthBottom,
+    depth: fetchedData.depth,
+    pHBottom: fetchedData.pHBottom,
+    pHSurface: fetchedData.pHSurface,
+    SpCondSurface: fetchedData.SpCondSurface,
+    SpCondBottom: fetchedData.SpCondBottom,
+    WaterTempBottom: fetchedData.WaterTempBottom,
+    WaterTempSurface: fetchedData.WaterTempSurface,
+    O2Surface: fetchedData.O2Surface,
+    O2Bottom: fetchedData.O2Bottom,
+    SalinityBottom: fetchedData.SalinityBottom,
+    SalinitySurface: fetchedData.SalinitySurface,
+    DensitySurface: fetchedData.DensitySurface,
+    DensityBottom: fetchedData.DensityBottom,
+    TurbidityBottom: fetchedData.TurbidityBottom,
+    ChlorophyllSurface: fetchedData.ChlorophyllSurface,
+    FSpercentSurface: fetchedData.FSpercentSurface,
+  };*/
+}
+
+export type RiBuoySummaryMeanData = ReturnType<typeof formatRiSummaryMeanData>[number];
 
 /**
  * Buoy Coordinates

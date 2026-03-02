@@ -8,6 +8,12 @@ export async function fetchSummaryData(configName: DatasetConfigName, bustCache 
   return await erddapAPIGet<unknown[]>(`${config.route}/summary${bustCacheParam}`);
 }
 
+export async function fetchSummaryMeanData(configName: DatasetConfigName, bustCache = false) {
+  const config = getConfig(configName);
+  const bustCacheParam = bustCache ? `?cacheBust=${Math.random()}` : '';
+  return await erddapAPIGet<unknown[]>(`${config.route}/summary-mean${bustCacheParam}`);
+}
+
 export async function fetchBuoyCoordinates(configName: DatasetConfigName) {
   const config = getConfig(configName);
   return await erddapAPIGet<unknown[]>(`/${config.route}/coordinates`);
