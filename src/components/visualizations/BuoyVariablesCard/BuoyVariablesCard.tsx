@@ -60,9 +60,6 @@ export async function BuoyVariablesCard({
     supplementalData: supplementalDataFetcher(params.buoys, params.vars, params.start, params.end),
   });
 
-  //const buoyData = await buoyDataFetcher(params.buoys, params.vars, params.start, params.end);
-  //const supplementalData = await ;
-
   // If no data was found, display an error.
   if (buoyData.length === 0) {
     return (
