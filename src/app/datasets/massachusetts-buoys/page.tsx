@@ -14,7 +14,10 @@ import {
   fetchMaBuoyCoordinates,
   fetchMaBuoyData,
   fetchMaSummaryData,
+  fetchOsomBuoyData,
   MaBuoyVariable,
+  OSOM_VARIABLES,
+  OsomBuoyVariable,
 } from '@/utils/data/api/buoy';
 import {
   ERROR_CODES,
@@ -72,6 +75,11 @@ async function PageWrapper({
           errorLinks={errorLinks}
           buoyDataFetcher={(ids, vars, start, end) =>
             fetchMaBuoyData(ids, vars as MaBuoyVariable[], start, end)
+          }
+          supplementalDataFetcher={(ids, vars, start, end) =>
+            vars.every((v) => OSOM_VARIABLES.includes(v as OsomBuoyVariable))
+              ? fetchOsomBuoyData(ids, vars as OsomBuoyVariable[], start, end)
+              : Promise.resolve([])
           }
           dataset="ma"
           weatherDataFetcher={fetchWeatherData}

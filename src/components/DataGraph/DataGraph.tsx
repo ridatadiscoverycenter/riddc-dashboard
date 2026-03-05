@@ -15,7 +15,7 @@ export function DataGraph({
   return (
     <>
       <p className="text-black">{description}</p>
-      <div className="flex-1 flex flex-col justify-start items-start w-full">
+      <div className="flex-1 flex flex-col justify-start items-stretch w-full">
         {children}
         <WeatherHistory data={weather} />
       </div>
