@@ -16,13 +16,8 @@ import {
   fetchRiBuoyCoordinates,
   fetchRiBuoyData,
   fetchRiSummaryData,
-  MaBuoyData,
   OSOM_VARIABLES,
-  OsomBuoyData,
   OsomBuoyVariable,
-  PlanktonData,
-  RealTimeBuoyData,
-  RiBuoyData,
   type RiBuoyVariable,
 } from '@/utils/data/api/buoy';
 import {

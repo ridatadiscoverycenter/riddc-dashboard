@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { compareAsc, formatDate } from 'date-fns';
+import { closestIndexTo, compareAsc, eachDayOfInterval, formatDate, max, min } from 'date-fns';
 import { Line } from 'react-chartjs-2';
 import {
   BarController,
@@ -89,15 +89,26 @@ function generateDataGroups(
       key as `${string}~${string}`,
       supplemental
     );
-    console.log({ color, dash });
-    const dataWithBlanks = Array.from(Array(dates.length), (_, i) => dates[i]).map(
-      (date) => data.find(({ time }) => time.valueOf() === date.valueOf())?.value
-    );
+    // Create an empty array of length `dates`.
+    const dataWithBlanks = Array.from(dates, () => undefined) as Array<number | undefined>;
+    // For each data point, match it to the closest date index.
+    data.forEach(({ time, value }) => {
+      const idx = closestIndexTo(time, dates);
+      // Only set values if value is non-undefined and there was a matched index.
+      if (value !== undefined && idx !== undefined) {
+        if (dataWithBlanks[idx] !== undefined) {
+          // If multiple values match to the same date, average them together.
+          dataWithBlanks[idx] = (dataWithBlanks[idx] + value) / 2;
+        } else {
+          dataWithBlanks[idx] = value;
+        }
+      }
+    });
     const [stationName, variable] = key.split('~');
     const supplementalLabel = supplemental ? (dataset === 'osom' ? ' (Observed)' : ' (OSOM)') : '';
     return {
       label: `${stationName} ~ ${variableToLabel(variable, dataset)}${supplementalLabel}`,
-      data: dataWithBlanks,
+      data: supplemental ? dataWithBlanks.filter((d) => d !== undefined) : dataWithBlanks, //dataWithBlanks,
       borderColor: color.border,
       backgroundColor: color.background,
       cubicInterpolationMode: 'monotone',
@@ -117,16 +128,11 @@ export function BuoyVariables({ data, supplementalData, dataset }: BuoyVariables
 
   const joinedDates = React.useMemo(
     () =>
-      Array.from(
-        new Set(
-          dates
-            .map((date) => date.valueOf())
-            .concat(supplementalDates.map((date) => date.valueOf()))
-        )
-      )
-        .sort((valueA, valueB) => valueA - valueB)
-        .map((value) => new Date(value)),
-    [dates, supplementalDates]
+      eachDayOfInterval({
+        start: displaySupplemental ? min([min(dates), min(supplementalDates)]) : min(dates),
+        end: displaySupplemental ? max([max(dates), max(supplementalDates)]) : max(dates),
+      }),
+    [dates, supplementalDates, displaySupplemental]
   );
 
   const buoysInPlot = React.useMemo(() => getBuoysFromDatasetList(datasets), [datasets]);
@@ -143,21 +149,30 @@ export function BuoyVariables({ data, supplementalData, dataset }: BuoyVariables
   );
 
   return (
-    <div className="h-80 w-full">
-      <button onClick={() => setDisplaySupplemental((c) => !c)}>view supplemental data</button>
-      <Line
-        data={{
-          labels: dates.map((date) => formatDate(date, 'P')),
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          datasets: dataGroups.concat(displaySupplemental ? supplementalDataGroups : []) as any,
-          //datasets: supplementalDataGroups as any, //dataGroups.concat(displaySupplemental ? supplementalDataGroups : []) as any,
-        }}
-        options={{
-          responsive: true,
-          maintainAspectRatio: false,
-        }}
-      />
-    </div>
+    <>
+      <div className="flex flex-row justify-start items-center gap-2 p-2 rounded-md text-black text-sm bg-black/10">
+        <span>{dataset === 'osom' ? 'Historical ' : 'Model '}data matches your query.</span>
+        <button
+          className="rounded-md bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 text-white px-2 p-1"
+          onClick={() => setDisplaySupplemental((view) => !view)}
+        >
+          {displaySupplemental ? 'Remove from ' : 'Add to '}Plot
+        </button>
+      </div>
+      <div className="h-80 w-full">
+        <Line
+          data={{
+            labels: joinedDates.map((date) => formatDate(date, 'P')),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            datasets: dataGroups.concat(displaySupplemental ? supplementalDataGroups : []) as any,
+          }}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+          }}
+        />
+      </div>
+    </>
   );
 }
 
@@ -184,9 +199,9 @@ function getStylesForGroup(
     color:
       stationNameIndex < 0 ||
       stationNameIndex >=
-        (!supplemental ? SUPPLEMENTAL_LINE_COLOR_OPTIONS : LINE_COLOR_OPTIONS).length
+        (supplemental ? SUPPLEMENTAL_LINE_COLOR_OPTIONS : LINE_COLOR_OPTIONS).length
         ? { border: 'rgba(0, 0, 0, 0.5)', background: 'rgba(0, 0, 0, 0.2)' }
-        : (!supplemental ? SUPPLEMENTAL_LINE_COLOR_OPTIONS : LINE_COLOR_OPTIONS)[stationNameIndex],
+        : (supplemental ? SUPPLEMENTAL_LINE_COLOR_OPTIONS : LINE_COLOR_OPTIONS)[stationNameIndex],
     dash:
       variableIndex < 0 || variableIndex >= LINE_DASH_OPTIONS.length
         ? []
