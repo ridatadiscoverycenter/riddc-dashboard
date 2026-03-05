@@ -72,6 +72,7 @@ async function PageWrapper({
           buoyDataFetcher={(ids, vars, start, end) =>
             fetchPlanktonData(ids, vars as PlanktonVariable[], start, end)
           }
+          supplementalDataFetcher={() => Promise.resolve([])}
           dataset="plankton"
           weatherDataFetcher={fetchWeatherData}
           description={
