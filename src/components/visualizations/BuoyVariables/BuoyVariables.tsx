@@ -16,7 +16,7 @@ import {
   TimeScale,
 } from 'chart.js';
 
-import { groupBy } from '@/utils/fns';
+import { groupBy, makeCommaSepList } from '@/utils/fns';
 import { variableToLabel } from '@/utils/data/shared/variableConverter';
 import { Dataset } from '@/utils/data/api/buoy/types';
 
@@ -53,9 +53,10 @@ type BuoyDataAbstract = {
 type BuoyVariablesProps = {
   data: BuoyDataAbstract[];
   dataset: Dataset;
+  describedBy?: string;
 };
 
-export function BuoyVariables({ data, dataset }: BuoyVariablesProps) {
+export function BuoyVariables({ data, dataset, describedBy }: BuoyVariablesProps) {
   const { dates, datasets } = React.useMemo(() => {
     const sortedData = data.sort(({ time: time1 }, { time: time2 }) => compareAsc(time1, time2));
     return {
@@ -93,9 +94,17 @@ export function BuoyVariables({ data, dataset }: BuoyVariablesProps) {
     });
   }, [datasets, varsInPlot, buoysInPlot, dates, dataset]);
 
+  const label = React.useMemo(
+    () =>
+      `A line plot displaying historical data from ${buoysInPlot.length} buoy${buoysInPlot.length === 1 ? '' : 's'}. The X axis contains dates from ${dates[0].toISOString()} to ${dates[dates.length - 1].toISOString()}, and the Y axis shows ${makeCommaSepList(varsInPlot)} data.`,
+    [buoysInPlot, dates, varsInPlot]
+  );
+
   return (
     <div className="h-80 w-full">
       <Line
+        aria-describedby={describedBy}
+        aria-label={label}
         data={{
           labels: dates.map((date) => formatDate(date, 'P')),
           // eslint-disable-next-line @typescript-eslint/no-explicit-any

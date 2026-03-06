@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { DataGraph, GraphErrorPanel } from '@/components';
+import { DataGraph, GraphErrorPanel, VisualizationDescription } from '@/components';
 import { DownloadBuoyData } from '@/components/DownloadBuoyData/DownloadBuoyData';
 import { BuoyVariables } from '@/components/visualizations/BuoyVariables';
 import type { WeatherData } from '@/utils/data';
@@ -16,6 +16,7 @@ import type {
 } from '@/utils/data/api/buoy';
 import { ERROR_CODES } from '@/utils/fns';
 import type { Dataset } from '@/utils/data/api/buoy/types';
+import { format } from 'date-fns';
 
 type BuoyVariablesProps = {
   params: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
@@ -62,6 +63,9 @@ export async function BuoyVariablesCard({
   }
 
   const weatherData = await weatherDataFetcher(params.start, params.end);
+
+  const descriptionId = 'buoy-variable-description';
+
   return (
     <DataGraph
       description={description}
@@ -76,7 +80,20 @@ export async function BuoyVariablesCard({
         />
       }
     >
-      <BuoyVariables data={buoyData} dataset={dataset} />
+      <VisualizationDescription
+        description={undefined}
+        descriptionId={descriptionId}
+        tableLabel="Displayed buoy data"
+        data={
+          buoyData
+            .filter(({ value }) => value !== undefined)
+            // Note (AM): I'm performing some typescript crimes to get this to work, so I'm casting as any.
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .map((data) => ({ ...data, time: format(data.time, 'MM/dd/yyyy p') })) as any[]
+        }
+      >
+        <BuoyVariables data={buoyData} dataset={dataset} describedBy={descriptionId} />
+      </VisualizationDescription>
     </DataGraph>
   );
 }
