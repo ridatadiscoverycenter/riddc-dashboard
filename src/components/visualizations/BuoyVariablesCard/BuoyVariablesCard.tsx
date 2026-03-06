@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { format } from 'date-fns';
 import { DataGraph, GraphErrorPanel, VisualizationDescription } from '@/components';
 import { DownloadBuoyData } from '@/components/DownloadBuoyData/DownloadBuoyData';
 import { BuoyVariables } from '@/components/visualizations/BuoyVariables';
@@ -16,7 +17,6 @@ import type {
 } from '@/utils/data/api/buoy';
 import { ERROR_CODES } from '@/utils/fns';
 import type { Dataset } from '@/utils/data/api/buoy/types';
-import { format } from 'date-fns';
 
 type BuoyVariablesProps = {
   params: string | { buoys: string[]; vars: string[]; start: Date; end: Date };
