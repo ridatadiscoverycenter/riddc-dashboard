@@ -16,6 +16,7 @@ import {
 } from 'chart.js';
 import { compareAsc, formatDate } from 'date-fns';
 
+import { VisualizationDescription } from '../VisualizationDescription';
 import { WeatherData } from '@/utils/data';
 
 type WeatherHistoryProps = {
@@ -92,35 +93,45 @@ export function WeatherHistory({ data }: WeatherHistoryProps) {
     }),
     [dates, avgTemp, maxTemp, minTemp, precipitation]
   );
+
+  const label = React.useMemo(
+    () =>
+      `A line and bar plot displaying historical weather data. The X axis shows dates ranging from ${data[0].date.toISOString()} to ${data[data.length - 1].date.toISOString()}. The two Y axes show temperature in degrees celcius and precipitation in precipitation units.`,
+    [data]
+  );
+
   return (
     <div className="h-80 w-full">
-      <Line
-        // Note (AM): TS Check doesn't like this, but it's fine actually, don't let the computer fool you.
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data={datasets as any}
-        options={{
-          plugins: {
-            filler: {
-              propagate: true,
+      <VisualizationDescription tableLabel="Weather Data displayed above." data={data}>
+        <Line
+          aria-label={label}
+          // Note (AM): TS Check doesn't like this, but it's fine actually, don't let the computer fool you.
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          data={datasets as any}
+          options={{
+            plugins: {
+              filler: {
+                propagate: true,
+              },
             },
-          },
-          scales: {
-            yTemp: {
-              type: 'linear',
-              display: true,
-              position: 'left',
+            scales: {
+              yTemp: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+              },
+              yPrecip: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                title: { display: true, text: 'Preciptiation in Units' },
+              },
             },
-            yPrecip: {
-              type: 'linear',
-              display: true,
-              position: 'right',
-              title: { display: true, text: 'Preciptiation in Units' },
-            },
-          },
-          responsive: true,
-          maintainAspectRatio: false,
-        }}
-      />
+            responsive: true,
+            maintainAspectRatio: false,
+          }}
+        />
+      </VisualizationDescription>
     </div>
   );
 }
