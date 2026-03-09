@@ -2,8 +2,7 @@
 
 import React from 'react';
 
-import { format } from 'date-fns';
-import { DataGraph, GraphErrorPanel, VisualizationDescription } from '@/components';
+import { DataGraph, GraphErrorPanel } from '@/components';
 import { DownloadBuoyData } from '@/components/DownloadBuoyData/DownloadBuoyData';
 import { BuoyVariables } from '@/components/visualizations/BuoyVariables';
 import type { WeatherData } from '@/utils/data';
@@ -64,8 +63,6 @@ export async function BuoyVariablesCard({
 
   const weatherData = await weatherDataFetcher(params.start, params.end);
 
-  const descriptionId = 'buoy-variable-description';
-
   return (
     <DataGraph
       description={description}
@@ -80,20 +77,7 @@ export async function BuoyVariablesCard({
         />
       }
     >
-      <VisualizationDescription
-        description={undefined}
-        descriptionId={descriptionId}
-        tableLabel="Displayed buoy data"
-        data={
-          buoyData
-            .filter(({ value }) => value !== undefined)
-            // Note (AM): I'm performing some typescript crimes to get this to work, so I'm casting as any.
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .map((data) => ({ ...data, time: format(data.time, 'MM/dd/yyyy p') })) as any[]
-        }
-      >
-        <BuoyVariables data={buoyData} dataset={dataset} describedBy={descriptionId} />
-      </VisualizationDescription>
+      <BuoyVariables data={buoyData} dataset={dataset} />
     </DataGraph>
   );
 }

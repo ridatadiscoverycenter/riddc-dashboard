@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { compareAsc, formatDate } from 'date-fns';
+import { compareAsc, format, formatDate } from 'date-fns';
 import { Line } from 'react-chartjs-2';
 import {
   BarController,
@@ -16,6 +16,7 @@ import {
   TimeScale,
 } from 'chart.js';
 
+import { VisualizationDescription } from '@/components/';
 import { groupBy, makeCommaSepList } from '@/utils/fns';
 import { variableToLabel } from '@/utils/data/shared/variableConverter';
 import { Dataset } from '@/utils/data/api/buoy/types';
@@ -53,10 +54,9 @@ type BuoyDataAbstract = {
 type BuoyVariablesProps = {
   data: BuoyDataAbstract[];
   dataset: Dataset;
-  describedBy?: string;
 };
 
-export function BuoyVariables({ data, dataset, describedBy }: BuoyVariablesProps) {
+export function BuoyVariables({ data, dataset }: BuoyVariablesProps) {
   const { dates, datasets } = React.useMemo(() => {
     const sortedData = data.sort(({ time: time1 }, { time: time2 }) => compareAsc(time1, time2));
     return {
@@ -102,19 +102,29 @@ export function BuoyVariables({ data, dataset, describedBy }: BuoyVariablesProps
 
   return (
     <div className="h-80 w-full">
-      <Line
-        aria-describedby={describedBy}
-        aria-label={label}
-        data={{
-          labels: dates.map((date) => formatDate(date, 'P')),
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          datasets: dataGroups as any,
-        }}
-        options={{
-          responsive: true,
-          maintainAspectRatio: false,
-        }}
-      />
+      <VisualizationDescription
+        tableLabel="Displayed buoy data"
+        data={
+          data
+            .filter(({ value }) => value !== undefined)
+            // Note (AM): I'm performing some typescript crimes to get this to work, so I'm casting as any.
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .map((data) => ({ ...data, time: format(data.time, 'MM/dd/yyyy p') })) as any[]
+        }
+      >
+        <Line
+          aria-label={label}
+          data={{
+            labels: dates.map((date) => formatDate(date, 'P')),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            datasets: dataGroups as any,
+          }}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+          }}
+        />
+      </VisualizationDescription>
     </div>
   );
 }
