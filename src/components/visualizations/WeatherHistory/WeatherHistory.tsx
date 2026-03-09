@@ -16,8 +16,8 @@ import {
 } from 'chart.js';
 import { compareAsc, formatDate } from 'date-fns';
 
-import { WeatherData } from '@/utils/data';
 import { VisualizationDescription } from '../VisualizationDescription';
+import { WeatherData } from '@/utils/data';
 
 type WeatherHistoryProps = {
   data: WeatherData[];
