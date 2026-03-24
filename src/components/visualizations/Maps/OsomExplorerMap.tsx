@@ -55,7 +55,6 @@ export function OsomExporerMap({
     <section className="full-bleed w-full min-h-[80vh] relative p-0 my-0">
       <div ref={containerRef} className="absolute w-full h-full" />
       <div className="flex flex-col gap-2 absolute top-[3%] left-3 md:top-[8%] md:left-8 bg-white/90 dark:bg-slate-800/90 p-4 rounded-md w-72 overflow-auto">
-        {/*<Header size="sm">{variable === 'salt' ? 'Water Salinity' : 'Surface Temperature'}</Header>*/}
         <Select
           label="Model Variable"
           options={VARIABLE_OPTS}
@@ -66,8 +65,17 @@ export function OsomExporerMap({
             setVariable(selectedVariable.value);
           }}
         />
-        <Label label='Timepoint'>
-          <Input type="range" min={0} max={YEARLY_VALUE_INDECIES.length - 1} value={rasterIndex} onChange={(e) => { e.preventDefault(); setRasterIndex(Number(e.target.value));}} />
+        <Label label="Timepoint">
+          <Input
+            type="range"
+            min={0}
+            max={YEARLY_VALUE_INDECIES.length - 1}
+            value={rasterIndex}
+            onChange={(e) => {
+              e.preventDefault();
+              setRasterIndex(Number(e.target.value));
+            }}
+          />
         </Label>
         <div className="flex flex-row gap-2 items-center">
           <span>0 {variable === 'salt' ? 'PSU' : 'ºC'}</span>
