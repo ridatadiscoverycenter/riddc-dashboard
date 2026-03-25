@@ -38,7 +38,18 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
         filter: ['has', 'point_count'],
         paint: {
           'circle-color': ['step', ['get', 'point_count'], '#51bbd6', 1, '#f1f075', 3, '#f28cb1'],
-          'circle-radius': ['step', ['get', 'point_count'], 10, 2, 15, 3, 20],
+          'circle-radius': 15,
+          'circle-stroke-color': [
+            'step',
+            ['get', 'point_count'],
+            '#51bbd6',
+            1,
+            '#f1f075',
+            3,
+            '#f28cb1',
+          ],
+          'circle-stroke-width': 5,
+          'circle-stroke-opacity': 0.7,
         },
       });
       map.current.addLayer({
@@ -60,8 +71,8 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
         paint: {
           'circle-color': '#11b4da',
           'circle-radius': 10,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#fff',
+          'circle-stroke-color': '#0fa0c2',
+          'circle-stroke-width': 2,
         },
       });
       // inspect a cluster on click
