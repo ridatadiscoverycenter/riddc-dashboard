@@ -33,9 +33,8 @@ export function useMap(bounds: LngLatBoundsLike = BOUNDS) {
       // More things can be set here, but I'll ignore them for now.
       bounds,
       center: [-71.4128, 41.584],
-      zoom: 8.5,
       maxZoom: 11,
-      minZoom: 8,
+      minZoom: 7.25,
       cooperativeGestures: true,
       attributionControl: false,
     });
