@@ -8,7 +8,7 @@ import { Header, Input, Label, Select } from '@/components';
 import { useInterval } from '@/hooks/useInterval';
 
 type Variable = 'salt' | 'temp';
-type Dataset = 'annual';
+type Dataset = 'annual-jan' | 'annual-jul';
 
 type OsomExplorerMapProps = {
   dataset: Dataset;
@@ -22,11 +22,12 @@ const VARIABLE_OPTS: Array<{ label: string; value: Variable }> = [
 ];
 
 const DATASET_OPTS: Array<{ label: string; value: Dataset }> = [
-  { label: 'Annual (Jan.)', value: 'annual' },
+  { label: 'Annual (Jan.)', value: 'annual-jan' },
+  { label: 'Annual (Jul.)', value: 'annual-jul' },
 ];
 
 const VARIABLE_BOUNDS: Record<Dataset, Record<Variable, { min: number; max: number }>> = {
-  annual: {
+  'annual-jan': {
     temp: {
       min: -6.7,
       max: 12.1,
@@ -34,6 +35,16 @@ const VARIABLE_BOUNDS: Record<Dataset, Record<Variable, { min: number; max: numb
     salt: {
       min: 0,
       max: 33,
+    },
+  },
+  'annual-jul': {
+    temp: {
+      min: 0.3,
+      max: 27.3,
+    },
+    salt: {
+      min: 0,
+      max: 32.5,
     },
   },
 };
@@ -47,7 +58,7 @@ const OSOM_BOUNDS: LngLatBoundsLike = [
 ];
 
 export function OsomExporerMap({
-  dataset: initialDataset = 'annual',
+  dataset: initialDataset = 'annual-jan',
   variable: initialVariable = 'temp',
   rasterIndex: initialRasterIndex = 0,
 }: OsomExplorerMapProps) {
@@ -56,6 +67,11 @@ export function OsomExporerMap({
   const [variable, setVariable] = React.useState<Variable>(initialVariable);
   const [rasterIndex, setRasterIndex] = React.useState(initialRasterIndex);
   const [autoplay, setAutoplay] = React.useState(false);
+
+  const timepoints = React.useMemo(
+    () => (dataset === 'annual-jan' ? TIMEPOITS_ANNUAL_JAN : TIMEPOITS_ANNUAL_JUL),
+    [dataset]
+  );
 
   React.useEffect(() => {
     // Sync visualization state with URL params
@@ -70,6 +86,8 @@ export function OsomExporerMap({
     () => getRasterUrl(dataset, rasterIndex, variable),
     [dataset, rasterIndex, variable]
   );
+
+  React.useEffect(() => console.log(rasterUrl), [rasterUrl]);
 
   React.useEffect(() => {
     if (loaded) {
@@ -93,8 +111,8 @@ export function OsomExporerMap({
   }, [loaded, rasterUrl]);
 
   const incrementIndex = React.useCallback(() => {
-    setRasterIndex((current) => (current + 1 >= YEARLY_VALUE_INDECIES.length ? 0 : current + 1));
-  }, [setRasterIndex, YEARLY_VALUE_INDECIES]);
+    setRasterIndex((current) => (current + 1 >= timepoints.length ? 0 : current + 1));
+  }, [setRasterIndex, timepoints]);
 
   useInterval(incrementIndex, autoplay ? 2000 : undefined);
 
@@ -117,7 +135,7 @@ export function OsomExporerMap({
         <div className="flex flex-col gap-2 absolute top-[3%] left-3 md:top-[8%] md:left-8 bg-white/90 dark:bg-slate-800/90 p-4 rounded-md overflow-auto">
           <Header size="sm" tag="h3">
             {VARIABLE_OPTS.find(({ value }) => variable === value)?.label} on{' '}
-            {format(convertOsomIndexToDate(YEARLY_VALUE_INDECIES[rasterIndex]), 'MM/dd/yyyy')}
+            {format(convertOsomIndexToDate(timepoints[rasterIndex]), 'MM/dd/yyyy')}
           </Header>
           <div className="flex flex-row gap-2 items-center">
             <span>
@@ -159,7 +177,7 @@ export function OsomExporerMap({
           <Input
             type="range"
             min={0}
-            max={YEARLY_VALUE_INDECIES.length - 1}
+            max={timepoints.length - 1}
             value={rasterIndex}
             onChange={(e) => {
               e.preventDefault();
@@ -181,26 +199,31 @@ export function OsomExporerMap({
   );
 }
 
-const YEARLY_VALUE_INDECIES = [
-  1096, 1462, 1827, 2192, 2557, 2923, 3288, 3653, 4018, 4384, 4749, 5114, 5479, 5845, 6210,
+const TIMEPOITS_ANNUAL_JAN = [
+  1, 366, 731, 1096, 1462, 1827, 2192, 2557, 2923, 3288, 3653, 4018, 4384, 4749, 5114, 5479, 5845,
+  6210,
+];
+const TIMEPOITS_ANNUAL_JUL = [
+  182, 547, 912, 1278, 1643, 2008, 2373, 2739, 3104, 3469, 3834, 4200, 4565, 4930, 5295, 5661, 6026,
+  6391,
 ];
 
-const ANNUAL_RASTER_URL =
-  'https://qa-tile-server.riddc.brown.edu/services/ocean_his_<TIMEPOINT>_<VARIABLE>@1/tiles/{z}/{x}/{y}.png';
+const ANNUAL_JAN_RASTER_URL =
+  'https://tile-server.riddc.brown.edu/services/annual_jan_<TIMEPOINT>_<VARIABLE>/tiles/{z}/{x}/{y}.png';
+
+const ANNUAL_JUL_RASTER_URL =
+  'https://tile-server.riddc.brown.edu/services/annual_jul_<TIMEPOINT>_<VARIABLE>/tiles/{z}/{x}/{y}.png';
 
 function getRasterUrl(dataset: Dataset, timepoint: number, variable: Variable) {
+  const timepoints = dataset === 'annual-jan' ? TIMEPOITS_ANNUAL_JAN : TIMEPOITS_ANNUAL_JUL;
+  const urlTemplate = dataset === 'annual-jan' ? ANNUAL_JAN_RASTER_URL : ANNUAL_JUL_RASTER_URL;
   const boundedTimepoint =
-    timepoint < 0
-      ? 0
-      : timepoint >= YEARLY_VALUE_INDECIES.length
-        ? YEARLY_VALUE_INDECIES.length - 1
-        : timepoint;
-  return ANNUAL_RASTER_URL.replace(
-    '<TIMEPOINT>',
-    YEARLY_VALUE_INDECIES[boundedTimepoint].toString()
-  ).replace('<VARIABLE>', variable);
+    timepoint < 0 ? 0 : timepoint >= timepoints.length ? timepoints.length - 1 : timepoint;
+  return urlTemplate
+    .replace('<TIMEPOINT>', timepoints[boundedTimepoint].toString().padStart(4, '0'))
+    .replace('<VARIABLE>', variable);
 }
 
 function convertOsomIndexToDate(index: number): Date {
-  return addDays(new Date('01/01/2005'), index - 1);
+  return addDays(new Date(/* Model Start Date */ '01/01/2005'), index - 1);
 }

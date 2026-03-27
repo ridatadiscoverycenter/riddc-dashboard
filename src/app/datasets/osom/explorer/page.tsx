@@ -22,14 +22,18 @@ export default async function OsomExplorer(props: PageProps) {
   );
 }
 
-const DEFAULT_PARAMS: { dataset: 'annual'; variable: 'salt' | 'temp'; rasterIndex: number } = {
-  dataset: 'annual',
+const DEFAULT_PARAMS: {
+  dataset: 'annual-jan' | 'annual-jul';
+  variable: 'salt' | 'temp';
+  rasterIndex: number;
+} = {
+  dataset: 'annual-jan',
   variable: 'temp',
   rasterIndex: 0,
 };
 
 function parseSearchParams(params: PageProps['searchParams']): {
-  dataset: 'annual';
+  dataset: 'annual-jan' | 'annual-jul';
   variable: 'salt' | 'temp';
   rasterIndex: number;
 } {
@@ -41,7 +45,7 @@ function parseSearchParams(params: PageProps['searchParams']): {
   if (rawVariable === undefined && rawRasterIndex === undefined && rawDataset === undefined)
     return DEFAULT_PARAMS;
 
-  const dataset = z.union([z.literal('annual')]).safeParse(rawDataset);
+  const dataset = z.union([z.literal('annual-jan'), z.literal('annual-jul')]).safeParse(rawDataset);
   const variable = z.union([z.literal('salt'), z.literal('temp')]).safeParse(rawVariable);
   const rasterIndex = z
     .string()
