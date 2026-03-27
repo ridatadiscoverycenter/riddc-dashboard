@@ -188,7 +188,6 @@ const YEARLY_VALUE_INDECIES = [
 const ANNUAL_RASTER_URL =
   'https://qa-tile-server.riddc.brown.edu/services/ocean_his_<TIMEPOINT>_<VARIABLE>@1/tiles/{z}/{x}/{y}.png';
 
-
 function getRasterUrl(dataset: Dataset, timepoint: number, variable: Variable) {
   const boundedTimepoint =
     timepoint < 0
