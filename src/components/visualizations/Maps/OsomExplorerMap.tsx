@@ -57,9 +57,8 @@ export function OsomExporerMap({
   const [rasterIndex, setRasterIndex] = React.useState(initialRasterIndex);
   const [autoplay, setAutoplay] = React.useState(false);
 
-  // Sync visualization state with URL params
-
   React.useEffect(() => {
+    // Sync visualization state with URL params
     const url = new URL(window.location.href);
     url.searchParams.set('dataset', dataset);
     url.searchParams.set('var', variable);
@@ -68,8 +67,8 @@ export function OsomExporerMap({
   }, [dataset, variable, rasterIndex]);
 
   const rasterUrl = React.useMemo(
-    () => getRasterUrl(rasterIndex, variable),
-    [rasterIndex, variable]
+    () => getRasterUrl(dataset, rasterIndex, variable),
+    [dataset, rasterIndex, variable]
   );
 
   React.useEffect(() => {
@@ -137,7 +136,6 @@ export function OsomExporerMap({
       <p>Customize your visualization by changing the dataset, variable, and timepoint:</p>
       <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
         <Select
-          isDisabled
           label="Dataset"
           options={DATASET_OPTS}
           defaultValue={DATASET_OPTS[0]}
@@ -187,17 +185,18 @@ const YEARLY_VALUE_INDECIES = [
   1096, 1462, 1827, 2192, 2557, 2923, 3288, 3653, 4018, 4384, 4749, 5114, 5479, 5845, 6210,
 ];
 
-const BASE_RASTER_URL =
+const ANNUAL_RASTER_URL =
   'https://qa-tile-server.riddc.brown.edu/services/ocean_his_<TIMEPOINT>_<VARIABLE>@1/tiles/{z}/{x}/{y}.png';
 
-function getRasterUrl(timepoint: number, variable: Variable) {
+
+function getRasterUrl(dataset: Dataset, timepoint: number, variable: Variable) {
   const boundedTimepoint =
     timepoint < 0
       ? 0
       : timepoint >= YEARLY_VALUE_INDECIES.length
         ? YEARLY_VALUE_INDECIES.length - 1
         : timepoint;
-  return BASE_RASTER_URL.replace(
+  return ANNUAL_RASTER_URL.replace(
     '<TIMEPOINT>',
     YEARLY_VALUE_INDECIES[boundedTimepoint].toString()
   ).replace('<VARIABLE>', variable);
