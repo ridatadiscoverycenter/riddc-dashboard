@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { FullBleedColumn, Header, OsomExporerMap } from '@/components';
+import { ExternalLink, FullBleedColumn, Header, OsomExporerMap } from '@/components';
 
 import { PageProps } from '@/types';
 
@@ -18,6 +18,17 @@ export default async function OsomExplorer(props: PageProps) {
         salinity, and water velocity* change over space and time.
       </p>
       <OsomExporerMap dataset={dataset} variable={variable} rasterIndex={rasterIndex} />
+      <p>
+        To explore more,{' '}
+        <ExternalLink href="https://erddap.riddc.brown.edu/erddap/griddap/osom_v2_9429_72b1_b541.html">
+          download the raw data
+        </ExternalLink>{' '}
+        or{' '}
+        <ExternalLink href="https://erddap.riddc.brown.edu/erddap/griddap/osom_v2_9429_72b1_b541.graph">
+          view individual timepoints
+        </ExternalLink>{' '}
+        on ERDDAP.
+      </p>
     </FullBleedColumn>
   );
 }
