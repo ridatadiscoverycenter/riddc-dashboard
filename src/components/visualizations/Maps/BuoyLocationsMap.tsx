@@ -39,7 +39,7 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
   React.useEffect(() => {
     async function makeMap() {
       if (loaded) {
-        const source = map.current.addSource('points', locationGeojson);
+        map.current.addSource('points', locationGeojson);
         map.current.addLayer({
           id: 'clusters',
           type: 'circle',
@@ -82,15 +82,18 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
         const marker = new maplibregl.Marker({ element: el });
         marker.setLngLat(geometry.coordinates).addTo(map.current);
 
-        el.addEventListener('click', (e) => {
-          zoomOnClick(e, properties.cluster_id, geometry);
+        el.addEventListener('click', () => {
+          zoomOnClick(properties.cluster_id, geometry);
+        });
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') zoomOnClick(properties.cluster_id, geometry);
         });
         currentMarkers.push(marker);
       } else {
         const el = document.createElement('div');
         el.tabIndex = 0;
         el.className =
-          'grid bg-blue-900 outline outline-solid  outline-blue-500 h-4 w-4 rounded-full absolute place-content-center place-items-center';
+          'grid bg-blue-900 ring-1 ring-solid  ring-blue-500 ring-inset h-4 w-4 rounded-full absolute place-content-center place-items-center';
         const popup = new maplibregl.Popup().setHTML(
           `<div style={{backgroundColor: 'black'}}>${properties.stationName}</div>`
         );
@@ -114,7 +117,7 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
     markers.current = [];
   };
 
-  async function zoomOnClick(e: any, clusterId: number, geometry: Geometry) {
+  async function zoomOnClick(clusterId: number, geometry: Geometry) {
     const zoom = await map.current.getSource('points').getClusterExpansionZoom(clusterId);
     removeMarkers();
     map.current.easeTo({
