@@ -26,26 +26,14 @@ const DATASET_OPTS: Array<{ label: string; value: Dataset }> = [
   { label: 'Annual (Jul.)', value: 'annual-jul' },
 ];
 
-const VARIABLE_BOUNDS: Record<Dataset, Record<Variable, { min: number; max: number }>> = {
-  'annual-jan': {
-    temp: {
-      min: -6.7,
-      max: 12.1,
-    },
-    salt: {
-      min: 0,
-      max: 33,
-    },
+const VARIABLE_BOUNDS: Record<Variable, { min: number; max: number }> = {
+  temp: {
+    min: -6.7,
+    max: 27.3,
   },
-  'annual-jul': {
-    temp: {
-      min: 0.3,
-      max: 27.3,
-    },
-    salt: {
-      min: 0,
-      max: 32.5,
-    },
+  salt: {
+    min: 0,
+    max: 33,
   },
 };
 
@@ -120,18 +108,6 @@ export function OsomExporerMap({
     <>
       <section className="full-bleed w-full min-h-[80vh] relative p-0 my-0">
         <div ref={containerRef} className="absolute w-full h-full" />
-        {/*<div className="flex flex-col items-center gap-2 h-48 absolute top-[3%] right-3 md:top-[8%] md:right-8 bg-white/90 dark:bg-slate-800/90 p-4 rounded-md overflow-auto">
-        <span>
-          {VARIABLE_BOUNDS[variable].min} {variable === 'salt' ? 'PSU' : 'ºC'}
-        </span>
-        <div
-          className="flex-1 w-2 rounded-md"
-          style={{ backgroundImage: variable === 'salt' ? HALINE_GRADIENT : THERMAL_GRADIENT }}
-        ></div>
-        <span>
-          {VARIABLE_BOUNDS[variable].max} {variable === 'salt' ? 'PSU' : 'ºC'}
-        </span>
-      </div>*/}
         <div className="flex flex-col gap-2 absolute top-[3%] left-3 md:top-[8%] md:left-8 bg-white/90 dark:bg-slate-800/90 p-4 rounded-md overflow-auto">
           <Header size="sm" tag="h3">
             {VARIABLE_OPTS.find(({ value }) => variable === value)?.label} on{' '}
@@ -139,14 +115,14 @@ export function OsomExporerMap({
           </Header>
           <div className="flex flex-row gap-2 items-center">
             <span>
-              {VARIABLE_BOUNDS[dataset][variable].min} {variable === 'salt' ? 'PSU' : 'ºC'}
+              {VARIABLE_BOUNDS[variable].min} {variable === 'salt' ? 'PSU' : 'ºC'}
             </span>
             <div
               className="flex-1 h-4 rounded-md"
               style={{ backgroundImage: variable === 'salt' ? HALINE_GRADIENT : THERMAL_GRADIENT }}
             ></div>
             <span>
-              {VARIABLE_BOUNDS[dataset][variable].max} {variable === 'salt' ? 'PSU' : 'ºC'}
+              {VARIABLE_BOUNDS[variable].max} {variable === 'salt' ? 'PSU' : 'ºC'}
             </span>
           </div>
         </div>
@@ -194,7 +170,18 @@ export function OsomExporerMap({
           />
         </Label>
       </div>
-      <div className="flex flex-row items-center justify-around w-full"></div>
+      {dataset === 'annual-jan' && (
+        <p>
+          All timepoints for the Annual (Jan.) dataset are from from noon on the first of January
+          every year.
+        </p>
+      )}
+      {dataset === 'annual-jul' && (
+        <p>
+          All timepoints for the Annual (Jul.) dataset are from from noon on the first of July every
+          year.
+        </p>
+      )}
     </>
   );
 }
