@@ -66,7 +66,7 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
     const currentMarkers: maplibregl.Marker[] = [];
     const points: MaplibreGeoJSONFeature<GeoJSONFeature>[] =
       await map.current.querySourceFeatures('points');
-    points.map(({ properties, geometry }) => {
+    points.forEach(({ properties, geometry }) => {
       // clustered point
       if (properties.cluster) {
         const el = document.createElement('div');
