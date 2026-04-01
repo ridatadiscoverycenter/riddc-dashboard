@@ -49,13 +49,13 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
       map.current.once('idle', () => {
         addMarkers();
       });
+
       map.current.on('zoomend', () => {
         removeMarkers();
         addMarkers();
       });
+
       return () => {
-        map.current.removeLayer('unclustered-point');
-        map.current.removeLayer('cluster-count');
         map.current.removeLayer('clusters');
         map.current.removeSource('points');
       };
@@ -114,12 +114,10 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
 
   async function zoomOnClick(clusterId: number, geometry: Geometry) {
     const zoom = await map.current.getSource('points').getClusterExpansionZoom(clusterId);
-    removeMarkers();
     map.current.easeTo({
       center: geometry.coordinates,
-      zoom,
+      zoom: zoom + 0.1,
     });
-    addMarkers();
   }
   return <div ref={containerRef} className="h-full w-full rounded-md" />;
 }
