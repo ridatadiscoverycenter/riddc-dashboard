@@ -37,34 +37,30 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
     },
   };
   React.useEffect(() => {
-    async function makeMap() {
-      if (loaded) {
-        map.current.addSource('points', locationGeojson);
-        map.current.addLayer({
-          id: 'clusters',
-          type: 'circle',
-          source: 'points',
-          filter: ['has', 'point_count'],
-        });
+    if (loaded) {
+      map.current.addSource('points', locationGeojson);
+      map.current.addLayer({
+        id: 'clusters',
+        type: 'circle',
+        source: 'points',
+        filter: ['has', 'point_count'],
+      });
 
-        map.current.once('idle', () => {
-          addMarkers();
-        });
-        map.current.on('zoomend', () => {
-          // console.log('zooming');
-          removeMarkers();
-          addMarkers();
-        });
-        return () => {
-          map.current.removeLayer('unclustered-point');
-          map.current.removeLayer('cluster-count');
-          map.current.removeLayer('clusters');
-          map.current.removeSource('points');
-        };
-      }
+      map.current.once('idle', () => {
+        addMarkers();
+      });
+      map.current.on('zoomend', () => {
+        // console.log('zooming');
+        removeMarkers();
+        addMarkers();
+      });
+      return () => {
+        map.current.removeLayer('unclustered-point');
+        map.current.removeLayer('cluster-count');
+        map.current.removeLayer('clusters');
+        map.current.removeSource('points');
+      };
     }
-
-    makeMap();
   }, [map, loaded, locations]);
 
   async function addMarkers() {
