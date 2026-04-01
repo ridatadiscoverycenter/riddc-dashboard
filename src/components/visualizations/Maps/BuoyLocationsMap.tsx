@@ -50,7 +50,6 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
         addMarkers();
       });
       map.current.on('zoomend', () => {
-        // console.log('zooming');
         removeMarkers();
         addMarkers();
       });
