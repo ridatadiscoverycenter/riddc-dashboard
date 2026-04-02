@@ -70,39 +70,50 @@ export function OsomExporerMap({
     window.history.replaceState({}, '', url);
   }, [dataset, variable, rasterIndex]);
 
-  const rasterUrl = React.useMemo(
-    () => getRasterUrl(dataset, rasterIndex, variable),
-    [dataset, rasterIndex, variable]
-  );
+  React.useEffect(() => {
+    if (loaded) {
+      timepoints
+        .map((_, index) => ({ index, url: getRasterUrl(dataset, index, variable) }))
+        .forEach(({ index, url }) => {
+          map.current.addSource(`osom-data-${index}`, {
+            type: 'raster',
+            tiles: [url],
+            attribution: 'Ocean State Ocean Model',
+          });
+          map.current.addLayer({
+            id: `osom-raster-${index}`,
+            type: 'raster',
+            source: `osom-data-${index}`,
+            layout: {
+              visibility: index === rasterIndex ? "visible" : "none",
+            }
+          });
+        });
 
-  React.useEffect(() => console.log(rasterUrl), [rasterUrl]);
+      return () => {
+        timepoints.forEach((_, index) => {
+          map.current.removeLayer(`osom-raster-${index}`);
+          map.current.removeSource(`osom-data-${index}`);
+        });
+      };
+    }
+  }, [loaded, timepoints, dataset, variable]);
 
   React.useEffect(() => {
     if (loaded) {
-      map.current.addSource('osom-data', {
-        type: 'raster',
-        tiles: [rasterUrl],
-        attribution: 'Ocean State Ocean Model',
-      });
-
-      map.current.addLayer({
-        id: 'osom-raster',
-        type: 'raster',
-        source: 'osom-data',
-      });
-
+      timepoints.forEach(index => map.current.setLayoutProperty(`osom-raster-${index}`, "visibility", "none"));
+      map.current.setLayoutProperty(`osom-raster-${rasterIndex}`, "visibility", "visible");
       return () => {
-        map.current.removeLayer('osom-raster');
-        map.current.removeSource('osom-data');
-      };
+        map.current.setLayoutProperty(`osom-raster-${rasterIndex}`, "visibility", "none");
+      }
     }
-  }, [loaded, rasterUrl]);
+  }, [timepoints, rasterIndex]);
 
   const incrementIndex = React.useCallback(() => {
     setRasterIndex((current) => (current + 1 >= timepoints.length ? 0 : current + 1));
   }, [setRasterIndex, timepoints]);
 
-  useInterval(incrementIndex, autoplay ? 2000 : undefined);
+  useInterval(incrementIndex, autoplay ? 200 : undefined);
 
   return (
     <>
@@ -111,7 +122,7 @@ export function OsomExporerMap({
         <div className="flex flex-col gap-2 absolute top-[3%] left-3 md:top-[8%] md:left-8 bg-white/90 dark:bg-slate-800/90 p-4 rounded-md overflow-auto">
           <Header size="sm" tag="h3">
             {VARIABLE_OPTS.find(({ value }) => variable === value)?.label} on{' '}
-            {format(convertOsomIndexToDate(timepoints[rasterIndex]), 'MM/dd/yyyy')}
+            <span className="font-mono">{format(convertOsomIndexToDate(timepoints[rasterIndex]), 'MM/dd/yyyy')}</span>
           </Header>
           <div className="flex flex-row gap-2 items-center">
             <span>
