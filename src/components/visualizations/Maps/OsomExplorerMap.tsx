@@ -85,8 +85,8 @@ export function OsomExporerMap({
             type: 'raster',
             source: `osom-data-${index}`,
             layout: {
-              visibility: index === rasterIndex ? "visible" : "none",
-            }
+              visibility: index === rasterIndex ? 'visible' : 'none',
+            },
           });
         });
 
@@ -101,11 +101,13 @@ export function OsomExporerMap({
 
   React.useEffect(() => {
     if (loaded) {
-      timepoints.forEach(index => map.current.setLayoutProperty(`osom-raster-${index}`, "visibility", "none"));
-      map.current.setLayoutProperty(`osom-raster-${rasterIndex}`, "visibility", "visible");
+      timepoints.forEach((index) =>
+        map.current.setLayoutProperty(`osom-raster-${index}`, 'visibility', 'none')
+      );
+      map.current.setLayoutProperty(`osom-raster-${rasterIndex}`, 'visibility', 'visible');
       return () => {
-        map.current.setLayoutProperty(`osom-raster-${rasterIndex}`, "visibility", "none");
-      }
+        map.current.setLayoutProperty(`osom-raster-${rasterIndex}`, 'visibility', 'none');
+      };
     }
   }, [timepoints, rasterIndex]);
 
@@ -122,7 +124,9 @@ export function OsomExporerMap({
         <div className="flex flex-col gap-2 absolute top-[3%] left-3 md:top-[8%] md:left-8 bg-white/90 dark:bg-slate-800/90 p-4 rounded-md overflow-auto">
           <Header size="sm" tag="h3">
             {VARIABLE_OPTS.find(({ value }) => variable === value)?.label} on{' '}
-            <span className="font-mono">{format(convertOsomIndexToDate(timepoints[rasterIndex]), 'MM/dd/yyyy')}</span>
+            <span className="font-mono">
+              {format(convertOsomIndexToDate(timepoints[rasterIndex]), 'MM/dd/yyyy')}
+            </span>
           </Header>
           <div className="flex flex-row gap-2 items-center">
             <span>
