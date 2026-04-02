@@ -40,6 +40,8 @@ const VARIABLE_BOUNDS: Record<Variable, { min: number; max: number }> = {
 const HALINE_GRADIENT = 'linear-gradient(0.25turn, #2a186e, #125e8e, #3c9486, #80cd64, #fbee97)';
 const THERMAL_GRADIENT = 'linear-gradient(0.25turn, #032333, #634197, #b5607f, #fa973f, #e7fa5a)';
 
+const AUTOPLAY_SPEED_MS = 2000;
+
 const OSOM_BOUNDS: LngLatBoundsLike = [
   [-72.7, 41.9],
   [-69.96, 40.5],
@@ -56,11 +58,6 @@ export function OsomExporerMap({
   const [rasterIndex, setRasterIndex] = React.useState(initialRasterIndex);
   const [autoplay, setAutoplay] = React.useState(false);
 
-  const timepoints = React.useMemo(
-    () => (dataset === 'annual-jan' ? TIMEPOITS_ANNUAL_JAN : TIMEPOITS_ANNUAL_JUL),
-    [dataset]
-  );
-
   React.useEffect(() => {
     // Sync visualization state with URL params
     const url = new URL(window.location.href);
@@ -70,39 +67,60 @@ export function OsomExporerMap({
     window.history.replaceState({}, '', url);
   }, [dataset, variable, rasterIndex]);
 
-  const rasterUrl = React.useMemo(
-    () => getRasterUrl(dataset, rasterIndex, variable),
-    [dataset, rasterIndex, variable]
+  const timepoints = React.useMemo(
+    () => (dataset === 'annual-jan' ? TIMEPOITS_ANNUAL_JAN : TIMEPOITS_ANNUAL_JUL),
+    [dataset]
   );
-
-  React.useEffect(() => console.log(rasterUrl), [rasterUrl]);
-
-  React.useEffect(() => {
-    if (loaded) {
-      map.current.addSource('osom-data', {
-        type: 'raster',
-        tiles: [rasterUrl],
-        attribution: 'Ocean State Ocean Model',
-      });
-
-      map.current.addLayer({
-        id: 'osom-raster',
-        type: 'raster',
-        source: 'osom-data',
-      });
-
-      return () => {
-        map.current.removeLayer('osom-raster');
-        map.current.removeSource('osom-data');
-      };
-    }
-  }, [loaded, rasterUrl]);
 
   const incrementIndex = React.useCallback(() => {
     setRasterIndex((current) => (current + 1 >= timepoints.length ? 0 : current + 1));
   }, [setRasterIndex, timepoints]);
 
-  useInterval(incrementIndex, autoplay ? 2000 : undefined);
+  useInterval(incrementIndex, autoplay ? AUTOPLAY_SPEED_MS : undefined);
+
+  // Initialize the map with sources for all timepoints.
+
+  React.useEffect(() => {
+    if (loaded) {
+      timepoints
+        .map((_, index) => ({ index, url: getRasterUrl(dataset, index, variable) }))
+        .forEach(({ index, url }) => {
+          map.current.addSource(`osom-data-${index}`, {
+            type: 'raster',
+            tiles: [url],
+            attribution: 'Ocean State Ocean Model',
+          });
+          map.current.addLayer({
+            id: `osom-raster-${index}`,
+            type: 'raster',
+            source: `osom-data-${index}`,
+            layout: {
+              // Initially, set the selected layer to visible, with all others
+              // being invisible.
+              visibility: index === rasterIndex ? 'visible' : 'none',
+            },
+          });
+        });
+
+      return () => {
+        timepoints.forEach((_, index) => {
+          map.current.removeLayer(`osom-raster-${index}`);
+          map.current.removeSource(`osom-data-${index}`);
+        });
+      };
+    }
+  }, [loaded, timepoints, dataset, variable]);
+
+  // Hide all non-visible layers, and make the selected layer visible.
+
+  React.useEffect(() => {
+    if (loaded) {
+      timepoints.forEach((index) =>
+        map.current.setLayoutProperty(`osom-raster-${index}`, 'visibility', 'none')
+      );
+      map.current.setLayoutProperty(`osom-raster-${rasterIndex}`, 'visibility', 'visible');
+    }
+  }, [timepoints, rasterIndex]);
 
   return (
     <>
