@@ -115,7 +115,7 @@ export function OsomExporerMap({
 
   React.useEffect(() => {
     if (loaded) {
-      timepoints.forEach((index) =>
+      timepoints.forEach((_, index) =>
         map.current.setLayoutProperty(`osom-raster-${index}`, 'visibility', 'none')
       );
       map.current.setLayoutProperty(`osom-raster-${rasterIndex}`, 'visibility', 'visible');
@@ -124,13 +124,14 @@ export function OsomExporerMap({
 
   return (
     <>
-      <section className="full-bleed w-full min-h-[80vh] relative p-0 my-0">
+      <section className="full-bleed w-full min-h-[75vh] md:min-h-[80vh] relative p-0 my-0">
         <div ref={containerRef} className="absolute w-full h-full" />
-        <div className="flex flex-col gap-2 absolute top-[3%] left-3 md:top-[8%] md:left-8 bg-white/90 dark:bg-slate-800/90 p-4 rounded-md overflow-auto">
-          <Header size="sm" tag="h3">
-            {VARIABLE_OPTS.find(({ value }) => variable === value)?.label} on{' '}
-            {format(convertOsomIndexToDate(timepoints[rasterIndex]), 'MM/dd/yyyy')}
+        <div className="flex flex-col gap-2 absolute top-[3%] left-3 md:top-[8%] md:left-8 bg-white/90 dark:bg-slate-800/90 p-4 rounded-md w-72">
+          <Header size="sm" tag="h3" variant="impact">
+            {VARIABLE_OPTS.find(({ value }) => variable === value)?.label}
+            <br />
           </Header>
+          <span>{format(convertOsomIndexToDate(timepoints[rasterIndex]), 'MM/dd/yyyy')}</span>
           <div className="flex flex-row gap-2 items-center">
             <span>
               {VARIABLE_BOUNDS[variable].min} {variable === 'salt' ? 'PSU' : 'ºC'}
@@ -147,26 +148,6 @@ export function OsomExporerMap({
       </section>
       <p>Customize your visualization by changing the dataset, variable, and timepoint:</p>
       <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
-        <Select
-          label="Dataset"
-          options={DATASET_OPTS}
-          defaultValue={DATASET_OPTS[0]}
-          value={DATASET_OPTS.find(({ value }) => value === dataset)}
-          onChange={(e) => {
-            const selectedDataset = e as { value: Dataset; label: string };
-            setDataset(selectedDataset.value);
-          }}
-        />
-        <Select
-          label="Model Variable"
-          options={VARIABLE_OPTS}
-          defaultValue={VARIABLE_OPTS[0]}
-          value={VARIABLE_OPTS.find(({ value }) => value === variable)}
-          onChange={(e) => {
-            const selectedVariable = e as { value: Variable; label: string };
-            setVariable(selectedVariable.value);
-          }}
-        />
         <Label label="Timepoint">
           <Input
             type="range"
@@ -187,16 +168,36 @@ export function OsomExporerMap({
             onChange={(e) => setAutoplay(e.target.checked)}
           />
         </Label>
+        <Select
+          label="Dataset"
+          options={DATASET_OPTS}
+          defaultValue={DATASET_OPTS[0]}
+          value={DATASET_OPTS.find(({ value }) => value === dataset)}
+          onChange={(e) => {
+            const selectedDataset = e as { value: Dataset; label: string };
+            setDataset(selectedDataset.value);
+          }}
+        />
+        <Select
+          label="Model Variable"
+          options={VARIABLE_OPTS}
+          defaultValue={VARIABLE_OPTS[0]}
+          value={VARIABLE_OPTS.find(({ value }) => value === variable)}
+          onChange={(e) => {
+            const selectedVariable = e as { value: Variable; label: string };
+            setVariable(selectedVariable.value);
+          }}
+        />
       </div>
       {dataset === 'annual-jan' && (
         <p>
-          All timepoints for the Annual (Jan.) dataset are from from noon on the first of January
-          every year.
+          All timepoints for the Annual (Jan.) dataset are from noon on the first of January every
+          year.
         </p>
       )}
       {dataset === 'annual-jul' && (
         <p>
-          All timepoints for the Annual (Jul.) dataset are from from noon on the first of July every
+          All timepoints for the Annual (Jul.) dataset are from noon on the first of July every
           year.
         </p>
       )}

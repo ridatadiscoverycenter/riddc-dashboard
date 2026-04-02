@@ -14,8 +14,8 @@ export default async function OsomExplorer(props: PageProps) {
       <p>
         The Ocean State Ocean Model (OSOM) outputs data for the entire model area at every hour and
         a half between January 2005 and December 2022. Specific timepoints and subsets of this
-        dataset have been excerpted here for you to explore. Use this map to see how the temperature,
-        salinity, and water velocity* change over space and time.
+        dataset have been excerpted here for you to explore. Use this map to see how the
+        temperature, salinity, and water velocity* change over space and time.
       </p>
       <OsomExporerMap dataset={dataset} variable={variable} rasterIndex={rasterIndex} />
       <p>
