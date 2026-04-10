@@ -57,7 +57,9 @@ function parseSearchParams(params: PageProps['searchParams']): {
     return DEFAULT_PARAMS;
 
   const dataset = z.union([z.literal('annual-jan'), z.literal('annual-jul')]).safeParse(rawDataset);
-  const variable = z.union([z.literal('salt'), z.literal('temp'), z.literal('akv')]).safeParse(rawVariable);
+  const variable = z
+    .union([z.literal('salt'), z.literal('temp'), z.literal('akv')])
+    .safeParse(rawVariable);
   const rasterIndex = z
     .string()
     .transform((string) => parseInt(string))

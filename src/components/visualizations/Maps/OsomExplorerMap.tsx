@@ -38,8 +38,8 @@ const VARIABLE_BOUNDS: Record<Variable, { min: number; max: number }> = {
   },
   akv: {
     min: 0,
-    max: 5.379223e-06,
-  }
+    max: 5.379223e-6,
+  },
 };
 
 const HALINE_GRADIENT = 'linear-gradient(0.25turn, #2a186e, #125e8e, #3c9486, #80cd64, #fbee97)';
@@ -144,7 +144,14 @@ export function OsomExporerMap({
             </span>
             <div
               className="flex-1 h-4 rounded-md"
-              style={{ backgroundImage: variable === 'salt' ? HALINE_GRADIENT : (variable === "temp" ? THERMAL_GRADIENT: SPEED_GRADIENT) }}
+              style={{
+                backgroundImage:
+                  variable === 'salt'
+                    ? HALINE_GRADIENT
+                    : variable === 'temp'
+                      ? THERMAL_GRADIENT
+                      : SPEED_GRADIENT,
+              }}
             ></div>
             <span>
               {VARIABLE_BOUNDS[variable].max} {variable === 'salt' ? 'PSU' : 'ºC'}
@@ -222,7 +229,6 @@ const TIMEPOITS_ANNUAL_JUL = [
 
 const ANNUAL_RASTER_URL =
   'https://tile-server.riddc.brown.edu/services/annual_<TIMEPOINT>_<VARIABLE>/tiles/{z}/{x}/{y}.png';
-
 
 function getRasterUrl(dataset: Dataset, timepoint: number, variable: Variable) {
   const timepoints = dataset === 'annual-jan' ? TIMEPOITS_ANNUAL_JAN : TIMEPOITS_ANNUAL_JUL;
