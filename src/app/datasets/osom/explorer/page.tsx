@@ -15,7 +15,7 @@ export default async function OsomExplorer(props: PageProps) {
         The Ocean State Ocean Model (OSOM) outputs data for the entire model area at every hour and
         a half between January 2005 and December 2022. Specific timepoints and subsets of this
         dataset have been excerpted here for you to explore. Use this map and the controls below to
-        see how the temperature and water salinity change over space and time.
+        see how the temperature, water salinity, and kinetic energy change over space and time.
       </p>
       <OsomExporerMap dataset={dataset} variable={variable} rasterIndex={rasterIndex} />
       <p>
@@ -35,7 +35,7 @@ export default async function OsomExplorer(props: PageProps) {
 
 const DEFAULT_PARAMS: {
   dataset: 'annual-jan' | 'annual-jul';
-  variable: 'salt' | 'temp';
+  variable: 'salt' | 'temp' | 'akv';
   rasterIndex: number;
 } = {
   dataset: 'annual-jan',
@@ -45,7 +45,7 @@ const DEFAULT_PARAMS: {
 
 function parseSearchParams(params: PageProps['searchParams']): {
   dataset: 'annual-jan' | 'annual-jul';
-  variable: 'salt' | 'temp';
+  variable: 'salt' | 'temp' | 'akv';
   rasterIndex: number;
 } {
   if (!params) return DEFAULT_PARAMS;
@@ -57,7 +57,7 @@ function parseSearchParams(params: PageProps['searchParams']): {
     return DEFAULT_PARAMS;
 
   const dataset = z.union([z.literal('annual-jan'), z.literal('annual-jul')]).safeParse(rawDataset);
-  const variable = z.union([z.literal('salt'), z.literal('temp')]).safeParse(rawVariable);
+  const variable = z.union([z.literal('salt'), z.literal('temp'), z.literal('akv')]).safeParse(rawVariable);
   const rasterIndex = z
     .string()
     .transform((string) => parseInt(string))

@@ -7,7 +7,7 @@ import { useMap } from './useMap';
 import { Header, Input, Label, Select } from '@/components';
 import { useInterval } from '@/hooks/useInterval';
 
-type Variable = 'salt' | 'temp';
+type Variable = 'salt' | 'temp' | 'akv';
 type Dataset = 'annual-jan' | 'annual-jul';
 
 type OsomExplorerMapProps = {
@@ -19,6 +19,7 @@ type OsomExplorerMapProps = {
 const VARIABLE_OPTS: Array<{ label: string; value: Variable }> = [
   { label: 'Ocean Temperature', value: 'temp' },
   { label: 'Water Salinity', value: 'salt' },
+  { label: 'Kinetic Energy', value: 'akv' },
 ];
 
 const DATASET_OPTS: Array<{ label: string; value: Dataset }> = [
@@ -35,10 +36,15 @@ const VARIABLE_BOUNDS: Record<Variable, { min: number; max: number }> = {
     min: 0,
     max: 33,
   },
+  akv: {
+    min: 0,
+    max: 5.379223e-06,
+  }
 };
 
 const HALINE_GRADIENT = 'linear-gradient(0.25turn, #2a186e, #125e8e, #3c9486, #80cd64, #fbee97)';
 const THERMAL_GRADIENT = 'linear-gradient(0.25turn, #032333, #634197, #b5607f, #fa973f, #e7fa5a)';
+const SPEED_GRADIENT = 'linear-gradient(0.25turn, #fcfccc, #c5ba4c, #538d1f, #0c5d2e, #172213)';
 
 const AUTOPLAY_SPEED_MS = 2000;
 
@@ -138,7 +144,7 @@ export function OsomExporerMap({
             </span>
             <div
               className="flex-1 h-4 rounded-md"
-              style={{ backgroundImage: variable === 'salt' ? HALINE_GRADIENT : THERMAL_GRADIENT }}
+              style={{ backgroundImage: variable === 'salt' ? HALINE_GRADIENT : (variable === "temp" ? THERMAL_GRADIENT: SPEED_GRADIENT) }}
             ></div>
             <span>
               {VARIABLE_BOUNDS[variable].max} {variable === 'salt' ? 'PSU' : 'ºC'}
@@ -214,15 +220,13 @@ const TIMEPOITS_ANNUAL_JUL = [
   6391,
 ];
 
-const ANNUAL_JAN_RASTER_URL =
-  'https://tile-server.riddc.brown.edu/services/annual_jan_<TIMEPOINT>_<VARIABLE>/tiles/{z}/{x}/{y}.png';
+const ANNUAL_RASTER_URL =
+  'https://tile-server.riddc.brown.edu/services/annual_<TIMEPOINT>_<VARIABLE>/tiles/{z}/{x}/{y}.png';
 
-const ANNUAL_JUL_RASTER_URL =
-  'https://tile-server.riddc.brown.edu/services/annual_jul_<TIMEPOINT>_<VARIABLE>/tiles/{z}/{x}/{y}.png';
 
 function getRasterUrl(dataset: Dataset, timepoint: number, variable: Variable) {
   const timepoints = dataset === 'annual-jan' ? TIMEPOITS_ANNUAL_JAN : TIMEPOITS_ANNUAL_JUL;
-  const urlTemplate = dataset === 'annual-jan' ? ANNUAL_JAN_RASTER_URL : ANNUAL_JUL_RASTER_URL;
+  const urlTemplate = ANNUAL_RASTER_URL;
   const boundedTimepoint =
     timepoint < 0 ? 0 : timepoint >= timepoints.length ? timepoints.length - 1 : timepoint;
   return urlTemplate
