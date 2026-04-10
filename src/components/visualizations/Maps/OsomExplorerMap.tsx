@@ -27,18 +27,24 @@ const DATASET_OPTS: Array<{ label: string; value: Dataset }> = [
   { label: 'Annual (Jul.)', value: 'annual-jul' },
 ];
 
-const VARIABLE_BOUNDS: Record<Variable, { min: number; max: number }> = {
+const VARIABLE_UNITS: Record<Variable, string> = {
+  temp: 'ºC',
+  salt: 'PSU',
+  akv: 'J/Kg',
+};
+
+const VARIABLE_BOUNDS: Record<Variable, { min: string; max: string }> = {
   temp: {
-    min: -6.7,
-    max: 27.3,
+    min: '-6.7',
+    max: '27.3',
   },
   salt: {
-    min: 0,
-    max: 33,
+    min: '0',
+    max: '33',
   },
   akv: {
-    min: 0,
-    max: 5.379223e-6,
+    min: '0',
+    max: '5.38e-6',
   },
 };
 
@@ -140,7 +146,7 @@ export function OsomExporerMap({
           <span>{format(convertOsomIndexToDate(timepoints[rasterIndex]), 'MM/dd/yyyy')}</span>
           <div className="flex flex-row gap-2 items-center">
             <span>
-              {VARIABLE_BOUNDS[variable].min} {variable === 'salt' ? 'PSU' : 'ºC'}
+              {VARIABLE_BOUNDS[variable].min} {VARIABLE_UNITS[variable]}
             </span>
             <div
               className="flex-1 h-4 rounded-md"
@@ -154,7 +160,7 @@ export function OsomExporerMap({
               }}
             ></div>
             <span>
-              {VARIABLE_BOUNDS[variable].max} {variable === 'salt' ? 'PSU' : 'ºC'}
+              {VARIABLE_BOUNDS[variable].max} {VARIABLE_UNITS[variable]}
             </span>
           </div>
         </div>
