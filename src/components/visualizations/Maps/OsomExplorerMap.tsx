@@ -19,7 +19,8 @@ type OsomExplorerMapProps = {
 const VARIABLE_OPTS: Array<{ label: string; value: Variable }> = [
   { label: 'Ocean Temperature', value: 'temp' },
   { label: 'Water Salinity', value: 'salt' },
-  { label: 'Kinetic Energy', value: 'akv' },
+  // Comment this out until the units thing is fixed. 
+  //{ label: 'Kinetic Energy', value: 'akv' },
 ];
 
 const DATASET_OPTS: Array<{ label: string; value: Dataset }> = [
