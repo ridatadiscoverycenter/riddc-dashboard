@@ -67,6 +67,10 @@ const DATASETS = [
     href: '/datasets/osom',
   },
   {
+    name: 'OSOM Explorer',
+    href: '/datasets/osom/explorer',
+  },
+  {
     name: 'Plankton Time Series',
     href: '/datasets/plankton',
   },
