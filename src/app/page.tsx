@@ -333,6 +333,17 @@ const DATASETS = [
     ),
   },
   {
+    name: 'OSOM Explorer',
+    href: '/datasets/osom/explorer',
+    description: () => (
+      <>
+        Another visualization of Ocean State Ocean Model data as raster images laid across a map.
+        Zoom in and scroll around to see how model variables change as you move throughout the bay
+        and surrounding ocean.
+      </>
+    ),
+  },
+  {
     name: 'Plankton Time Series',
     href: '/datasets/plankton',
     description: () => (
