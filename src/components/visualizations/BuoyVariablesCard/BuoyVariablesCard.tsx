@@ -62,6 +62,7 @@ export async function BuoyVariablesCard({
   }
 
   const weatherData = await weatherDataFetcher(params.start, params.end);
+
   return (
     <DataGraph
       description={description}

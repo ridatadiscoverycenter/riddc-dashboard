@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { compareAsc, formatDate } from 'date-fns';
+import { compareAsc, format, formatDate } from 'date-fns';
 import { Line } from 'react-chartjs-2';
 import {
   BarController,
@@ -16,7 +16,8 @@ import {
   TimeScale,
 } from 'chart.js';
 
-import { groupBy } from '@/utils/fns';
+import { VisualizationDescription } from '@/components/';
+import { groupBy, makeCommaSepList } from '@/utils/fns';
 import { variableToLabel } from '@/utils/data/shared/variableConverter';
 import { Dataset } from '@/utils/data/api/buoy/types';
 
@@ -93,19 +94,37 @@ export function BuoyVariables({ data, dataset }: BuoyVariablesProps) {
     });
   }, [datasets, varsInPlot, buoysInPlot, dates, dataset]);
 
+  const label = React.useMemo(
+    () =>
+      `A line plot displaying historical data from ${buoysInPlot.length} buoy${buoysInPlot.length === 1 ? '' : 's'}. The X axis contains dates from ${dates[0].toISOString()} to ${dates[dates.length - 1].toISOString()}, and the Y axis shows ${makeCommaSepList(varsInPlot)} data.`,
+    [buoysInPlot, dates, varsInPlot]
+  );
+
   return (
     <div className="h-80 w-full">
-      <Line
-        data={{
-          labels: dates.map((date) => formatDate(date, 'P')),
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          datasets: dataGroups as any,
-        }}
-        options={{
-          responsive: true,
-          maintainAspectRatio: false,
-        }}
-      />
+      <VisualizationDescription
+        tableLabel="Displayed buoy data"
+        data={
+          data
+            .filter(({ value }) => value !== undefined)
+            // Note (AM): I'm performing some typescript crimes to get this to work, so I'm casting as any.
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .map((data) => ({ ...data, time: format(data.time, 'MM/dd/yyyy p') })) as any[]
+        }
+      >
+        <Line
+          aria-label={label}
+          data={{
+            labels: dates.map((date) => formatDate(date, 'P')),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            datasets: dataGroups as any,
+          }}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+          }}
+        />
+      </VisualizationDescription>
     </div>
   );
 }
