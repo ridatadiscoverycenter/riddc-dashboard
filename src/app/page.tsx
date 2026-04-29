@@ -407,12 +407,15 @@ const EXTERNAL_RESOURCES = [
     description: 'The database that stores raw data for RIDDC.',
     href: `${ERDDAP_URL}/erddap/index.html`,
   },
+  // The Volume Viewer is Decomissioned.
+  /*
   {
     name: 'Narragansett Bay Volume Viewer',
     description:
       'An accessible and interactive environment to explore and showcase volumetric Narragansett Bay data.',
     href: 'https://bay-viewer.riddc.brown.edu/',
   },
+  */
   {
     name: 'RIDDC Data Articles',
     description:
