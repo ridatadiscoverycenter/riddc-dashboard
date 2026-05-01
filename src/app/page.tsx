@@ -389,7 +389,7 @@ const DATASETS = [
     ),
   },
   {
-    name: 'Air Quality',
+    name: 'Breathe Providence',
     href: '/datasets/breathe-pvd',
     description: () => (
       <>
