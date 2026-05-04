@@ -8,7 +8,7 @@ export function LoadingMapPlaceholder() {
   const [opened, setOpen] = React.useState(false);
   return (
     <MapGraph
-      onLoad={() => { }}
+      onLoad={() => {}}
       graph={<Loading />}
       syncOpenState={(isMapOpen) => setOpen(isMapOpen)}
       bounds={[
@@ -29,4 +29,3 @@ export function LoadingMapPlaceholder() {
     </MapGraph>
   );
 }
-

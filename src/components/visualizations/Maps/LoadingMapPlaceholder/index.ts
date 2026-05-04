@@ -1,1 +1,1 @@
-export * from "./LoadingMapPlaceholder";
+export * from './LoadingMapPlaceholder';

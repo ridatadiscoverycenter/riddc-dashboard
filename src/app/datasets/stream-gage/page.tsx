@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { ExternalLink, FullBleedColumn, Header, LoadingMapPlaceholder, StreamGageMapGraph } from '@/components';
+import {
+  ExternalLink,
+  FullBleedColumn,
+  Header,
+  LoadingMapPlaceholder,
+  StreamGageMapGraph,
+} from '@/components';
 import { downsampleStreamGageData, fetchStreamGageData } from '@/utils/data';
 
 export const dynamic = 'force-dynamic';
@@ -37,7 +43,5 @@ async function PageWrapper() {
   const streamData = await fetchStreamGageData(14, 'Gage height');
   const downsampledData = downsampleStreamGageData(streamData);
 
-  return (
-    <StreamGageMapGraph className="absolute w-full h-full" streamData={downsampledData} />
-  );
+  return <StreamGageMapGraph className="absolute w-full h-full" streamData={downsampledData} />;
 }
