@@ -1,22 +1,11 @@
 import React from 'react';
 
-import { ExternalLink, FullBleedColumn, Header, Loading, StreamGageMapGraph } from '@/components';
+import { ExternalLink, FullBleedColumn, Header, LoadingMapPlaceholder, StreamGageMapGraph } from '@/components';
 import { downsampleStreamGageData, fetchStreamGageData } from '@/utils/data';
 
 export const dynamic = 'force-dynamic';
 
 export default async function StreamGage() {
-  return (
-    <React.Suspense fallback={<Loading />}>
-      <PageWrapper />
-    </React.Suspense>
-  );
-}
-
-async function PageWrapper() {
-  const streamData = await fetchStreamGageData(14, 'Gage height');
-  const downsampledData = downsampleStreamGageData(streamData);
-
   return (
     <FullBleedColumn className="my-2 gap-4 w-full">
       <Header size="lg" variant="impact" tag="h1">
@@ -36,8 +25,19 @@ async function PageWrapper() {
       </p>
       <p className="md:hidden">On mobile, tap the arrow button to view the graph.</p>
       <section className="full-bleed w-full min-h-[70vh] relative p-0 my-0 min-w-full">
-        <StreamGageMapGraph className="absolute w-full h-full" streamData={downsampledData} />
+        <React.Suspense fallback={<LoadingMapPlaceholder />}>
+          <PageWrapper />
+        </React.Suspense>
       </section>
     </FullBleedColumn>
+  );
+}
+
+async function PageWrapper() {
+  const streamData = await fetchStreamGageData(14, 'Gage height');
+  const downsampledData = downsampleStreamGageData(streamData);
+
+  return (
+    <StreamGageMapGraph className="absolute w-full h-full" streamData={downsampledData} />
   );
 }
