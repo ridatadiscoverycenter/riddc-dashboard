@@ -21,7 +21,7 @@ export default function BreathePvd() {
   return (
     <FullBleedColumn className="my-2 gap-4 w-full">
       <Header size="lg" variant="impact" tag="h2">
-        Air Quality
+        Breathe PVD
       </Header>
       <p>
         This map shows recent Providence air quality data from{' '}
