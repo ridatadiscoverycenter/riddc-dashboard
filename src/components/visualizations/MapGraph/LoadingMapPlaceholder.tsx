@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { MapGraphMenu } from './MapGraphMenu';
 import { Loading, MapGraph } from '@/components';
 
 export function LoadingMapPlaceholder({ title }: { title: string }) {
@@ -9,7 +10,7 @@ export function LoadingMapPlaceholder({ title }: { title: string }) {
   return (
     <MapGraph
       className="absolute w-full h-full"
-      onLoad={() => { }}
+      onLoad={() => {}}
       graph={
         <div className="hidden sm:flex w-full h-full flex-col items-center justify-center">
           <Loading />
@@ -22,13 +23,7 @@ export function LoadingMapPlaceholder({ title }: { title: string }) {
       ]}
     >
       <div className="absolute w-full h-full bg-slate-100/50" />
-      <div
-        className={`z-50 absolute top-6 left-2 bg-slate-100/90 dark:bg-slate-800/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-28 md:max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
-      >
-        <div className="flex flex-col gap-2 w-full">
-          <h1 className="text-lg md:text-xl leading-none md:leading-normal">{title}</h1>
-        </div>
-      </div>
+      <MapGraphMenu header={title} opened={opened} />
       <div className="absolute top-[50%] left-[50%]">
         <Loading />
       </div>

@@ -5,7 +5,13 @@ import { sensorInfo } from '@/utils/data/api/breathe-pvd/sensorInfo';
 import { fetchPmData } from '@/utils/data/api/breathe-pvd';
 import { fetchBreatheData } from '@/utils/data/api/breathe-pvd/sensors';
 import { pmInfo } from '@/utils/data/api/breathe-pvd/pmInfo';
-import { ExternalLink, FullBleedColumn, Header, BreatheMapGraph, LoadingMapPlaceholder } from '@/components';
+import {
+  ExternalLink,
+  FullBleedColumn,
+  Header,
+  BreatheMapGraph,
+  LoadingMapPlaceholder,
+} from '@/components';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,7 +20,7 @@ const DATA_WINDOW = 30;
 export default function BreathePvd() {
   return (
     <FullBleedColumn className="my-2 gap-4 w-full">
-      <Header size="lg" variant="impact" tag="h1">
+      <Header size="lg" variant="impact" tag="h2">
         Air Quality
       </Header>
       <p>
@@ -28,15 +34,13 @@ export default function BreathePvd() {
       </p>
       <p className="md:hidden">Tap the arrow button to view the graph.</p>
       <section className="full-bleed w-full min-h-[70vh] relative p-0 my-0 min-w-full">
-        <React.Suspense fallback={<LoadingMapPlaceholder title='Air Quality' />}>
+        <React.Suspense fallback={<LoadingMapPlaceholder title="Air Quality" />}>
           <VisualizationWrapper />
         </React.Suspense>
       </section>
     </FullBleedColumn>
   );
 }
-
-
 
 async function VisualizationWrapper() {
   const now = new Date();
@@ -47,10 +51,6 @@ async function VisualizationWrapper() {
   );
   const pmData = await fetchPmData(Object.keys(pmInfo), subDays(now, DATA_WINDOW), now);
   return (
-    <BreatheMapGraph
-      breatheSensorData={sensorData}
-      breathePmData={pmData}
-      className="h-[75vh]"
-    />
+    <BreatheMapGraph breatheSensorData={sensorData} breathePmData={pmData} className="h-[75vh]" />
   );
 }

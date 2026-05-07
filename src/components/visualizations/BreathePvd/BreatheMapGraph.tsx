@@ -5,7 +5,7 @@ import { eachHourOfInterval, roundToNearestHours } from 'date-fns';
 
 import { BreatheTimeSeries } from './BreatheTimeSeries';
 import { FormattedVar } from './FormattedVar';
-import { MapGraph } from '@/components';
+import { MapGraph, MapGraphMenu } from '@/components';
 import {
   BREATHE_SENSOR_VIEWER_VARS,
   type BreatheSensorData,
@@ -288,26 +288,21 @@ export function BreatheMapGraph({
         [-71.32, 41.7],
       ]}
     >
-      <div
-        className={`z-50 absolute top-6 left-2 bg-slate-100/90 dark:bg-slate-800/90 rounded-md font-light p-2 flex flex-col gap-4 max-w-32 md:max-w-56 ${opened ? 'translate-x-[-24rem] md:translate-x-0 transition-transform duration-500' : ''}`}
-      >
-        <div className="flex flex-col gap-2 w-full">
-          <h1 className="text-lg md:text-xl leading-none md:leading-normal">Air Quality</h1>
-          {/* AM -- Todo: this should be updated to use the <Select /> Component */}
-          <select
-            onChange={(e) => clickHandler(e)}
-            className="md:text-lg border-solid shadow-lg rounded-md"
-          >
-            {[...BREATHE_SENSOR_VIEWER_VARS, ...BREATHE_PM_VIEWER_VARS].map((opt) => {
-              return (
-                <option id={opt} value={opt} key={opt}>
-                  {FormattedVar(opt)}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <h2 className="text-md md:text-lg leading-none md:leading-normal">{formattedDate}</h2>
+      <MapGraphMenu opened={opened} header="Air Quality" subHead={formattedDate}>
+        {/* AM -- Todo: this should be updated to use the <Select /> Component */}
+        <select
+          onChange={(e) => clickHandler(e)}
+          className="md:text-lg border-solid shadow-lg rounded-md"
+        >
+          {[...BREATHE_SENSOR_VIEWER_VARS, ...BREATHE_PM_VIEWER_VARS].map((opt) => {
+            return (
+              <option id={opt} value={opt} key={opt}>
+                {FormattedVar(opt)}
+              </option>
+            );
+          })}
+        </select>
+
         <p>Use the date slider to view hourly air quality data.</p>
         <div className="flex flex-col gap-1 w-full">
           <input
@@ -331,7 +326,7 @@ export function BreatheMapGraph({
             <span>{dataRange.max.toFixed(2)}</span>
           </div>
         </div>
-      </div>
+      </MapGraphMenu>
     </MapGraph>
   );
 }
