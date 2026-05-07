@@ -29,7 +29,7 @@ export default async function StreamGage() {
         Gage height is depicted by circle size and color. Select up to five circles to view a line
         graph over time.
       </p>
-      <p className="md:hidden">On mobile, tap the arrow button to view the graph.</p>
+      <p className="md:hidden">Tap the arrow button to view the graph.</p>
       <section className="full-bleed w-full min-h-[70vh] relative p-0 my-0 min-w-full">
         <React.Suspense fallback={<LoadingMapPlaceholder />}>
           <PageWrapper />
