@@ -11,7 +11,7 @@ import { downsampleStreamGageData, fetchStreamGageData } from '@/utils/data';
 
 export const dynamic = 'force-dynamic';
 
-export default async function StreamGage() {
+export default function StreamGage() {
   return (
     <FullBleedColumn className="my-2 gap-4 w-full">
       <Header size="lg" variant="impact" tag="h1">
@@ -31,15 +31,15 @@ export default async function StreamGage() {
       </p>
       <p className="md:hidden">Tap the arrow button to view the graph.</p>
       <section className="full-bleed w-full min-h-[70vh] relative p-0 my-0 min-w-full">
-        <React.Suspense fallback={<LoadingMapPlaceholder />}>
-          <PageWrapper />
+        <React.Suspense fallback={<LoadingMapPlaceholder title='Stream Gage Height' />}>
+          <VisualizationWrapper />
         </React.Suspense>
       </section>
     </FullBleedColumn>
   );
 }
 
-async function PageWrapper() {
+async function VisualizationWrapper() {
   const streamData = await fetchStreamGageData(14, 'Gage height');
   const downsampledData = downsampleStreamGageData(streamData);
 

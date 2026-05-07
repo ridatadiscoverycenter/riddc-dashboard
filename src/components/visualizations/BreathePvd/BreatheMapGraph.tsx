@@ -293,6 +293,7 @@ export function BreatheMapGraph({
       >
         <div className="flex flex-col gap-2 w-full">
           <h1 className="text-lg md:text-xl leading-none md:leading-normal">Air Quality</h1>
+          {/* AM -- Todo: this should be updated to use the <Select /> Component */}
           <select
             onChange={(e) => clickHandler(e)}
             className="md:text-lg border-solid shadow-lg rounded-md"
