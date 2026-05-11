@@ -5,7 +5,8 @@ import { type LngLatBoundsLike } from 'maplibre-gl';
 import { ToggleMenuButton } from './ToggleMenuButton';
 import { useMap } from '@/components';
 
-const COMPONENT_TRANSITION_STYLES = 'transition-[width] duration-500 ease-in-out';
+const COMPONENT_TRANSITION_STYLES =
+  'transition-[width] motion-reduce:transition-none duration-500 ease-in-out';
 const MAP_SIZE_STYLES = (opened: boolean) =>
   `${COMPONENT_TRANSITION_STYLES} ${opened ? 'w-0' : 'w-[100%]'}`;
 const GRAPH_SIZE_STYLES = (opened: boolean) =>
