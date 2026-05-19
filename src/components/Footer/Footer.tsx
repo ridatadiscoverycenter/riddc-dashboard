@@ -7,8 +7,10 @@ const LOGO_SIZE = 5;
 export function Footer() {
   return (
     <footer className="flex flex-col items-center overflow-clip gap-4 bg-cyan-100 dark:bg-inherit dark:border-t dark:border-white text-slate-800 dark:text-slate-200 pt-4 text-xs">
-      <div className="flex items-center justify-around flex-wrap gap-4 px-4 py-1 m-2 dark:bg-white rounded-md">
-        <RiNestLogo size={LOGO_SIZE} />
+      <div className="flex items-center justify-around flex-wrap gap-4 px-4 py-2423024231 m-2 dark:bg-white rounded-md">
+        <div className="h-8 flex items-center">
+          <RiNestLogo size={LOGO_SIZE - 1.5} background={false} />
+        </div>
         <UriLogo size={LOGO_SIZE - 2} />
         <ThreeCrsLogo size={LOGO_SIZE} />
         <BrownLogo size={LOGO_SIZE - 1} />
