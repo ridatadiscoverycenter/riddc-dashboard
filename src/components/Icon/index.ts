@@ -5,6 +5,7 @@ export * from './GithubLogo';
 export * from './LeftIcon';
 export * from './NsfLogo';
 export * from './RicaimLogo';
+export * from './RiNestLogo';
 export * from './RiddcLogo';
 export * from './ThreeCrsLogo';
 export * from './UriLogo';
