@@ -402,7 +402,17 @@ const DATASETS = [
   {
     name: 'OSSDB',
     href: '/datasets/ossdb',
-    description: () => <>REPLACE ME</>,
+    description: () => (
+      <>
+        The{' '}
+        <ExternalLink href="https://github.com/Brown-University-Library/geodata_ossdb">
+          Ocean State Spatial Database (OSSDB)
+        </ExternalLink>{' '}
+        contains basic geographic and census data for creating maps within the State of Rhode
+        Island. Created by the{' '}
+        <ExternalLink href="https://libguides.brown.edu/geodata/">GeoData@SciLi team</ExternalLink>.
+      </>
+    ),
   },
 ];
 

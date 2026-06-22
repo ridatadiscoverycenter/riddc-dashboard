@@ -86,8 +86,12 @@ const DATASETS = [
     name: 'Stream Gage Data',
     href: '/datasets/stream-gage',
   },
-  {
+  { 
     name: 'Breathe Providence',
     href: '/datasets/breathe-pvd',
+  },
+  { 
+    name: 'OSSDB',
+    href: '/datasets/ossdb',
   },
 ];

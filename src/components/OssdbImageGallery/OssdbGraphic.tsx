@@ -1,6 +1,5 @@
 import Image from 'next/image';
 
-//import { Header } from  '../Header';
 import { type GalleryData } from './data';
 
 type OssdbGraphicProps = {
@@ -8,7 +7,6 @@ type OssdbGraphicProps = {
 };
 
 export function OssdbGraphic({ data }: OssdbGraphicProps) {
-  //<Header size='sm' tag="h3" variant="impact">{data.title}</Header>
   return (
     <div className="flex flex-col">
       <div className="flex flex-row items-center">
