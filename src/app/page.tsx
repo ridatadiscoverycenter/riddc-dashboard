@@ -399,6 +399,11 @@ const DATASETS = [
       </>
     ),
   },
+  {
+    name: 'OSSDB',
+    href: '/datasets/ossdb',
+    description: () => <>REPLACE ME</>,
+  },
 ];
 
 const EXTERNAL_RESOURCES = [

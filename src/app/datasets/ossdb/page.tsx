@@ -1,4 +1,4 @@
-import { ExternalLink, FullBleedColumn, Header } from '@/components';
+import { ExternalLink, FullBleedColumn, Header, OssdbImageGallery } from '@/components';
 
 export default function Ossdb() {
   return (
@@ -27,6 +27,8 @@ export default function Ossdb() {
         </ExternalLink>
         .
       </p>
+      <p>Here are some example graphics that can be made just using data from this database.</p>
+      <OssdbImageGallery />
     </FullBleedColumn>
   );
 }
