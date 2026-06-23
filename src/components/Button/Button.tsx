@@ -35,7 +35,11 @@ export const Button = React.forwardRef(function Button(
       <TouchTarget>{children}</TouchTarget>
     </Link>
   ) : (
-    <button {...props} className={clsx(classes, 'cursor-default')} ref={ref as React.ForwardedRef<HTMLButtonElement>}>
+    <button
+      {...props}
+      className={clsx(classes, 'cursor-default')}
+      ref={ref as React.ForwardedRef<HTMLButtonElement>}
+    >
       <TouchTarget>{children}</TouchTarget>
     </button>
   );
