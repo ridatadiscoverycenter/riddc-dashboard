@@ -32,7 +32,7 @@ export const gallery: Array<GalleryData> = [
     title: 'Rhode Island Residents Under 15 Years Old',
     bounds: {
       min: 0,
-      max: 30,
+      max: 100, //30,
     },
     src: choroplethAgeUnder15,
     alt: `${ALT_TEMPLATE} percentage populations of residents under 15 years of age. Concentrations (~25-30%) appear in the Providence / Pawtucket area, Woonsocket, Barrington, and Newport.`,
@@ -42,7 +42,7 @@ export const gallery: Array<GalleryData> = [
     title: 'College Age (20-24) Residents of Rhode Island',
     bounds: {
       min: 0,
-      max: 15,
+      max: 100, //15,
     },
     src: choroplethAgeCollege,
     note: 'Locations of colleges are noted on the map.',
@@ -53,7 +53,7 @@ export const gallery: Array<GalleryData> = [
     title: 'Rhode Island Residents Over 70 Years Old',
     bounds: {
       min: 0,
-      max: 35,
+      max: 100, //35,
     },
     src: choroplethAgeOver70,
     alt: `${ALT_TEMPLATE} percentage populations of residents over 70 years of age. Concentrations appear in along the south coast of Rhode Island and East Greenwhich.`,
@@ -64,7 +64,7 @@ export const gallery: Array<GalleryData> = [
     title: 'Vacant Housing Units In Rhode Island',
     bounds: {
       min: 0,
-      max: 70,
+      max: 100, //70,
     },
     src: choroplethHousingVacant,
     alt: `${ALT_TEMPLATE} percentage of vacant housing units. Tracts along the south coast and Block Island have upwards of 70% vacant housing, mostly due people owned seasonal homes.`,
@@ -105,7 +105,7 @@ export const gallery: Array<GalleryData> = [
     title: 'Black or African American Residents',
     bounds: {
       min: 0,
-      max: 45,
+      max: 100, //45,
     },
     src: choroplethRaceBlackAfricanAmerican,
     alt: `${ALT_TEMPLATE} percentage populations of Black or African American residents. The tracts in and around Providence, Woonsocket, and Newport have the highest concentrations of Black or African American residents.`,
@@ -115,7 +115,7 @@ export const gallery: Array<GalleryData> = [
     title: 'American Indian or Alaskan Native Residents',
     bounds: {
       min: 0,
-      max: 10,
+      max: 100, //10,
     },
     src: choroplethRaceAmericanIndianAlaskaNative,
     alt: `${ALT_TEMPLATE} percentage populations of American Indian or Alaskan Native residents. `,
@@ -125,7 +125,7 @@ export const gallery: Array<GalleryData> = [
     title: 'Asian Residents',
     bounds: {
       min: 0,
-      max: 35,
+      max: 100, //35,
     },
     src: choroplethRaceAsian,
     alt: `${ALT_TEMPLATE} percentage populations of Asian residents. Greenville and some areas of Providence have high populations of Asian residents (~35%), with other suburban areas of the state having lower but still notable populations of Asian residents.`,
@@ -135,7 +135,7 @@ export const gallery: Array<GalleryData> = [
     title: 'Native Hawaiian or Pacific Islander Residents',
     bounds: {
       min: 0,
-      max: 2,
+      max: 100, //2,
     },
     src: choroplethRaceNativeHawaiianPacificIslander,
     alt: `${ALT_TEMPLATE} percentage populations of Native Hawaiian or Pacific Islander Residents residents. There aren't any census tracts with high proportions of Native Hawaiian or Pacific Islander residents, but the greatest conentrations exist around Providence and Newport.`,
@@ -145,7 +145,7 @@ export const gallery: Array<GalleryData> = [
     title: 'Residents Reporting "Other" on Census Surveys',
     bounds: {
       min: 0,
-      max: 70,
+      max: 100, //70,
     },
     src: choroplethRaceOther,
     alt: `${ALT_TEMPLATE} percentage populations of residents who reported "other" on census surveys. This group of residents is highly concentrated in and around the Providence area.`,
