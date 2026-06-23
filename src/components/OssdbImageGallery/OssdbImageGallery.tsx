@@ -4,7 +4,7 @@ import React from 'react';
 import { gallery, type GalleryData } from './data';
 import { OssdbGraphic } from './OssdbGraphic';
 
-import { Card, Select } from '@/components';
+import { Select } from '@/components';
 
 const options = gallery.map(({ id, title }) => ({ label: title, value: id.toString() }));
 
@@ -15,7 +15,7 @@ export function OssdbImageGallery() {
     [galleryId]
   );
   return (
-    <Card>
+    <section className="flex flex-col gap-2">
       <Select
         label="Select a Graphic:"
         options={options}
@@ -24,6 +24,6 @@ export function OssdbImageGallery() {
         onChange={(newValue) => setGalleryId(newValue as { label: string; value: string })}
       />
       <OssdbGraphic data={galleryItem} />
-    </Card>
+    </section>
   );
 }

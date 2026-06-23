@@ -20,7 +20,7 @@ export function OssdbGraphic({ data }: OssdbGraphicProps) {
           </div>
           <div className="h-full w-4 rounded-md bg-gradient-to-t from-[#224] to-[#1fe]" />
         </div>
-        <Image src={data.src} alt={data.alt} className="w-full sm:w-[50%]" />
+        <Image src={data.src} alt={data.alt} className="w-full md:w-[50%] sm:w-[60%]" />
       </div>
       {data.note && <p className="text-sm">{data.note}</p>}
     </div>
