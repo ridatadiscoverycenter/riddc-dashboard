@@ -1,4 +1,3 @@
-import * as Headless from '@headlessui/react';
 import React from 'react';
 import NextLink, { type LinkProps as NextLinkProps } from 'next/link';
 
@@ -9,25 +8,21 @@ export type LinkProps = NextLinkProps & React.ComponentPropsWithoutRef<'a'>;
 
 function LinkComponent(props: LinkProps, ref: React.ForwardedRef<HTMLAnchorElement>) {
   return (
-    <Headless.DataInteractive>
-      <NextLink
-        {...props}
-        className={props.className ? `${props.className} ${BASE_STYTLES}` : LINK_STYLES}
-        ref={ref}
-      />
-    </Headless.DataInteractive>
+    <NextLink
+      {...props}
+      className={props.className ? `${props.className} ${BASE_STYTLES}` : LINK_STYLES}
+      ref={ref}
+    />
   );
 }
 
 function ExternalLinkComponent(props: LinkProps, ref: React.ForwardedRef<HTMLAnchorElement>) {
   return (
-    <Headless.DataInteractive>
-      <a
-        {...props}
-        className={props.className ? `${props.className} ${BASE_STYTLES}` : LINK_STYLES}
-        ref={ref}
-      />
-    </Headless.DataInteractive>
+    <a
+      {...props}
+      className={props.className ? `${props.className} ${BASE_STYTLES}` : LINK_STYLES}
+      ref={ref}
+    />
   );
 }
 

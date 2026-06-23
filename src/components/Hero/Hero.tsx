@@ -1,5 +1,6 @@
 import NarBay from '@/components/Image/NarBay';
-import { Button, FullBleedColumn, Header } from '@/components';
+import { Button } from '@/components/Button';
+import { FullBleedColumn, Header } from '@/components';
 
 export function Hero({ className }: { className: string }) {
   return (
