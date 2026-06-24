@@ -90,4 +90,8 @@ const DATASETS = [
     name: 'Breathe Providence',
     href: '/datasets/breathe-pvd',
   },
+  {
+    name: 'OSSDB',
+    href: '/datasets/ossdb',
+  },
 ];

@@ -17,6 +17,7 @@ export * from './Loading';
 export * from './Icon';
 export * from './Modal';
 export * from './Nav';
+export * from './OssdbImageGallery';
 export * from './PageSkeletons';
 export * from './Select';
 export * from './visualizations';
