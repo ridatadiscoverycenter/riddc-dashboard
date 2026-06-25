@@ -5,14 +5,14 @@ import { clsx } from 'clsx';
 
 import { styles, type Color } from './styles';
 import { TouchTarget } from './TouchTarget';
-import { Link } from '@/components/Link';
+import { Link } from '@/components';
 
 export type ButtonProps = (
   | { color?: Color; outline?: never; plain?: never }
   | { color?: never; outline: true; plain?: never }
   | { color?: never; outline?: never; plain: true }
 ) & { className?: string; children: React.ReactNode } & (
-    | Omit<React.ComponentPropsWithoutRef<'button'>, 'className'>
+    | Omit<Headless.ButtonProps, 'as' | 'className'>
     | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
   );
 
@@ -35,12 +35,8 @@ export const Button = React.forwardRef(function Button(
       <TouchTarget>{children}</TouchTarget>
     </Link>
   ) : (
-    <button
-      {...props}
-      className={clsx(classes, 'cursor-default')}
-      ref={ref as React.ForwardedRef<HTMLButtonElement>}
-    >
+    <Headless.Button {...props} className={clsx(classes, 'cursor-default')} ref={ref}>
       <TouchTarget>{children}</TouchTarget>
-    </button>
+    </Headless.Button>
   );
 });
