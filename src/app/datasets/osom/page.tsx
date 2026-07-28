@@ -150,10 +150,10 @@ const DESCRIPTION = (
       available by the year at 1.5 hour increments. As the model covers the entire Narragansett Bay,
       data is always available at all buoy locations.
     </p>
-    <p>
+    <p style={{ marginTop: '1rem' }}>
       Looking for the source data? You can download the{' '}
       <ExternalLink href="https://app.globus.org/file-manager?origin_id=fa54d7a3-ea6e-4c80-9486-8d3c2c99d838&origin_path=%2F">
-        ROMS forcing files 
+        ROMS forcing files
       </ExternalLink>{' '}
       used to build the model or the{' '}
       <ExternalLink href="https://app.globus.org/file-manager?origin_id=6579142b-9d21-4ab1-b541-e0c471e1e098&origin_path=%2F">
