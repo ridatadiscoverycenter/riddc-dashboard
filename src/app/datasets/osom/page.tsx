@@ -153,11 +153,11 @@ const DESCRIPTION = (
     <p style={{ marginTop: '1rem' }}>
       Looking for the source data? You can download the{' '}
       <ExternalLink href="https://app.globus.org/file-manager?origin_id=fa54d7a3-ea6e-4c80-9486-8d3c2c99d838&origin_path=%2F">
-        ROMS forcing files
+      ROMS forcing files
       </ExternalLink>{' '}
       used to build the model or the{' '}
       <ExternalLink href="https://app.globus.org/file-manager?origin_id=660ecb5a-b446-4a71-9518-a98da0c12252&origin_path=%2F">
-        OSOM annual files
+      OSOM annual files
       </ExternalLink>{' '}
       from Globus Collections.
     </p>

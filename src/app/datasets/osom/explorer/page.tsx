@@ -18,9 +18,9 @@ export default async function OsomExplorer(props: PageProps) {
         see how the temperature, water salinity, and kinetic energy change over space and time.
       </p>
       <p style={{ marginTop: '1rem' }}>
-        NetCDF files for the entire OSOM dataset are available for download from{' '}
+        NetCDF files for the entire OSOM dataset are available for download from a{' '}
         <ExternalLink href="https://app.globus.org/file-manager?origin_id=660ecb5a-b446-4a71-9518-a98da0c12252&origin_path=%2F">
-        a Globus Collection.
+          Globus Collection.
         </ExternalLink>
       </p>
       <OsomExporerMap dataset={dataset} variable={variable} rasterIndex={rasterIndex} />
