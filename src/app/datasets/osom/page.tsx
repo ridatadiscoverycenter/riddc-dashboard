@@ -156,10 +156,10 @@ const DESCRIPTION = (
         ROMS forcing files
       </ExternalLink>{' '}
       used to build the model or the{' '}
-      <ExternalLink href="https://app.globus.org/file-manager?origin_id=6579142b-9d21-4ab1-b541-e0c471e1e098&origin_path=%2F">
+      <ExternalLink href="https://app.globus.org/file-manager?origin_id=660ecb5a-b446-4a71-9518-a98da0c12252&origin_path=%2F">
         OSOM annual files
       </ExternalLink>{' '}
-      from Globus Collections. You will need a Globus Connect account to access the portal.
+      from Globus Collections.
     </p>
   </>
 );
