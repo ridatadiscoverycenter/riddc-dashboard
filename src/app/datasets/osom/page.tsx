@@ -141,12 +141,25 @@ const OSOM_BUOY_ERROR_LINKS = [
 ];
 
 const DESCRIPTION = (
-  <p>
-    The Ocean State Ocean Model (OSOM), developed in a collaboration between the University of Rhode
-    Island and Brown University, is an application of the Regional Ocean Modeling System (ROMS). The
-    model spans Rhode Island&apos;s major waterways: Narragansett Bay, Mt. Hope Bay, larger rivers,
-    and the Block Island Shelf circulation from Long Island to Nantucket. Data is available by the
-    year at 1.5 hour increments. As the model covers the entire Narragansett Bay, data is always
-    available at all buoy locations.
-  </p>
+  <>
+    <p>
+      The Ocean State Ocean Model (OSOM), developed in a collaboration between the University of
+      Rhode Island and Brown University, is an application of the Regional Ocean Modeling System
+      (ROMS). The model spans Rhode Island&apos;s major waterways: Narragansett Bay, Mt. Hope Bay,
+      larger rivers, and the Block Island Shelf circulation from Long Island to Nantucket. Data is
+      available by the year at 1.5 hour increments. As the model covers the entire Narragansett Bay,
+      data is always available at all buoy locations.
+    </p>
+    <p className="!ml-0 !pl-0 mt-4 mb-1 !indent-0 !text-left">
+      Looking for the source data? You can download the{' '}
+      <ExternalLink href="https://app.globus.org/file-manager?origin_id=fa54d7a3-ea6e-4c80-9486-8d3c2c99d838&origin_path=%2F">
+        ROMS forcing files
+      </ExternalLink>{' '}
+      used to build the model or the{' '}
+      <ExternalLink href="https://app.globus.org/file-manager?origin_id=660ecb5a-b446-4a71-9518-a98da0c12252&origin_path=%2F">
+        OSOM annual files
+      </ExternalLink>{' '}
+      from Globus Collections.
+    </p>
+  </>
 );
