@@ -56,6 +56,12 @@ async function PageWrapper({
     summaryData: fetchOsomSummaryData(),
   });
 
+  console.log({
+    years: Array.from(new Set(summaryData.map(({ time }) => time.valueOf()))).map(
+      (value) => new Date(value)
+    ),
+  });
+
   const paramsOrError = extractParams(
     {
       buoys: parseParamBuoyIds(params ? params['buoys'] : undefined),
@@ -116,7 +122,7 @@ async function PageWrapper({
           dateBounds={{
             /* Subject to change? */
             startDate: new Date('2006-01-01'),
-            endDate: new Date('2020-01-02'),
+            endDate: new Date('2021-12-31'),
           }}
           init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
         />
