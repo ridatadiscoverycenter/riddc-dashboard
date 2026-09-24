@@ -1,57 +1,119 @@
 'use client';
 
 import React from 'react';
-import { addDays, format } from 'date-fns';
+import { format, eachMonthOfInterval } from 'date-fns';
 import { LngLatBoundsLike } from 'maplibre-gl';
 import { useMap } from './useMap';
 import { Header, Input, Label, Select } from '@/components';
 import { useInterval } from '@/hooks/useInterval';
 
-type Variable = 'salt' | 'temp' | 'akv';
-type Dataset = 'annual-jan' | 'annual-jul';
+import { OsomExplorerVariable, OsomExplorerDataset } from '@/types';
 
 type OsomExplorerMapProps = {
-  dataset: Dataset;
-  variable: Variable;
-  rasterIndex: number;
+  dataset: OsomExplorerDataset;
+  variable: OsomExplorerVariable;
+  timepoint: number;
 };
 
-const VARIABLE_OPTS: Array<{ label: string; value: Variable }> = [
-  { label: 'Ocean Temperature', value: 'temp' },
-  { label: 'Water Salinity', value: 'salt' },
-  // Comment this out until the units thing is fixed.
-  //{ label: 'Kinetic Energy', value: 'akv' },
+const VARIABLE_OPTS: Array<{ label: string; value: OsomExplorerVariable }> = [
+  { label: 'Salinity (Bottom)', value: 'SalinityBottom' },
+  { label: 'Salinity (Surface)', value: 'SalinitySurface' },
+  { label: 'Water Temperature (Bottom)', value: 'WaterTempBottom' },
+  { label: 'Water Temperature (Surface)', value: 'WaterTempSurface' },
+  { label: 'Surface Height', value: 'SurfaceHeight' },
+  { label: 'Velocity East (Bottom)', value: 'VelocityEastwardBottom' },
+  { label: 'Velocity East (Surface)', value: 'VelocityEastwardSurface' },
+  { label: 'Velocity North (Bottom)', value: 'VelocityNorthwardBottom' },
+  { label: 'Velocity North (Surface)', value: 'VelocityNorthwardSurface' },
+  { label: 'Kinetic Energy (Bottom)', value: 'KineticEnergyBottom' },
+  { label: 'Kinetic Energy (Surface)', value: 'KineticEnergySurface' },
 ];
 
-const DATASET_OPTS: Array<{ label: string; value: Dataset }> = [
-  { label: 'Annual (Jan.)', value: 'annual-jan' },
-  { label: 'Annual (Jul.)', value: 'annual-jul' },
+const DATASET_OPTS: Array<{ label: string; value: OsomExplorerDataset }> = [
+  { label: 'Monthly Averages', value: 'monthly_avg' },
 ];
 
-const VARIABLE_UNITS: Record<Variable, string> = {
-  temp: 'ºC',
-  salt: 'PSU',
-  akv: 'J/Kg',
+const VARIABLE_UNITS: Record<OsomExplorerVariable, string> = {
+  WaterTempBottom: 'ºC',
+  WaterTempSurface: 'ºC',
+  SalinityBottom: 'PSU',
+  SalinitySurface: 'PSU',
+  KineticEnergyBottom: 'J/Kg',
+  KineticEnergySurface: 'J/Kg',
+  SurfaceHeight: '???',
+  VelocityEastwardBottom: '???',
+  VelocityEastwardSurface: '???',
+  VelocityNorthwardBottom: '???',
+  VelocityNorthwardSurface: '???',
 };
 
-const VARIABLE_BOUNDS: Record<Variable, { min: string; max: string }> = {
-  temp: {
-    min: '-6.7',
-    max: '27.3',
+const VARIABLE_BOUNDS: Record<OsomExplorerVariable, { min: string; max: string }> = {
+  WaterTempBottom: {
+    min: '-0.03',
+    max: '8.11',
   },
-  salt: {
+  WaterTempSurface: {
+    min: '-0.05',
+    max: '7.14',
+  },
+  SalinityBottom: {
     min: '0',
     max: '33',
   },
-  akv: {
+  SalinitySurface: {
     min: '0',
-    max: '5.38e-6',
+    max: '33',
+  },
+  KineticEnergyBottom: {
+    min: '3.33e-07',
+    max: '0.52',
+  },
+  KineticEnergySurface: {
+    min: '9,49e-07',
+    max: '1.54',
+  },
+  SurfaceHeight: {
+    min: '-0.24',
+    max: '0.418',
+  },
+  VelocityEastwardBottom: {
+    min: '-0.36',
+    max: '0.36',
+  },
+  VelocityEastwardSurface: {
+    min: '-0.53',
+    max: '0.63',
+  },
+  VelocityNorthwardBottom: {
+    min: '-0.35',
+    max: '0.39',
+  },
+  VelocityNorthwardSurface: {
+    min: '-0.74',
+    max: '0.57',
   },
 };
 
 const HALINE_GRADIENT = 'linear-gradient(0.25turn, #2a186e, #125e8e, #3c9486, #80cd64, #fbee97)';
 const THERMAL_GRADIENT = 'linear-gradient(0.25turn, #032333, #634197, #b5607f, #fa973f, #e7fa5a)';
 const SPEED_GRADIENT = 'linear-gradient(0.25turn, #fcfccc, #c5ba4c, #538d1f, #0c5d2e, #172213)';
+const AMP_GRADIENT = 'linear-gradient(0.25turn, #f0ebea, #d59d8a, #be5437, #7e0d29, #3d0912)';
+const DEEP_GRADIENT = 'linear-gradient(0.25turn, #fdfdcc, #61bea3, #46889c, #41417c, #281a2d)';
+const GRAY_GRADIENT = 'linear-gradient(0.25turn, #000000, #fcfbfa)';
+
+const VARIABLE_GRADIENTS: Record<OsomExplorerVariable, string> = {
+  SalinityBottom: HALINE_GRADIENT,
+  SalinitySurface: HALINE_GRADIENT,
+  WaterTempBottom: THERMAL_GRADIENT,
+  WaterTempSurface: THERMAL_GRADIENT,
+  SurfaceHeight: DEEP_GRADIENT,
+  VelocityEastwardBottom: SPEED_GRADIENT,
+  VelocityEastwardSurface: SPEED_GRADIENT,
+  VelocityNorthwardBottom: SPEED_GRADIENT,
+  VelocityNorthwardSurface: SPEED_GRADIENT,
+  KineticEnergyBottom: AMP_GRADIENT,
+  KineticEnergySurface: AMP_GRADIENT,
+};
 
 const AUTOPLAY_SPEED_MS = 2000;
 
@@ -61,14 +123,14 @@ const OSOM_BOUNDS: LngLatBoundsLike = [
 ];
 
 export function OsomExporerMap({
-  dataset: initialDataset = 'annual-jan',
-  variable: initialVariable = 'temp',
-  rasterIndex: initialRasterIndex = 0,
+  dataset: initialDataset = 'monthly_avg',
+  variable: initialVariable = 'WaterTempSurface',
+  timepoint: initalTimepoint = 0,
 }: OsomExplorerMapProps) {
   const { map, loaded, containerRef } = useMap(OSOM_BOUNDS);
-  const [dataset, setDataset] = React.useState<Dataset>(initialDataset);
-  const [variable, setVariable] = React.useState<Variable>(initialVariable);
-  const [rasterIndex, setRasterIndex] = React.useState(initialRasterIndex);
+  const [dataset, setDataset] = React.useState<OsomExplorerDataset>(initialDataset);
+  const [variable, setVariable] = React.useState<OsomExplorerVariable>(initialVariable);
+  const [timepoint, setTimepoint] = React.useState(initalTimepoint);
   const [autoplay, setAutoplay] = React.useState(false);
 
   React.useEffect(() => {
@@ -76,18 +138,15 @@ export function OsomExporerMap({
     const url = new URL(window.location.href);
     url.searchParams.set('dataset', dataset);
     url.searchParams.set('var', variable);
-    url.searchParams.set('index', rasterIndex.toString());
+    url.searchParams.set('index', timepoint.toString());
     window.history.replaceState({}, '', url);
-  }, [dataset, variable, rasterIndex]);
+  }, [dataset, variable, timepoint]);
 
-  const timepoints = React.useMemo(
-    () => (dataset === 'annual-jan' ? TIMEPOITS_ANNUAL_JAN : TIMEPOITS_ANNUAL_JUL),
-    [dataset]
-  );
+  const timepoints = TIMEPOINTS;
 
   const incrementIndex = React.useCallback(() => {
-    setRasterIndex((current) => (current + 1 >= timepoints.length ? 0 : current + 1));
-  }, [setRasterIndex, timepoints]);
+    setTimepoint((current) => (current + 1 >= timepoints.length ? 0 : current + 1));
+  }, [setTimepoint, timepoints]);
 
   useInterval(incrementIndex, autoplay ? AUTOPLAY_SPEED_MS : undefined);
 
@@ -110,7 +169,7 @@ export function OsomExporerMap({
             layout: {
               // Initially, set the selected layer to visible, with all others
               // being invisible.
-              visibility: index === rasterIndex ? 'visible' : 'none',
+              visibility: index === timepoint ? 'visible' : 'none',
             },
           });
         });
@@ -131,9 +190,9 @@ export function OsomExporerMap({
       timepoints.forEach((_, index) =>
         map.current.setLayoutProperty(`osom-raster-${index}`, 'visibility', 'none')
       );
-      map.current.setLayoutProperty(`osom-raster-${rasterIndex}`, 'visibility', 'visible');
+      map.current.setLayoutProperty(`osom-raster-${timepoint}`, 'visibility', 'visible');
     }
-  }, [timepoints, rasterIndex]);
+  }, [timepoints, timepoint]);
 
   return (
     <>
@@ -144,7 +203,7 @@ export function OsomExporerMap({
             {VARIABLE_OPTS.find(({ value }) => variable === value)?.label}
             <br />
           </Header>
-          <span>{format(convertOsomIndexToDate(timepoints[rasterIndex]), 'MM/dd/yyyy')}</span>
+          <span>{formatTimepointString(timepoints[timepoint], dataset)}</span>
           <div className="flex flex-row gap-2 items-center">
             <span>
               {VARIABLE_BOUNDS[variable].min} {VARIABLE_UNITS[variable]}
@@ -152,12 +211,7 @@ export function OsomExporerMap({
             <div
               className="flex-1 h-4 rounded-md"
               style={{
-                backgroundImage:
-                  variable === 'salt'
-                    ? HALINE_GRADIENT
-                    : variable === 'temp'
-                      ? THERMAL_GRADIENT
-                      : SPEED_GRADIENT,
+                backgroundImage: VARIABLE_GRADIENTS[variable] || GRAY_GRADIENT,
               }}
             ></div>
             <span>
@@ -173,10 +227,10 @@ export function OsomExporerMap({
             type="range"
             min={0}
             max={timepoints.length - 1}
-            value={rasterIndex}
+            value={timepoint}
             onChange={(e) => {
               e.preventDefault();
-              setRasterIndex(Number(e.target.value));
+              setTimepoint(Number(e.target.value));
               setAutoplay(false);
             }}
           />
@@ -194,7 +248,7 @@ export function OsomExporerMap({
           defaultValue={DATASET_OPTS[0]}
           value={DATASET_OPTS.find(({ value }) => value === dataset)}
           onChange={(e) => {
-            const selectedDataset = e as { value: Dataset; label: string };
+            const selectedDataset = e as { value: OsomExplorerDataset; label: string };
             setDataset(selectedDataset.value);
           }}
         />
@@ -204,49 +258,40 @@ export function OsomExporerMap({
           defaultValue={VARIABLE_OPTS[0]}
           value={VARIABLE_OPTS.find(({ value }) => value === variable)}
           onChange={(e) => {
-            const selectedVariable = e as { value: Variable; label: string };
+            const selectedVariable = e as { value: OsomExplorerVariable; label: string };
             setVariable(selectedVariable.value);
           }}
         />
       </div>
-      {dataset === 'annual-jan' && (
-        <p>
-          All timepoints for the Annual (Jan.) dataset are from noon on the first of January every
-          year.
-        </p>
-      )}
-      {dataset === 'annual-jul' && (
-        <p>
-          All timepoints for the Annual (Jul.) dataset are from noon on the first of July every
-          year.
-        </p>
-      )}
     </>
   );
 }
 
-const TIMEPOITS_ANNUAL_JAN = [
-  1, 366, 731, 1096, 1462, 1827, 2192, 2557, 2923, 3288, 3653, 4018, 4384, 4749, 5114, 5479, 5845,
-  6210,
-];
-const TIMEPOITS_ANNUAL_JUL = [
-  182, 547, 912, 1278, 1643, 2008, 2373, 2739, 3104, 3469, 3834, 4200, 4565, 4930, 5295, 5661, 6026,
-  6391,
-];
+const TIMEPOINTS = eachMonthOfInterval({
+  start: new Date(2004, 12, 1),
+  end: new Date(2023, 1, 1),
+}).map((date) => format(date, 'yyyy-MM-dd'));
 
 const ANNUAL_RASTER_URL =
-  'https://tile-server.riddc.brown.edu/services/annual_<TIMEPOINT>_<VARIABLE>/tiles/{z}/{x}/{y}.png';
+  'https://qa-tile-server.riddc.brown.edu/services/monthly_avg_<VARIABLE>_<TIMEPOINT>/tiles/{z}/{x}/{y}.png';
 
-function getRasterUrl(dataset: Dataset, timepoint: number, variable: Variable) {
-  const timepoints = dataset === 'annual-jan' ? TIMEPOITS_ANNUAL_JAN : TIMEPOITS_ANNUAL_JUL;
+function getRasterUrl(
+  dataset: OsomExplorerDataset,
+  timepoint: number,
+  variable: OsomExplorerVariable
+) {
+  const timepoints = TIMEPOINTS; //dataset === 'annual-jan' ? TIMEPOITS_ANNUAL_JAN : TIMEPOITS_ANNUAL_JUL;
   const urlTemplate = ANNUAL_RASTER_URL;
   const boundedTimepoint =
     timepoint < 0 ? 0 : timepoint >= timepoints.length ? timepoints.length - 1 : timepoint;
   return urlTemplate
-    .replace('<TIMEPOINT>', timepoints[boundedTimepoint].toString().padStart(4, '0'))
+    .replace('<TIMEPOINT>', TIMEPOINTS[boundedTimepoint])
     .replace('<VARIABLE>', variable);
 }
 
-function convertOsomIndexToDate(index: number): Date {
-  return addDays(new Date(/* Model Start Date */ '01/01/2005'), index - 1);
+function formatTimepointString(timepoint: string, dataset: OsomExplorerDataset): string {
+  if (dataset === 'monthly_avg') {
+    return format(new Date(timepoint), 'MMMM yyyy');
+  }
+  return timepoint;
 }
