@@ -268,8 +268,8 @@ export function OsomExporerMap({
 }
 
 const TIMEPOINTS = eachMonthOfInterval({
-  start: new Date(2004, 12, 1),
-  end: new Date(2023, 1, 1),
+  start: new Date(2005, 1, 1),
+  end: new Date(2022, 12, 1),
 }).map((date) => format(date, 'yyyy-MM-dd'));
 
 const ANNUAL_RASTER_URL =
