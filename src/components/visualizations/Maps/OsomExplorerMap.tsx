@@ -40,57 +40,57 @@ const VARIABLE_UNITS: Record<OsomExplorerVariable, string> = {
   SalinitySurface: 'PSU',
   KineticEnergyBottom: 'J/Kg',
   KineticEnergySurface: 'J/Kg',
-  SurfaceHeight: '???',
-  VelocityEastwardBottom: '???',
-  VelocityEastwardSurface: '???',
-  VelocityNorthwardBottom: '???',
-  VelocityNorthwardSurface: '???',
+  SurfaceHeight: 'm',
+  VelocityEastwardBottom: 'm/s',
+  VelocityEastwardSurface: 'm/s',
+  VelocityNorthwardBottom: 'm/s',
+  VelocityNorthwardSurface: 'm/s',
 };
 
 const VARIABLE_BOUNDS: Record<OsomExplorerVariable, { min: string; max: string }> = {
   WaterTempBottom: {
-    min: '-0.03',
-    max: '8.11',
+    min: '-3.99',
+    max: '28.85',
   },
   WaterTempSurface: {
-    min: '-0.05',
-    max: '7.14',
+    min: '-4.00',
+    max: '28.28',
   },
   SalinityBottom: {
-    min: '0',
-    max: '33',
+    min: '6.43e-41',
+    max: '36.95',
   },
   SalinitySurface: {
-    min: '0',
-    max: '33',
+    min: '5.52e-41',
+    max: '34.94',
   },
   KineticEnergyBottom: {
-    min: '3.33e-07',
-    max: '0.52',
+    min: '1.50e-07',
+    max: '0.66',
   },
   KineticEnergySurface: {
-    min: '9,49e-07',
-    max: '1.54',
+    min: '6.82e-07',
+    max: '2.53',
   },
   SurfaceHeight: {
-    min: '-0.24',
-    max: '0.418',
+    min: '-0.43',
+    max: '0.43',
   },
   VelocityEastwardBottom: {
-    min: '-0.36',
-    max: '0.36',
+    min: '-0.50',
+    max: '0.60',
   },
   VelocityEastwardSurface: {
-    min: '-0.53',
-    max: '0.63',
+    min: '-0.77',
+    max: '2.04',
   },
   VelocityNorthwardBottom: {
-    min: '-0.35',
-    max: '0.39',
+    min: '-0.62',
+    max: '0.52',
   },
   VelocityNorthwardSurface: {
-    min: '-0.74',
-    max: '0.57',
+    min: '-1.04',
+    max: '0.90',
   },
 };
 
@@ -273,7 +273,7 @@ const TIMEPOINTS = eachMonthOfInterval({
 }).map((date) => format(date, 'yyyy-MM-dd'));
 
 const ANNUAL_RASTER_URL =
-  'https://qa-tile-server.riddc.brown.edu/services/monthly_avg_<VARIABLE>_<TIMEPOINT>/tiles/{z}/{x}/{y}.png';
+  'https://tile-server.riddc.brown.edu/services/monthly_avg_<VARIABLE>_<TIMEPOINT>/tiles/{z}/{x}/{y}.png';
 
 function getRasterUrl(
   dataset: OsomExplorerDataset,
