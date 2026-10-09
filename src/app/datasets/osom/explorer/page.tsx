@@ -1,11 +1,16 @@
 import { z } from 'zod';
 import { ExternalLink, FullBleedColumn, Header, OsomExporerMap } from '@/components';
-
-import { PageProps } from '@/types';
+import {
+  OsomExplorerDatasetSchema,
+  OsomExplorerVariableSchema,
+  type OsomExplorerDataset,
+  type OsomExplorerVariable,
+  type PageProps,
+} from '@/types';
 
 export default async function OsomExplorer(props: PageProps) {
   const searchParams = await props.searchParams;
-  const { dataset, variable, rasterIndex } = parseSearchParams(searchParams);
+  const { dataset, variable, timepoint } = parseSearchParams(searchParams);
   return (
     <FullBleedColumn className="w-full mt-2 gap-4">
       <Header size="lg" variant="impact" tag="h1">
@@ -23,7 +28,7 @@ export default async function OsomExplorer(props: PageProps) {
           Globus Collection.
         </ExternalLink>
       </p>
-      <OsomExporerMap dataset={dataset} variable={variable} rasterIndex={rasterIndex} />
+      <OsomExporerMap dataset={dataset} variable={variable} timepoint={timepoint} />
       <p>
         To explore more,{' '}
         <ExternalLink href="https://erddap.riddc.brown.edu/erddap/griddap/osom_v2_9429_72b1_b541.html">
@@ -40,39 +45,37 @@ export default async function OsomExplorer(props: PageProps) {
 }
 
 const DEFAULT_PARAMS: {
-  dataset: 'annual-jan' | 'annual-jul';
-  variable: 'salt' | 'temp' | 'akv';
-  rasterIndex: number;
+  dataset: OsomExplorerDataset;
+  variable: OsomExplorerVariable;
+  timepoint: number;
 } = {
-  dataset: 'annual-jan',
-  variable: 'temp',
-  rasterIndex: 0,
+  dataset: 'monthly_avg',
+  variable: 'WaterTempSurface',
+  timepoint: 0,
 };
 
 function parseSearchParams(params: PageProps['searchParams']): {
-  dataset: 'annual-jan' | 'annual-jul';
-  variable: 'salt' | 'temp' | 'akv';
-  rasterIndex: number;
+  dataset: OsomExplorerDataset;
+  variable: OsomExplorerVariable;
+  timepoint: number;
 } {
   if (!params) return DEFAULT_PARAMS;
   const rawDataset = params['dataset'];
   const rawVariable = params['var'];
-  const rawRasterIndex = params['index'];
+  const rawTimepoint = params['index'];
 
-  if (rawVariable === undefined && rawRasterIndex === undefined && rawDataset === undefined)
+  if (rawVariable === undefined && rawTimepoint === undefined && rawDataset === undefined)
     return DEFAULT_PARAMS;
 
-  const dataset = z.union([z.literal('annual-jan'), z.literal('annual-jul')]).safeParse(rawDataset);
-  const variable = z
-    .union([z.literal('salt'), z.literal('temp'), z.literal('akv')])
-    .safeParse(rawVariable);
-  const rasterIndex = z
+  const dataset = OsomExplorerDatasetSchema.safeParse(rawDataset);
+  const variable = OsomExplorerVariableSchema.safeParse(rawVariable);
+  const timepoint = z
     .string()
     .transform((string) => parseInt(string))
-    .safeParse(rawRasterIndex);
+    .safeParse(rawTimepoint);
 
-  if (dataset.success && variable.success && rasterIndex.success) {
-    return { dataset: dataset.data, variable: variable.data, rasterIndex: rasterIndex.data };
+  if (dataset.success && variable.success && timepoint.success) {
+    return { dataset: dataset.data, variable: variable.data, timepoint: timepoint.data };
   }
   console.error('failed to parse search params', params);
   return DEFAULT_PARAMS;
