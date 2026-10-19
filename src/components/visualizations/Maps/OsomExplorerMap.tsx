@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import { format, eachMonthOfInterval } from 'date-fns';
+import { format, eachMonthOfInterval, addHours } from 'date-fns';
 import { LngLatBoundsLike } from 'maplibre-gl';
+import { UTCDate } from '@date-fns/utc';
 import { useMap } from './useMap';
 import { Header, Input, Label, Select } from '@/components';
 import { useInterval } from '@/hooks/useInterval';
@@ -32,6 +33,7 @@ const VARIABLE_OPTS: Array<{ label: string; value: OsomExplorerVariable }> = [
 
 const DATASET_OPTS: Array<{ label: string; value: OsomExplorerDataset }> = [
   { label: 'Monthly Averages', value: 'monthly_avg' },
+  { label: 'Hurricane Irene', value: 'hurricane_irene' },
 ];
 
 const VARIABLE_UNITS: Record<OsomExplorerVariable, string> = {
@@ -147,7 +149,10 @@ export function OsomExporerMap({
     updateUrlDebounce(dataset, variable, timepoint);
   }, [dataset, variable, timepoint]);
 
-  const timepoints = TIMEPOINTS;
+  const timepoints = React.useMemo(
+    () => (dataset === 'monthly_avg' ? TIMEPOINTS_MONTHLY_AVG : TIMEPOINTS_HURRICANE_IRENE),
+    [dataset]
+  );
 
   const incrementIndex = React.useCallback(() => {
     setTimepoint((current) => (current + 1 >= timepoints.length ? 0 : current + 1));
@@ -272,31 +277,43 @@ export function OsomExporerMap({
   );
 }
 
-const TIMEPOINTS = eachMonthOfInterval({
-  start: new Date(2005, 1, 1),
-  end: new Date(2022, 12, 1),
+// yyyy-MM-dd formatted dates between 2005-01-01 and 2022-12-01
+const TIMEPOINTS_MONTHLY_AVG = eachMonthOfInterval({
+  start: new UTCDate(2004, 12, 1),
+  end: new UTCDate(2022, 11, 1),
 }).map((date) => format(date, 'yyyy-MM-dd'));
 
-const ANNUAL_RASTER_URL =
-  'https://tile-server.riddc.brown.edu/services/monthly_avg_<VARIABLE>_<TIMEPOINT>/tiles/{z}/{x}/{y}.png';
+// yyyy-MM-dd-HH-MM formatted dates between 2005-01-01 and 2022-12-01
+const TIMEPOINTS_HURRICANE_IRENE = Array.from(Array(64), (_, i) =>
+  addHours(new UTCDate(1314403200000), i * 1.5)
+).map((date) => format(date, 'yyyy-MM-dd-HH-mm'));
+
+const TILE_URL_TEMPLATE =
+  'https://tile-server.riddc.brown.edu/services/<DATASET>_<VARIABLE>_<TIMEPOINT>/tiles/{z}/{x}/{y}.png';
 
 function getRasterUrl(
   dataset: OsomExplorerDataset,
   timepoint: number,
   variable: OsomExplorerVariable
 ) {
-  const timepoints = TIMEPOINTS; //dataset === 'annual-jan' ? TIMEPOITS_ANNUAL_JAN : TIMEPOITS_ANNUAL_JUL;
-  const urlTemplate = ANNUAL_RASTER_URL;
+  const timepoints =
+    dataset === 'monthly_avg' ? TIMEPOINTS_MONTHLY_AVG : TIMEPOINTS_HURRICANE_IRENE;
+  const urlTemplate = TILE_URL_TEMPLATE;
   const boundedTimepoint =
     timepoint < 0 ? 0 : timepoint >= timepoints.length ? timepoints.length - 1 : timepoint;
   return urlTemplate
-    .replace('<TIMEPOINT>', TIMEPOINTS[boundedTimepoint])
+    .replace('<DATASET>', dataset)
+    .replace('<TIMEPOINT>', timepoints[boundedTimepoint])
     .replace('<VARIABLE>', variable);
 }
 
 function formatTimepointString(timepoint: string, dataset: OsomExplorerDataset): string {
   if (dataset === 'monthly_avg') {
-    return format(new Date(timepoint), 'MMMM yyyy');
+    return format(new UTCDate(timepoint), 'MMMM yyyy');
+  }
+  if (dataset === 'hurricane_irene') {
+    const [year, month, day, hours, minutes] = timepoint.split('-');
+    return format(new Date(`${year}-${month}-${day}T${hours}:${minutes}`), 'yyyy-MM-dd HH:mm');
   }
   return timepoint;
 }
