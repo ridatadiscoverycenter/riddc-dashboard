@@ -50,7 +50,7 @@ const VARIABLE_UNITS: Record<OsomExplorerVariable, string> = {
   VelocityNorthwardSurface: 'm/s',
 };
 
-const VARIABLE_BOUNDS: Record<OsomExplorerVariable, { min: string; max: string }> = {
+const VARIABLE_BOUNDS_MONTHLY_AVG: Record<OsomExplorerVariable, { min: string; max: string }> = {
   WaterTempBottom: {
     min: '-3.99',
     max: '28.85',
@@ -94,6 +94,53 @@ const VARIABLE_BOUNDS: Record<OsomExplorerVariable, { min: string; max: string }
   VelocityNorthwardSurface: {
     min: '-1.04',
     max: '0.90',
+  },
+};
+
+const VARIABLE_BOUNDS_IRENE: Record<OsomExplorerVariable, { min: string; max: string }> = {
+  WaterTempBottom: {
+    min: '9.43',
+    max: '27.00',
+  },
+  WaterTempSurface: {
+    min: '14.78',
+    max: '26.53',
+  },
+  SalinityBottom: {
+    min: '0.00',
+    max: '34.55',
+  },
+  SalinitySurface: {
+    min: '0.00',
+    max: '33.16',
+  },
+  KineticEnergyBottom: {
+    min: '7.22e-10',
+    max: '2.19',
+  },
+  KineticEnergySurface: {
+    min: '1.84e-09',
+    max: '8.97',
+  },
+  SurfaceHeight: {
+    min: '-1.20',
+    max: '1.55',
+  },
+  VelocityEastwardBottom: {
+    min: '-1.88',
+    max: '1.82',
+  },
+  VelocityEastwardSurface: {
+    min: '-2.89',
+    max: '4.03',
+  },
+  VelocityNorthwardBottom: {
+    min: '-1.78',
+    max: '1.98',
+  },
+  VelocityNorthwardSurface: {
+    min: '-2.77',
+    max: '3.42',
   },
 };
 
@@ -151,6 +198,11 @@ export function OsomExporerMap({
 
   const timepoints = React.useMemo(
     () => (dataset === 'monthly_avg' ? TIMEPOINTS_MONTHLY_AVG : TIMEPOINTS_HURRICANE_IRENE),
+    [dataset]
+  );
+
+  const variableBounds = React.useMemo(
+    () => (dataset === 'monthly_avg' ? VARIABLE_BOUNDS_MONTHLY_AVG : VARIABLE_BOUNDS_IRENE),
     [dataset]
   );
 
@@ -216,7 +268,7 @@ export function OsomExporerMap({
           <span>{formatTimepointString(timepoints[timepoint], dataset)}</span>
           <div className="flex flex-row gap-2 items-center">
             <span>
-              {VARIABLE_BOUNDS[variable].min} {VARIABLE_UNITS[variable]}
+              {variableBounds[variable].min} {VARIABLE_UNITS[variable]}
             </span>
             <div
               className="flex-1 h-4 rounded-md"
@@ -225,7 +277,7 @@ export function OsomExporerMap({
               }}
             ></div>
             <span>
-              {VARIABLE_BOUNDS[variable].max} {VARIABLE_UNITS[variable]}
+              {variableBounds[variable].max} {VARIABLE_UNITS[variable]}
             </span>
           </div>
         </div>
@@ -259,6 +311,7 @@ export function OsomExporerMap({
           value={DATASET_OPTS.find(({ value }) => value === dataset)}
           onChange={(e) => {
             const selectedDataset = e as { value: OsomExplorerDataset; label: string };
+            setTimepoint(0);
             setDataset(selectedDataset.value);
           }}
         />
