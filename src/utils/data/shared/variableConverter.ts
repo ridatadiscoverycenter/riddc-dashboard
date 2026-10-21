@@ -276,6 +276,13 @@ type OsomVarLabels = [
   'Salinity (Surface) (PSU)',
   'Temperature (Bottom) (°C)',
   'Temperature (Surface) (°C)',
+  'Surface Height (m)',
+  'Velocity Eastward (Bottom) (m s-1)',
+  'Velocity Eastward (Surface) (m s-1)',
+  'Velocity Northward (Bottom) (m s-1)',
+  'Velocity Northward (Surface) (m s-1)',
+  'Kinetic Energy (Bottom) (J kg-1)',
+  'Kinetic Energy (Surface) (J kg-1)',
 ];
 
 const OSOM_PAIRS: { viewer: OsomVarLabels[number]; erddap: OsomBuoyVariable }[] = [
@@ -283,6 +290,13 @@ const OSOM_PAIRS: { viewer: OsomVarLabels[number]; erddap: OsomBuoyVariable }[] 
   { viewer: 'Salinity (Surface) (PSU)', erddap: 'SalinitySurface' },
   { viewer: 'Temperature (Bottom) (°C)', erddap: 'WaterTempBottom' },
   { viewer: 'Temperature (Surface) (°C)', erddap: 'WaterTempSurface' },
+  { viewer: 'Surface Height (m)', erddap: 'SurfaceHeight' },
+  { viewer: 'Velocity Eastward (Bottom) (m s-1)', erddap: 'VelocityEastwardBottom' },
+  { viewer: 'Velocity Eastward (Surface) (m s-1)', erddap: 'VelocityEastwardSurface' },
+  { viewer: 'Velocity Northward (Bottom) (m s-1)', erddap: 'VelocityNorthwardBottom' },
+  { viewer: 'Velocity Northward (Surface) (m s-1)', erddap: 'VelocityNorthwardSurface' },
+  { viewer: 'Kinetic Energy (Bottom) (J kg-1)', erddap: 'KineticEnergyBottom' },
+  { viewer: 'Kinetic Energy (Surface) (J kg-1)', erddap: 'KineticEnergySurface' },
 ];
 
 export function variableToLabel(v: string, dataset?: Dataset) {
