@@ -134,6 +134,10 @@ export function OsomExporerMap({
   const [timepoint, setTimepoint] = React.useState(initalTimepoint);
   const [autoplay, setAutoplay] = React.useState(false);
 
+  // Note(AM): On Safari, an error is thrown if more than 100 calls to
+  // update the URL are made in 10 seconds. Debouncing this ensures that
+  // the URL is kept in sync with the visualization and also that the
+  // visualization doesn't crash on Safari.
   const updateUrlDebounce = useDebounce(
     (newDataset: OsomExplorerDataset, newVariable: OsomExplorerVariable, newTimepoint: number) =>
       updateUrlParams(newDataset, newVariable, newTimepoint)
