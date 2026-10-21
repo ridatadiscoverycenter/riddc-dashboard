@@ -187,7 +187,7 @@ export function DomoicAcidMap({ samples, stations }: DomoicAcidMapProps) {
   return (
     <>
       <section className="full-bleed w-full min-h-[70vh] relative p-0 my-0">
-        <div ref={containerRef} className="absolute w-full h-full" />
+        <div ref={containerRef} className="w-full h-full" style={{ position: 'absolute' }} />
         <div className="flex flex-col absolute top-[3%] left-3 h-[40%] md:top-[8%] md:left-8 md:max-h-[80%] md:h-fit bg-white/90 dark:bg-slate-800/90 p-4 rounded-md w-[225px] overflow-auto">
           <h2 className="text-lg font-bold">{formatDate(selectedDate, 'MM/dd/yyyy')}</h2>
           <ul className="flex flex-col gap-2">

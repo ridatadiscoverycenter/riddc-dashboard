@@ -8,6 +8,7 @@ import { Header, Input, Label, Select } from '@/components';
 import { useInterval } from '@/hooks/useInterval';
 
 import { OsomExplorerVariable, OsomExplorerDataset } from '@/types';
+import { useDebounce } from '@/hooks/useDebounce';
 
 type OsomExplorerMapProps = {
   dataset: OsomExplorerDataset;
@@ -133,13 +134,13 @@ export function OsomExporerMap({
   const [timepoint, setTimepoint] = React.useState(initalTimepoint);
   const [autoplay, setAutoplay] = React.useState(false);
 
+  const updateUrlDebounce = useDebounce(
+    (newDataset: OsomExplorerDataset, newVariable: OsomExplorerVariable, newTimepoint: number) =>
+      updateUrlParams(newDataset, newVariable, newTimepoint)
+  );
+
   React.useEffect(() => {
-    // Sync visualization state with URL params
-    const url = new URL(window.location.href);
-    url.searchParams.set('dataset', dataset);
-    url.searchParams.set('var', variable);
-    url.searchParams.set('index', timepoint.toString());
-    window.history.replaceState({}, '', url);
+    updateUrlDebounce(dataset, variable, timepoint);
   }, [dataset, variable, timepoint]);
 
   const timepoints = TIMEPOINTS;
@@ -197,7 +198,7 @@ export function OsomExporerMap({
   return (
     <>
       <section className="full-bleed w-full min-h-[75vh] md:min-h-[80vh] relative p-0 my-0">
-        <div ref={containerRef} className="absolute w-full h-full" />
+        <div ref={containerRef} className="w-full h-full" style={{ position: 'absolute' }} />
         <div className="flex flex-col gap-2 absolute top-[3%] left-3 md:top-[8%] md:left-8 bg-white/90 dark:bg-slate-800/90 p-4 rounded-md w-72">
           <Header size="sm" tag="h3" variant="impact">
             {VARIABLE_OPTS.find(({ value }) => variable === value)?.label}
@@ -294,4 +295,16 @@ function formatTimepointString(timepoint: string, dataset: OsomExplorerDataset):
     return format(new Date(timepoint), 'MMMM yyyy');
   }
   return timepoint;
+}
+
+function updateUrlParams(
+  dataset: OsomExplorerDataset,
+  variable: OsomExplorerVariable,
+  timepoint: number
+) {
+  const url = new URL(window.location.href);
+  url.searchParams.set('dataset', dataset);
+  url.searchParams.set('var', variable);
+  url.searchParams.set('index', timepoint.toString());
+  window.history.replaceState({}, '', url);
 }
