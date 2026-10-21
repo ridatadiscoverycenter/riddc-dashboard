@@ -54,7 +54,7 @@ jobs:
           project_id: ${{ env.gcp_project_id }}
           image: ${{ env.gcp_registry_url }}/${{ env.gcp_project_id }}/${{ env.gcp_container_registry }}/${{ env.image }}
           flags: >-
-              --allow-unauthenticated
+              --no-invoker-iam-check
               --service-account=cloud-run-service-account@buoy-dashboard-784db.iam.gserviceaccount.com
 
       - name: Extract Git SHA for Comment
