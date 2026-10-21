@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const DEFAULT_DEBOUNCE_INTERVAL_MS = 500;
+const DEFAULT_DEBOUNCE_INTERVAL_MS = 250;
 
 export function useDebounce<T, U extends unknown[]>(
   callback: (...args: U) => T,
