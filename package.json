@@ -17,6 +17,7 @@
   },
   "prettier": "@brown-ccv/prettier-config",
   "dependencies": {
+    "@date-fns/utc": "^2.1.1",
     "@google-cloud/secret-manager": "^6.1.0",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.1.5",

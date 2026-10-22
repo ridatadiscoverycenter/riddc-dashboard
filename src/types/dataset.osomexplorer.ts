@@ -16,7 +16,7 @@ export const OSOM_EXPLORER_VARIABLES = [
 
 export type OsomExplorerVariable = (typeof OSOM_EXPLORER_VARIABLES)[number];
 
-export const OSOM_EXPLORER_DATASETS = ['monthly_avg'] as const;
+export const OSOM_EXPLORER_DATASETS = ['monthly_avg', 'hurricane_irene'] as const;
 
 export type OsomExplorerDataset = (typeof OSOM_EXPLORER_DATASETS)[number];
 

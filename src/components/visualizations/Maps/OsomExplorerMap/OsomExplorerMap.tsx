@@ -1,9 +1,21 @@
 'use client';
 
 import React from 'react';
-import { format, eachMonthOfInterval } from 'date-fns';
-import { LngLatBoundsLike } from 'maplibre-gl';
-import { useMap } from './useMap';
+import {
+  AUTOPLAY_SPEED_MS,
+  DATASET_OPTS,
+  GRAY_GRADIENT,
+  OSOM_BOUNDS,
+  TIMEPOINTS_HURRICANE_IRENE,
+  TIMEPOINTS_MONTHLY_AVG,
+  VARIABLE_BOUNDS_IRENE,
+  VARIABLE_BOUNDS_MONTHLY_AVG,
+  VARIABLE_GRADIENTS,
+  VARIABLE_OPTS,
+  VARIABLE_UNITS,
+} from './constants';
+import { formatTimepointString, getRasterUrl, updateUrlParams } from './utils';
+import { useMap } from '@/components/visualizations/Maps';
 import { Header, Input, Label, Select } from '@/components';
 import { useInterval } from '@/hooks/useInterval';
 
@@ -15,113 +27,6 @@ type OsomExplorerMapProps = {
   variable: OsomExplorerVariable;
   timepoint: number;
 };
-
-const VARIABLE_OPTS: Array<{ label: string; value: OsomExplorerVariable }> = [
-  { label: 'Salinity (Bottom)', value: 'SalinityBottom' },
-  { label: 'Salinity (Surface)', value: 'SalinitySurface' },
-  { label: 'Water Temperature (Bottom)', value: 'WaterTempBottom' },
-  { label: 'Water Temperature (Surface)', value: 'WaterTempSurface' },
-  { label: 'Surface Height', value: 'SurfaceHeight' },
-  { label: 'Velocity East (Bottom)', value: 'VelocityEastwardBottom' },
-  { label: 'Velocity East (Surface)', value: 'VelocityEastwardSurface' },
-  { label: 'Velocity North (Bottom)', value: 'VelocityNorthwardBottom' },
-  { label: 'Velocity North (Surface)', value: 'VelocityNorthwardSurface' },
-  { label: 'Kinetic Energy (Bottom)', value: 'KineticEnergyBottom' },
-  { label: 'Kinetic Energy (Surface)', value: 'KineticEnergySurface' },
-];
-
-const DATASET_OPTS: Array<{ label: string; value: OsomExplorerDataset }> = [
-  { label: 'Monthly Averages', value: 'monthly_avg' },
-];
-
-const VARIABLE_UNITS: Record<OsomExplorerVariable, string> = {
-  WaterTempBottom: 'ºC',
-  WaterTempSurface: 'ºC',
-  SalinityBottom: 'PSU',
-  SalinitySurface: 'PSU',
-  KineticEnergyBottom: 'J/Kg',
-  KineticEnergySurface: 'J/Kg',
-  SurfaceHeight: 'm',
-  VelocityEastwardBottom: 'm/s',
-  VelocityEastwardSurface: 'm/s',
-  VelocityNorthwardBottom: 'm/s',
-  VelocityNorthwardSurface: 'm/s',
-};
-
-const VARIABLE_BOUNDS: Record<OsomExplorerVariable, { min: string; max: string }> = {
-  WaterTempBottom: {
-    min: '-3.99',
-    max: '28.85',
-  },
-  WaterTempSurface: {
-    min: '-4.00',
-    max: '28.28',
-  },
-  SalinityBottom: {
-    min: '6.43e-41',
-    max: '36.95',
-  },
-  SalinitySurface: {
-    min: '5.52e-41',
-    max: '34.94',
-  },
-  KineticEnergyBottom: {
-    min: '1.50e-07',
-    max: '0.66',
-  },
-  KineticEnergySurface: {
-    min: '6.82e-07',
-    max: '2.53',
-  },
-  SurfaceHeight: {
-    min: '-0.43',
-    max: '0.43',
-  },
-  VelocityEastwardBottom: {
-    min: '-0.50',
-    max: '0.60',
-  },
-  VelocityEastwardSurface: {
-    min: '-0.77',
-    max: '2.04',
-  },
-  VelocityNorthwardBottom: {
-    min: '-0.62',
-    max: '0.52',
-  },
-  VelocityNorthwardSurface: {
-    min: '-1.04',
-    max: '0.90',
-  },
-};
-
-const HALINE_GRADIENT = 'linear-gradient(0.25turn, #2a186e, #125e8e, #3c9486, #80cd64, #fbee97)';
-const THERMAL_GRADIENT = 'linear-gradient(0.25turn, #032333, #634197, #b5607f, #fa973f, #e7fa5a)';
-const SPEED_GRADIENT = 'linear-gradient(0.25turn, #fcfccc, #c5ba4c, #538d1f, #0c5d2e, #172213)';
-const AMP_GRADIENT = 'linear-gradient(0.25turn, #f0ebea, #d59d8a, #be5437, #7e0d29, #3d0912)';
-const DEEP_GRADIENT = 'linear-gradient(0.25turn, #fdfdcc, #61bea3, #46889c, #41417c, #281a2d)';
-const GRAY_GRADIENT = 'linear-gradient(0.25turn, #000000, #fcfbfa)';
-
-const VARIABLE_GRADIENTS: Record<OsomExplorerVariable, string> = {
-  SalinityBottom: HALINE_GRADIENT,
-  SalinitySurface: HALINE_GRADIENT,
-  WaterTempBottom: THERMAL_GRADIENT,
-  WaterTempSurface: THERMAL_GRADIENT,
-  SurfaceHeight: DEEP_GRADIENT,
-  VelocityEastwardBottom: SPEED_GRADIENT,
-  VelocityEastwardSurface: SPEED_GRADIENT,
-  VelocityNorthwardBottom: SPEED_GRADIENT,
-  VelocityNorthwardSurface: SPEED_GRADIENT,
-  KineticEnergyBottom: AMP_GRADIENT,
-  KineticEnergySurface: AMP_GRADIENT,
-};
-
-const AUTOPLAY_SPEED_MS = 2000;
-
-const OSOM_BOUNDS: LngLatBoundsLike = [
-  [-72.7, 41.9],
-  [-69.96, 40.5],
-];
 
 export function OsomExporerMap({
   dataset: initialDataset = 'monthly_avg',
@@ -147,7 +52,15 @@ export function OsomExporerMap({
     updateUrlDebounce(dataset, variable, timepoint);
   }, [dataset, variable, timepoint]);
 
-  const timepoints = TIMEPOINTS;
+  const timepoints = React.useMemo(
+    () => (dataset === 'monthly_avg' ? TIMEPOINTS_MONTHLY_AVG : TIMEPOINTS_HURRICANE_IRENE),
+    [dataset]
+  );
+
+  const variableBounds = React.useMemo(
+    () => (dataset === 'monthly_avg' ? VARIABLE_BOUNDS_MONTHLY_AVG : VARIABLE_BOUNDS_IRENE),
+    [dataset]
+  );
 
   const incrementIndex = React.useCallback(() => {
     setTimepoint((current) => (current + 1 >= timepoints.length ? 0 : current + 1));
@@ -211,7 +124,7 @@ export function OsomExporerMap({
           <span>{formatTimepointString(timepoints[timepoint], dataset)}</span>
           <div className="flex flex-row gap-2 items-center">
             <span>
-              {VARIABLE_BOUNDS[variable].min} {VARIABLE_UNITS[variable]}
+              {variableBounds[variable].min} {VARIABLE_UNITS[variable]}
             </span>
             <div
               className="flex-1 h-4 rounded-md"
@@ -220,7 +133,7 @@ export function OsomExporerMap({
               }}
             ></div>
             <span>
-              {VARIABLE_BOUNDS[variable].max} {VARIABLE_UNITS[variable]}
+              {variableBounds[variable].max} {VARIABLE_UNITS[variable]}
             </span>
           </div>
         </div>
@@ -254,6 +167,7 @@ export function OsomExporerMap({
           value={DATASET_OPTS.find(({ value }) => value === dataset)}
           onChange={(e) => {
             const selectedDataset = e as { value: OsomExplorerDataset; label: string };
+            setTimepoint(0);
             setDataset(selectedDataset.value);
           }}
         />
@@ -270,45 +184,4 @@ export function OsomExporerMap({
       </div>
     </>
   );
-}
-
-const TIMEPOINTS = eachMonthOfInterval({
-  start: new Date(2005, 1, 1),
-  end: new Date(2022, 12, 1),
-}).map((date) => format(date, 'yyyy-MM-dd'));
-
-const ANNUAL_RASTER_URL =
-  'https://tile-server.riddc.brown.edu/services/monthly_avg_<VARIABLE>_<TIMEPOINT>/tiles/{z}/{x}/{y}.png';
-
-function getRasterUrl(
-  dataset: OsomExplorerDataset,
-  timepoint: number,
-  variable: OsomExplorerVariable
-) {
-  const timepoints = TIMEPOINTS; //dataset === 'annual-jan' ? TIMEPOITS_ANNUAL_JAN : TIMEPOITS_ANNUAL_JUL;
-  const urlTemplate = ANNUAL_RASTER_URL;
-  const boundedTimepoint =
-    timepoint < 0 ? 0 : timepoint >= timepoints.length ? timepoints.length - 1 : timepoint;
-  return urlTemplate
-    .replace('<TIMEPOINT>', TIMEPOINTS[boundedTimepoint])
-    .replace('<VARIABLE>', variable);
-}
-
-function formatTimepointString(timepoint: string, dataset: OsomExplorerDataset): string {
-  if (dataset === 'monthly_avg') {
-    return format(new Date(timepoint), 'MMMM yyyy');
-  }
-  return timepoint;
-}
-
-function updateUrlParams(
-  dataset: OsomExplorerDataset,
-  variable: OsomExplorerVariable,
-  timepoint: number
-) {
-  const url = new URL(window.location.href);
-  url.searchParams.set('dataset', dataset);
-  url.searchParams.set('var', variable);
-  url.searchParams.set('index', timepoint.toString());
-  window.history.replaceState({}, '', url);
 }
