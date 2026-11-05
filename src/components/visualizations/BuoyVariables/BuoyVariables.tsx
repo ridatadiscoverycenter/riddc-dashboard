@@ -126,14 +126,15 @@ export function BuoyVariables({ data, supplementalData, dataset }: BuoyVariables
     [supplementalData]
   );
 
-  const joinedDates = React.useMemo(
-    () =>
-      eachDayOfInterval({
-        start: displaySupplemental ? min([min(dates), min(supplementalDates)]) : min(dates),
-        end: displaySupplemental ? max([max(dates), max(supplementalDates)]) : max(dates),
-      }),
-    [dates, supplementalDates, displaySupplemental]
-  );
+  const joinedDates = React.useMemo(() => {
+    // Supplemental data may be empty (e.g. OSOM variables with no observed counterpart);
+    // min/max of an empty list yields an Invalid Date, so only include it when present.
+    const allDates =
+      displaySupplemental && supplementalDates.length > 0
+        ? [...dates, ...supplementalDates]
+        : dates;
+    return eachDayOfInterval({ start: min(allDates), end: max(allDates) });
+  }, [dates, supplementalDates, displaySupplemental]);
 
   const buoysInPlot = React.useMemo(() => getBuoysFromDatasetList(datasets), [datasets]);
   const varsInPlot = React.useMemo(() => getVariablesFromDatasetList(datasets), [datasets]);
