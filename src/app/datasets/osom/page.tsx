@@ -81,12 +81,17 @@ async function PageWrapper({
             fetchOsomBuoyData(ids, vars as OsomBuoyVariable[], start, end)
           }
           supplementalDataFetcher={async (ids, vars, start, end) => {
-            const riBuoyData = vars.every((v) => RI_BUOY_VARIABLES.includes(v as RiBuoyVariable))
-              ? await fetchRiBuoyData(ids, vars as RiBuoyVariable[], start, end)
-              : [];
-            const maBuoyData = vars.every((v) => MA_BUOY_VARIABLES.includes(v as MaBuoyVariable))
-              ? await fetchMaBuoyData(ids, vars as MaBuoyVariable[], start, end)
-              : [];
+            // Only request the variables that each observed dataset actually has.
+            const riVars = vars.filter((v) => RI_BUOY_VARIABLES.includes(v as RiBuoyVariable));
+            const maVars = vars.filter((v) => MA_BUOY_VARIABLES.includes(v as MaBuoyVariable));
+            const riBuoyData =
+              riVars.length > 0
+                ? await fetchRiBuoyData(ids, riVars as RiBuoyVariable[], start, end)
+                : [];
+            const maBuoyData =
+              maVars.length > 0
+                ? await fetchMaBuoyData(ids, maVars as MaBuoyVariable[], start, end)
+                : [];
             return [...riBuoyData, ...maBuoyData] as Awaited<ReturnType<typeof fetchOsomBuoyData>>;
           }}
           dataset="osom"
