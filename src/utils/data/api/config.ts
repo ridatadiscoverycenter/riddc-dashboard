@@ -18,8 +18,7 @@ export const CONFIG: { [key in DatasetConfigName]: DatasetConfig } = {
   },
   osom: {
     route: 'model',
-    datasetId: 'osom_v2_9429_72b1_b541'
-   // model_data_77bb_15c2_6ab3',
+    datasetId: 'osom_v2_9429_72b1_b541',
   },
   'ma-buoy': {
     route: 'mabuoy',
