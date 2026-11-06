@@ -20,6 +20,8 @@ const { FISH_SPECIES } = erddapApi.fish;
 type InitialFormData = {
   buoys: string[];
   vars: string[];
+  start?: Date;
+  end?: Date;
 };
 
 type dateBound = {
@@ -59,13 +61,24 @@ function handleDate(date: Date | number, mode: 'date' | 'year' = 'date') {
     }
   }
   if (typeof date === 'number') throw new Error("Type 'number' is incompatible with date");
-  return date.toISOString().split('T')[0];
+  // Format from local date parts so the query matches the date shown in the picker.
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
+/**
+ * Date-only strings (e.g. `2010-01-22` in query params and date bounds) are parsed as midnight UTC, which displays as the
+ * previous day in US timezones. Convert to local midnight on the same calendar date.
+ */
+function utcDateToLocal(date: Date) {
+  return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
 }
 
 export function ExploreForm({
   buoys,
   dataset,
-  dateBounds,
+  dateBounds: dateBoundsProp,
   init = DEFAULT_INITIAL_DATA,
   mode = 'date',
 }: ExploreFormProps) {
@@ -73,8 +86,19 @@ export function ExploreForm({
     buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys
   );
   const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
-  const [startDate, setStartDate] = React.useState(new Date(dateBounds.startDate));
-  const [endDate, setEndDate] = React.useState(dateBounds.endDate);
+  const dateBounds = React.useMemo(
+    () => ({
+      startDate: utcDateToLocal(dateBoundsProp.startDate),
+      endDate: utcDateToLocal(dateBoundsProp.endDate),
+    }),
+    [dateBoundsProp]
+  );
+  const [startDate, setStartDate] = React.useState(
+    init.start ? utcDateToLocal(init.start) : dateBounds.startDate
+  );
+  const [endDate, setEndDate] = React.useState(
+    init.end ? utcDateToLocal(init.end) : dateBounds.endDate
+  );
 
   const varOptions = React.useMemo(
     () =>
