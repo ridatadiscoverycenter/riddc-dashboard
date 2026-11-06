@@ -149,16 +149,30 @@ export function BuoyVariables({ data, supplementalData, dataset }: BuoyVariables
     [supplementalDatasets, buoysInPlot, varsInPlot, joinedDates, dataset]
   );
 
+  const supplementalLabel = dataset === 'osom' ? 'historical' : 'model';
+  const hasSupplementalData = React.useMemo(
+    () => supplementalData.some(({ value }) => value !== undefined),
+    [supplementalData]
+  );
+
   return (
     <>
       <div className="flex flex-row justify-start items-center gap-2 p-2 rounded-md text-black text-sm bg-black/10">
-        <span>{dataset === 'osom' ? 'Historical ' : 'Model '}data matches your query.</span>
-        <button
-          className="rounded-md bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 text-white px-2 p-1"
-          onClick={() => setDisplaySupplemental((view) => !view)}
-        >
-          {displaySupplemental ? 'Remove from ' : 'Add to '}Plot
-        </button>
+        {hasSupplementalData ? (
+          <>
+            <span>
+              {dataset === 'osom' ? 'Historical' : 'Model'} data matches your query.
+            </span>
+            <button
+              className="rounded-md bg-cyan-300 hover:bg-cyan-400 focus:bg-cyan-400 dark:bg-cyan-700 hover:dark:bg-cyan-600 focus:dark:bg-cyan-600 text-white px-2 p-1"
+              onClick={() => setDisplaySupplemental((view) => !view)}
+            >
+              {displaySupplemental ? 'Remove from ' : 'Add to '}Plot
+            </button>
+          </>
+        ) : (
+          <span>No {supplementalLabel} data matches your query.</span>
+        )}
       </div>
       <div className="h-80 w-full">
         <Line
