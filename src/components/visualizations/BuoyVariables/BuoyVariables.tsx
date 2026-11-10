@@ -165,7 +165,7 @@ export function BuoyVariables({ data, supplementalData, dataset }: BuoyVariables
         {hasSupplementalData ? (
           <>
             <span>
-              {matchingSupplementalVariableCount} {supplementalLabel} variable
+              Data from {matchingSupplementalVariableCount} {supplementalLabel} variable
               {matchingSupplementalVariableCount === 1 ? '' : 's'} match
               {matchingSupplementalVariableCount === 1 ? 'es' : ''} your query.
             </span>
