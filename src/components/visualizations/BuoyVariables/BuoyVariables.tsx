@@ -149,7 +149,7 @@ export function BuoyVariables({ data, supplementalData, dataset }: BuoyVariables
     [supplementalDatasets, buoysInPlot, varsInPlot, joinedDates, dataset]
   );
 
-  const supplementalLabel = dataset === 'osom' ? 'historical' : 'model';
+  const supplementalLabel = dataset === 'osom' ? 'historical buoy' : 'OSOM model';
   const matchingSupplementalVariableCount = React.useMemo(
     () =>
       new Set(
