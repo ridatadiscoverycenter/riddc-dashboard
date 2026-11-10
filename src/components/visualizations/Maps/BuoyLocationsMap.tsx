@@ -29,6 +29,7 @@ export function BuoyLocationsMap({ locations }: BuoyLocationsProps) {
     clusterRadius: 10,
     clusterMaxZoom: 15,
     data: {
+      type: 'FeatureCollection',
       features: locations.map(({ stationName, longitude, latitude }) => ({
         type: 'Feature',
         geometry: { type: 'Point', coordinates: [longitude, latitude] },
