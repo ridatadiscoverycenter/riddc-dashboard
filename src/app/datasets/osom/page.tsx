@@ -84,14 +84,10 @@ async function PageWrapper({
             // Only request the variables that each observed dataset actually has.
             const riVars = vars.filter((v) => RI_BUOY_VARIABLES.includes(v as RiBuoyVariable));
             const maVars = vars.filter((v) => MA_BUOY_VARIABLES.includes(v as MaBuoyVariable));
-            const riBuoyData =
-              riVars.length > 0
-                ? await fetchRiBuoyData(ids, riVars as RiBuoyVariable[], start, end)
-                : [];
-            const maBuoyData =
-              maVars.length > 0
-                ? await fetchMaBuoyData(ids, maVars as MaBuoyVariable[], start, end)
-                : [];
+            const [riBuoyData, maBuoyData] = await Promise.all([
+              riVars.length > 0 ? fetchRiBuoyData(ids, riVars as RiBuoyVariable[], start, end) : [],
+              maVars.length > 0 ? fetchMaBuoyData(ids, maVars as MaBuoyVariable[], start, end) : [],
+            ]);
             return [...riBuoyData, ...maBuoyData] as Awaited<ReturnType<typeof fetchOsomBuoyData>>;
           }}
           dataset="osom"
