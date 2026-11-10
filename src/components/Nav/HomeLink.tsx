@@ -8,9 +8,12 @@ type HomeLinkProps = {
 
 export function HomeLink({ className = '' }: HomeLinkProps) {
   const pathname = usePathname();
-  // The RI NEST logo is its own external link, so only the title links home
-  // (nesting <a> tags is invalid HTML and causes a hydration error).
-  const title = <TitleText />;
+  const title = (
+  <>
+    <span className="sm:flex hidden whitespace-nowrap">Rhode Island Data Discovery Center</span>
+    <span className="sm:hidden">RIDDC</span>
+  </>
+  );
   return (
     <h1 className="flex flex-row items-center gap-4 text-2xl">
       <ExternalLink href="https://web.uri.edu/rinsfepscor/rinest/">
@@ -24,14 +27,5 @@ export function HomeLink({ className = '' }: HomeLinkProps) {
         <div className={className}>{title}</div>
       )}
     </h1>
-  );
-}
-
-function TitleText() {
-  return (
-    <>
-      <span className="sm:flex hidden whitespace-nowrap">Rhode Island Data Discovery Center</span>
-      <span className="sm:hidden">RIDDC</span>
-    </>
   );
 }
