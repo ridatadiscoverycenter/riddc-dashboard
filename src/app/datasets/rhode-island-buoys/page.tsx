@@ -75,11 +75,13 @@ async function PageWrapper({
           buoyDataFetcher={(ids, vars, start, end) =>
             fetchRiBuoyData(ids, vars as RiBuoyVariable[], start, end)
           }
-          supplementalDataFetcher={(ids, vars, start, end) =>
-            vars.every((v) => OSOM_VARIABLES.includes(v as OsomBuoyVariable))
-              ? fetchOsomBuoyData(ids, vars as OsomBuoyVariable[], start, end)
-              : Promise.resolve([])
-          }
+          supplementalDataFetcher={(ids, vars, start, end) => {
+            // Only request the variables that the OSOM model has.
+            const osomVars = vars.filter((v) => OSOM_VARIABLES.includes(v as OsomBuoyVariable));
+            return osomVars.length > 0
+              ? fetchOsomBuoyData(ids, osomVars as OsomBuoyVariable[], start, end)
+              : Promise.resolve([]);
+          }}
           dataset="ri"
           weatherDataFetcher={fetchWeatherData}
           description={
