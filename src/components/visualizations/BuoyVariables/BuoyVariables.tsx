@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { closestIndexTo, compareAsc, eachDayOfInterval, formatDate, max, min } from 'date-fns';
+import { UTCDate } from '@date-fns/utc';
 import { Line } from 'react-chartjs-2';
 import {
   BarController,
@@ -133,7 +134,11 @@ export function BuoyVariables({ data, supplementalData, dataset }: BuoyVariables
       displaySupplemental && supplementalDates.length > 0
         ? [...dates, ...supplementalDates]
         : dates;
-    return eachDayOfInterval({ start: min(allDates), end: max(allDates) });
+    // Use UTC so the day buckets and labels match the UTC timestamps of the data.
+    return eachDayOfInterval({
+      start: new UTCDate(min(allDates)),
+      end: new UTCDate(max(allDates)),
+    });
   }, [dates, supplementalDates, displaySupplemental]);
 
   const buoysInPlot = React.useMemo(() => getBuoysFromDatasetList(datasets), [datasets]);

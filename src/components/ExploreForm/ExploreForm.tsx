@@ -2,6 +2,7 @@
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import { formatDateAsQueryParam, utcDateToLocal, clampDate } from '@/utils/fns/dates';
 import { Label, Input, Form, Select, CustomDatePicker } from '@/components';
 import { variableToLabel, erddapApi } from '@/utils/data';
 import { type Dataset } from '@/utils/data/api/buoy/types';
@@ -20,6 +21,8 @@ const { FISH_SPECIES } = erddapApi.fish;
 type InitialFormData = {
   buoys: string[];
   vars: string[];
+  start?: Date;
+  end?: Date;
 };
 
 type dateBound = {
@@ -50,22 +53,10 @@ function selectVarOptions(dataset: Dataset) {
   return ['~~None Found~~'];
 }
 
-function handleDate(date: Date | number, mode: 'date' | 'year' = 'date') {
-  if (mode === 'year') {
-    if (typeof date === 'number') {
-      return date;
-    } else {
-      return date.getFullYear();
-    }
-  }
-  if (typeof date === 'number') throw new Error("Type 'number' is incompatible with date");
-  return date.toISOString().split('T')[0];
-}
-
 export function ExploreForm({
   buoys,
   dataset,
-  dateBounds,
+  dateBounds: dateBoundsProp,
   init = DEFAULT_INITIAL_DATA,
   mode = 'date',
 }: ExploreFormProps) {
@@ -73,8 +64,25 @@ export function ExploreForm({
     buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys
   );
   const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
-  const [startDate, setStartDate] = React.useState(new Date(dateBounds.startDate));
-  const [endDate, setEndDate] = React.useState(dateBounds.endDate);
+  const startMs = dateBoundsProp.startDate.valueOf();
+  const endMs = dateBoundsProp.endDate.valueOf();
+  const dateBounds = React.useMemo(
+    () => ({
+      startDate: utcDateToLocal(new Date(startMs)),
+      endDate: utcDateToLocal(new Date(endMs)),
+    }),
+    [startMs, endMs]
+  );
+  const [startDate, setStartDate] = React.useState(
+    init.start
+      ? clampDate(utcDateToLocal(init.start), dateBounds.startDate, dateBounds.endDate)
+      : dateBounds.startDate
+  );
+  const [endDate, setEndDate] = React.useState(
+    init.end
+      ? clampDate(utcDateToLocal(init.end), dateBounds.startDate, dateBounds.endDate)
+      : dateBounds.endDate
+  );
 
   const varOptions = React.useMemo(
     () =>
@@ -90,8 +98,8 @@ export function ExploreForm({
       event.preventDefault();
       const buoys = selectedBuoys.length === 0 ? '' : `buoys=${selectedBuoys.join(',')}`;
       const vars = selectedVars.length === 0 ? '' : `vars=${selectedVars.join(',')}`;
-      const start = `start=${handleDate(startDate)}`;
-      const end = `end=${handleDate(endDate)}`;
+      const start = `start=${formatDateAsQueryParam(startDate)}`;
+      const end = `end=${formatDateAsQueryParam(endDate)}`;
       const datasetLink =
         dataset === 'ri'
           ? `rhode-island-buoys`

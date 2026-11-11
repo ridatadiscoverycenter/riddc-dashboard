@@ -87,8 +87,8 @@ async function PageWrapper({
             typeof paramsOrError === 'string' ? undefined : (
               <>
                 This plot compares {makeCommaSepList(paramsOrError.vars)} between{' '}
-                {paramsOrError.start.toLocaleDateString()} and{' '}
-                {paramsOrError.end.toLocaleDateString()} at{' '}
+                {paramsOrError.start.toLocaleDateString(undefined, { timeZone: 'UTC' })} and{' '}
+                {paramsOrError.end.toLocaleDateString(undefined, { timeZone: 'UTC' })} at{' '}
                 {makeCommaSepList(
                   paramsOrError.buoys.map(
                     (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
@@ -107,7 +107,7 @@ async function PageWrapper({
           dataset="ma"
           dateBounds={{
             startDate: new Date('2017-05-26'),
-            endDate: new Date('2018-1-09'),
+            endDate: new Date('2018-01-09'),
           }}
           init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
         />
