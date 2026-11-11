@@ -86,18 +86,24 @@ export function ExploreForm({
     buoys.length === 1 ? buoys.map(({ buoyId }) => buoyId) : init.buoys
   );
   const [selectedVars, setSelectedVars] = React.useState<string[]>(init.vars);
+  const startMs = dateBoundsProp.startDate.valueOf();
+  const endMs = dateBoundsProp.endDate.valueOf();
   const dateBounds = React.useMemo(
     () => ({
-      startDate: utcDateToLocal(dateBoundsProp.startDate),
-      endDate: utcDateToLocal(dateBoundsProp.endDate),
+      startDate: utcDateToLocal(new Date(startMs)),
+      endDate: utcDateToLocal(new Date(endMs)),
     }),
-    [dateBoundsProp]
+    [startMs, endMs]
   );
+  const clampDate = (date: Date) =>
+    new Date(
+      Math.min(Math.max(date.valueOf(), dateBounds.startDate.valueOf()), dateBounds.endDate.valueOf())
+    );
   const [startDate, setStartDate] = React.useState(
-    init.start ? utcDateToLocal(init.start) : dateBounds.startDate
+    init.start ? clampDate(utcDateToLocal(init.start)) : dateBounds.startDate
   );
   const [endDate, setEndDate] = React.useState(
-    init.end ? utcDateToLocal(init.end) : dateBounds.endDate
+    init.end ? clampDate(utcDateToLocal(init.end)) : dateBounds.endDate
   );
 
   const varOptions = React.useMemo(
