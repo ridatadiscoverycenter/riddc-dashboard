@@ -74,10 +74,14 @@ export function ExploreForm({
     [startMs, endMs]
   );
   const [startDate, setStartDate] = React.useState(
-    init.start ? clampDate(utcDateToLocal(init.start), dateBounds.startDate, dateBounds.endDate) : dateBounds.startDate
+    init.start
+      ? clampDate(utcDateToLocal(init.start), dateBounds.startDate, dateBounds.endDate)
+      : dateBounds.startDate
   );
   const [endDate, setEndDate] = React.useState(
-    init.end ? clampDate(utcDateToLocal(init.end), dateBounds.startDate, dateBounds.endDate) : dateBounds.endDate
+    init.end
+      ? clampDate(utcDateToLocal(init.end), dateBounds.startDate, dateBounds.endDate)
+      : dateBounds.endDate
   );
 
   const varOptions = React.useMemo(

@@ -22,10 +22,5 @@ export function utcDateToLocal(date: Date) {
 }
 
 export function clampDate(date: Date, startDate: Date, endDate: Date) {
-  return new Date(
-    Math.min(
-      Math.max(date.valueOf(), startDate.valueOf()),
-      endDate.valueOf()
-    )
-  );
+  return new Date(Math.min(Math.max(date.valueOf(), startDate.valueOf()), endDate.valueOf()));
 }
