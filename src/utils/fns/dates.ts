@@ -1,4 +1,4 @@
-export function handleDate(date: Date | number, mode: 'date' | 'year' = 'date') {
+export function formatDateAsQueryParam(date: Date | number, mode: 'date' | 'year' = 'date') {
   if (mode === 'year') {
     if (typeof date === 'number') {
       return date;

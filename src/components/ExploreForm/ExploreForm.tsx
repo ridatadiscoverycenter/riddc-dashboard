@@ -2,7 +2,7 @@
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { handleDate, utcDateToLocal } from './dates';
+import { formatDateAsQueryParam, utcDateToLocal } from '../../utils/fns/dates';
 import { Label, Input, Form, Select, CustomDatePicker } from '@/components';
 import { variableToLabel, erddapApi } from '@/utils/data';
 import { type Dataset } from '@/utils/data/api/buoy/types';
@@ -101,8 +101,8 @@ export function ExploreForm({
       event.preventDefault();
       const buoys = selectedBuoys.length === 0 ? '' : `buoys=${selectedBuoys.join(',')}`;
       const vars = selectedVars.length === 0 ? '' : `vars=${selectedVars.join(',')}`;
-      const start = `start=${handleDate(startDate)}`;
-      const end = `end=${handleDate(endDate)}`;
+      const start = `start=${formatDateAsQueryParam(startDate)}`;
+      const end = `end=${formatDateAsQueryParam(endDate)}`;
       const datasetLink =
         dataset === 'ri'
           ? `rhode-island-buoys`
