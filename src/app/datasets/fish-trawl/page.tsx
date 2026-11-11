@@ -105,8 +105,8 @@ async function PageWrapper({
                   <>
                     The upper plot compares{' '}
                     <SpeciesList list={paramsOrError.vars as FishVariable[]} /> between{' '}
-                    {paramsOrError.start.toLocaleDateString()} and{' '}
-                    {paramsOrError.end.toLocaleDateString()} at{' '}
+                    {paramsOrError.start.toLocaleDateString(undefined, { timeZone: 'UTC' })} and{' '}
+                    {paramsOrError.end.toLocaleDateString(undefined, { timeZone: 'UTC' })} at{' '}
                     {makeCommaSepList(
                       paramsOrError.buoys.map(
                         (bid) => buoyData.find(({ buoyId }) => buoyId === bid)?.stationName || '???'
