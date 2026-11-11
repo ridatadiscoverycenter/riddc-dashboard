@@ -97,7 +97,10 @@ export function ExploreForm({
   );
   const clampDate = (date: Date) =>
     new Date(
-      Math.min(Math.max(date.valueOf(), dateBounds.startDate.valueOf()), dateBounds.endDate.valueOf())
+      Math.min(
+        Math.max(date.valueOf(), dateBounds.startDate.valueOf()),
+        dateBounds.endDate.valueOf()
+      )
     );
   const [startDate, setStartDate] = React.useState(
     init.start ? clampDate(utcDateToLocal(init.start)) : dateBounds.startDate
