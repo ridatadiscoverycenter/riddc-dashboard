@@ -2,7 +2,7 @@
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { formatDateAsQueryParam, utcDateToLocal } from '../../utils/fns/dates';
+import { formatDateAsQueryParam, utcDateToLocal, clampDate } from '@/utils/fns/dates';
 import { Label, Input, Form, Select, CustomDatePicker } from '@/components';
 import { variableToLabel, erddapApi } from '@/utils/data';
 import { type Dataset } from '@/utils/data/api/buoy/types';
@@ -73,18 +73,11 @@ export function ExploreForm({
     }),
     [startMs, endMs]
   );
-  const clampDate = (date: Date) =>
-    new Date(
-      Math.min(
-        Math.max(date.valueOf(), dateBounds.startDate.valueOf()),
-        dateBounds.endDate.valueOf()
-      )
-    );
   const [startDate, setStartDate] = React.useState(
-    init.start ? clampDate(utcDateToLocal(init.start)) : dateBounds.startDate
+    init.start ? clampDate(utcDateToLocal(init.start), dateBounds.startDate, dateBounds.endDate) : dateBounds.startDate
   );
   const [endDate, setEndDate] = React.useState(
-    init.end ? clampDate(utcDateToLocal(init.end)) : dateBounds.endDate
+    init.end ? clampDate(utcDateToLocal(init.end), dateBounds.startDate, dateBounds.endDate) : dateBounds.endDate
   );
 
   const varOptions = React.useMemo(

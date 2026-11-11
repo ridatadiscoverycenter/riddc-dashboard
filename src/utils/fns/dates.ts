@@ -20,3 +20,12 @@ export function formatDateAsQueryParam(date: Date | number, mode: 'date' | 'year
 export function utcDateToLocal(date: Date) {
   return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
 }
+
+export function clampDate(date: Date, startDate: Date, endDate: Date) {
+  return new Date(
+    Math.min(
+      Math.max(date.valueOf(), startDate.valueOf()),
+      endDate.valueOf()
+    )
+  );
+}
