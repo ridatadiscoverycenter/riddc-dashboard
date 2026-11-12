@@ -9,10 +9,10 @@ type HomeLinkProps = {
 export function HomeLink({ className = '' }: HomeLinkProps) {
   const pathname = usePathname();
   const title = (
-  <>
-    <span className="sm:flex hidden whitespace-nowrap">Rhode Island Data Discovery Center</span>
-    <span className="sm:hidden">RIDDC</span>
-  </>
+    <>
+      <span className="sm:flex hidden whitespace-nowrap">Rhode Island Data Discovery Center</span>
+      <span className="sm:hidden">RIDDC</span>
+    </>
   );
   return (
     <h1 className="flex flex-row items-center gap-4 text-2xl">

@@ -116,7 +116,7 @@ async function PageWrapper({
           dataset="osom"
           dateBounds={{
             /* Subject to change? */
-            startDate: new Date('2006-01-01'),
+            startDate: new Date('2005-01-01'),
             endDate: new Date('2024-12-31'),
           }}
           init={typeof paramsOrError === 'string' ? undefined : paramsOrError}
