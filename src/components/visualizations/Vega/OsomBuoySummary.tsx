@@ -57,9 +57,9 @@ export function OsomBuoySummary({ data }: OsomBuoySummaryProps) {
         {
           name: 'x',
           type: 'utc',
-          domain: {
-            fields: [{ data: 'data', field: 'date' }],
-          },
+          // Fixed range so labels always span the full dataset (Jan 2005 - Dec 2025),
+          // regardless of which months have data for the selected variable.
+          domain: [{ signal: 'utc(2005, 0, 1)' }, { signal: 'utc(2026, 0, 1)' }],
           range: 'width',
           padding: 0.02,
           nice: 'month',
