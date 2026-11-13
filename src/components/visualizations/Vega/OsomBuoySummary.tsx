@@ -85,6 +85,8 @@ export function OsomBuoySummary({ data }: OsomBuoySummaryProps) {
         {
           orient: 'bottom',
           scale: 'x',
+          values: Array.from({ length: 11 }, (_, i) => Date.UTC(2005 + i * 2, 0, 1)),
+          format: '%Y',
           labelAngle: -45,
           labelAlign: 'right',
           domain: false,
