@@ -57,7 +57,9 @@ export function OsomBuoySummary({ data }: OsomBuoySummaryProps) {
         {
           name: 'x',
           type: 'utc',
-          domain: [{ signal: 'utc(2005, 0, 1)' }, { signal: 'utc(2026, 0, 1)' }],
+          domain: {
+            fields: [{ data: 'data', field: 'date' }],
+          },
           range: 'width',
           padding: 0.02,
           nice: 'month',
