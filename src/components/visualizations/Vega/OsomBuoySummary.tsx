@@ -28,6 +28,17 @@ export function OsomBuoySummary({ data }: OsomBuoySummaryProps) {
     value: key,
   }));
   const [variable, setVariable] = React.useState<{ value: OsomBuoyVariable }>(options[0]);
+  // Label every other year from the first to the last year present in the data, so the axis
+  // grows automatically as new years are added.
+  const yearTicks = React.useMemo(() => {
+    const years = data.map(({ time }) => new Date(time).getUTCFullYear()).filter(Number.isFinite);
+    if (years.length === 0) return [];
+    const first = years.reduce((a, b) => Math.min(a, b));
+    const last = years.reduce((a, b) => Math.max(a, b));
+    const ticks: number[] = [];
+    for (let y = first; y <= last; y += 2) ticks.push(Date.UTC(y, 0, 1));
+    return ticks;
+  }, [data]);
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -85,6 +96,8 @@ export function OsomBuoySummary({ data }: OsomBuoySummaryProps) {
         {
           orient: 'bottom',
           scale: 'x',
+          values: yearTicks,
+          format: '%Y',
           labelAngle: -45,
           labelAlign: 'right',
           domain: false,
@@ -131,7 +144,7 @@ export function OsomBuoySummary({ data }: OsomBuoySummaryProps) {
         },
       ],
     }),
-    [data, variable, size]
+    [data, variable, size, yearTicks]
   );
   return (
     <>
