@@ -1,6 +1,8 @@
 'use client';
 import React from 'react';
 import { VegaEmbed } from 'react-vega';
+import { eachYearOfInterval } from 'date-fns';
+import { utc } from '@date-fns/utc';
 import type { VisualizationSpec } from 'vega-embed';
 
 import type { OsomBuoyVariable, OsomSummary } from '@/utils/data/api/buoy';
@@ -28,6 +30,16 @@ export function OsomBuoySummary({ data }: OsomBuoySummaryProps) {
     value: key,
   }));
   const [variable, setVariable] = React.useState<{ value: OsomBuoyVariable }>(options[0]);
+  const yearTicks = React.useMemo(() => {
+    const years = data.map(({ time }) => new Date(time).getUTCFullYear()).filter(Number.isFinite);
+    if (years.length === 0) return [];
+    const first = Math.min(...years);
+    const last = Math.max(...years);
+    return eachYearOfInterval(
+      { start: Date.UTC(first, 0, 1), end: Date.UTC(last, 0, 1) },
+      { step: 2, in: utc }
+    ).map((d) => d.getTime());
+  }, [data]);
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
       $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -85,6 +97,8 @@ export function OsomBuoySummary({ data }: OsomBuoySummaryProps) {
         {
           orient: 'bottom',
           scale: 'x',
+          values: yearTicks,
+          format: '%Y',
           labelAngle: -45,
           labelAlign: 'right',
           domain: false,
@@ -131,7 +145,7 @@ export function OsomBuoySummary({ data }: OsomBuoySummaryProps) {
         },
       ],
     }),
-    [data, variable, size]
+    [data, variable, size, yearTicks]
   );
   return (
     <>
