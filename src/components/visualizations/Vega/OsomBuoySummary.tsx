@@ -1,6 +1,8 @@
 'use client';
 import React from 'react';
 import { VegaEmbed } from 'react-vega';
+import { eachYearOfInterval } from 'date-fns';
+import { utc } from '@date-fns/utc';
 import type { VisualizationSpec } from 'vega-embed';
 
 import type { OsomBuoyVariable, OsomSummary } from '@/utils/data/api/buoy';
@@ -28,16 +30,15 @@ export function OsomBuoySummary({ data }: OsomBuoySummaryProps) {
     value: key,
   }));
   const [variable, setVariable] = React.useState<{ value: OsomBuoyVariable }>(options[0]);
-  // Label every other year from the first to the last year present in the data, so the axis
-  // grows automatically as new years are added.
   const yearTicks = React.useMemo(() => {
     const years = data.map(({ time }) => new Date(time).getUTCFullYear()).filter(Number.isFinite);
     if (years.length === 0) return [];
-    const first = years.reduce((a, b) => Math.min(a, b));
-    const last = years.reduce((a, b) => Math.max(a, b));
-    const ticks: number[] = [];
-    for (let y = first; y <= last; y += 2) ticks.push(Date.UTC(y, 0, 1));
-    return ticks;
+    const first = Math.min(...years);
+    const last = Math.max(...years);
+    return eachYearOfInterval(
+      { start: Date.UTC(first, 0, 1), end: Date.UTC(last, 0, 1) },
+      { step: 2, in: utc }
+    ).map((d) => d.getTime());
   }, [data]);
   const buoySummarySpec = React.useMemo<VisualizationSpec>(
     () => ({
